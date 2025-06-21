@@ -8,3 +8,12 @@
   background-color: $light-color;
   @include flex-center;
 }
+
+@font-face {
+  font-family: 'Pixel';
+  src: url('./assets/fonts/font-regular.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Pixel', sans-serif;
+}

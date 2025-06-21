@@ -86,6 +86,7 @@ Write-Host "📁 $componentFolder/$PascalCaseName.module.scss" -ForegroundColor 
 Write-Host "📁 $componentFolder/index.ts" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "INFO: Para usar el componente:" -ForegroundColor Yellow
-Write-Host ("   import $PascalCaseName from \"./components/$PascalCaseName\";") -ForegroundColor Gray
-Write-Host ("   Ejemplo de uso:") -ForegroundColor Gray
-Write-Host ("      <" + $PascalCaseName + ">Contenido aquí</" + $PascalCaseName + ">") -ForegroundColor Gray 
+Write-Host ('   import {0} from "./components/{0}";' -f $PascalCaseName) -ForegroundColor Gray
+# No imprimimos el ejemplo de uso con <> para evitar errores de PowerShell
+# Write-Host ("   Ejemplo de uso:") -ForegroundColor Gray
+# Write-Host ("      <" + $PascalCaseName + ">Contenido aquí</" + $PascalCaseName + ">") -ForegroundColor Gray 

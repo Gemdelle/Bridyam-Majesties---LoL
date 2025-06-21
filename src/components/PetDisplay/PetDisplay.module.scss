@@ -1,0 +1,76 @@
+@import '../../styles/variables.scss';
+
+.container {
+    width: 10%;
+    height: 18vh;
+    margin-top: 8%;
+  @include flex-center;
+  flex-direction: column;
+  background-color: red;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+  margin-bottom: -25px; // Solapamiento con la placa del nombre
+  background-color: blue;
+}
+
+.levels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.diamond {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  background-color: lighten($dark-color, 60%); // Gris claro con variable
+  border: 3px solid $dark-color;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-110px) rotate(45deg);
+  transition: $transition-normal;
+  box-shadow: $shadow-sm;
+
+  &.active {
+    background-color: lighten($dark-color, 35%); // Gris más oscuro para activo
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-110px) rotate(45deg) scale(1.1);
+  }
+}
+
+.frame {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: lighten($primary-color, 35%); // Azul claro
+  border: 4px solid $primary-color;
+  @include flex-center;
+  z-index: 5;
+  box-shadow: inset 0 0 10px rgba($dark-color, 0.2);
+}
+
+.pet img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+  padding: $spacing-sm $spacing-xl;
+  z-index: 10;
+  position: relative;
+  box-shadow: $shadow-md;
+  background-color: #ffd1d1; // Mantenemos el rosa
+  
+  span {
+    font-size: 1.5rem;
+    color: $dark-color;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px $light-color;
+  }
+} 
