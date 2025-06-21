@@ -1,0 +1,10 @@
+@import './styles/variables.scss';
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+  background-color: $light-color;
+  @include flex-center;
+}

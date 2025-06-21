@@ -1,0 +1,82 @@
+// Variables globales para el proyecto Bridyam Majesties LoL
+
+// Colores principales
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+
+// Colores de texto
+$text-primary: #212529;
+$text-secondary: #6c757d;
+$text-muted: #6c757d;
+
+// Espaciado
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 3rem;
+
+// Bordes
+$border-radius: 8px;
+$border-radius-sm: 4px;
+$border-radius-lg: 12px;
+
+// Sombras
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// Transiciones
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Mixins útiles
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin button-base {
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: $transition-normal;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+} 
