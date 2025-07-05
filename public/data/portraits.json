@@ -1,0 +1,154 @@
+[
+    {
+        "id": 1,
+        "name": "Hestiarethe",
+        "bloodline": "Porveldam",
+        "url": "/src/assets/images/portraits/Hestiarethe.png",
+        "champions": 145,
+        "skins": 267,
+        "masteries": 634,
+        "elo": 2847,
+        "roles": {
+            "top": 87,
+            "jungle": 23,
+            "mid": 45,
+            "adc": 12,
+            "support": 34
+        },
+        "blueEssence": 125430,
+        "orangeEssence": 18750
+    },
+    {
+        "id": 2,
+        "name": "Orzyadhere",
+        "bloodline": "Porveldam",
+        "url": "/src/assets/images/portraits/Orzyadhere.png",
+        "champions": 132,
+        "skins": 298,
+        "masteries": 587,
+        "elo": 2654,
+        "roles": {
+            "top": 45,
+            "jungle": 78,
+            "mid": 23,
+            "adc": 56,
+            "support": 12
+        },
+        "blueEssence": 98750,
+        "orangeEssence": 22340
+    },
+    {
+        "id": 3,
+        "name": "Eunilacealle",
+        "bloodline": "Spadelline",
+        "url": "/src/assets/images/portraits/Eunilacealle.png",
+        "champions": 158,
+        "skins": 345,
+        "masteries": 712,
+        "elo": 2987,
+        "roles": {
+            "top": 23,
+            "jungle": 45,
+            "mid": 89,
+            "adc": 34,
+            "support": 67
+        },
+        "blueEssence": 145670,
+        "orangeEssence": 19870
+    },
+    {
+        "id": 4,
+        "name": "Vrillyarethez",
+        "bloodline": "Gladasmy",
+        "url": "/src/assets/images/portraits/Vrillyarethez.png",
+        "champions": 167,
+        "skins": 378,
+        "masteries": 689,
+        "elo": 3123,
+        "roles": {
+            "top": 67,
+            "jungle": 34,
+            "mid": 56,
+            "adc": 78,
+            "support": 23
+        },
+        "blueEssence": 167890,
+        "orangeEssence": 24560
+    },
+    {
+        "id": 5,
+        "name": "Ivelism",
+        "bloodline": "Zephiroth",
+        "url": "/src/assets/images/portraits/Ivelism.png",
+        "champions": 143,
+        "skins": 256,
+        "masteries": 523,
+        "elo": 2456,
+        "roles": {
+            "top": 34,
+            "jungle": 67,
+            "mid": 45,
+            "adc": 89,
+            "support": 12
+        },
+        "blueEssence": 87650,
+        "orangeEssence": 15670
+    },
+    {
+        "id": 6,
+        "name": "Lahallayd",
+        "bloodline": "Zephiroth",
+        "url": "/src/assets/images/portraits/Lahallayd.png",
+        "champions": 178,
+        "skins": 412,
+        "masteries": 756,
+        "elo": 3245,
+        "roles": {
+            "top": 89,
+            "jungle": 23,
+            "mid": 67,
+            "adc": 45,
+            "support": 34
+        },
+        "blueEssence": 189230,
+        "orangeEssence": 28750
+    },
+    {
+        "id": 7,
+        "name": "Lacellire",
+        "bloodline": "Spadelline",
+        "url": "/src/assets/images/portraits/Lacellire.png",
+        "champions": 156,
+        "skins": 289,
+        "masteries": 634,
+        "elo": 2789,
+        "roles": {
+            "top": 45,
+            "jungle": 78,
+            "mid": 34,
+            "adc": 67,
+            "support": 89
+        },
+        "blueEssence": 134560,
+        "orangeEssence": 21340
+    },
+    {
+        "id": 8,
+        "name": "Deestellirys",
+        "bloodline": "Zephiroth",
+        "url": "/src/assets/images/portraits/Deestellirys.png",
+        "champions": 189,
+        "skins": 445,
+        "masteries": 823,
+        "elo": 3456,
+        "roles": {
+            "top": 78,
+            "jungle": 45,
+            "mid": 89,
+            "adc": 23,
+            "support": 56
+        },
+        "blueEssence": 223450,
+        "orangeEssence": 32450
+    }
+]
