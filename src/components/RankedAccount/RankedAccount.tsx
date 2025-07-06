@@ -31,7 +31,21 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
     const handleWinClick = (index: number) => {
         setSelectedWins(prev => {
             const newState = [...prev];
-            newState[index] = !newState[index];
+
+            // If clicking on a win that's already selected, unselect it and all subsequent wins
+            if (newState[index]) {
+                for (let i = index; i < newState.length; i++) {
+                    newState[i] = false;
+                }
+            }
+            // If clicking on a win that's not selected, only allow if previous win is selected
+            else {
+                // Allow selecting the first win (index 0) or if the previous win is selected
+                if (index === 0 || newState[index - 1]) {
+                    newState[index] = true;
+                }
+            }
+
             return newState;
         });
     };
