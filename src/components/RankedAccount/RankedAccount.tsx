@@ -60,7 +60,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                         ></div>
                     ))}
                 </div>
-                <div className={styles.wins__count}>00 / 15</div>
+                <div className={styles.wins__count}>
+                    {selectedWins.filter(win => win).length} / 15
+                </div>
             </div>
             <div className={styles.soloq__container}>
                 <img src={portrait["elo-soloq"]} alt="soloq" />
