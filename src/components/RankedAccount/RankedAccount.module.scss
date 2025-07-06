@@ -104,7 +104,8 @@
 
 .mission,
 .hall__mission {
-    width: 2%;
+    height: 80%;
+    width: 3%;
     border-radius: 50%;
     cursor: pointer;
     transition: all 500ms ease-in-out;
@@ -117,24 +118,19 @@
 
 .missions__list,
 .hall__list {
-    gap: 1.3%;
+    height: 100%;
     width: 100%;
-    @include flex-start;
+    @include flex-around;
     background-color: white;
 }
 
-.missions__list {
-    height: 40%;
-}
-
 .hall__list {
-    height: 60%;
     flex-wrap: wrap;
 }
 
 .mission {
+    width: 3%;
     background-color: lightblue;
-    height: 80%;
 }
 
 .mission:hover {
@@ -146,8 +142,8 @@
 }
 
 .hall__mission {
+    width: 2%;
     background-color: lightcoral;
-    height: 40%;
 }
 
 .hall__mission:hover {
