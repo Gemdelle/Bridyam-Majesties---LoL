@@ -8,8 +8,17 @@
     @include flex-center;
 }
 
+.number__container {
+    width: 1.2%;
+    height: 100%;
+    @include flex-center;
+    background-color: red;
+    color: white;
+    font-size: 15px;
+}
+
 .portrait__container {
-    width: 3%;
+    width: 2%;
     height: 100%;
     @include flex-center;
     background-color: yellow;
@@ -58,11 +67,13 @@
 
 .win {
     width: 5%;
-    height: 50%;
+    height: 95%;
     border-radius: 50%;
     transition: all 500ms ease-in-out;
     cursor: pointer;
-    background-color: gray;
+    // background-color: gray;
+    background-image: url('../../assets/images/ranked-btn/gladasmy.png');
+    @include background-center;
 }
 
 .win:hover {

@@ -39,7 +39,7 @@ const Ranked: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 20;
     const totalPages = Math.ceil(portraits.length / itemsPerPage);
 
     // --- Cargar datos de portraits ---

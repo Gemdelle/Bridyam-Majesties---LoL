@@ -102,6 +102,12 @@ $breakpoint-xl: 1200px;
   justify-content: space-between;
 }
 
+@mixin background-center {
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @mixin button-base {
   padding: $spacing-sm $spacing-md;
   border: none;

@@ -38,6 +38,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
 
     return (
         <div className={styles.container}>
+
+            <div className={styles.number__container}>
+                <span>{portrait.id}</span>
+            </div>
+
             <div className={styles.portrait__container}>
                 <img src={portrait.url} alt={portrait.name} className={styles.portrait} />
             </div>
