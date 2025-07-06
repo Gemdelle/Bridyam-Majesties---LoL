@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import styles from './RankedAccount.module.scss';
 import { type Portrait } from '../../services/portraitsService';
+import tierDiamond from '../../assets/images/lol-elements/tier-diamond.webp';
+import tierPlatinum from '../../assets/images/lol-elements/tier-platinum.webp';
+import tierEmerald from '../../assets/images/lol-elements/tier-emerald.webp';
+import tierGold from '../../assets/images/lol-elements/tier-gold.webp';
+import tierSilver from '../../assets/images/lol-elements/tier-silver.webp';
+import tierBronze from '../../assets/images/lol-elements/tier-bronze.webp';
+import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
 
 interface RankedAccountProps {
     portrait: Portrait;
@@ -50,6 +57,27 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
         });
     };
 
+    const getTierImage = (tier: string) => {
+        switch (tier.toLowerCase()) {
+            case 'diamond':
+                return tierDiamond;
+            case 'platinum':
+                return tierPlatinum;
+            case 'emerald':
+                return tierEmerald;
+            case 'gold':
+                return tierGold;
+            case 'silver':
+                return tierSilver;
+            case 'bronze':
+                return tierBronze;
+            case 'iron':
+                return tierIron;
+            default:
+                return '';
+        }
+    };
+
     const getBloodlineImage = () => {
         switch (portrait.bloodline) {
             case 'Porveldam':
@@ -95,12 +123,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                 </div>
             </div>
             <div className={styles.soloq__container}>
-                <img src={portrait["elo-soloq"]} alt="soloq" />
                 <span>{portrait["level-soloq"]}</span>
+                <img src={getTierImage(portrait["elo-soloq"])} alt={portrait["elo-soloq"]} />
             </div>
             <div className={styles.flex__container}>
-                <img src={portrait["elo-flex"]} alt="flex" />
                 <span>{portrait["level-flex"]}</span>
+                <img src={getTierImage(portrait["elo-flex"])} alt={portrait["elo-flex"]} />
             </div>
 
             <div className={styles.missions__container}>
