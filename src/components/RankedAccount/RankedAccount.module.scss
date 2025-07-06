@@ -68,7 +68,6 @@
 .win {
     width: 5%;
     height: 95%;
-    border-radius: 50%;
     transition: all 300ms ease-in-out;
     cursor: pointer;
     background-image: url('../../assets/images/ranked-btn/missing.png');
@@ -83,7 +82,7 @@
 .win__selected {
     @include background-center;
     border: none;
-    background-size: 40% auto;
+    background-size: 100% auto;
 }
 
 .win__selected:hover {
