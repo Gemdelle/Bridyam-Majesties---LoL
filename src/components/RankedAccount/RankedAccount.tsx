@@ -36,6 +36,21 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
         });
     };
 
+    const getBloodlineImage = () => {
+        switch (portrait.bloodline) {
+            case 'Porveldam':
+                return 'url(../../assets/images/ranked-btn/porveldam.png)';
+            case 'Spadelline':
+                return 'url(../../assets/images/ranked-btn/spadelline.png)';
+            case 'Zephiroth':
+                return 'url(../../assets/images/ranked-btn/zephiroth.png)';
+            case 'Gladasmy':
+                return 'url(../../assets/images/ranked-btn/gladasmy.png)';
+            default:
+                return 'url(../../assets/images/ranked-btn/missing.png)';
+        }
+    };
+
     return (
         <div className={styles.container}>
 
@@ -56,6 +71,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                         <div
                             key={index}
                             className={`${styles.win} ${isSelected ? styles.win__selected : ''}`}
+                            style={isSelected ? { backgroundImage: getBloodlineImage() } : {}}
                             onClick={() => handleWinClick(index)}
                         ></div>
                     ))}

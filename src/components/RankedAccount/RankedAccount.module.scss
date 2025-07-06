@@ -81,9 +81,9 @@
 }
 
 .win__selected {
-    background-image: url('../../assets/images/ranked-btn/gladasmy.png');
     @include background-center;
     border: none;
+    background-size: 40% auto;
 }
 
 .win__selected:hover {
