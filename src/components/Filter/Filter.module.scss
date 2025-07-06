@@ -5,6 +5,7 @@
   border-radius: $border-radius-sm;
   background-color: $light-color;
   box-shadow: $shadow-md;
+  position: relative;
 }
 
 .header {
@@ -28,9 +29,17 @@
 }
 
 .collapsible {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   max-height: 0;
   overflow: hidden;
   transition: max-height $transition-normal ease-out;
+  background-color: $light-color;
+  border-radius: 0 0 $border-radius-sm $border-radius-sm;
+  box-shadow: $shadow-md;
+  z-index: 1000;
 
   &.open {
     max-height: 500px; // Altura máxima suficientemente grande
@@ -59,7 +68,8 @@
   }
 
   // Ocultar el checkbox por defecto
-  input[type="checkbox"] {
+  input[type="checkbox"],
+  input[type="radio"] {
     display: none;
   }
 
@@ -89,7 +99,8 @@
   }
 
   // Estilo del checkbox cuando está seleccionado
-  input[type="checkbox"]:checked ~ .checkboxCustom {
+  input[type="checkbox"]:checked ~ .checkboxCustom,
+  input[type="radio"]:checked ~ .checkboxCustom {
     background-color: $primary-color;
     border-color: $primary-color;
     &::after {
