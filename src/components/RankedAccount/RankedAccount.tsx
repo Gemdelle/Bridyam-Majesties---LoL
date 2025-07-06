@@ -8,6 +8,8 @@ import tierGold from '../../assets/images/lol-elements/tier-gold.webp';
 import tierSilver from '../../assets/images/lol-elements/tier-silver.webp';
 import tierBronze from '../../assets/images/lol-elements/tier-bronze.webp';
 import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
+import missionImg from '../../assets/images/ranked-btn/mission.png';
+import missingImg from '../../assets/images/ranked-btn/missing.png';
 
 interface RankedAccountProps {
     portrait: Portrait;
@@ -139,8 +141,16 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                                 key={index}
                                 className={`${styles.mission} ${isSelected ? styles.mission__selected : ''}`}
                                 onClick={() => handleMissionClick(index)}
+                                style={{ position: 'relative' }}
                             >
-                                {index + 1}
+                                <img
+                                    src={isSelected ? missionImg : missingImg}
+                                    alt={isSelected ? 'mission' : 'missing'}
+                                    className={styles.mission__img}
+                                />
+                                {isSelected && (
+                                    <span className={styles.mission__number}>{index + 1}</span>
+                                )}
                             </div>
                         ))}
                     </div>

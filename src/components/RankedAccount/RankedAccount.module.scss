@@ -184,6 +184,7 @@
 
 .mission {
     width: 3%;
+    background-size: 40% auto;
     // background-color: lightblue;
 }
 
@@ -206,4 +207,26 @@
 
 .hall__mission__selected {
     background-color: #4CAF50;
+}
+
+.mission__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+}
+
+.mission__number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000, 0 0 2px #fff;
+    pointer-events: none;
+    z-index: 2;
 }
