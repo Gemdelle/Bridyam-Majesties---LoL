@@ -6,8 +6,8 @@ import { fetchPortraits, type Portrait } from '../../services/portraitsService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
-    { id: 'solo', label: 'solo', image: 'https://placehold.co/24x24/e81123/e81123.png' },
-    { id: 'flex', label: 'flex', image: 'https://placehold.co/24x24/4a4a4a/ffffff.png?text=⠿' }
+    { id: 'missions', label: 'missions', image: 'https://placehold.co/24x24/4a90e2/ffffff.png?text=📋' },
+    { id: 'hall-missions', label: 'hall missions', image: 'https://placehold.co/24x24/ff6b6b/ffffff.png?text=🏛️' }
 ];
 
 const filterOptions: FilterOption[] = [
@@ -28,7 +28,7 @@ const sortOptions: FilterOption[] = [
 
 const Ranked: React.FC = () => {
     // --- Estados para cada filtro ---
-    const [selectedView, setSelectedView] = useState<string[]>(['solo']);
+    const [selectedView, setSelectedView] = useState<string>('missions');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [selectedSorts, setSelectedSorts] = useState<string[]>(['tier']);
 
@@ -72,6 +72,16 @@ const Ranked: React.FC = () => {
         }
     };
 
+    // --- Handler para selección única de view ---
+    const handleViewChange = (newSelection: string[]) => {
+        // For single selection, we want to replace the current selection
+        // If the new selection is empty, keep the current one
+        if (newSelection.length > 0) {
+            const newView = newSelection[newSelection.length - 1]; // Get the last selected item
+            setSelectedView(newView);
+        }
+    };
+
     if (loading) {
         return (
             <div className={styles.page}>
@@ -103,8 +113,8 @@ const Ranked: React.FC = () => {
                     <Filter
                         title="VIEW"
                         options={viewOptions}
-                        selectedOptions={selectedView}
-                        onSelectionChange={setSelectedView}
+                        selectedOptions={[selectedView]}
+                        onSelectionChange={handleViewChange}
                     />
                     <Filter
                         title="FILTER"
@@ -122,7 +132,11 @@ const Ranked: React.FC = () => {
                 <div className={styles.content}>
                     <div className={styles.accounts}>
                         {getCurrentPageAccounts().map((portrait) => (
-                            <RankedAccount key={portrait.id} portrait={portrait} />
+                            <RankedAccount
+                                key={portrait.id}
+                                portrait={portrait}
+                                selectedView={selectedView}
+                            />
                         ))}
                     </div>
                     <div className={styles.pagination}>

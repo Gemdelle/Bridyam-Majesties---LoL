@@ -4,9 +4,10 @@ import { type Portrait } from '../../services/portraitsService';
 
 interface RankedAccountProps {
     portrait: Portrait;
+    selectedView: string;
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ portrait }) => {
+const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView }) => {
     const [selectedMissions, setSelectedMissions] = useState<boolean[]>(Array(23).fill(false));
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(Array(38).fill(false));
     const [selectedWins, setSelectedWins] = useState<boolean[]>(Array(15).fill(false));
@@ -66,28 +67,32 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait }) => {
             </div>
 
             <div className={styles.missions__container}>
-                <div className={styles.missions__list}>
-                    {selectedMissions.map((isSelected, index) => (
-                        <div
-                            key={index}
-                            className={`${styles.mission} ${isSelected ? styles.mission__selected : ''}`}
-                            onClick={() => handleMissionClick(index)}
-                        >
-                            {index + 1}
-                        </div>
-                    ))}
-                </div>
-                <div className={styles.hall__list}>
-                    {selectedHallMissions.map((isSelected, index) => (
-                        <div
-                            key={index}
-                            className={`${styles.hall__mission} ${isSelected ? styles.hall__mission__selected : ''}`}
-                            onClick={() => handleHallMissionClick(index)}
-                        >
-                            {index + 1}
-                        </div>
-                    ))}
-                </div>
+                {selectedView === 'missions' && (
+                    <div className={styles.missions__list}>
+                        {selectedMissions.map((isSelected, index) => (
+                            <div
+                                key={index}
+                                className={`${styles.mission} ${isSelected ? styles.mission__selected : ''}`}
+                                onClick={() => handleMissionClick(index)}
+                            >
+                                {index + 1}
+                            </div>
+                        ))}
+                    </div>
+                )}
+                {selectedView === 'hall-missions' && (
+                    <div className={styles.hall__list}>
+                        {selectedHallMissions.map((isSelected, index) => (
+                            <div
+                                key={index}
+                                className={`${styles.hall__mission} ${isSelected ? styles.hall__mission__selected : ''}`}
+                                onClick={() => handleHallMissionClick(index)}
+                            >
+                                {index + 1}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -14,20 +14,26 @@ interface FilterProps {
     options: FilterOption[];
     selectedOptions: string[];
     onSelectionChange: (selectedIds: string[]) => void;
+    singleSelection?: boolean; // New prop for single selection mode
 }
 
-const Filter: React.FC<FilterProps> = ({ title, options, selectedOptions, onSelectionChange }) => {
+const Filter: React.FC<FilterProps> = ({ title, options, selectedOptions, onSelectionChange, singleSelection = false }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleToggle = () => setIsOpen(!isOpen);
 
     const handleCheckboxChange = (optionId: string) => {
-        // Si la opción ya está seleccionada, la quita. Si no, la agrega.
-        const newSelection = selectedOptions.includes(optionId)
-            ? selectedOptions.filter((id) => id !== optionId)
-            : [...selectedOptions, optionId];
+        if (singleSelection) {
+            // For single selection, replace the current selection
+            onSelectionChange([optionId]);
+        } else {
+            // For multiple selection, toggle the option
+            const newSelection = selectedOptions.includes(optionId)
+                ? selectedOptions.filter((id) => id !== optionId)
+                : [...selectedOptions, optionId];
 
-        onSelectionChange(newSelection);
+            onSelectionChange(newSelection);
+        }
     };
 
     return (
@@ -41,7 +47,7 @@ const Filter: React.FC<FilterProps> = ({ title, options, selectedOptions, onSele
                     {options.map((option) => (
                         <label key={option.id} className={styles.optionItem}>
                             <input
-                                type="checkbox"
+                                type={singleSelection ? "radio" : "checkbox"}
                                 checked={selectedOptions.includes(option.id)}
                                 onChange={() => handleCheckboxChange(option.id)}
                             />

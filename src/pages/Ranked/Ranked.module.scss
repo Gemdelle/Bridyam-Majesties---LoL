@@ -18,6 +18,8 @@
   width: 42%;
   height: 5%;
   @include flex-between;
+  position: relative;
+  z-index: 9999;
 }
 
 .content {
