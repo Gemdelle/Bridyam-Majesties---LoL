@@ -14,7 +14,7 @@ export const Nav = () => {
                         <Link to="/bloodlines">Bloodlines</Link>
                     </li>
                     <li>
-                        PAGE
+                        <Link to="/ranked">Ranked</Link>
                     </li>
                     <li>
                         PAGE

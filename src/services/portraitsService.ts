@@ -4,12 +4,20 @@ import portraitsData from '../../public/data/portraits.json';
 export interface Portrait {
     id: number;
     name: string;
+    username: string;
     bloodline: string;
     url: string;
     champions: number;
     skins: number;
     masteries: number;
     elo: number;
+    level: number;
+    icon: string;
+    "elo-soloq": string;
+    "elo-flex": string;
+    "level-soloq": string;
+    "level-flex": string;
+    honor: string;
     roles: {
         top: number;
         jungle: number;

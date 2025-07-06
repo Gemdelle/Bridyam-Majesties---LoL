@@ -50,6 +50,18 @@ $breakpoint-xl: 1200px;
   justify-content: center;
 }
 
+@mixin flex-evenly {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 @mixin flex-col {
   display: flex;
   flex-direction: column;
