@@ -8,8 +8,6 @@ import tierGold from '../../assets/images/lol-elements/tier-gold.webp';
 import tierSilver from '../../assets/images/lol-elements/tier-silver.webp';
 import tierBronze from '../../assets/images/lol-elements/tier-bronze.webp';
 import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
-import missionImg from '../../assets/images/ranked-btn/mission.png';
-import missingImg from '../../assets/images/ranked-btn/missing.png';
 
 interface RankedAccountProps {
     portrait: Portrait;
@@ -20,6 +18,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
     const [selectedMissions, setSelectedMissions] = useState<boolean[]>(Array(23).fill(false));
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(Array(38).fill(false));
     const [selectedWins, setSelectedWins] = useState<boolean[]>(Array(15).fill(false));
+
+    // Hall mission numbers
+    const hallMissionNumbers = [2, 4, 6, 7, 8, 12, 18, 20, 22, 23, 26, 28, 32, 36, 40, 41, 43, 47, 51, 52, 53, 56, 60, 61, 62, 63, 66, 67, 71, 73, 76, 77, 81, 83, 85, 86, 91, 98];
 
     const handleMissionClick = (index: number) => {
         setSelectedMissions(prev => {
@@ -111,14 +112,28 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
 
             <div className={styles.wins__container}>
                 <div className={styles.wins}>
-                    {selectedWins.map((isSelected, index) => (
-                        <div
-                            key={index}
-                            className={`${styles.win} ${isSelected ? styles.win__selected : ''}`}
-                            style={isSelected ? { backgroundImage: getBloodlineImage() } : {}}
-                            onClick={() => handleWinClick(index)}
-                        ></div>
-                    ))}
+                    {selectedWins.map((isSelected, index) => {
+                        // Find the last selected win index
+                        const lastSelectedIndex = selectedWins.lastIndexOf(true);
+
+                        // Find the next available win
+                        const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
+                        const isNextAvailable = !isSelected && index === nextAvailableIndex;
+
+                        return (
+                            <div
+                                key={index}
+                                className={`${styles.win} ${isSelected
+                                        ? styles.win__selected
+                                        : isNextAvailable
+                                            ? styles.win__next
+                                            : ''
+                                    }`}
+                                style={isSelected ? { backgroundImage: getBloodlineImage() } : {}}
+                                onClick={() => handleWinClick(index)}
+                            ></div>
+                        );
+                    })}
                 </div>
                 <div className={styles.wins__count}>
                     {selectedWins.filter(win => win).length} / 15
@@ -136,36 +151,75 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
             <div className={styles.missions__container}>
                 {selectedView === 'missions' && (
                     <div className={styles.missions__list}>
-                        {selectedMissions.map((isSelected, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.mission} ${isSelected ? styles.mission__selected : ''}`}
-                                onClick={() => handleMissionClick(index)}
-                                style={{ position: 'relative' }}
-                            >
-                                <img
-                                    src={isSelected ? missionImg : missingImg}
-                                    alt={isSelected ? 'mission' : 'missing'}
-                                    className={styles.mission__img}
-                                />
-                                {isSelected && (
-                                    <span className={styles.mission__number}>{index + 1}</span>
-                                )}
-                            </div>
-                        ))}
+                        <div className={styles.mission__timeline}></div>
+                        {selectedMissions.map((isSelected, index) => {
+                            // Find the last selected mission index
+                            const lastSelectedIndex = selectedMissions.lastIndexOf(true);
+                            const showNumber = isSelected && index === lastSelectedIndex;
+                            const isCurrentLevel = isSelected && index === lastSelectedIndex;
+
+                            // Find the next available mission
+                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
+                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
+
+                            // Debug log for first few missions
+                            if (index < 3) {
+                                console.log(`Mission ${index}: isSelected=${isSelected}, isCurrentLevel=${isCurrentLevel}, isNextAvailable=${isNextAvailable}, lastSelectedIndex=${lastSelectedIndex}`);
+                            }
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={`${styles.mission} ${isCurrentLevel
+                                        ? styles.mission__current
+                                        : isSelected
+                                            ? styles.mission__selected
+                                            : isNextAvailable
+                                                ? styles.mission__next
+                                                : ''
+                                        }`}
+                                    onClick={() => handleMissionClick(index)}
+                                >
+                                    {showNumber && (
+                                        <span className={styles.mission__number}>{index + 1}</span>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
                 {selectedView === 'hall-missions' && (
                     <div className={styles.hall__list}>
-                        {selectedHallMissions.map((isSelected, index) => (
-                            <div
-                                key={index}
-                                className={`${styles.hall__mission} ${isSelected ? styles.hall__mission__selected : ''}`}
-                                onClick={() => handleHallMissionClick(index)}
-                            >
-                                {index + 1}
-                            </div>
-                        ))}
+                        <div className={styles.hall__mission__timeline}></div>
+                        {selectedHallMissions.map((isSelected, index) => {
+                            // Find the last selected hall mission index
+                            const lastSelectedIndex = selectedHallMissions.lastIndexOf(true);
+                            const showNumber = isSelected && index === lastSelectedIndex;
+                            const isCurrentLevel = isSelected && index === lastSelectedIndex;
+
+                            // Find the next available mission
+                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
+                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={`${styles.hall__mission} ${isCurrentLevel
+                                        ? styles.hall__mission__current
+                                        : isSelected
+                                            ? styles.hall__mission__selected
+                                            : isNextAvailable
+                                                ? styles.hall__mission__next
+                                                : ''
+                                        }`}
+                                    onClick={() => handleHallMissionClick(index)}
+                                >
+                                    {showNumber && (
+                                        <span className={styles.hall__mission__number}>{hallMissionNumbers[index]}</span>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>

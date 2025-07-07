@@ -15,9 +15,9 @@ const filterOptions: FilterOption[] = [
     { id: 'spadelline', label: 'Spadelline', image: '/src/assets/images/ranked-btn/spadelline.png' },
     { id: 'zephiroth', label: 'Zephiroth', image: '/src/assets/images/ranked-btn/zephiroth.png' },
     { id: 'gladasmy', label: 'Gladasmy', image: '/src/assets/images/ranked-btn/gladasmy.png' },
-    { id: 'wins-missing', label: 'wins missing' },
-    { id: 'missions-missing', label: 'missions missing' },
-    { id: 'hall-missions-missing', label: 'hall missions missing' },
+    { id: 'wins', label: 'wins' },
+    { id: 'missions', label: 'missions' },
+    { id: 'hall missions', label: 'hall missions' },
 ];
 
 const sortOptions: FilterOption[] = [
@@ -25,7 +25,7 @@ const sortOptions: FilterOption[] = [
     { id: 'tier-flex', label: 'tier flex' },
     { id: 'wins', label: 'wins' },
     { id: 'missions', label: 'missions' },
-    { id: 'hall-missions', label: 'hall missions' },
+    { id: 'hall missions', label: 'hall missions' },
 ];
 
 const Ranked: React.FC = () => {
@@ -41,7 +41,7 @@ const Ranked: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 18;
+    const itemsPerPage = 15;
 
     // --- Cargar datos de portraits ---
     useEffect(() => {
@@ -78,17 +78,17 @@ const Ranked: React.FC = () => {
             }
 
             // Check missing filters (placeholder logic - would need actual progress tracking)
-            if (selectedFilters.includes('wins-missing')) {
+            if (selectedFilters.includes('wins')) {
                 // For now, consider wins missing if champions < 150 (placeholder)
                 if (portrait.champions >= 150) return false;
             }
 
-            if (selectedFilters.includes('missions-missing')) {
+            if (selectedFilters.includes('missions')) {
                 // For now, consider missions missing if masteries < 600 (placeholder)
                 if (portrait.masteries >= 600) return false;
             }
 
-            if (selectedFilters.includes('hall-missions-missing')) {
+            if (selectedFilters.includes('hall missions')) {
                 // For now, consider hall missions missing if skins < 250 (placeholder)
                 if (portrait.skins >= 250) return false;
             }
@@ -117,7 +117,7 @@ const Ranked: React.FC = () => {
                 case 'missions':
                     // Sort by missions completed (placeholder - would need to track actual missions)
                     return (b.masteries || 0) - (a.masteries || 0);
-                case 'hall-missions':
+                case 'hall missions':
                     // Sort by hall missions completed (placeholder - would need to track actual hall missions)
                     return (b.skins || 0) - (a.skins || 0);
                 default:
