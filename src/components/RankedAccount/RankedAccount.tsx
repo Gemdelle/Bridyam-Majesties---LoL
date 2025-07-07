@@ -12,9 +12,10 @@ import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
 interface RankedAccountProps {
     rankedData: RankedData;
     selectedView: string;
+    onUpdateRankedData: (updatedData: RankedData) => void;
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView }) => {
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView, onUpdateRankedData }) => {
     // Initialize states based on current values from RankedData
     const [selectedMissions, setSelectedMissions] = useState<boolean[]>(() => {
         const initialMissions = Array(23).fill(false);
@@ -74,6 +75,23 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView 
         setSelectedMissions(prev => {
             const newState = [...prev];
             newState[index] = !newState[index];
+            
+            // Update rankedData with new mission count
+            const newCurrent = newState.filter(Boolean).length;
+            const updatedRankedData = {
+                ...rankedData,
+                missions: {
+                    ...rankedData.missions,
+                    current_act: {
+                        ...rankedData.missions.current_act,
+                        current: newCurrent
+                    }
+                }
+            };
+            
+            // Call callback to update data
+            onUpdateRankedData(updatedRankedData);
+            
             return newState;
         });
     };
@@ -82,6 +100,23 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView 
         setSelectedHallMissions(prev => {
             const newState = [...prev];
             newState[index] = !newState[index];
+            
+            // Update rankedData with new hall mission count
+            const newCurrent = newState.filter(Boolean).length;
+            const updatedRankedData = {
+                ...rankedData,
+                missions: {
+                    ...rankedData.missions,
+                    current_hall_of_legends: {
+                        ...rankedData.missions.current_hall_of_legends,
+                        current: newCurrent
+                    }
+                }
+            };
+            
+            // Call callback to update data
+            onUpdateRankedData(updatedRankedData);
+            
             return newState;
         });
     };
@@ -103,6 +138,19 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView 
                     newState[index] = true;
                 }
             }
+
+            // Update rankedData with new wins count
+            const newCurrent = newState.filter(Boolean).length;
+            const updatedRankedData = {
+                ...rankedData,
+                wins: {
+                    ...rankedData.wins,
+                    current: newCurrent
+                }
+            };
+            
+            // Call callback to update data
+            onUpdateRankedData(updatedRankedData);
 
             return newState;
         });

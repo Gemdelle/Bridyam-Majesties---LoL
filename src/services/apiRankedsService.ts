@@ -65,6 +65,29 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
     }
 };
 
+// Update ranked data via POST to API
+export const updateRankedData = async (rankedData: RankedData[]): Promise<RankedData[]> => {
+    try {
+        const response = await fetch('http://localhost:8080/rankeds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rankedData),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data: RankedResponse = await response.json();
+        return data.ranked;
+    } catch (error) {
+        console.error('Error updating ranked data:', error);
+        throw new Error('Failed to update ranked data');
+    }
+};
+
 // Fetch ranked data by bloodline
 export const fetchRankedDataByBloodline = async (bloodline: string): Promise<RankedData[]> => {
     const allData = await fetchRankedData();

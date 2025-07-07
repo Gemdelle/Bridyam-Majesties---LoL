@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
-import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
+import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -60,6 +60,30 @@ const Ranked: React.FC = () => {
 
         loadRankedData();
     }, []);
+
+    // --- Función para actualizar un rankedData específico ---
+    const handleUpdateRankedData = async (updatedData: RankedData) => {
+        try {
+            // Update local state first for immediate UI feedback
+            setRankedData(prevData => {
+                const newData = prevData.map(item => 
+                    item.id === updatedData.id ? updatedData : item
+                );
+                
+                // Make POST request with updated data
+                updateRankedData(newData).catch(error => {
+                    console.error('Error updating ranked data:', error);
+                    // Optionally show error message to user
+                    setError('Failed to update data on server');
+                });
+                
+                return newData;
+            });
+        } catch (error) {
+            console.error('Error updating ranked data:', error);
+            setError('Failed to update data');
+        }
+    };
 
     // --- Función para filtrar los datos ranked ---
     const filterRankedData = (dataToFilter: RankedData[]) => {
@@ -238,6 +262,7 @@ const Ranked: React.FC = () => {
                                             key={rankedAccount.id}
                                             rankedData={rankedAccount}
                                             selectedView={selectedView}
+                                            onUpdateRankedData={handleUpdateRankedData}
                                         />
                                     ))}
                                     <div className={styles.pagination}>
