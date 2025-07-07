@@ -381,7 +381,7 @@ const Bloodlines: React.FC = () => {
                     return accounts.map((account) => (
                       <div key={account.id} className={styles.row__account}>
                         {/* Account-specific data will go here */}
-                        <img src="/src/assets/images/masteries/mastery_0.png" alt="Mastery 0" className={styles.mastery__image} />
+                        <img src="/src/assets/images/masteries/mastery/mastery_0.png" alt="Mastery 0" className={styles.mastery__image} />
                       </div>
                     ));
                   })()}
