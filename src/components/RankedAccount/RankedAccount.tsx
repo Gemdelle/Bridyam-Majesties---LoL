@@ -26,6 +26,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         return initialMissions;
     });
 
+    // States for rank selectors
+    const [showSoloqSelector, setShowSoloqSelector] = useState(false);
+    const [showFlexSelector, setShowFlexSelector] = useState(false);
+
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
         const initialHallMissions = Array(38).fill(false);
         // Set true for hall missions up to current value
@@ -67,6 +71,22 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
         setSelectedWins(newWins);
     }, [rankedData]);
+
+    // Close rank selectors when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest('.soloq__container') && !target.closest('.flex__container')) {
+                setShowSoloqSelector(false);
+                setShowFlexSelector(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     // Mission numbers
     const missionNumbers = [2, 3, 6, 7, 8, 12, 14, 16, 17, 20, 22, 26, 27, 29, 31, 33, 36, 38, 42, 45, 48, 51, 52, 53, 54];
@@ -197,6 +217,54 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
     };
 
+    const convertToRomanNumeral = (num: number): string => {
+        switch (num) {
+            case 1:
+                return 'I';
+            case 2:
+                return 'II';
+            case 3:
+                return 'III';
+            case 4:
+                return 'IV';
+            default:
+                return num.toString();
+        }
+    };
+
+    const availableTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+    const availableDivisions = [1, 2, 3, 4];
+
+    const handleRankChange = (queueType: 'soloq' | 'flex', tier: string, division: number) => {
+        console.log('Rank change:', queueType, tier, division); // Debug log
+
+        const updatedData = {
+            ...rankedData,
+            ...(queueType === 'soloq' ? {
+                elo_soloq: {
+                    tier: tier,
+                    division: division
+                }
+            } : {
+                elo_flex: {
+                    tier: tier,
+                    division: division
+                }
+            })
+        };
+
+        console.log('Updated data:', updatedData); // Debug log
+        console.log('Calling onUpdateRankedData with:', updatedData);
+        onUpdateRankedData(updatedData);
+
+        // Close the selector
+        if (queueType === 'soloq') {
+            setShowSoloqSelector(false);
+        } else {
+            setShowFlexSelector(false);
+        }
+    };
+
     return (
         <div className={styles.container}>
 
@@ -256,16 +324,84 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             <div className={styles.divider}></div>
 
-            <div className={styles.soloq__container}>
-                <span>{rankedData.elo_soloq.division}</span>
+            <div className={styles.soloq__container} onClick={() => setShowSoloqSelector(!showSoloqSelector)}>
+                <span>{convertToRomanNumeral(rankedData.elo_soloq.division)}</span>
                 <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
+                {showSoloqSelector && (
+                    <div className={styles.rank__selector}>
+                        <div className={styles.divisions__row}>
+                            {availableDivisions.map(division => (
+                                <div
+                                    key={division}
+                                    className={`${styles.division__option} ${rankedData.elo_soloq.division === division ? styles.division__selected : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Division clicked:', division);
+                                        handleRankChange('soloq', rankedData.elo_soloq.tier, division);
+                                    }}
+                                >
+                                    {convertToRomanNumeral(division)}
+                                </div>
+                            ))}
+                        </div>
+                        <div className={styles.tiers__row}>
+                            {availableTiers.map(tier => (
+                                <div
+                                    key={tier}
+                                    className={`${styles.tier__option} ${rankedData.elo_soloq.tier.toLowerCase() === tier ? styles.tier__selected : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Tier clicked:', tier);
+                                        handleRankChange('soloq', tier, rankedData.elo_soloq.division);
+                                    }}
+                                >
+                                    <img src={getTierImage(tier)} alt={tier} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className={styles.divider}></div>
 
-            <div className={styles.flex__container}>
-                <span>{rankedData.elo_flex.division}</span>
+            <div className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
+                <span>{convertToRomanNumeral(rankedData.elo_flex.division)}</span>
                 <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
+                {showFlexSelector && (
+                    <div className={styles.rank__selector}>
+                        <div className={styles.divisions__row}>
+                            {availableDivisions.map(division => (
+                                <div
+                                    key={division}
+                                    className={`${styles.division__option} ${rankedData.elo_flex.division === division ? styles.division__selected : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Flex division clicked:', division);
+                                        handleRankChange('flex', rankedData.elo_flex.tier, division);
+                                    }}
+                                >
+                                    {convertToRomanNumeral(division)}
+                                </div>
+                            ))}
+                        </div>
+                        <div className={styles.tiers__row}>
+                            {availableTiers.map(tier => (
+                                <div
+                                    key={tier}
+                                    className={`${styles.tier__option} ${rankedData.elo_flex.tier.toLowerCase() === tier ? styles.tier__selected : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Flex tier clicked:', tier);
+                                        handleRankChange('flex', tier, rankedData.elo_flex.division);
+                                    }}
+                                >
+                                    <img src={getTierImage(tier)} alt={tier} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className={styles.divider}></div>

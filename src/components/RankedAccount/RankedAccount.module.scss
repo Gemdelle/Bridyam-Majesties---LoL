@@ -20,7 +20,7 @@
     height: 100%;
     @include flex-center;
     // background-color: red;
-    color: white;
+    color: #e4c493;
     font-size: 15px;
 }
 
@@ -40,12 +40,17 @@
     width: auto;
 }
 
+.name__container span,
+.essencer__container span {
+    font-size: 0.8vw;
+}
+
 .name__container {
-    width: 10%;
+    width: 11%;
     height: 100%;
     @include flex-start;
     // background-color: blue;
-    color: white;
+    color: #e4c493;
 }
 
 .name__container span {
@@ -53,7 +58,7 @@
 }
 
 .essencer__container {
-    width: 10%;
+    width: 9%;
     height: 100%;
     @include flex-start;
     // background-color: green;
@@ -61,7 +66,7 @@
 
 .essencer__container span {
     margin-left: 5%;
-    color: white;
+    color: #e4c493;
 }
 
 .level__container {
@@ -129,8 +134,9 @@
     @include flex-col;
     width: 3%;
     height: 100%;
-    overflow: hidden;
-    cursor: default;
+    overflow: visible;
+    cursor: pointer;
+    position: relative;
 }
 
 .soloq__container img {
@@ -352,4 +358,87 @@
     background-size: 50% auto;
     animation: brightnessPulse 2s infinite ease-in-out;
     z-index: 2;
-}  
+}
+
+.rank__selector {
+    position: absolute;
+    top: -120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(145deg, #1e2328, #0f1419);
+    border: 2px solid #c89b3c;
+    border-radius: 8px;
+    padding: 0.5rem;
+    z-index: 1000;
+    min-width: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.divisions__row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    gap: 0.3rem;
+}
+
+.division__option {
+    width: 2rem;
+    height: 2rem;
+    @include flex-center;
+    background: #2a2d35;
+    border: 1px solid #463714;
+    border-radius: 4px;
+    color: #cdbe91;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+
+    &:hover {
+        background: #3a3d45;
+        border-color: #c89b3c;
+        color: #f0e6d2;
+    }
+}
+
+.division__selected {
+    background: #c89b3c;
+    border-color: #f0e6d2;
+    color: #0f1419;
+}
+
+.tiers__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.2rem;
+    flex-wrap: wrap;
+}
+
+.tier__option {
+    width: 1.5rem;
+    height: 1.5rem;
+    @include flex-center;
+    background: #2a2d35;
+    border: 1px solid #463714;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #3a3d45;
+        border-color: #c89b3c;
+        transform: scale(1.1);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.tier__selected {
+    background: #c89b3c;
+    border-color: #f0e6d2;
+    transform: scale(1.1);
+}

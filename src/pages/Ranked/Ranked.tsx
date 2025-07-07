@@ -67,25 +67,24 @@ const Ranked: React.FC = () => {
 
     // --- Función para actualizar un rankedData específico ---
     const handleUpdateRankedData = async (updatedData: RankedData) => {
+        console.log('handleUpdateRankedData called with:', updatedData);
         try {
             // Update local state first for immediate UI feedback
-            setRankedData(prevData => {
-                const newData = prevData.map(item =>
-                    item.id === updatedData.id ? updatedData : item
-                );
+            const newData = rankedData.map(item =>
+                item.id === updatedData.id ? updatedData : item
+            );
+            console.log('New data array:', newData);
+            setRankedData(newData);
 
-                // Make POST request with updated data
-                updateRankedData(newData).catch(error => {
-                    console.error('Error updating ranked data:', error);
-                    // Optionally show error message to user
-                    setError('Failed to update data on server');
-                });
-
-                return newData;
-            });
+            // Make POST request with updated data immediately
+            await updateRankedData(newData);
+            console.log('Data updated successfully');
         } catch (error) {
             console.error('Error updating ranked data:', error);
-            setError('Failed to update data');
+            setError('Failed to update data on server');
+
+            // Revert local state if API call fails
+            setRankedData(prevData => prevData);
         }
     };
 
@@ -216,6 +215,8 @@ const Ranked: React.FC = () => {
             setSelectedView(newView);
         }
     };
+
+
 
     if (loading) {
         return (
