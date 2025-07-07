@@ -25,7 +25,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
         return initialMissions;
     });
-    
+
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
         const initialHallMissions = Array(38).fill(false);
         // Set true for hall missions up to current value
@@ -34,7 +34,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
         return initialHallMissions;
     });
-    
+
     const [selectedWins, setSelectedWins] = useState<boolean[]>(() => {
         const initialWins = Array(15).fill(false);
         // Set true for wins up to current value
@@ -68,6 +68,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         setSelectedWins(newWins);
     }, [rankedData]);
 
+    // Mission numbers
+    const missionNumbers = [2, 3, 6, 7, 8, 12, 14, 16, 17, 20, 22, 26, 27, 29, 31, 33, 36, 38, 42, 45, 48, 51, 52, 53, 54];
+
     // Hall mission numbers
     const hallMissionNumbers = [2, 4, 6, 7, 8, 12, 18, 20, 22, 23, 26, 28, 32, 36, 40, 41, 43, 47, 51, 52, 53, 56, 60, 61, 62, 63, 66, 67, 71, 73, 76, 77, 81, 83, 85, 86, 91, 98];
 
@@ -75,7 +78,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         setSelectedMissions(prev => {
             const newState = [...prev];
             newState[index] = !newState[index];
-            
+
             // Update rankedData with new mission count
             const newCurrent = newState.filter(Boolean).length;
             const updatedRankedData = {
@@ -88,10 +91,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                     }
                 }
             };
-            
+
             // Call callback to update data
             onUpdateRankedData(updatedRankedData);
-            
+
             return newState;
         });
     };
@@ -100,7 +103,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         setSelectedHallMissions(prev => {
             const newState = [...prev];
             newState[index] = !newState[index];
-            
+
             // Update rankedData with new hall mission count
             const newCurrent = newState.filter(Boolean).length;
             const updatedRankedData = {
@@ -113,10 +116,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                     }
                 }
             };
-            
+
             // Call callback to update data
             onUpdateRankedData(updatedRankedData);
-            
+
             return newState;
         });
     };
@@ -148,7 +151,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                     current: newCurrent
                 }
             };
-            
+
             // Call callback to update data
             onUpdateRankedData(updatedRankedData);
 
@@ -201,16 +204,25 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                 <span>{rankedData.id}</span>
             </div>
 
+            <div className={styles.divider}></div>
+
             <div className={styles.portrait__container}>
                 <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
             </div>
 
+            <div className={styles.divider}></div>
+
             <div className={styles.name__container}>
                 <span>{rankedData.username}</span>
             </div>
+
+            <div className={styles.divider}></div>
+
             <div className={styles.essencer__container}>
                 <span>{rankedData.name}</span>
             </div>
+
+            <div className={styles.divider}></div>
 
             <div className={styles.wins__container}>
                 <div className={styles.wins}>
@@ -241,14 +253,22 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                     {rankedData.wins.current} / {rankedData.wins.totals}
                 </div>
             </div>
+
+            <div className={styles.divider}></div>
+
             <div className={styles.soloq__container}>
                 <span>{rankedData.elo_soloq.division}</span>
                 <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
             </div>
+
+            <div className={styles.divider}></div>
+
             <div className={styles.flex__container}>
                 <span>{rankedData.elo_flex.division}</span>
                 <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
             </div>
+
+            <div className={styles.divider}></div>
 
             <div className={styles.missions__container}>
                 {selectedView === 'missions' && (
@@ -278,7 +298,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                                     onClick={() => handleMissionClick(index)}
                                 >
                                     {showNumber && (
-                                        <span className={styles.mission__number}>{rankedData.missions.current_act.current}</span>
+                                        <span className={styles.mission__number}>{missionNumbers[index]}</span>
                                     )}
                                 </div>
                             );
@@ -312,7 +332,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                                     onClick={() => handleHallMissionClick(index)}
                                 >
                                     {showNumber && (
-                                        <span className={styles.hall__mission__number}>{rankedData.missions.current_hall_of_legends.current}</span>
+                                        <span className={styles.hall__mission__number}>{hallMissionNumbers[index]}</span>
                                     )}
                                 </div>
                             );

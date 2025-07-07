@@ -22,13 +22,156 @@
   position: relative;
 }
 
+.content__top {
+  width: 100%;
+  height: 6%;
+  @include flex-between;
+  gap: 2rem;
+  // background-color: violet;
+}
+
 .content__filters {
-  width: 42%;
-  height: 5%;
+  width: 43%;
+  height: 100%;
   @include flex-between;
   position: relative;
   z-index: 9999;
 }
+
+.content__search_stats {
+  width: 55%;
+  height: 100%;
+  @include flex-between;
+  gap: 1rem;
+}
+
+.search__container {
+  width: 30%;
+  height: 70%;
+  @include flex-center;
+  position: relative;
+}
+
+.search__input {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #1e2328, #0f1419);
+  border: 1px solid #463714;
+  border-radius: 6px;
+  color: #cdbe91;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &::placeholder {
+    color: $text-secondary-color;
+    text-transform: none;
+    letter-spacing: 0.05vw;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  &:focus {
+    border-color: #c89b3c;
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.4);
+    background: linear-gradient(145deg, #2a2d35, #1a1f26);
+  }
+
+  &:hover {
+    border-color: #8b7355;
+    box-shadow: 0 0 5px rgba(200, 155, 60, 0.2);
+  }
+}
+
+.search__clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #cdbe91;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &:hover {
+    background: rgba(200, 155, 60, 0.2);
+    color: #c89b3c;
+  }
+}
+
+.stats__container {
+  width: 68%;
+  height: 100%;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  // background-color: red;
+  @include flex-between;
+}
+
+.stats__divider {
+  width: 0.1%;
+  height: 80%;
+  border-left: 1px solid #B69461;
+  opacity: 0.6;
+  align-self: center;
+}
+
+.stats__total_games,
+.stats__porveldam,
+.stats__spadelline,
+.stats__zephiroth,
+.stats__gladasmy,
+.stats__primogenit {
+  width: 14%;
+  height: 100%;
+  @include flex-between;
+  gap: 6px;
+  transition: all 0.3s ease;
+  // background-color: blue;
+
+  img {
+    width: 30%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  span {
+    color: #cdbe91;
+    font-size: 0.8vw;
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: default;
+    // background-color: darkgreen;
+  }
+}
+
+// Specific color accents for different stat types
+.stats__total_games {
+  border-color: #4ecdc4;
+  
+  &:hover {
+    border-color: #4ecdc4;
+    box-shadow: 0 0 8px rgba(78, 205, 196, 0.4);
+  }
+}
+
+
 
 .content {
     width: 100%;
