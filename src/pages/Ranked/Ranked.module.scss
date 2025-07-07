@@ -46,6 +46,7 @@
   display: flex;
   @include flex-col;
   justify-content: flex-start;
+  position: relative;
   // background-color: blue;
 }
 
@@ -144,7 +145,10 @@
 }
 
 .pagination {
-  margin-top: 1vw;
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 20%;
   height: 3%;
   @include flex-center;
@@ -179,6 +183,8 @@
 
   span {
     font-weight: bold;
-    color: $text-primary;
+    color: $text-secondary-color;
+    font-size: 1rem;
+    letter-spacing: 1px;
   }
 } 
