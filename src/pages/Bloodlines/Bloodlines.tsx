@@ -3,6 +3,7 @@ import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchMasteryData, type MasteryData } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -41,7 +42,9 @@ const Bloodlines: React.FC = () => {
   const [champions, setChampions] = useState<Champion[]>([]);
   const [championsLoading, setChampionsLoading] = useState(true);
 
-
+  // --- Estado para los datos de masteries ---
+  const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
+  const [masteryLoading, setMasteryLoading] = useState(true);
 
   // --- Estado para la búsqueda ---
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -78,6 +81,23 @@ const Bloodlines: React.FC = () => {
     };
 
     loadChampions();
+  }, []);
+
+  // --- Cargar datos de masteries ---
+  useEffect(() => {
+    const loadMasteries = async () => {
+      try {
+        setMasteryLoading(true);
+        const data = await fetchMasteryData();
+        setMasteryData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error loading mastery data');
+      } finally {
+        setMasteryLoading(false);
+      }
+    };
+
+    loadMasteries();
   }, []);
 
 
@@ -140,6 +160,17 @@ const Bloodlines: React.FC = () => {
     });
   };
 
+  // --- Función para obtener el nivel de mastery ---
+  const getMasteryLevel = (rankedId: number, championId: number): number => {
+    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === championId);
+    return mastery ? mastery.champion_level : 0;
+  };
+
+  // --- Función para obtener la imagen de mastery ---
+  const getMasteryImage = (masteryLevel: number): string => {
+    return `/src/assets/images/masteries/mastery/mastery_${masteryLevel}.png`;
+  };
+
   // --- Calcular las accounts a mostrar ---
   const getCurrentPageAccounts = () => {
     const filteredData = filterRankedData(rankedData);
@@ -160,7 +191,7 @@ const Bloodlines: React.FC = () => {
 
 
 
-  if (loading || championsLoading) {
+  if (loading || championsLoading || masteryLoading) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
@@ -331,12 +362,18 @@ const Bloodlines: React.FC = () => {
                   <div className={styles.row__champion}>{champion.name}</div>
                   {(() => {
                     const { accounts } = getCurrentPageAccounts();
-                    return accounts.map((account) => (
-                      <div key={account.id} className={styles.row__account}>
-                        {/* Account-specific data will go here */}
-                        <img src="/src/assets/images/masteries/mastery/mastery_0.png" alt="Mastery 0" className={styles.mastery__image} />
-                      </div>
-                    ));
+                    return accounts.map((account) => {
+                      const masteryLevel = getMasteryLevel(account.id, champion.id);
+                      return (
+                        <div key={account.id} className={styles.row__account}>
+                          <img 
+                            src={getMasteryImage(masteryLevel)} 
+                            alt={`Mastery ${masteryLevel}`} 
+                            className={styles.mastery__image} 
+                          />
+                        </div>
+                      );
+                    });
                   })()}
                 </div>
               ))}
