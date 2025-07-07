@@ -3,7 +3,8 @@
 .nav {
   width: 100%;
   height: 8%;
-  background-color: rgba($color: $primary-color, $alpha: 0.9);
+  background-color: rgba($color: $primary-color, $alpha: 0.3);
+  backdrop-filter: blur(8px);
   border-top: 3px solid $secondary-color;
   border-bottom: 5px double $secondary-color;
   color: $text-color;
