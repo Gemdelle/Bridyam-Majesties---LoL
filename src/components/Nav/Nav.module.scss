@@ -110,41 +110,41 @@ ul li.active::before {
   // background-color: $warning-color;
 }
 
-.nav__container__pet {
-    position: absolute;
-  width: 10%;
-  height: 12vh;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 15%;
-  @include flex-center;
-}
+// .nav__container__pet {
+//     position: absolute;
+//   width: 10%;
+//   height: 12vh;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   top: 15%;
+//   @include flex-center;
+// }
 
-.nav__levels {  
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
+// .nav__levels {  
+//     width: 100%;
+//     height: 100%;
+//     position: relative;
+// }
 
-.nav__levels__level__1,
-.nav__levels__level__2,
-.nav__levels__level__3,
-.nav__levels__level__4,
-.nav__levels__level__5,
-.nav__levels__level__6 {
-    position: absolute;
-    width: 2vw;        
-    height: 2vw;
-}
+// .nav__levels__level__1,
+// .nav__levels__level__2,
+// .nav__levels__level__3,
+// .nav__levels__level__4,
+// .nav__levels__level__5,
+// .nav__levels__level__6 {
+//     position: absolute;
+//     width: 2vw;        
+//     height: 2vw;
+// }
 
-.nav__container__pet__frame {
-  width: 100%;
-  height: 100%;
-  background-color: red;
-}
+// .nav__container__pet__frame {
+//   width: 100%;
+//   height: 100%;
+//   background-color: red;
+// }
 
-.nav__container__pet__image {
-  width: 80%;
-  height: 80%;
-  background-color: blue;
-}
+// .nav__container__pet__image {
+//   width: 80%;
+//   height: 80%;
+//   background-color: blue;
+// }
