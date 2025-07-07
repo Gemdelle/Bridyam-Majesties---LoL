@@ -91,6 +91,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                 return 'url(/src/assets/images/ranked-btn/zephiroth.png)';
             case 'Gladasmy':
                 return 'url(/src/assets/images/ranked-btn/gladasmy.png)';
+            case 'Primogenit':
+                return 'url(/src/assets/images/ranked-btn/primogenit.png)';
             default:
                 return 'url(../../assets/images/ranked-btn/missing.png)';
         }

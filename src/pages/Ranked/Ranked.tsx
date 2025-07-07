@@ -15,6 +15,7 @@ const filterOptions: FilterOption[] = [
     { id: 'spadelline', label: 'Spadelline', image: '/src/assets/images/ranked-btn/spadelline.png' },
     { id: 'zephiroth', label: 'Zephiroth', image: '/src/assets/images/ranked-btn/zephiroth.png' },
     { id: 'gladasmy', label: 'Gladasmy', image: '/src/assets/images/ranked-btn/gladasmy.png' },
+    { id: 'primogenit', label: 'Primogenit', image: '/src/assets/images/ranked-btn/primogenit.png' },
     { id: 'wins', label: 'wins' },
     { id: 'missions', label: 'missions' },
     { id: 'hall missions', label: 'hall missions' },
@@ -67,7 +68,7 @@ const Ranked: React.FC = () => {
         return portraitsToFilter.filter(portrait => {
             // Check bloodline filters
             const bloodlineFilters = selectedFilters.filter(filter =>
-                ['porveldam', 'spadelline', 'zephiroth', 'gladasmy'].includes(filter)
+                ['porveldam', 'spadelline', 'zephiroth', 'gladasmy', 'primogenit'].includes(filter)
             );
 
             if (bloodlineFilters.length > 0) {
