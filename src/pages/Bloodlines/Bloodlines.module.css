@@ -370,6 +370,12 @@
   min-width: 120px;
 }
 
+.mastery__image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 .placeholder {
   width: 100%;
   height: 100%;
