@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
-import { fetchPortraits, type Portrait } from '../../services/portraitsService';
+import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -35,8 +35,8 @@ const Ranked: React.FC = () => {
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [selectedSorts, setSelectedSorts] = useState<string[]>(['tier-soloq']);
 
-    // --- Estado para los datos de portraits ---
-    const [portraits, setPortraits] = useState<Portrait[]>([]);
+    // --- Estado para los datos de ranked ---
+    const [rankedData, setRankedData] = useState<RankedData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -44,28 +44,28 @@ const Ranked: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 15;
 
-    // --- Cargar datos de portraits ---
+    // --- Cargar datos de ranked ---
     useEffect(() => {
-        const loadPortraits = async () => {
+        const loadRankedData = async () => {
             try {
                 setLoading(true);
-                const data = await fetchPortraits();
-                setPortraits(data);
+                const data = await fetchRankedData();
+                setRankedData(data);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Error loading portraits');
+                setError(err instanceof Error ? err.message : 'Error loading ranked data');
             } finally {
                 setLoading(false);
             }
         };
 
-        loadPortraits();
+        loadRankedData();
     }, []);
 
-    // --- Función para filtrar los portraits ---
-    const filterPortraits = (portraitsToFilter: Portrait[]) => {
-        if (selectedFilters.length === 0) return portraitsToFilter;
+    // --- Función para filtrar los datos ranked ---
+    const filterRankedData = (dataToFilter: RankedData[]) => {
+        if (selectedFilters.length === 0) return dataToFilter;
 
-        return portraitsToFilter.filter(portrait => {
+        return dataToFilter.filter(data => {
             // Check bloodline filters
             const bloodlineFilters = selectedFilters.filter(filter =>
                 ['porveldam', 'spadelline', 'zephiroth', 'gladasmy', 'primogenit'].includes(filter)
@@ -73,54 +73,64 @@ const Ranked: React.FC = () => {
 
             if (bloodlineFilters.length > 0) {
                 const hasMatchingBloodline = bloodlineFilters.some(filter =>
-                    portrait.bloodline.toLowerCase() === filter
+                    data.bloodline.toLowerCase() === filter
                 );
                 if (!hasMatchingBloodline) return false;
             }
 
-            // Check missing filters (placeholder logic - would need actual progress tracking)
+            // Check missing filters using actual progress data
             if (selectedFilters.includes('wins')) {
-                // For now, consider wins missing if champions < 150 (placeholder)
-                if (portrait.champions >= 150) return false;
+                // Show accounts that haven't completed all wins
+                if (data.wins.current >= data.wins.totals) return false;
             }
 
             if (selectedFilters.includes('missions')) {
-                // For now, consider missions missing if masteries < 600 (placeholder)
-                if (portrait.masteries >= 600) return false;
+                // Show accounts that haven't completed all missions
+                if (data.missions.current_act.current >= data.missions.current_act.totals) return false;
             }
 
             if (selectedFilters.includes('hall missions')) {
-                // For now, consider hall missions missing if skins < 250 (placeholder)
-                if (portrait.skins >= 250) return false;
+                // Show accounts that haven't completed all hall missions
+                if (data.missions.current_hall_of_legends.current >= data.missions.current_hall_of_legends.totals) return false;
             }
 
             return true;
         });
     };
 
-    // --- Función para ordenar los portraits ---
-    const sortPortraits = (portraitsToSort: Portrait[]) => {
-        if (selectedSorts.length === 0) return portraitsToSort;
+    // --- Función para ordenar los datos ranked ---
+    const sortRankedData = (dataToSort: RankedData[]) => {
+        if (selectedSorts.length === 0) return dataToSort;
 
         const sortBy = selectedSorts[0]; // Take the first selected sort option
+        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
 
-        return [...portraitsToSort].sort((a, b) => {
+        return [...dataToSort].sort((a, b) => {
             switch (sortBy) {
                 case 'tier-soloq':
-                    // Sort by elo-soloq in descending order
-                    return (b.elo || 0) - (a.elo || 0);
+                    // Sort by tier and division (tier priority, then division)
+                    const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
+                    const bTierIndex = tierOrder.indexOf(b.elo_soloq.tier.toLowerCase());
+                    if (aTierIndex !== bTierIndex) {
+                        return bTierIndex - aTierIndex; // Higher tier first
+                    }
+                    return b.elo_soloq.division - a.elo_soloq.division; // Higher division first
                 case 'tier-flex':
-                    // Sort by elo-flex in descending order (using elo as proxy for now)
-                    return (b.elo || 0) - (a.elo || 0);
+                    const aTierIndexFlex = tierOrder.indexOf(a.elo_flex.tier.toLowerCase());
+                    const bTierIndexFlex = tierOrder.indexOf(b.elo_flex.tier.toLowerCase());
+                    if (aTierIndexFlex !== bTierIndexFlex) {
+                        return bTierIndexFlex - aTierIndexFlex; // Higher tier first
+                    }
+                    return b.elo_flex.division - a.elo_flex.division; // Higher division first
                 case 'wins':
-                    // Sort by wins count (placeholder - would need to track actual wins)
-                    return (b.champions || 0) - (a.champions || 0);
+                    // Sort by wins current (descending)
+                    return b.wins.current - a.wins.current;
                 case 'missions':
-                    // Sort by missions completed (placeholder - would need to track actual missions)
-                    return (b.masteries || 0) - (a.masteries || 0);
+                    // Sort by missions current (descending)
+                    return b.missions.current_act.current - a.missions.current_act.current;
                 case 'hall missions':
-                    // Sort by hall missions completed (placeholder - would need to track actual hall missions)
-                    return (b.skins || 0) - (a.skins || 0);
+                    // Sort by hall missions current (descending)
+                    return b.missions.current_hall_of_legends.current - a.missions.current_hall_of_legends.current;
                 default:
                     return 0;
             }
@@ -129,9 +139,9 @@ const Ranked: React.FC = () => {
 
     // --- Calcular las accounts a mostrar en la página actual ---
     const getCurrentPageAccounts = () => {
-        const filteredPortraits = filterPortraits(portraits);
-        const sortedPortraits = sortPortraits(filteredPortraits);
-        const totalPages = Math.ceil(filteredPortraits.length / itemsPerPage);
+        const filteredData = filterRankedData(rankedData);
+        const sortedData = sortRankedData(filteredData);
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
         // Reset to page 1 if current page is out of bounds
         if (currentPage > totalPages && totalPages > 0) {
@@ -140,7 +150,7 @@ const Ranked: React.FC = () => {
 
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        return { accounts: sortedPortraits.slice(startIndex, endIndex), totalPages };
+        return { accounts: sortedData.slice(startIndex, endIndex), totalPages };
     };
 
     const handlePageChange = (newPage: number) => {
@@ -223,10 +233,10 @@ const Ranked: React.FC = () => {
                             const { accounts, totalPages } = getCurrentPageAccounts();
                             return (
                                 <>
-                                    {accounts.map((portrait) => (
+                                    {accounts.map((rankedAccount) => (
                                         <RankedAccount
-                                            key={portrait.id}
-                                            portrait={portrait}
+                                            key={rankedAccount.id}
+                                            rankedData={rankedAccount}
                                             selectedView={selectedView}
                                         />
                                     ))}

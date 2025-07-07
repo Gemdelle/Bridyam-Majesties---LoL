@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './RankedAccount.module.scss';
-import { type Portrait } from '../../services/portraitsService';
+import { type RankedData } from '../../services/apiRankedsService';
 import tierDiamond from '../../assets/images/lol-elements/tier-diamond.webp';
 import tierPlatinum from '../../assets/images/lol-elements/tier-platinum.webp';
 import tierEmerald from '../../assets/images/lol-elements/tier-emerald.webp';
@@ -10,14 +10,62 @@ import tierBronze from '../../assets/images/lol-elements/tier-bronze.webp';
 import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
 
 interface RankedAccountProps {
-    portrait: Portrait;
+    rankedData: RankedData;
     selectedView: string;
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView }) => {
-    const [selectedMissions, setSelectedMissions] = useState<boolean[]>(Array(23).fill(false));
-    const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(Array(38).fill(false));
-    const [selectedWins, setSelectedWins] = useState<boolean[]>(Array(15).fill(false));
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView }) => {
+    // Initialize states based on current values from RankedData
+    const [selectedMissions, setSelectedMissions] = useState<boolean[]>(() => {
+        const initialMissions = Array(23).fill(false);
+        // Set true for missions up to current value
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 23; i++) {
+            initialMissions[i] = true;
+        }
+        return initialMissions;
+    });
+    
+    const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
+        const initialHallMissions = Array(38).fill(false);
+        // Set true for hall missions up to current value
+        for (let i = 0; i < rankedData.missions.current_hall_of_legends.current && i < 38; i++) {
+            initialHallMissions[i] = true;
+        }
+        return initialHallMissions;
+    });
+    
+    const [selectedWins, setSelectedWins] = useState<boolean[]>(() => {
+        const initialWins = Array(15).fill(false);
+        // Set true for wins up to current value
+        for (let i = 0; i < rankedData.wins.current && i < 15; i++) {
+            initialWins[i] = true;
+        }
+        return initialWins;
+    });
+
+    // Update states when rankedData changes
+    useEffect(() => {
+        // Update missions
+        const newMissions = Array(23).fill(false);
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 23; i++) {
+            newMissions[i] = true;
+        }
+        setSelectedMissions(newMissions);
+
+        // Update hall missions
+        const newHallMissions = Array(38).fill(false);
+        for (let i = 0; i < rankedData.missions.current_hall_of_legends.current && i < 38; i++) {
+            newHallMissions[i] = true;
+        }
+        setSelectedHallMissions(newHallMissions);
+
+        // Update wins
+        const newWins = Array(15).fill(false);
+        for (let i = 0; i < rankedData.wins.current && i < 15; i++) {
+            newWins[i] = true;
+        }
+        setSelectedWins(newWins);
+    }, [rankedData]);
 
     // Hall mission numbers
     const hallMissionNumbers = [2, 4, 6, 7, 8, 12, 18, 20, 22, 23, 26, 28, 32, 36, 40, 41, 43, 47, 51, 52, 53, 56, 60, 61, 62, 63, 66, 67, 71, 73, 76, 77, 81, 83, 85, 86, 91, 98];
@@ -82,7 +130,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
     };
 
     const getBloodlineImage = () => {
-        switch (portrait.bloodline) {
+        switch (rankedData.bloodline) {
             case 'Porveldam':
                 return 'url(/src/assets/images/ranked-btn/porveldam.png)';
             case 'Spadelline':
@@ -102,18 +150,18 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
         <div className={styles.container}>
 
             <div className={styles.number__container}>
-                <span>{portrait.id}</span>
+                <span>{rankedData.id}</span>
             </div>
 
             <div className={styles.portrait__container}>
-                <img src={portrait.url} alt={portrait.name} className={styles.portrait} />
+                <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
             </div>
 
             <div className={styles.name__container}>
-                <span>{portrait.username}</span>
+                <span>{rankedData.username}</span>
             </div>
             <div className={styles.essencer__container}>
-                <span>Essencer_twitch_name</span>
+                <span>{rankedData.name}</span>
             </div>
 
             <div className={styles.wins__container}>
@@ -142,16 +190,16 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                     })}
                 </div>
                 <div className={styles.wins__count}>
-                    {selectedWins.filter(win => win).length} / 15
+                    {rankedData.wins.current} / {rankedData.wins.totals}
                 </div>
             </div>
             <div className={styles.soloq__container}>
-                <span>{portrait["level-soloq"]}</span>
-                <img src={getTierImage(portrait["elo-soloq"])} alt={portrait["elo-soloq"]} />
+                <span>{rankedData.elo_soloq.division}</span>
+                <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
             </div>
             <div className={styles.flex__container}>
-                <span>{portrait["level-flex"]}</span>
-                <img src={getTierImage(portrait["elo-flex"])} alt={portrait["elo-flex"]} />
+                <span>{rankedData.elo_flex.division}</span>
+                <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
             </div>
 
             <div className={styles.missions__container}>
@@ -168,11 +216,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                             const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
                             const isNextAvailable = !isSelected && index === nextAvailableIndex;
 
-                            // Debug log for first few missions
-                            if (index < 3) {
-                                console.log(`Mission ${index}: isSelected=${isSelected}, isCurrentLevel=${isCurrentLevel}, isNextAvailable=${isNextAvailable}, lastSelectedIndex=${lastSelectedIndex}`);
-                            }
-
                             return (
                                 <div
                                     key={index}
@@ -187,7 +230,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                                     onClick={() => handleMissionClick(index)}
                                 >
                                     {showNumber && (
-                                        <span className={styles.mission__number}>{index + 1}</span>
+                                        <span className={styles.mission__number}>{rankedData.missions.current_act.current}</span>
                                     )}
                                 </div>
                             );
@@ -221,7 +264,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                                     onClick={() => handleHallMissionClick(index)}
                                 >
                                     {showNumber && (
-                                        <span className={styles.hall__mission__number}>{hallMissionNumbers[index]}</span>
+                                        <span className={styles.hall__mission__number}>{rankedData.missions.current_hall_of_legends.current}</span>
                                     )}
                                 </div>
                             );
