@@ -44,6 +44,12 @@ $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
 // Mixins útiles
+@mixin flex-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 @mixin flex-center {
   display: flex;
   align-items: center;

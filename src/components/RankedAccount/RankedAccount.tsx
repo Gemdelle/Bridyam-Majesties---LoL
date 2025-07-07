@@ -107,8 +107,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                 <img src={portrait.url} alt={portrait.name} className={styles.portrait} />
             </div>
 
-            <div className={styles.name__container}>{portrait.username}</div>
-            <div className={styles.essencer__container}>Essencer_twitch_name</div>
+            <div className={styles.name__container}>
+                <span>{portrait.username}</span>
+            </div>
+            <div className={styles.essencer__container}>
+                <span>Essencer_twitch_name</span>
+            </div>
 
             <div className={styles.wins__container}>
                 <div className={styles.wins}>
@@ -124,10 +128,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ portrait, selectedView })
                             <div
                                 key={index}
                                 className={`${styles.win} ${isSelected
-                                        ? styles.win__selected
-                                        : isNextAvailable
-                                            ? styles.win__next
-                                            : ''
+                                    ? styles.win__selected
+                                    : isNextAvailable
+                                        ? styles.win__next
+                                        : ''
                                     }`}
                                 style={isSelected ? { backgroundImage: getBloodlineImage() } : {}}
                                 onClick={() => handleWinClick(index)}

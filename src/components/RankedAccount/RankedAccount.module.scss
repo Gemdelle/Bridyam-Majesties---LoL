@@ -32,7 +32,7 @@
 .name__container {
     width: 10%;
     height: 100%;
-    @include flex-center;
+    @include flex-start;
     // background-color: blue;
     color: white;
 }
@@ -40,8 +40,13 @@
 .essencer__container {
     width: 10%;
     height: 100%;
-    @include flex-center;
+    @include flex-start;
     // background-color: green;
+}
+
+.essencer__container span {
+    margin-left: 5%;
+    color: white;
 }
 
 .level__container {

@@ -208,6 +208,16 @@ const Ranked: React.FC = () => {
                 </div>
                 <div className={styles.content}>
                     <div className={styles.accounts}>
+                        <div className={styles.accounts__header}>
+                            <div className={styles.header__id}>ID</div>
+                            <div className={styles.header__portrait}></div>
+                            <div className={styles.header__name}>ACCOUNT</div>
+                            <div className={styles.header__essencer}>ESSENCER</div>
+                            <div className={styles.header__wins}>WINS</div>
+                            <div className={styles.header__soloq}>SOLO</div>
+                            <div className={styles.header__flex}>FLEX</div>
+                            <div className={styles.header__missions}>MISSIONS</div>
+                        </div>
                         {(() => {
                             const { accounts, totalPages } = getCurrentPageAccounts();
                             return (
