@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables.scss' as *;
+@use 'sass:color';
 
 .container {
     width: 10%;
@@ -30,14 +31,14 @@
   left: 50%;
   width: 25px;
   height: 25px;
-  background-color: lighten($dark-color, 60%); // Gris claro con variable
+  background-color: color.adjust($dark-color, $lightness: 60%); // Gris claro con variable
   border: 3px solid $dark-color;
   transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-110px) rotate(45deg);
   transition: $transition-normal;
   box-shadow: $shadow-sm;
 
   &.active {
-    background-color: lighten($dark-color, 35%); // Gris más oscuro para activo
+    background-color: color.adjust($dark-color, $lightness: 35%); // Gris más oscuro para activo
     transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-110px) rotate(45deg) scale(1.1);
   }
 }
@@ -46,7 +47,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: lighten($primary-color, 35%); // Azul claro
+  background-color: color.adjust($primary-color, $lightness: 35%); // Azul claro
   border: 4px solid $primary-color;
   @include flex-center;
   z-index: 5;
