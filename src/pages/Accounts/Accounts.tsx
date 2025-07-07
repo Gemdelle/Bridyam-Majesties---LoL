@@ -76,7 +76,7 @@ const Accounts: React.FC = () => {
         <div className={styles.content}>
           <div className={styles.cards}>
             {currentAccounts.map((account) => (
-              <AccountSummary key={account.name} data={account} />
+              <AccountSummary key={account.username} data={account} />
             ))}
           </div>
           <div className={styles.pagination}>
