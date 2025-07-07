@@ -1,19 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 
 export const Nav = () => {
+    const location = useLocation()
+
     return (
         <div className={styles.nav}>
             <div className={styles.nav__container}>
                 <ul className={styles.nav__container__links__left}>
-                    <li>
+                    <li className={location.pathname === '/' ? styles.active : ''}>
                         <Link to="/">Home</Link>
                     </li>
-                    <li>
+                    <li className={location.pathname === '/bloodlines' ? styles.active : ''}>
                         <Link to="/bloodlines">Bloodlines</Link>
                     </li>
-                    <li>
+                    <li className={location.pathname === '/ranked' ? styles.active : ''}>
                         <Link to="/ranked">Ranked</Link>
                     </li>
                     <li>

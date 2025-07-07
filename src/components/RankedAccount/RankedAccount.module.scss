@@ -207,9 +207,11 @@
 }
 
 .mission__selected {
-    background-image: url('../../assets/images/ranked-btn/mission.png');
+    background-image: url('../../assets/images/ranked-btn/fire.png');
     @include background-center;
     background-size: auto 95%;
+    animation: breathe 3s infinite linear;
+    transform-origin: center bottom;
 }
 
 .mission__timeline {

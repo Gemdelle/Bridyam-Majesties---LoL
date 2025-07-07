@@ -3,7 +3,11 @@
 .page {
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-image: url('/src/assets/images/bg/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     @include flex-col;
 }
 
@@ -12,6 +16,10 @@
   height: 80%;
   margin-top: 5%;
   @include flex-col-start-between;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1%;
+  border-radius: 15px;
+  position: relative;
 }
 
 .content__filters {

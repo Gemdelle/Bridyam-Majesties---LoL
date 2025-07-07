@@ -3,7 +3,10 @@
 .nav {
   width: 100%;
   height: 8%;
-  background-color: $primary-color;
+  background-color: rgba($color: $primary-color, $alpha: 0.9);
+  border-top: 3px solid $secondary-color;
+  border-bottom: 5px double $secondary-color;
+  color: $text-color;
   position: fixed;
   top: 0;
   left: 0;
@@ -15,8 +18,8 @@
 .nav__container {
   width: 90%;
   height: 60%;
-  background-color: $light-color;
   @include flex-between;
+  // background-color: $light-color;
 }
 
 ul {
@@ -25,9 +28,67 @@ ul {
 }
 
 ul li {
-    background-color: yellow;
     @include flex-center;
-    margin: 0;
+    margin: 0 0.5rem;
+    padding: 0.6rem 1.2rem;
+    position: relative;
+    // background-color: yellow;
+}
+
+ul li a,
+ul li {
+    color: #cdbe91;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+ul li:hover a,
+ul li:hover {
+    color: #f0e6d2;
+    text-shadow: 0 0 8px rgba(240, 230, 210, 0.6);
+}
+
+ul li.active a,
+ul li.active {
+    color: #f0e6d2;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(240, 230, 210, 0.8);
+    letter-spacing: 2px;
+    
+}
+
+ul li.active a{
+  border-bottom: 1px solid #c89b3c;
+  animation: bottomGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes bottomGlow {
+    0% {
+        border-bottom-color: #c89b3c;
+    }
+    100% {
+        border-bottom-color: #f0e6d2;
+    }
+}
+
+ul li.active::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 30px;
+    background-image: url('../../assets/images/nav/selector.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
 }
 
 .nav__container__links__left,
@@ -40,13 +101,13 @@ ul li {
 .nav__container__links__left {
   width: 30%;
   height: 100%;
-  background-color: $secondary-color;
+  // background-color: $secondary-color;
 }
 
 .nav__container__links__right {
   width: 30%;
   height: 100%;
-  background-color: $warning-color;
+  // background-color: $warning-color;
 }
 
 .nav__container__pet {
@@ -56,7 +117,6 @@ ul li {
   left: 50%;
   transform: translateX(-50%);
   top: 15%;
-  background-color: $success-color;
   @include flex-center;
 }
 
@@ -75,10 +135,7 @@ ul li {
     position: absolute;
     width: 2vw;        
     height: 2vw;
-    background-color: $primary-color;
 }
-
-
 
 .nav__container__pet__frame {
   width: 100%;
