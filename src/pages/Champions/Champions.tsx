@@ -57,11 +57,28 @@ const Champions: React.FC = () => {
             );
         }
 
-        // Sort by favorites first (maintaining favorite order)
+        // Sort by search relevance first, then favorites
         filtered = filtered.sort((a, b) => {
             const aIsFavorite = favoriteChampions.includes(a.id);
             const bIsFavorite = favoriteChampions.includes(b.id);
 
+            // If there's a search term, prioritize exact matches
+            if (searchTerm) {
+                const aExactMatch = a.name.toLowerCase() === searchTerm.toLowerCase();
+                const bExactMatch = b.name.toLowerCase() === searchTerm.toLowerCase();
+                const aStartsWith = a.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+                const bStartsWith = b.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+
+                // Exact matches first
+                if (aExactMatch && !bExactMatch) return -1;
+                if (!aExactMatch && bExactMatch) return 1;
+
+                // Then matches that start with search term
+                if (aStartsWith && !bStartsWith) return -1;
+                if (!aStartsWith && bStartsWith) return 1;
+            }
+
+            // Then sort by favorites
             if (aIsFavorite && !bIsFavorite) return -1;
             if (!aIsFavorite && bIsFavorite) return 1;
 
