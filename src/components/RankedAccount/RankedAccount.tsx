@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './RankedAccount.module.scss';
 import { type RankedData } from '../../services/apiRankedsService';
 import tierDiamond from '../../assets/images/lol-elements/tier-diamond.webp';
@@ -29,6 +29,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
+    
+    // Refs for rank containers
+    const soloqRef = useRef<HTMLDivElement>(null);
+    const flexRef = useRef<HTMLDivElement>(null);
 
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
         const initialHallMissions = Array(38).fill(false);
@@ -76,8 +80,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
-            if (!target.closest('.soloq__container') && !target.closest('.flex__container')) {
+            
+            // Check if click is outside both containers
+            if (soloqRef.current && !soloqRef.current.contains(target)) {
                 setShowSoloqSelector(false);
+            }
+            if (flexRef.current && !flexRef.current.contains(target)) {
                 setShowFlexSelector(false);
             }
         };
@@ -324,7 +332,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             <div className={styles.divider}></div>
 
-            <div className={styles.soloq__container} onClick={() => setShowSoloqSelector(!showSoloqSelector)}>
+            <div ref={soloqRef} className={styles.soloq__container} onClick={() => setShowSoloqSelector(!showSoloqSelector)}>
                 <span>{convertToRomanNumeral(rankedData.elo_soloq.division)}</span>
                 <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
                 {showSoloqSelector && (
@@ -365,7 +373,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             <div className={styles.divider}></div>
 
-            <div className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
+            <div ref={flexRef} className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
                 <span>{convertToRomanNumeral(rankedData.elo_flex.division)}</span>
                 <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
                 {showFlexSelector && (
