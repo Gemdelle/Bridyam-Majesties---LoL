@@ -1,0 +1,215 @@
+@import '../../styles/variables.scss';
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: black;
+  position: relative;
+}
+
+.pageBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/images/bg/bg-2.png');
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 0;
+  filter: brightness(0.2);
+}
+
+.majestyLoop {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  z-index: 1;
+  animation: scrollLeft 60s linear infinite;
+  will-change: transform;
+  gap: 8vw;
+}
+
+.majestyImage {
+  height: 70%;
+  width: auto;
+  object-fit: contain;
+  object-position: center top;
+  transition: opacity 0.3s ease;
+  flex-shrink: 0;
+  filter: brightness(0.5);
+}
+
+.container {
+  width: 35%;
+  height: 75%;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 900;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 10%;
+  left: 28%;
+  transform: translate(-50%, -50%);
+  width: 45%;
+  height: 92%;
+  background-image: url('/src/assets/images/frames/essence-ring.png');
+  @include background-center;
+  background-size: 100% 100%;
+  animation: spin 70s linear infinite;
+  z-index: 999;
+}
+
+.spinningBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cdbe91;
+  text-align: center;
+}
+
+.content h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: #c89b3c;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+}
+
+.loginForm {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #e4c493;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.input {
+  width: 100%;
+  height: 3rem;
+  background: linear-gradient(145deg, #1e2328, #0f1419);
+  border: 2px solid #463714;
+  border-radius: 8px;
+  color: #cdbe91;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 0.05rem;
+  margin-bottom: 1rem;
+}
+
+.input::placeholder {
+  color: #8b7355;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.input:focus {
+  border-color: #c89b3c;
+  box-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
+  background: linear-gradient(145deg, #2a2d35, #1a1f26);
+}
+
+.input:hover {
+  border-color: #8b7355;
+  box-shadow: 0 0 8px rgba(200, 155, 60, 0.2);
+}
+
+.submitButton {
+  width: 50%;
+  margin: 0 auto;
+  height: 3.5rem;
+  background: linear-gradient(145deg, #c89b3c, #a07a2e);
+  border: none;
+  border-radius: 8px;
+  color: #0f1419;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submitButton:hover {
+  background: linear-gradient(145deg, #d4a94a, #b8842f);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(200, 155, 60, 0.3);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(200, 155, 60, 0.2);
+}
+
+@keyframes scrollLeft {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} 

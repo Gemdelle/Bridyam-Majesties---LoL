@@ -25,7 +25,7 @@ export const Nav = () => {
                         PAGE
                     </li>
                 </ul>
-                {/* <PetDisplay name="Bridyam" level={5} /> */}
+                <PetDisplay name="Essencer" level={5} />
                 <ul className={styles.nav__container__links__right}>
                     <li>
                         PAGE
