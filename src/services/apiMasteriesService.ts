@@ -1,4 +1,4 @@
-// Interface for the mastery data structure
+// Interface for the individual mastery data structure
 export interface MasteryData {
     id: number;
     ranked_id: number;
@@ -12,9 +12,16 @@ export interface MasteryData {
     last_play_time: string;
 }
 
+// Interface for user mastery data grouped by user
+export interface UserMasteryData {
+    id: number;
+    username: string;
+    masteries_by_champions: MasteryData[];
+}
+
 // Interface for the API response
 export interface MasteryResponse {
-    masteries: MasteryData[];
+    masteries: UserMasteryData[];
 }
 
 // Fetch mastery data from API
@@ -27,7 +34,12 @@ export const fetchMasteryData = async (): Promise<MasteryData[]> => {
         }
         
         const data: MasteryResponse = await response.json();
-        return data.masteries;
+        // Flatten the data from the new grouped structure
+        const flattenedMasteries: MasteryData[] = [];
+        data.masteries.forEach(user => {
+            flattenedMasteries.push(...user.masteries_by_champions);
+        });
+        return flattenedMasteries;
     } catch (error) {
         console.error('Error fetching mastery data:', error);
         throw new Error('Failed to fetch mastery data');
@@ -57,4 +69,27 @@ export const getMasteryLevel = async (rankedId: number, championId: number): Pro
 export const getMasteryData = async (rankedId: number, championId: number): Promise<MasteryData | null> => {
     const allData = await fetchMasteryData();
     return allData.find(item => item.ranked_id === rankedId && item.champion_id === championId) || null;
+};
+
+// Fetch raw mastery data grouped by users (new structure)
+export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
+    try {
+        const response = await fetch('http://localhost:8080/masteries');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data: MasteryResponse = await response.json();
+        return data.masteries;
+    } catch (error) {
+        console.error('Error fetching grouped mastery data:', error);
+        throw new Error('Failed to fetch grouped mastery data');
+    }
+};
+
+// Get mastery data for a specific user
+export const getUserMasteryData = async (rankedId: number): Promise<UserMasteryData | null> => {
+    const groupedData = await fetchGroupedMasteryData();
+    return groupedData.find(user => user.id === rankedId) || null;
 }; 

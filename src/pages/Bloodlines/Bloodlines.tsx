@@ -2,7 +2,7 @@
 import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
-import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { fetchMasteryData, type MasteryData } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
@@ -150,10 +150,11 @@ const Bloodlines: React.FC = () => {
           // Sort by ID ascending (default)
           return a.id - b.id;
         case 'mastery':
-          // Sort by mastery count descending
-          // For now, this is a placeholder - will be replaced with actual mastery data
-          // Currently sorting by ID descending as placeholder
-          return b.id - a.id;
+          // Sort by total mastery count across all accounts descending
+          const { accounts } = getCurrentPageAccounts();
+          const totalMasteryA = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, a.id), 0);
+          const totalMasteryB = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, b.id), 0);
+          return totalMasteryB - totalMasteryA;
         default:
           return a.id - b.id;
       }
@@ -162,7 +163,8 @@ const Bloodlines: React.FC = () => {
 
   // --- Función para obtener el nivel de mastery ---
   const getMasteryLevel = (rankedId: number, championId: number): number => {
-    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === championId);
+    const riotChampionId = getRiotIdForChampion(championId);
+    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
     return mastery ? mastery.champion_level : 0;
   };
 
@@ -265,8 +267,10 @@ const Bloodlines: React.FC = () => {
                 <span>{(() => {
                   const porveldam = rankedData.filter(account => account.bloodline.toLowerCase() === 'porveldam');
                   const totalChampions = champions.length;
-                  // Placeholder: Each Porveldam account owns ~30% of champions
-                  const ownedChampions = Math.floor(totalChampions * 0.3 * porveldam.length);
+                  // Calculate real mastery ownership: count champions with mastery level > 0
+                  const ownedChampions = porveldam.reduce((total, account) => {
+                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                  }, 0);
                   const totalPossible = totalChampions * porveldam.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
                   return `${percentage}%`;
@@ -280,8 +284,10 @@ const Bloodlines: React.FC = () => {
                 <span>{(() => {
                   const spadelline = rankedData.filter(account => account.bloodline.toLowerCase() === 'spadelline');
                   const totalChampions = champions.length;
-                  // Placeholder: Each Spadelline account owns ~25% of champions
-                  const ownedChampions = Math.floor(totalChampions * 0.25 * spadelline.length);
+                  // Calculate real mastery ownership: count champions with mastery level > 0
+                  const ownedChampions = spadelline.reduce((total, account) => {
+                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                  }, 0);
                   const totalPossible = totalChampions * spadelline.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
                   return `${percentage}%`;
@@ -295,8 +301,10 @@ const Bloodlines: React.FC = () => {
                 <span>{(() => {
                   const zephiroth = rankedData.filter(account => account.bloodline.toLowerCase() === 'zephiroth');
                   const totalChampions = champions.length;
-                  // Placeholder: Each Zephiroth account owns ~35% of champions
-                  const ownedChampions = Math.floor(totalChampions * 0.35 * zephiroth.length);
+                  // Calculate real mastery ownership: count champions with mastery level > 0
+                  const ownedChampions = zephiroth.reduce((total, account) => {
+                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                  }, 0);
                   const totalPossible = totalChampions * zephiroth.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
                   return `${percentage}%`;
@@ -310,8 +318,10 @@ const Bloodlines: React.FC = () => {
                 <span>{(() => {
                   const gladasmy = rankedData.filter(account => account.bloodline.toLowerCase() === 'gladasmy');
                   const totalChampions = champions.length;
-                  // Placeholder: Each Gladasmy account owns ~20% of champions
-                  const ownedChampions = Math.floor(totalChampions * 0.2 * gladasmy.length);
+                  // Calculate real mastery ownership: count champions with mastery level > 0
+                  const ownedChampions = gladasmy.reduce((total, account) => {
+                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                  }, 0);
                   const totalPossible = totalChampions * gladasmy.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
                   return `${percentage}%`;
@@ -325,8 +335,10 @@ const Bloodlines: React.FC = () => {
                 <span>{(() => {
                   const primogenit = rankedData.filter(account => account.bloodline.toLowerCase() === 'primogenit');
                   const totalChampions = champions.length;
-                  // Placeholder: Each Primogenit account owns ~45% of champions
-                  const ownedChampions = Math.floor(totalChampions * 0.45 * primogenit.length);
+                  // Calculate real mastery ownership: count champions with mastery level > 0
+                  const ownedChampions = primogenit.reduce((total, account) => {
+                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                  }, 0);
                   const totalPossible = totalChampions * primogenit.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
                   return `${percentage}%`;
