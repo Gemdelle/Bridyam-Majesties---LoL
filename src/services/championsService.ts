@@ -3,6 +3,7 @@ export interface Champion {
     id: number;
     name: string;
     role?: string;
+    riotId?: number; // Real Riot API ID for mastery matching
 }
 
 // Mock champions data - this will be replaced with API call later
@@ -184,4 +185,177 @@ export const fetchChampions = async (): Promise<Champion[]> => {
 // Function to get champions by IDs (for specific bloodline data)
 export const getChampionsByIds = (ids: number[]): Champion[] => {
     return mockChampions.filter(champion => ids.includes(champion.id));
+};
+
+// Mapping from sequential ID to real Riot API ID
+// Complete mapping based on League of Legends champion IDs
+const championIdMapping: { [key: number]: number } = {
+    1: 266,    // Aatrox
+    2: 103,    // Ahri
+    3: 84,     // Akali
+    4: 166,    // Akshan
+    5: 12,     // Alistar
+    6: 32,     // Ammu
+    7: 34,     // Anivia
+    8: 1,      // Annie
+    9: 523,    // Aphelios
+    10: 22,    // Ashe
+    11: 136,   // Aurelion Sol
+    12: 268,   // Azir
+    13: 432,   // Bard
+    14: 200,   // Bel'Veth
+    15: 53,    // Blitzcrank
+    16: 63,    // Brand
+    17: 201,   // Braum
+    18: 51,    // Caitlyn
+    19: 164,   // Camille
+    20: 69,    // Cassiopeia
+    21: 31,    // Cho'Gath
+    22: 42,    // Corki
+    23: 122,   // Darius
+    24: 131,   // Diana
+    25: 36,    // Dr. Mundo
+    26: 119,   // Draven
+    27: 245,   // Ekko
+    28: 60,    // Elise
+    29: 28,    // Evelynn
+    30: 81,    // Ezreal
+    31: 9,     // Fiddlesticks
+    32: 114,   // Fiora
+    33: 105,   // Fizz
+    34: 3,     // Galio
+    35: 41,    // Gangplank
+    36: 86,    // Garen
+    37: 150,   // Gnar
+    38: 79,    // Gragas
+    39: 104,   // Graves
+    40: 887,   // Gwen
+    41: 120,   // Hecarim
+    42: 74,    // Heimerdinger
+    43: 420,   // Illaoi
+    44: 39,    // Irelia
+    45: 427,   // Ivern
+    46: 40,    // Janna
+    47: 59,    // Jarvan IV
+    48: 24,    // Jax
+    49: 126,   // Jayce
+    50: 202,   // Jhin
+    51: 222,   // Jinx
+    52: 897,   // K'Sante
+    53: 145,   // Kai'Sa
+    54: 429,   // Kalista
+    55: 43,    // Karma
+    56: 30,    // Karthus
+    57: 38,    // Kassadin
+    58: 55,    // Katarina
+    59: 10,    // Kayle
+    60: 141,   // Kayn
+    61: 85,    // Kennen
+    62: 121,   // Kha'Zix
+    63: 203,   // Kindred
+    64: 240,   // Kled
+    65: 96,    // Kog'Maw
+    66: 7,     // LeBlanc
+    67: 64,    // Lee Sin
+    68: 89,    // Leona
+    69: 876,   // Lillia
+    70: 127,   // Lissandra
+    71: 236,   // Lucian
+    72: 117,   // Lulu
+    73: 99,    // Lux
+    74: 54,    // Malphite
+    75: 90,    // Malzahar
+    76: 57,    // Maokai
+    77: 11,    // Master Yi
+    78: 902,   // Milio
+    79: 21,    // Miss Fortune
+    80: 82,    // Mordekaiser
+    81: 25,    // Morgana
+    82: 267,   // Nami
+    83: 75,    // Nasus
+    84: 111,   // Nautilus
+    85: 518,   // Neeko
+    86: 76,    // Nidalee
+    87: 895,   // Nilah
+    88: 56,    // Nocturne
+    89: 20,    // Nunu & Willump
+    90: 2,     // Olaf
+    91: 61,    // Orianna
+    92: 516,   // Ornn
+    93: 80,    // Pantheon
+    94: 78,    // Poppy
+    95: 555,   // Pyke
+    96: 246,   // Qiyana
+    97: 133,   // Quinn
+    98: 497,   // Rakan
+    99: 33,    // Rammus
+    100: 421,  // Rek'Sai
+    101: 526,  // Rell
+    102: 888,  // Renata Glasc
+    103: 58,   // Renekton
+    104: 107,  // Rengar
+    105: 92,   // Riven
+    106: 68,   // Rumble
+    107: 13,   // Ryze
+    108: 360,  // Samira
+    109: 113,  // Sejuani
+    110: 235,  // Senna
+    111: 147,  // Seraphine
+    112: 875,  // Sett
+    113: 35,   // Shaco
+    114: 98,   // Shen
+    115: 102,  // Shyvana
+    116: 27,   // Singed
+    117: 14,   // Sion
+    118: 15,   // Sivir
+    119: 72,   // Skarner
+    120: 37,   // Sona
+    121: 16,   // Soraka
+    122: 50,   // Swain
+    123: 517,  // Sylas
+    124: 134,  // Syndra
+    125: 223,  // Tahm Kench
+    126: 163,  // Taliyah
+    127: 91,   // Talon
+    128: 44,   // Taric
+    129: 17,   // Teemo
+    130: 412,  // Thresh
+    131: 18,   // Tristana
+    132: 48,   // Trundle
+    133: 23,   // Tryndamere
+    134: 4,    // Twisted Fate
+    135: 29,   // Twitch
+    136: 77,   // Udyr
+    137: 6,    // Urgot
+    138: 110,  // Varus
+    139: 67,   // Vayne
+    140: 45,   // Veigar
+    141: 161,  // Vel'Koz
+    142: 711,  // Vex
+    143: 254,  // Vi
+    144: 234,  // Viego
+    145: 112,  // Viktor
+    146: 8,    // Vladimir
+    147: 106,  // Volibear
+    148: 19,   // Warwick
+    149: 62,   // Wukong
+    150: 498,  // Xayah
+    151: 101,  // Xerath
+    152: 5,    // Xin Zhao
+    153: 157,  // Yasuo
+    154: 777,  // Yone
+    155: 83,   // Yorick
+    156: 350,  // Yuumi
+    157: 154,  // Zac
+    158: 238,  // Zed
+    159: 221,  // Zeri
+    160: 115,  // Ziggs
+    161: 26,   // Zilean
+    162: 142,  // Zoe
+    163: 143   // Zyra
+};
+
+// Function to get the real Riot API ID for a champion
+export const getRiotIdForChampion = (championId: number): number => {
+    return championIdMapping[championId] || championId;
 }; 
