@@ -168,7 +168,7 @@ const Bloodlines: React.FC = () => {
 
   // --- Función para obtener la imagen de mastery ---
   const getMasteryImage = (masteryLevel: number): string => {
-    return `/src/assets/images/masteries/mastery/mastery_${masteryLevel}.png`;
+    return `/src/assets/images/masteries/mastery/${masteryLevel}.png`;
   };
 
   // --- Calcular las accounts a mostrar ---
@@ -366,10 +366,10 @@ const Bloodlines: React.FC = () => {
                       const masteryLevel = getMasteryLevel(account.id, champion.id);
                       return (
                         <div key={account.id} className={styles.row__account}>
-                          <img 
-                            src={getMasteryImage(masteryLevel)} 
-                            alt={`Mastery ${masteryLevel}`} 
-                            className={styles.mastery__image} 
+                          <img
+                            src={getMasteryImage(masteryLevel)}
+                            alt={`Mastery ${masteryLevel}`}
+                            className={styles.mastery__image}
                           />
                         </div>
                       );
