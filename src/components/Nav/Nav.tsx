@@ -18,14 +18,14 @@ export const Nav = () => {
                     <li className={location.pathname === '/ranked' ? styles.active : ''}>
                         <Link to="/ranked">Ranked</Link>
                     </li>
-                    <li>
-                        PAGE
+                    <li className={location.pathname === '/champions' ? styles.active : ''}>
+                        <Link to="/champions">Champions</Link>
                     </li>
                     <li>
                         PAGE
                     </li>
                 </ul>
-                <PetDisplay name="Essencer" level={5} />
+                <PetDisplay name="Essencer" />
                 <ul className={styles.nav__container__links__right}>
                     <li>
                         PAGE

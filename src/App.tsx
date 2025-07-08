@@ -4,6 +4,7 @@ import { Nav } from './components/Nav/Nav'
 import Accounts from './pages/Accounts/Accounts'
 import Bloodlines from './pages/Bloodlines/Bloodlines'
 import Ranked from './pages/Ranked/Ranked'
+import Champions from './pages/Champions/Champions'
 import Login from './pages/Login/Login'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Accounts />} />
           <Route path="/bloodlines" element={<Bloodlines />} />
           <Route path="/ranked" element={<Ranked />} />
+          <Route path="/champions" element={<Champions />} />
           <Route path="/login" element={<Login />} />
         </Routes>
 
