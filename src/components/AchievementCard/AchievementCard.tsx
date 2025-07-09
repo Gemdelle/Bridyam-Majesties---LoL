@@ -19,11 +19,45 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     totalSteps = 10
 }) => {
     const isMasteryJourney = name === "Mastery Journey";
+    const isRankClimber = name === "Rank Climber";
+    const isTierClimber = name === "Tier Climber";
 
-    // For mastery journey, show current mastery level on the left
+    // Define tier progression for rank climber
+    const tierImages = [
+        'tier-iron.webp',
+        'tier-bronze.webp',
+        'tier-silver.webp',
+        'tier-gold.webp',
+        'tier-platinum.webp',
+        'tier-emerald.webp',
+        'tier-diamond.webp',
+        'tier-master.webp',
+        'tier-grandmaster.webp',
+        'tier-challenger.webp'
+    ];
+
+    // Define helm progression for tier climber
+    const helmImages = [
+        'tier-iron-helm.webp',
+        'tier-bronze-helm.webp',
+        'tier-silver-helm.webp',
+        'tier-gold-helm.webp',
+        'tier-platinum-helm.webp',
+        'tier-emerald-helm.webp',
+        'tier-diamond-helm.webp',
+        'tier-master-helm.webp',
+        'tier-grandmaster-helm.webp',
+        'tier-challenger-heml.webp' // Note: typo in filename
+    ];
+
+    // For special achievements, show current level on the left
     const leftIconSrc = isMasteryJourney
         ? `/src/assets/images/masteries/mastery/${completedSteps}.png`
-        : iconSrc;
+        : isRankClimber
+            ? `/src/assets/images/lol-elements/${tierImages[Math.min(completedSteps - 1, tierImages.length - 1)]}`
+            : isTierClimber
+                ? `/src/assets/images/lol-elements/${helmImages[Math.min(completedSteps - 1, helmImages.length - 1)]}`
+                : iconSrc;
 
     return (
         <div className={styles.achievement__card}>
@@ -48,10 +82,14 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                     const stepNumber = index + 1;
                     const isCompleted = index < completedSteps;
 
-                    // For mastery journey, use mastery images 1-10
+                    // For special achievements, use appropriate images
                     const circleImageSrc = isMasteryJourney
                         ? `/src/assets/images/masteries/mastery/${stepNumber}.png`
-                        : "/src/assets/images/achievement/circle.png";
+                        : isRankClimber
+                            ? `/src/assets/images/lol-elements/${tierImages[Math.min(stepNumber - 1, tierImages.length - 1)]}`
+                            : isTierClimber
+                                ? `/src/assets/images/lol-elements/${helmImages[Math.min(stepNumber - 1, helmImages.length - 1)]}`
+                                : "/src/assets/images/achievement/circle.png";
 
                     return (
                         <div

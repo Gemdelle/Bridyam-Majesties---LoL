@@ -49,14 +49,14 @@ const achievements: Achievement[] = [
     {
         name: "Rank Climber",
         description: "Advance to the next division",
-        iconSrc: "/src/assets/images/lol-elements/tier-silver.webp",
+        iconSrc: "/src/assets/images/lol-elements/tier-challenger.webp",
         progress: 100,
         completedSteps: 10
     },
     {
-        name: "League Legend",
+        name: "Tier Climber",
         description: "Ascend to a higher tier",
-        iconSrc: "/src/assets/images/lol-elements/tier-gold.webp",
+        iconSrc: "/src/assets/images/lol-elements/tier-challenger-heml.webp",
         progress: 100,
         completedSteps: 10
     },
