@@ -1,22 +1,52 @@
 import React, { useState } from 'react';
 import styles from './Redeem.module.scss';
+import { claimService } from '../../services/claimService';
 
 const Redeem: React.FC = () => {
     const [redeemCode, setRedeemCode] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
 
-    const handleRedeem = () => {
-        if (!redeemCode.trim()) {
-            alert('Please enter a redeem code');
+    const handleRedeem = async () => {
+        setError(null);
+        setSuccess(null);
+
+        // Validate input data
+        const validationErrors = claimService.validateClaimData(redeemCode, selectedAccount);
+        if (validationErrors.length > 0) {
+            setError(validationErrors.join(', '));
             return;
         }
-        if (!selectedAccount) {
-            alert('Please select a majesty account');
-            return;
-        }
 
-        // Here you would typically make an API call to redeem the code
-        alert(`Redeeming code "${redeemCode}" for account "${selectedAccount}"`);
+        setLoading(true);
+
+        try {
+            const result = await claimService.claimAccount({
+                code: redeemCode,
+                rankedUsername: selectedAccount
+            });
+
+            if (result.success) {
+                setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente!`);
+                setRedeemCode('');
+                setSelectedAccount('');
+            } else {
+                setError(result.message);
+            }
+        } catch (error) {
+            setError('Error inesperado. Por favor, intenta de nuevo.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (value.length <= 8) {
+            setRedeemCode(value);
+        }
     };
 
     return (
@@ -24,36 +54,42 @@ const Redeem: React.FC = () => {
             <div className={styles.redeem__container}>
                 <header className={styles.redeem__header}>
                     <h1 className={styles.redeem__title}>Redeem</h1>
-                    <p className={styles.redeem__subtitle}>Exchange your essence and rewards</p>
+                    <p className={styles.redeem__subtitle}>Reclamar cuenta ranked con código</p>
                 </header>
 
                 <div className={styles.redeem__content}>
                     <div className={styles.redeem__form}>
                         <div className={styles.input__group}>
                             <label htmlFor="redeemCode" className={styles.input__label}>
-                                Redeem Code
+                                Código de Reclamación (8 caracteres)
                             </label>
                             <input
                                 type="text"
                                 id="redeemCode"
                                 className={styles.input__field}
-                                placeholder="Enter your redeem code here..."
+                                placeholder="Ej: ABC12345"
                                 value={redeemCode}
-                                onChange={(e) => setRedeemCode(e.target.value)}
+                                onChange={handleCodeChange}
+                                maxLength={8}
+                                disabled={loading}
                             />
+                            <small className={styles.input__hint}>
+                                Ingresa el código alfanumérico de 8 caracteres
+                            </small>
                         </div>
 
                         <div className={styles.input__group}>
                             <label htmlFor="majestyAccount" className={styles.input__label}>
-                                Select Majesty Account
+                                Seleccionar Cuenta Majesty
                             </label>
                             <select
                                 id="majestyAccount"
                                 className={styles.input__select}
                                 value={selectedAccount}
                                 onChange={(e) => setSelectedAccount(e.target.value)}
+                                disabled={loading}
                             >
-                                <option value="" disabled>Choose an account...</option>
+                                <option value="" disabled>Elige una cuenta...</option>
                                 <option value="GEM Arminariknot#GEM">GEM Arminariknot#GEM</option>
                                 <option value="GEM Cordacrimory#GEM">GEM Cordacrimory#GEM</option>
                                 <option value="GEM Dreemurdomme#GEM">GEM Dreemurdomme#GEM</option>
@@ -70,10 +106,29 @@ const Redeem: React.FC = () => {
                                 <option value="GEM Primrosenrot#GEM">GEM Primrosenrot#GEM</option>
                                 <option value="GEM Priscyumice#GEM">GEM Priscyumice#GEM</option>
                             </select>
+                            <small className={styles.input__hint}>
+                                Selecciona la cuenta ranked que deseas reclamar
+                            </small>
                         </div>
 
-                        <button className={styles.redeem__button} onClick={handleRedeem}>
-                            Redeem Now
+                        {error && (
+                            <div className={styles.error__message}>
+                                {error}
+                            </div>
+                        )}
+
+                        {success && (
+                            <div className={styles.success__message}>
+                                {success}
+                            </div>
+                        )}
+
+                        <button 
+                            className={styles.redeem__button} 
+                            onClick={handleRedeem}
+                            disabled={loading || !redeemCode || !selectedAccount}
+                        >
+                            {loading ? 'Reclamando...' : 'Reclamar Cuenta'}
                         </button>
                     </div>
                 </div>

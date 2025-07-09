@@ -102,6 +102,12 @@
     color: #cdbe91;
     opacity: 0.7;
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
 
 .input__select {
@@ -112,6 +118,55 @@
     color: #cdbe91;
     padding: 1rem;
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.input__hint {
+  font-size: 0.9rem;
+  color: #cdbe91;
+  opacity: 0.7;
+  text-align: center;
+  font-style: italic;
+}
+
+.error__message {
+  padding: 1rem;
+  background: rgba(220, 53, 69, 0.1);
+  border: 2px solid #dc3545;
+  border-radius: 8px;
+  color: #dc3545;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  animation: shake 0.5s ease-in-out;
+}
+
+.success__message {
+  padding: 1rem;
+  background: rgba(40, 167, 69, 0.1);
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  color: #28a745;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .redeem__button {
@@ -130,15 +185,24 @@
   position: relative;
   overflow: hidden;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #c89b3c;
     color: #0f1419;
     transform: translateY(-3px);
     box-shadow: 0 5px 20px rgba(200, 155, 60, 0.4);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(200, 155, 60, 0.1);
+    border-color: rgba(200, 155, 60, 0.5);
+    color: rgba(200, 155, 60, 0.5);
+    transform: none;
   }
 
   &::before {
@@ -156,7 +220,7 @@
     transition: left 0.5s ease;
   }
 
-  &:hover::before {
+  &:hover:not(:disabled)::before {
     left: 100%;
   }
 }
@@ -184,6 +248,16 @@
   .input__select {
     padding: 1rem;
     font-size: 1rem;
+  }
+
+  .input__hint {
+    font-size: 0.8rem;
+  }
+
+  .error__message,
+  .success__message {
+    padding: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .redeem__button {
