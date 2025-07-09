@@ -246,4 +246,28 @@
 .no__results p {
   font-size: 1.2rem;
   margin-bottom: 1rem;
+}
+
+.achievement__button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(145deg, #c89b3c, #a07a2e);
+  border: none;
+  border-radius: 8px;
+  color: #0f1419;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.achievement__button:hover {
+  background: linear-gradient(145deg, #d4a94a, #b8842f);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(200, 155, 60, 0.3);
 } 

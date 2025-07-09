@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Champions.module.scss';
 import { fetchChampions, type Champion } from '../../services/championsService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
+import AchievementPopup from '../../components/AchievementPopup';
 
 const Champions: React.FC = () => {
     const [champions, setChampions] = useState<Champion[]>([]);
@@ -10,6 +11,7 @@ const Champions: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [favoriteChampions, setFavoriteChampions] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showAchievementPopup, setShowAchievementPopup] = useState(false);
 
     // Role filter options
     const roleOptions: FilterOption[] = [
@@ -120,6 +122,14 @@ const Champions: React.FC = () => {
 
     return (
         <div className={styles.page}>
+            {/* Temporary Achievement Button */}
+            <button
+                className={styles.achievement__button}
+                onClick={() => setShowAchievementPopup(true)}
+            >
+                Achievement
+            </button>
+
             <div className={styles.container}>
                 <div className={styles.content__top}>
                     <div className={styles.filters}>
@@ -185,6 +195,14 @@ const Champions: React.FC = () => {
                     )}
                 </div>
             </div>
+
+            {/* Achievement Popup */}
+            <AchievementPopup
+                isOpen={showAchievementPopup}
+                onClose={() => setShowAchievementPopup(false)}
+                title="Test Achievement"
+                description="This is a temporary testing popup for achievements and badges."
+            />
         </div>
     );
 };

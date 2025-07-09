@@ -21,8 +21,8 @@ export const Nav = () => {
                     <li className={location.pathname === '/champions' ? styles.active : ''}>
                         <Link to="/champions">Champions</Link>
                     </li>
-                    <li>
-                        PAGE
+                    <li className={location.pathname === '/achievements' ? styles.active : ''}>
+                        <Link to="/achievements">Achievements</Link>
                     </li>
                 </ul>
                 <PetDisplay name="Essencer" />

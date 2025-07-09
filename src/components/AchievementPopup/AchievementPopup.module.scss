@@ -1,0 +1,161 @@
+@import '../../styles/variables.scss';
+
+.achievement__popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.popup__content {
+  height: 60%;
+  width: 65%;
+  @include flex-col;
+  position: relative;
+  text-align: center;
+  color: #cdbe91;
+  animation: slideIn 0.3s ease-out;
+//   background-color: red;
+  background-image: url('../../assets/images/achievement/border.png');
+  @include background-center;
+}
+
+.spinning__circle {
+    width: 115%;
+    height: 115%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url('../../assets/images/achievement/circle.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: spin 100s linear infinite;
+    z-index: -1;
+  }
+
+.badge__container {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(200, 155, 60, 0.3), transparent 70%);
+  border-radius: 50%;
+  animation: glow 2s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.badge__image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 3px solid #c89b3c;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.popup__title {
+  font-size: 2.5rem;
+  color: #c89b3c;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+.popup__description {
+  font-size: 1.2rem;
+  color: #8b7355;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.popup__confirm {
+  background: linear-gradient(145deg, #c89b3c, #a07a2e);
+  border: none;
+  border-radius: 10px;
+  color: #0f1419;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.popup__confirm:hover {
+  background: linear-gradient(145deg, #d4a94a, #b8842f);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(200, 155, 60, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
+  }
+  to {
+    box-shadow: 0 0 40px rgba(200, 155, 60, 0.6);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+} 
