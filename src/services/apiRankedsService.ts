@@ -1,3 +1,5 @@
+import { authService } from './authService';
+
 // Interface for the ranked data structure
 export interface RankedData {
     id: number;
@@ -51,7 +53,7 @@ export interface RankedResponse {
 // Fetch ranked data from API
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
-        const response = await fetch('http://localhost:8080/rankeds');
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/ranked');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,7 +70,7 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
 // Update ranked data via POST to API
 export const updateRankedData = async (rankedData: RankedData[]): Promise<RankedData[]> => {
     try {
-        const response = await fetch('http://localhost:8080/rankeds', {
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/ranked', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

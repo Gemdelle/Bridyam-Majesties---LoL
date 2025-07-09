@@ -79,7 +79,7 @@
   @include background-center;
   background-size: 100% 100%;
   animation: spin 70s linear infinite;
-  z-index: 999;
+  z-index: 2;
 }
 
 .spinningBackground {
@@ -194,6 +194,86 @@
 .submitButton:active {
   transform: translateY(0);
   box-shadow: 0 2px 5px rgba(200, 155, 60, 0.2);
+}
+
+// Error message styles
+.error {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(145deg, #3c1e1e, #2a1414);
+  border: 2px solid #7a2828;
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+  animation: errorSlide 0.3s ease-in-out;
+}
+
+// Loading state styles
+.submitButton.loading {
+  background: linear-gradient(145deg, #8b7355, #6b5944);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 2px solid #0f1419;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.submitButton:disabled {
+  background: linear-gradient(145deg, #8b7355, #6b5944);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  
+  &:hover {
+    background: linear-gradient(145deg, #8b7355, #6b5944);
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Disabled input styles
+.input:disabled {
+  background: linear-gradient(145deg, #1a1d21, #0d1015);
+  border-color: #3a3a3a;
+  color: #666;
+  cursor: not-allowed;
+  
+  &::placeholder {
+    color: #555;
+  }
+  
+  &:hover {
+    border-color: #3a3a3a;
+    box-shadow: none;
+  }
+}
+
+@keyframes errorSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scrollLeft {

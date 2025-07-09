@@ -1,3 +1,5 @@
+import { authService } from './authService';
+
 // Interface for the individual mastery data structure
 export interface MasteryData {
     id: number;
@@ -27,7 +29,7 @@ export interface MasteryResponse {
 // Fetch mastery data from API
 export const fetchMasteryData = async (): Promise<MasteryData[]> => {
     try {
-        const response = await fetch('http://localhost:8080/masteries');
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/masteries');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -74,7 +76,7 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
 // Fetch raw mastery data grouped by users (new structure)
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
-        const response = await fetch('http://localhost:8080/masteries');
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/masteries');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

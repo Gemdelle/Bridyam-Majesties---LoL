@@ -1,9 +1,17 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useAuthContext } from '../../contexts/AuthContext'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 
 export const Nav = () => {
     const location = useLocation()
+    const { user, logout } = useAuthContext()
+
+    const handleLogout = async () => {
+        if (confirm('Are you sure you want to logout?')) {
+            await logout()
+        }
+    }
 
     return (
         <div className={styles.nav}>
@@ -37,11 +45,20 @@ export const Nav = () => {
                         PAGE
                     </li>
                     <li>
-                        PAGE
+                        {user && (
+                            <div className={styles.userInfo}>
+                                <p>Welcome, {user.email}</p>
+                                {user.fullName && <p>{user.fullName}</p>}
+                            </div>
+                        )}
                     </li>
                     <li>
-                        <img src="" alt="derlets" />
-                        <p>Derlet count</p>
+                        <button 
+                            className={styles.logoutButton}
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
                     </li>
                 </ul>
             </div>
