@@ -33,7 +33,7 @@ export const Nav = () => {
                         <Link to="/achievements">Achievements</Link>
                     </li>
                 </ul>
-                <PetDisplay name="Essencer" />
+                <PetDisplay name={user?.fullName || ''} />
                 <ul className={styles.nav__container__links__right}>
                     <li className={location.pathname === '/redeem' ? styles.active : ''}>
                         <Link to="/redeem">Redeem</Link>
@@ -43,14 +43,6 @@ export const Nav = () => {
                     </li>
                     <li>
                         PAGE
-                    </li>
-                    <li>
-                        {user && (
-                            <div className={styles.userInfo}>
-                                <p>Welcome, {user.email}</p>
-                                {user.fullName && <p>{user.fullName}</p>}
-                            </div>
-                        )}
                     </li>
                     <li>
                         <button
