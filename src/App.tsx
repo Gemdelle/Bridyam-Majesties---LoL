@@ -8,6 +8,7 @@ import Bloodlines from './pages/Bloodlines/Bloodlines'
 import Ranked from './pages/Ranked/Ranked'
 import Champions from './pages/Champions/Champions'
 import Achievements from './pages/Achievements/Achievements'
+import Redeem from './pages/Redeem/Redeem'
 import Login from './pages/Login/Login'
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
           <Route
             path="/champions" element={<Champions />} />
           <Route path="/achievements" element={<Achievements />} />
+          <Route path="/redeem" element={<Redeem />} />
           <Route path="*"
             element={
               <Navigate to={isAuthenticated ? "/" : "/login"} replace />

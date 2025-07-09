@@ -1,0 +1,193 @@
+@import '../../styles/variables.scss';
+
+.redeem {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #0f1419 0%, #1e2328 100%);
+  overflow: hidden;
+
+  &__container {
+    width: 92%;
+    height: 83%;
+    margin: 0 auto;
+    margin-top: 7%;
+    @include flex-col-between;
+    // background-color: red;
+  }
+
+  &__header {
+    height: 10%;
+    text-align: center;
+    // background-color: blue;
+  }
+
+  &__title {
+    margin: 0;
+    height: 70%;
+    font-size: 3rem;
+    color: #c89b3c;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    // background-color: yellow;
+  }
+
+  &__subtitle {
+    height: 30%;
+    margin: 0;
+    font-size: 1.2rem;
+    color: #cdbe91;
+    // background-color: green;
+  }
+
+  &__content {
+    height: 77%;
+    width: 100%;
+    @include flex-col-between;
+    // border: 1px solid white;
+    // background-color: violet;
+  }
+
+  &__form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.input__group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input__label {
+  font-size: 1.4rem;
+  color: #c89b3c;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  text-align: center;
+}
+
+.input__field,
+.input__select {
+  width: 100%;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 3px solid #c89b3c;
+  border-radius: 10px;
+  color: #cdbe91;
+  font-size: 1.2rem;
+  font-family: inherit;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #d4a94a;
+    box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  &::placeholder {
+    color: #cdbe91;
+    opacity: 0.7;
+  }
+}
+
+.input__select {
+  cursor: pointer;
+  
+  option {
+    background: #1e2328;
+    color: #cdbe91;
+    padding: 1rem;
+  }
+}
+
+.redeem__button {
+  width: 100%;
+  padding: 1.5rem 3rem;
+  background: rgba(200, 155, 60, 0.2);
+  border: 3px solid #c89b3c;
+  border-radius: 10px;
+  color: #c89b3c;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    background: #c89b3c;
+    color: #0f1419;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(200, 155, 60, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.3), 
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .redeem {
+    &__container {
+      // background-color: red;
+    }
+
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__form {
+      gap: 2rem;
+    }
+  }
+
+  .input__label {
+    font-size: 1.2rem;
+  }
+
+  .input__field,
+  .input__select {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .redeem__button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+} 

@@ -35,8 +35,8 @@ export const Nav = () => {
                 </ul>
                 <PetDisplay name="Essencer" />
                 <ul className={styles.nav__container__links__right}>
-                    <li>
-                        PAGE
+                    <li className={location.pathname === '/redeem' ? styles.active : ''}>
+                        <Link to="/redeem">Redeem</Link>
                     </li>
                     <li>
                         PAGE
@@ -53,7 +53,7 @@ export const Nav = () => {
                         )}
                     </li>
                     <li>
-                        <button 
+                        <button
                             className={styles.logoutButton}
                             onClick={handleLogout}
                         >
