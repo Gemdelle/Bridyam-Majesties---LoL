@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Development files
+src/
+scripts/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build files (will be rebuilt)
+dist/
+
+# Config files that aren't needed in production
+tsconfig.json
+tsconfig.app.json
+tsconfig.node.json
+vite.config.ts
+eslint.config.js
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PowerShell scripts
+*.ps1 

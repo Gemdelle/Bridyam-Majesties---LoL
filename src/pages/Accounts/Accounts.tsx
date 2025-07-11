@@ -1,93 +1,158 @@
-﻿import React, { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import styles from './Accounts.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import AccountSummary from '../../components/AccountSummary';
-import portraits from '../../../public/data/portraits.json';
+
+// Definir tipos para los datos
+interface Account {
+  name: string;
+  rank?: string;
+  tier?: string;
+  lp?: number;
+  wins?: number;
+  losses?: number;
+  [key: string]: any;
+}
 
 // --- Opciones para los filtros ---
-
-const viewOptions: FilterOption[] = [
-  { id: 'individual', label: 'individual', image: 'https://placehold.co/24x24/e81123/e81123.png' },
-  { id: 'bloodline', label: 'bloodline', image: 'https://placehold.co/24x24/4a4a4a/ffffff.png?text=⠿' }
+const rankOptions: FilterOption[] = [
+  { id: 'iron', label: 'Iron' },
+  { id: 'bronze', label: 'Bronze' },
+  { id: 'silver', label: 'Silver' },
+  { id: 'gold', label: 'Gold' },
+  { id: 'platinum', label: 'Platinum' },
+  { id: 'emerald', label: 'Emerald' },
+  { id: 'diamond', label: 'Diamond' },
+  { id: 'master', label: 'Master' },
+  { id: 'grandmaster', label: 'Grandmaster' },
+  { id: 'challenger', label: 'Challenger' },
 ];
 
-const filterOptions: FilterOption[] = [
-  { id: 'obtained', label: 'obtained' },
-  { id: 'skin', label: 'skin' },
-  { id: 'mastery', label: 'mastery' },
-  { id: 'mastery-level-up', label: 'mastery level up (1000p.)' },
-  { id: 'type', label: 'type' },
-  { id: 'pet-human', label: 'pet / human / humanoid / machine' },
-  { id: 'favourite', label: 'favourite' },
-];
-
-const sortOptions: FilterOption[] = [
-  { id: 'alphabetical', label: 'alphabetical' },
-  { id: 'bloodline', label: 'bloodline' },
-  { id: 'blue-essence', label: 'blue essence' },
+const tierOptions: FilterOption[] = [
+  { id: 'IV', label: 'IV' },
+  { id: 'III', label: 'III' },
+  { id: 'II', label: 'II' },
+  { id: 'I', label: 'I' },
 ];
 
 const Accounts: React.FC = () => {
-  // --- Estados para cada filtro ---
-  const [selectedView, setSelectedView] = useState<string[]>(['individual']);
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [selectedSorts, setSelectedSorts] = useState<string[]>(['alphabetical']);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [selectedRank, setSelectedRank] = useState<string[]>([]);
+  const [selectedTier, setSelectedTier] = useState<string[]>([]);
+  const [selectedPortrait, setSelectedPortrait] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // --- Estado para la paginación ---
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const totalPages = Math.ceil(portraits.length / itemsPerPage);
+  useEffect(() => {
+    const loadAccounts = async () => {
+      try {
+        const response = await fetch('/data/portraits.json');
+        const data = await response.json();
+        setAccounts(data);
+      } catch (error) {
+        console.error('Error loading accounts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadAccounts();
+  }, []);
 
-  const currentAccounts = portraits.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
+  const getPortraitOptions = (): FilterOption[] => {
+    return accounts.map(account => ({
+      id: account.name,
+      label: account.name
+    }));
   };
+
+  const handleRankChange = (ranks: string[]) => {
+    setSelectedRank(ranks);
+  };
+
+  const handleTierChange = (tiers: string[]) => {
+    setSelectedTier(tiers);
+  };
+
+  const handlePortraitChange = (portraits: string[]) => {
+    setSelectedPortrait(portraits);
+  };
+
+  const filteredAccounts = accounts.filter((account: Account) => {
+    const matchesRank = selectedRank.length === 0 || selectedRank.includes(account.rank?.toLowerCase() || '');
+    const matchesTier = selectedTier.length === 0 || selectedTier.includes(account.tier || '');
+    const matchesPortrait = selectedPortrait.length === 0 || selectedPortrait.includes(account.name);
+    
+    return matchesRank && matchesTier && matchesPortrait;
+  });
+
+  if (isLoading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <h1>Accounts</h1>
+          <p>Manage your ranked accounts</p>
+        </div>
 
-        <div className={styles.content__filters}>
+        <div className={styles.filters}>
           <Filter
-            title="VIEW"
-            options={viewOptions}
-            selectedOptions={selectedView}
-            onSelectionChange={setSelectedView}
+            title="Rank"
+            options={rankOptions}
+            selectedOptions={selectedRank}
+            onSelectionChange={handleRankChange}
           />
           <Filter
-            title="FILTER"
-            options={filterOptions}
-            selectedOptions={selectedFilters}
-            onSelectionChange={setSelectedFilters}
+            title="Tier"
+            options={tierOptions}
+            selectedOptions={selectedTier}
+            onSelectionChange={handleTierChange}
           />
           <Filter
-            title="SORT BY"
-            options={sortOptions}
-            selectedOptions={selectedSorts}
-            onSelectionChange={setSelectedSorts}
+            title="Portrait"
+            options={getPortraitOptions()}
+            selectedOptions={selectedPortrait}
+            onSelectionChange={handlePortraitChange}
           />
         </div>
-        <div className={styles.content}>
-          <div className={styles.cards}>
-            {currentAccounts.map((account) => (
-              <AccountSummary key={account.username} data={account} />
-            ))}
-          </div>
-          <div className={styles.pagination}>
-            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-              &lt; Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-              Next &gt;
-            </button>
-          </div>
+
+                 {filteredAccounts.length > 0 && (
+           <div className={styles.summary}>
+             <AccountSummary data={{
+               url: `/assets/images/portraits/${filteredAccounts[0].name}.png`,
+               id: 1,
+               name: filteredAccounts[0].name,
+               username: filteredAccounts[0].name,
+               champions: 150,
+               skins: 200,
+               masteries: 50,
+               elo: filteredAccounts[0].lp || 1200,
+               roles: {
+                 top: 10,
+                 jungle: 15,
+                 mid: 25,
+                 adc: 20,
+                 support: 5
+               },
+               blueEssence: 50000,
+               orangeEssence: 2500
+             }} />
+           </div>
+         )}
+
+        <div className={styles.accounts}>
+          {filteredAccounts.map((account: Account) => (
+            <div key={account.name} className={styles.account}>
+              <h3>{account.name}</h3>
+              <p>Rank: {account.rank}</p>
+              <p>Tier: {account.tier}</p>
+              <p>LP: {account.lp}</p>
+              <p>Wins: {account.wins}</p>
+              <p>Losses: {account.losses}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
