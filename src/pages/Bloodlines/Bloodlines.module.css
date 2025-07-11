@@ -447,3 +447,77 @@
   font-size: 1rem;
   letter-spacing: 1px;
 }
+
+/* Summary row styles */
+.data__row.summary__row {
+  height: 2.2vw;
+  flex-shrink: 0;
+  margin: 0;
+  background-color: rgb(36, 34, 30);
+  border-top: 2px solid #c89b3c;
+  border-bottom: 2px solid #c89b3c;
+  font-weight: bolder;
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+}
+
+.summary__label {
+  color: #c89b3c !important;
+  font-weight: bold;
+  font-size: 1rem !important;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+
+
+/* Reset all properties and match regular row structure exactly */
+.summary__row .row__id {
+  width: 3% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-right: 1px solid #B69461 !important;
+  border-left: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.summary__row .row__champion {
+  width: 8% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  border-right: none !important;
+  border-left: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.summary__row .row__account {
+  flex: 1 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-left: 1px solid #B69461 !important;
+  border-right: none !important;
+  min-width: 120px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.champions__count {
+  color: #e4c493;
+  font-weight: bold;
+  font-size: 0.95rem;
+  letter-spacing: 0.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}

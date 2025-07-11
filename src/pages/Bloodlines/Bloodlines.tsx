@@ -389,6 +389,26 @@ const Bloodlines: React.FC = () => {
                   })()}
                 </div>
               ))}
+
+              {/* Summary row showing champions count for each account */}
+              <div className={`${styles.data__row} ${styles.summary__row}`}>
+                <div className={styles.row__id}></div>
+                <div className={`${styles.row__champion} ${styles.summary__label}`}>Champions</div>
+                {(() => {
+                  const { accounts } = getCurrentPageAccounts();
+                  return accounts.map((account) => {
+                    const ownedChampions = champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    const totalChampions = champions.length;
+                    return (
+                      <div key={account.id} className={styles.row__account}>
+                        <span className={styles.champions__count}>
+                          {ownedChampions} / {totalChampions}
+                        </span>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
             </div>
           </div>
         </div>

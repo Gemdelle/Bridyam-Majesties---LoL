@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import './App.scss'
 import { Nav } from './components/Nav/Nav'
 import { useAuthContext } from './contexts/AuthContext'
@@ -9,10 +9,72 @@ import Ranked from './pages/Ranked/Ranked'
 import Champions from './pages/Champions/Champions'
 import Achievements from './pages/Achievements/Achievements'
 import Redeem from './pages/Redeem/Redeem'
+import Adoption from './pages/Adoption/Adoption'
 import Login from './pages/Login/Login'
 
+function AppContent() {
+  const { isAuthenticated } = useAuthContext();
+  const location = useLocation();
+
+  // Hide navigation on adoption page
+  const showNav = isAuthenticated && location.pathname !== '/adoption';
+
+  return (
+    <>
+      {showNav && <Nav />}
+      <Routes>
+        {/* Public routes */}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? <Navigate to="/" replace /> : <Login />
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Accounts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bloodlines"
+          element={
+            <ProtectedRoute>
+              <Bloodlines />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ranked"
+          element={
+            <ProtectedRoute>
+              <Ranked />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirect unknown routes to home or login */}
+        <Route
+          path="/champions" element={<Champions />} />
+        <Route path="/achievements" element={<Achievements />} />
+        <Route path="/redeem" element={<Redeem />} />
+        <Route path="/adoption" element={<Adoption />} />
+        <Route path="*"
+          element={
+            <Navigate to={isAuthenticated ? "/" : "/login"} replace />
+          }
+        />
+      </Routes>
+    </>
+  )
+}
+
 function App() {
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { isInitialized } = useAuthContext();
 
   // Show loading while auth state is being determined
   if (!isInitialized) {
@@ -32,57 +94,9 @@ function App() {
   }
 
   return (
-    <>
-      <BrowserRouter>
-        {isAuthenticated && <Nav />}
-        <Routes>
-          {/* Public routes */}
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? <Navigate to="/" replace /> : <Login />
-            }
-          />
-
-          {/* Protected routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Accounts />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/bloodlines"
-            element={
-              <ProtectedRoute>
-                <Bloodlines />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ranked"
-            element={
-              <ProtectedRoute>
-                <Ranked />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Redirect unknown routes to home or login */}
-          <Route
-            path="/champions" element={<Champions />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/redeem" element={<Redeem />} />
-          <Route path="*"
-            element={
-              <Navigate to={isAuthenticated ? "/" : "/login"} replace />
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   )
 }
 
