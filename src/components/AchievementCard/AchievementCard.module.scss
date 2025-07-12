@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables.scss' as *;
 
 .achievement__card {
   width: 80%;
@@ -49,7 +49,7 @@
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background-image: url('../../assets/images/achievement/circle.png');
+  background-image: url('/images/achievement/circle.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

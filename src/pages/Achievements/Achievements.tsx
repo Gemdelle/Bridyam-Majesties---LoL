@@ -14,63 +14,63 @@ const achievements: Achievement[] = [
     {
         name: "Mastery Journey",
         description: "Take a champion from 0 to mastery 10",
-        iconSrc: "/src/assets/images/masteries/mastery/10.png",
+        iconSrc: "/images/masteries/mastery/10.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Skill Builder",
         description: "Level up champion masteries",
-        iconSrc: "/src/assets/images/masteries/mastery/level_plate.png",
+        iconSrc: "/images/masteries/mastery/level_plate.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Battle Tested",
         description: "Play matches",
-        iconSrc: "/src/assets/images/ranked-btn/mission.png",
+        iconSrc: "/images/ranked-btn/mission.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Victory Seeker",
         description: "Win matches",
-        iconSrc: "/src/assets/images/ranked-btn/wins.png",
+        iconSrc: "/images/ranked-btn/wins.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "First Blood",
         description: "Earn your first champion mastery",
-        iconSrc: "/src/assets/images/masteries/mastery/1.png",
+        iconSrc: "/images/masteries/mastery/1.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Rank Climber",
         description: "Advance to the next division",
-        iconSrc: "/src/assets/images/lol-elements/tier-challenger.webp",
+        iconSrc: "/images/lol-elements/tier-challenger.webp",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Tier Climber",
         description: "Ascend to a higher tier",
-        iconSrc: "/src/assets/images/lol-elements/tier-challenger-heml.webp",
+        iconSrc: "/images/lol-elements/tier-challenger-heml.webp",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Majesty Collector",
         description: "Redeem majesty rewards",
-        iconSrc: "/src/assets/images/ranked-btn/porveldam.png",
+        iconSrc: "/images/ranked-btn/porveldam.png",
         progress: 100,
         completedSteps: 10
     },
     {
         name: "Victorious Warrior",
         description: "Win ranked games with victorious champions",
-        iconSrc: "/src/assets/images/ranked-btn/gladasmy.png",
+        iconSrc: "/images/ranked-btn/gladasmy.png",
         progress: 100,
         completedSteps: 10
     }

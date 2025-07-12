@@ -11,11 +11,11 @@ const viewOptions: FilterOption[] = [
 ];
 
 const filterOptions: FilterOption[] = [
-    { id: 'porveldam', label: 'Porveldam', image: '/src/assets/images/ranked-btn/porveldam.png' },
-    { id: 'spadelline', label: 'Spadelline', image: '/src/assets/images/ranked-btn/spadelline.png' },
-    { id: 'zephiroth', label: 'Zephiroth', image: '/src/assets/images/ranked-btn/zephiroth.png' },
-    { id: 'gladasmy', label: 'Gladasmy', image: '/src/assets/images/ranked-btn/gladasmy.png' },
-    { id: 'primogenit', label: 'Primogenit', image: '/src/assets/images/ranked-btn/primogenit.png' },
+    { id: 'porveldam', label: 'Porveldam', image: '/images/ranked-btn/porveldam.png' },
+    { id: 'spadelline', label: 'Spadelline', image: '/images/ranked-btn/spadelline.png' },
+    { id: 'zephiroth', label: 'Zephiroth', image: '/images/ranked-btn/zephiroth.png' },
+    { id: 'gladasmy', label: 'Gladasmy', image: '/images/ranked-btn/gladasmy.png' },
+    { id: 'primogenit', label: 'Primogenit', image: '/images/ranked-btn/primogenit.png' },
     { id: 'wins', label: 'wins' },
     { id: 'missions', label: 'missions' },
     { id: 'hall missions', label: 'hall missions' },
@@ -293,7 +293,7 @@ const Ranked: React.FC = () => {
                         </div>
                         <div className={styles.stats__container}>
                             <div className={styles.stats__total_games}>
-                                <img src="/src/assets/images/ranked-btn/wins.png" alt="Total Games" />
+                                <img src="/images/ranked-btn/wins.png" alt="Total Games" />
                                 <span>{(() => {
                                     const accountsAbove30 = rankedData.filter(account => account.level >= 30);
                                     const totalWins = accountsAbove30.reduce((sum, account) => sum + account.wins.current, 0);
@@ -305,7 +305,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.stats__divider}></div>
 
                             <div className={styles.stats__porveldam}>
-                                <img src="/src/assets/images/ranked-btn/porveldam.png" alt="Porveldam" />
+                                <img src="/images/ranked-btn/porveldam.png" alt="Porveldam" />
                                 <span>{(() => {
                                     const porveldam = rankedData.filter(account => account.bloodline.toLowerCase() === 'porveldam' && account.level >= 30);
                                     const totalWins = porveldam.reduce((sum, account) => sum + account.wins.current, 0);
@@ -317,7 +317,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.stats__divider}></div>
 
                             <div className={styles.stats__spadelline}>
-                                <img src="/src/assets/images/ranked-btn/spadelline.png" alt="Spadelline" />
+                                <img src="/images/ranked-btn/spadelline.png" alt="Spadelline" />
                                 <span>{(() => {
                                     const spadelline = rankedData.filter(account => account.bloodline.toLowerCase() === 'spadelline' && account.level >= 30);
                                     const totalWins = spadelline.reduce((sum, account) => sum + account.wins.current, 0);
@@ -329,7 +329,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.stats__divider}></div>
 
                             <div className={styles.stats__zephiroth}>
-                                <img src="/src/assets/images/ranked-btn/zephiroth.png" alt="Zephiroth" />
+                                <img src="/images/ranked-btn/zephiroth.png" alt="Zephiroth" />
                                 <span>{(() => {
                                     const zephiroth = rankedData.filter(account => account.bloodline.toLowerCase() === 'zephiroth' && account.level >= 30);
                                     const totalWins = zephiroth.reduce((sum, account) => sum + account.wins.current, 0);
@@ -341,7 +341,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.stats__divider}></div>
 
                             <div className={styles.stats__gladasmy}>
-                                <img src="/src/assets/images/ranked-btn/gladasmy.png" alt="Gladasmy" />
+                                <img src="/images/ranked-btn/gladasmy.png" alt="Gladasmy" />
                                 <span>{(() => {
                                     const gladasmy = rankedData.filter(account => account.bloodline.toLowerCase() === 'gladasmy' && account.level >= 30);
                                     const totalWins = gladasmy.reduce((sum, account) => sum + account.wins.current, 0);
@@ -353,7 +353,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.stats__divider}></div>
 
                             <div className={styles.stats__primogenit}>
-                                <img src="/src/assets/images/ranked-btn/primogenit.png" alt="Primogenit" />
+                                <img src="/images/ranked-btn/primogenit.png" alt="Primogenit" />
                                 <span>{(() => {
                                     const primogenit = rankedData.filter(account => account.bloodline.toLowerCase() === 'primogenit' && account.level >= 30);
                                     const totalWins = primogenit.reduce((sum, account) => sum + account.wins.current, 0);

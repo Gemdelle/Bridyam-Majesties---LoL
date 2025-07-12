@@ -62,7 +62,7 @@ const Login: React.FC = () => {
                 {portraitNames.map((portrait, index) => (
                     <img
                         key={`set1-${index}`}
-                        src={`/src/assets/images/portraits/${portrait}.png`}
+                        src={`/images/portraits/${portrait}.png`}
                         alt={portrait}
                         className={styles.majestyImage}
                     />
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
                 {portraitNames.map((portrait, index) => (
                     <img
                         key={`set2-${index}`}
-                        src={`/src/assets/images/portraits/${portrait}.png`}
+                        src={`/images/portraits/${portrait}.png`}
                         alt={portrait}
                         className={styles.majestyImage}
                     />

@@ -36,6 +36,7 @@ const Redeem: React.FC = () => {
                 setError(result.message);
             }
         } catch (error) {
+            console.error('Redeem error:', error);
             setError('Error inesperado. Por favor, intenta de nuevo.');
         } finally {
             setLoading(false);

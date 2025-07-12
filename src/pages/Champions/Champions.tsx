@@ -171,7 +171,7 @@ const Champions: React.FC = () => {
                                         src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`}
                                         alt={champion.name}
                                         onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/src/assets/images/bg/bg.png';
+                                            (e.target as HTMLImageElement).src = '/images/bg/bg.png';
                                         }}
                                     />
                                 </div>

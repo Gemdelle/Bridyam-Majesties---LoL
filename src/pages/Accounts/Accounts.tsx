@@ -11,7 +11,7 @@ interface Account {
   lp?: number;
   wins?: number;
   losses?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // --- Opciones para los filtros ---
@@ -121,7 +121,7 @@ const Accounts: React.FC = () => {
                  {filteredAccounts.length > 0 && (
            <div className={styles.summary}>
              <AccountSummary data={{
-               url: `/assets/images/portraits/${filteredAccounts[0].name}.png`,
+               url: `/images/portraits/${filteredAccounts[0].name}.png`,
                id: 1,
                name: filteredAccounts[0].name,
                username: filteredAccounts[0].name,

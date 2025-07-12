@@ -42,6 +42,7 @@ export const useAuth = () => {
         return { success: false, message: response.message || 'Login failed' };
       }
     } catch (error) {
+      console.error('Login error:', error);
       setAuthState(prev => ({ ...prev, isLoading: false }));
       return { success: false, message: 'Network error. Please try again.' };
     }

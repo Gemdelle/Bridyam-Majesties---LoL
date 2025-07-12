@@ -1,38 +1,11 @@
 {
-  "build": {
-    "env": {
-      "VITE_NODE_ENV": "production"
-    }
-  },
-  "outputDirectory": "dist",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "vite",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, immutable, max-age=31536000"
-        }
-      ]
+      "handle": "filesystem"
     },
     {
-      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|eot))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, immutable, max-age=31536000"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 } 

@@ -2,8 +2,6 @@
 node_modules/
 
 # Development files
-src/
-scripts/
 .env.local
 .env.development.local
 .env.test.local
@@ -11,13 +9,6 @@ scripts/
 
 # Build files (will be rebuilt)
 dist/
-
-# Config files that aren't needed in production
-tsconfig.json
-tsconfig.app.json
-tsconfig.node.json
-vite.config.ts
-eslint.config.js
 
 # Git files
 .git/
@@ -34,4 +25,12 @@ eslint.config.js
 Thumbs.db
 
 # PowerShell scripts
-*.ps1 
+*.ps1
+
+# Test files
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+coverage
+.nyc_output 

@@ -61,11 +61,11 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         </div>
                         <div className={styles.essences}>
                             <div className={styles.essenceItem}>
-                                <img src="/src/assets/images/lol-elements/blue-essence.webp" alt="Blue Essence" />
+                                <img src="/images/lol-elements/blue-essence.webp" alt="Blue Essence" />
                                 <span>{data.blueEssence.toLocaleString()}</span>
                             </div>
                             <div className={styles.essenceItem}>
-                                <img src="/src/assets/images/lol-elements/orange-essence.webp" alt="Orange Essence" />
+                                <img src="/images/lol-elements/orange-essence.webp" alt="Orange Essence" />
                                 <span>{data.orangeEssence.toLocaleString()}</span>
                             </div>
                         </div>

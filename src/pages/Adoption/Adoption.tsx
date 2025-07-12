@@ -14,28 +14,28 @@ const eggOptions: EggOption[] = [
         id: 'dragon-egg',
         name: 'Dragon Egg',
         description: 'A mysterious egg with ancient draconic energy',
-        imageSrc: '/src/assets/images/lol-elements/blue-essence.webp',
+        imageSrc: '/images/lol-elements/blue-essence.webp',
         rarity: 'Legendary'
     },
     {
         id: 'phoenix-egg',
         name: 'Phoenix Egg',
         description: 'A warm egg that pulses with fiery life',
-        imageSrc: '/src/assets/images/lol-elements/orange-essence.webp',
+        imageSrc: '/images/lol-elements/orange-essence.webp',
         rarity: 'Epic'
     },
     {
         id: 'void-egg',
         name: 'Void Egg',
         description: 'A dark egg from the depths of the void',
-        imageSrc: '/src/assets/images/lol-elements/tier-diamond.webp',
+        imageSrc: '/images/lol-elements/tier-diamond.webp',
         rarity: 'Mythic'
     },
     {
         id: 'celestial-egg',
         name: 'Celestial Egg',
         description: 'A radiant egg blessed by the stars above',
-        imageSrc: '/src/assets/images/lol-elements/tier-challenger.webp',
+        imageSrc: '/images/lol-elements/tier-challenger.webp',
         rarity: 'Divine'
     }
 ];

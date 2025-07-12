@@ -95,7 +95,7 @@
     height: 95%;
     transition: all 300ms ease-in-out;
     cursor: pointer;
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 50% auto;
 }
@@ -115,7 +115,7 @@
 }
 
 .win__next {
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 40% auto;
     animation: brightnessPulse 2s infinite ease-in-out;
@@ -217,7 +217,7 @@
 .mission {
     width: 3%;
     // background-color: lightblue;
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 35% auto;
 }
@@ -227,7 +227,7 @@
 }
 
 .mission__selected {
-    background-image: url('../../assets/images/ranked-btn/fire.png');
+    background-image: url('/images/ranked-btn/fire.png');
     @include background-center;
     background-size: auto 95%;
     animation: breathe 3s infinite linear;
@@ -243,7 +243,7 @@
 
 .mission__current {
     width: 6%;
-    background-image: url('../../assets/images/ranked-btn/mission.png');
+    background-image: url('/images/ranked-btn/mission.png');
     @include background-center;
     background-size: 100% 80%;
     z-index: 2;
@@ -254,7 +254,7 @@
 }
 
 .mission__next {
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 35% auto;
     animation: brightnessPulse 2s infinite ease-in-out;
@@ -264,7 +264,7 @@
 .hall__mission {
     width: 2%;
     //  background-color: lightcoral;
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 50% auto;
     z-index: 2;
@@ -275,7 +275,7 @@
 }
 
 .hall__mission__selected {
-    background-image: url('../../assets/images/ranked-btn/fire.png');
+    background-image: url('/images/ranked-btn/fire.png');
     @include background-center;
     background-size: 100% 80%;
     animation: breathe 3s infinite linear;
@@ -284,7 +284,7 @@
 
 .hall__mission__current {
     width: 4%;
-    background-image: url('../../assets/images/ranked-btn/mission.png');
+    background-image: url('/images/ranked-btn/mission.png');
     @include background-center;
     background-size: 100% 80%;
     transform-origin: center bottom;
@@ -353,7 +353,7 @@
   }
 
 .hall__mission__next {
-    background-image: url('../../assets/images/ranked-btn/missing.png');
+    background-image: url('/images/ranked-btn/missing.png');
     @include background-center;
     background-size: 50% auto;
     animation: brightnessPulse 2s infinite ease-in-out;

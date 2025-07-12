@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './RankedAccount.module.scss';
 import { type RankedData } from '../../services/apiRankedsService';
-import tierDiamond from '../../assets/images/lol-elements/tier-diamond.webp';
-import tierPlatinum from '../../assets/images/lol-elements/tier-platinum.webp';
-import tierEmerald from '../../assets/images/lol-elements/tier-emerald.webp';
-import tierGold from '../../assets/images/lol-elements/tier-gold.webp';
-import tierSilver from '../../assets/images/lol-elements/tier-silver.webp';
-import tierBronze from '../../assets/images/lol-elements/tier-bronze.webp';
-import tierIron from '../../assets/images/lol-elements/tier-iron.webp';
+// Tier images are now served from public/images/
+const tierDiamond = '/images/lol-elements/tier-diamond.webp';
+const tierPlatinum = '/images/lol-elements/tier-platinum.webp';
+const tierEmerald = '/images/lol-elements/tier-emerald.webp';
+const tierGold = '/images/lol-elements/tier-gold.webp';
+const tierSilver = '/images/lol-elements/tier-silver.webp';
+const tierBronze = '/images/lol-elements/tier-bronze.webp';
+const tierIron = '/images/lol-elements/tier-iron.webp';
 
 interface RankedAccountProps {
     rankedData: RankedData;
@@ -211,17 +212,17 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     const getBloodlineImage = () => {
         switch (rankedData.bloodline) {
             case 'Porveldam':
-                return 'url(/src/assets/images/ranked-btn/porveldam.png)';
+                return 'url(/images/ranked-btn/porveldam.png)';
             case 'Spadelline':
-                return 'url(/src/assets/images/ranked-btn/spadelline.png)';
+                return 'url(/images/ranked-btn/spadelline.png)';
             case 'Zephiroth':
-                return 'url(/src/assets/images/ranked-btn/zephiroth.png)';
+                return 'url(/images/ranked-btn/zephiroth.png)';
             case 'Gladasmy':
-                return 'url(/src/assets/images/ranked-btn/gladasmy.png)';
+                return 'url(/images/ranked-btn/gladasmy.png)';
             case 'Primogenit':
-                return 'url(/src/assets/images/ranked-btn/primogenit.png)';
+                return 'url(/images/ranked-btn/primogenit.png)';
             default:
-                return 'url(../../assets/images/ranked-btn/missing.png)';
+                return 'url(/images/ranked-btn/missing.png)';
         }
     };
 

@@ -1,4 +1,4 @@
-ï»¿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
@@ -7,11 +7,11 @@ import { fetchMasteryData, type MasteryData } from '../../services/apiMasteriesS
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
-  { id: 'porveldam', label: 'Porveldam', image: '/src/assets/images/ranked-btn/porveldam.png' },
-  { id: 'spadelline', label: 'Spadelline', image: '/src/assets/images/ranked-btn/spadelline.png' },
-  { id: 'zephiroth', label: 'Zephiroth', image: '/src/assets/images/ranked-btn/zephiroth.png' },
-  { id: 'gladasmy', label: 'Gladasmy', image: '/src/assets/images/ranked-btn/gladasmy.png' },
-  { id: 'primogenit', label: 'Primogenit', image: '/src/assets/images/ranked-btn/primogenit.png' }
+  { id: 'porveldam', label: 'Porveldam', image: '/images/ranked-btn/porveldam.png' },
+  { id: 'spadelline', label: 'Spadelline', image: '/images/ranked-btn/spadelline.png' },
+  { id: 'zephiroth', label: 'Zephiroth', image: '/images/ranked-btn/zephiroth.png' },
+  { id: 'gladasmy', label: 'Gladasmy', image: '/images/ranked-btn/gladasmy.png' },
+  { id: 'primogenit', label: 'Primogenit', image: '/images/ranked-btn/primogenit.png' }
 ];
 
 const filterOptions: FilterOption[] = [
@@ -46,7 +46,7 @@ const Bloodlines: React.FC = () => {
   const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
   const [masteryLoading, setMasteryLoading] = useState(true);
 
-  // --- Estado para la bÃºsqueda ---
+  // --- Estado para la búsqueda ---
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   // --- Cargar datos de ranked ---
@@ -102,7 +102,7 @@ const Bloodlines: React.FC = () => {
 
 
 
-  // --- FunciÃ³n para filtrar los datos ranked ---
+  // --- Función para filtrar los datos ranked ---
   const filterRankedData = (dataToFilter: RankedData[]) => {
     let filteredData = dataToFilter;
 
@@ -116,7 +116,7 @@ const Bloodlines: React.FC = () => {
     return filteredData;
   };
 
-  // --- FunciÃ³n para filtrar los champions por rol ---
+  // --- Función para filtrar los champions por rol ---
   const filterChampionsByRole = (championsToFilter: Champion[]) => {
     if (selectedFilters.length === 0) return championsToFilter;
 
@@ -129,7 +129,7 @@ const Bloodlines: React.FC = () => {
     });
   };
 
-  // --- FunciÃ³n para filtrar los champions por bÃºsqueda ---
+  // --- Función para filtrar los champions por búsqueda ---
   const filterChampionsBySearch = (championsToFilter: Champion[]) => {
     if (searchTerm.trim() === '') return championsToFilter;
 
@@ -138,7 +138,7 @@ const Bloodlines: React.FC = () => {
     );
   };
 
-  // --- FunciÃ³n para ordenar los champions ---
+  // --- Función para ordenar los champions ---
   const sortChampions = (championsToSort: Champion[]) => {
     if (selectedSorts.length === 0) return championsToSort;
 
@@ -149,28 +149,29 @@ const Bloodlines: React.FC = () => {
         case 'id':
           // Sort by ID ascending (default)
           return a.id - b.id;
-        case 'mastery':
+        case 'mastery': {
           // Sort by total mastery count across all accounts descending
           const { accounts } = getCurrentPageAccounts();
           const totalMasteryA = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, a.id), 0);
           const totalMasteryB = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, b.id), 0);
           return totalMasteryB - totalMasteryA;
+        }
         default:
           return a.id - b.id;
       }
     });
   };
 
-  // --- FunciÃ³n para obtener el nivel de mastery ---
+  // --- Función para obtener el nivel de mastery ---
   const getMasteryLevel = (rankedId: number, championId: number): number => {
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
     return mastery ? mastery.champion_level : 0;
   };
 
-  // --- FunciÃ³n para obtener la imagen de mastery ---
+  // --- Función para obtener la imagen de mastery ---
   const getMasteryImage = (masteryLevel: number): string => {
-    return `/src/assets/images/masteries/mastery/${masteryLevel}.png`;
+    return `/images/masteries/mastery/${masteryLevel}.png`;
   };
 
   // --- Calcular las accounts a mostrar ---
@@ -181,7 +182,7 @@ const Bloodlines: React.FC = () => {
 
 
 
-  // --- Handler para selecciÃ³n Ãºnica de view ---
+  // --- Handler para selección única de view ---
   const handleViewChange = (newSelection: string[]) => {
     // For single selection, we want to replace the current selection
     // If the new selection is empty, keep the current one
@@ -256,14 +257,14 @@ const Bloodlines: React.FC = () => {
                   className={styles.search__clear}
                   type="button"
                 >
-                  Ã—
+                  ×
                 </button>
               )}
             </div>
             <div className={styles.stats__container}>
 
               <div className={styles.stats__porveldam}>
-                <img src="/src/assets/images/ranked-btn/porveldam.png" alt="Porveldam" />
+                <img src="/images/ranked-btn/porveldam.png" alt="Porveldam" />
                 <span>{(() => {
                   const porveldam = rankedData.filter(account => account.bloodline.toLowerCase() === 'porveldam');
                   const totalChampions = champions.length;
@@ -280,7 +281,7 @@ const Bloodlines: React.FC = () => {
               <div className={styles.stats__divider}></div>
 
               <div className={styles.stats__spadelline}>
-                <img src="/src/assets/images/ranked-btn/spadelline.png" alt="Spadelline" />
+                <img src="/images/ranked-btn/spadelline.png" alt="Spadelline" />
                 <span>{(() => {
                   const spadelline = rankedData.filter(account => account.bloodline.toLowerCase() === 'spadelline');
                   const totalChampions = champions.length;
@@ -297,7 +298,7 @@ const Bloodlines: React.FC = () => {
               <div className={styles.stats__divider}></div>
 
               <div className={styles.stats__zephiroth}>
-                <img src="/src/assets/images/ranked-btn/zephiroth.png" alt="Zephiroth" />
+                <img src="/images/ranked-btn/zephiroth.png" alt="Zephiroth" />
                 <span>{(() => {
                   const zephiroth = rankedData.filter(account => account.bloodline.toLowerCase() === 'zephiroth');
                   const totalChampions = champions.length;
@@ -314,7 +315,7 @@ const Bloodlines: React.FC = () => {
               <div className={styles.stats__divider}></div>
 
               <div className={styles.stats__gladasmy}>
-                <img src="/src/assets/images/ranked-btn/gladasmy.png" alt="Gladasmy" />
+                <img src="/images/ranked-btn/gladasmy.png" alt="Gladasmy" />
                 <span>{(() => {
                   const gladasmy = rankedData.filter(account => account.bloodline.toLowerCase() === 'gladasmy');
                   const totalChampions = champions.length;
@@ -331,7 +332,7 @@ const Bloodlines: React.FC = () => {
               <div className={styles.stats__divider}></div>
 
               <div className={styles.stats__primogenit}>
-                <img src="/src/assets/images/ranked-btn/primogenit.png" alt="Primogenit" />
+                <img src="/images/ranked-btn/primogenit.png" alt="Primogenit" />
                 <span>{(() => {
                   const primogenit = rankedData.filter(account => account.bloodline.toLowerCase() === 'primogenit');
                   const totalChampions = champions.length;
@@ -358,7 +359,7 @@ const Bloodlines: React.FC = () => {
                 return accounts.map((account) => (
                   <div key={account.id} className={styles.header__account}>
                     <div className={styles.account__portrait}>
-                      <img src={`/src/assets/images/portraits/${account.name}.png`} alt={account.name} />
+                      <img src={`/images/portraits/${account.name}.png`} alt={account.name} />
                     </div>
                     <div className={styles.account__name}>{account.name}</div>
                   </div>

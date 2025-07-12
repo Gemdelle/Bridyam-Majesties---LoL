@@ -52,11 +52,11 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 
     // For special achievements, show current level on the left
     const leftIconSrc = isMasteryJourney
-        ? `/src/assets/images/masteries/mastery/${completedSteps}.png`
+        ? `/images/masteries/mastery/${completedSteps}.png`
         : isRankClimber
-            ? `/src/assets/images/lol-elements/${tierImages[Math.min(completedSteps - 1, tierImages.length - 1)]}`
+            ? `/images/lol-elements/${tierImages[Math.min(completedSteps - 1, tierImages.length - 1)]}`
             : isTierClimber
-                ? `/src/assets/images/lol-elements/${helmImages[Math.min(completedSteps - 1, helmImages.length - 1)]}`
+                ? `/images/lol-elements/${helmImages[Math.min(completedSteps - 1, helmImages.length - 1)]}`
                 : iconSrc;
 
     return (
@@ -84,12 +84,12 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 
                     // For special achievements, use appropriate images
                     const circleImageSrc = isMasteryJourney
-                        ? `/src/assets/images/masteries/mastery/${stepNumber}.png`
+                        ? `/images/masteries/mastery/${stepNumber}.png`
                         : isRankClimber
-                            ? `/src/assets/images/lol-elements/${tierImages[Math.min(stepNumber - 1, tierImages.length - 1)]}`
+                            ? `/images/lol-elements/${tierImages[Math.min(stepNumber - 1, tierImages.length - 1)]}`
                             : isTierClimber
-                                ? `/src/assets/images/lol-elements/${helmImages[Math.min(stepNumber - 1, helmImages.length - 1)]}`
-                                : "/src/assets/images/achievement/circle.png";
+                                ? `/images/lol-elements/${helmImages[Math.min(stepNumber - 1, helmImages.length - 1)]}`
+                                : "/images/achievement/circle.png";
 
                     return (
                         <div

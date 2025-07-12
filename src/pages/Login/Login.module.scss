@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables.scss' as *;
 
 .page {
   width: 100%;
@@ -18,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/src/assets/images/bg/bg-2.png');
+  background-image: url('/images/bg/bg-2.png');
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -75,7 +75,7 @@
   transform: translate(-50%, -50%);
   width: 45%;
   height: 92%;
-  background-image: url('/src/assets/images/frames/essence-ring.png');
+  background-image: url('/images/frames/essence-ring.png');
   @include background-center;
   background-size: 100% 100%;
   animation: spin 70s linear infinite;
