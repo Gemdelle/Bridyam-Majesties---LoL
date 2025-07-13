@@ -79,7 +79,7 @@
   @include background-center;
   background-size: 100% 100%;
   animation: spin 70s linear infinite;
-  z-index: 2;
+  z-index: 999;
 }
 
 .spinningBackground {

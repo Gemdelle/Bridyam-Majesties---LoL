@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
+import Tab, { type TabOption } from '../../components/Tab';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
+
+// --- Opciones para las tabs ---
+const tabOptions: TabOption[] = [
+    { id: 'missions', label: 'missions', image: '/images/ranked-btn/mission.png' },
+    { id: 'hall-missions', label: 'hall', image: '/images/ranked-btn/hall-mission.png' }
+];
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -212,6 +219,11 @@ const Ranked: React.FC = () => {
         }
     };
 
+    // --- Handler para selección de tab ---
+    const handleTabChange = (selectedId: string) => {
+        setSelectedView(selectedId);
+    };
+
     // --- Handler para selección única de view ---
     const handleViewChange = (newSelection: string[]) => {
         // For single selection, we want to replace the current selection
@@ -375,7 +387,13 @@ const Ranked: React.FC = () => {
                             <div className={styles.header__wins}>WINS</div>
                             <div className={styles.header__soloq}>SOLO</div>
                             <div className={styles.header__flex}>FLEX</div>
-                            <div className={styles.header__missions}>MISSIONS</div>
+                            <div className={styles.header__missions}>
+                                <Tab
+                                    options={tabOptions}
+                                    selectedOption={selectedView}
+                                    onSelectionChange={handleTabChange}
+                                />
+                            </div>
                         </div>
                         {(() => {
                             const { accounts, totalPages } = getCurrentPageAccounts();
