@@ -22,7 +22,7 @@ const Login: React.FC = () => {
 
         try {
             const result = await login(email, password);
-            
+
             if (result.success) {
                 // Login successful - context will handle state updates
                 console.log('Login successful, user authenticated');
@@ -79,6 +79,7 @@ const Login: React.FC = () => {
             </div>
             <div className={styles.container}>
                 <div className={styles.spinningBackground}></div>
+                <div className={styles.blurOverlay}></div>
                 <div className={styles.content}>
                     <h1>Login</h1>
                     <form className={styles.loginForm} onSubmit={handleSubmit}>
@@ -113,8 +114,8 @@ const Login: React.FC = () => {
                                 disabled={isLoading}
                             />
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className={`${styles.submitButton} ${isLoading ? styles.loading : ''}`}
                             disabled={isLoading}
                         >
