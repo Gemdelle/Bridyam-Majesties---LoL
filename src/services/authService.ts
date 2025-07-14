@@ -1,5 +1,5 @@
 // API configuration
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
 
 // Types
 export interface LoginRequest {

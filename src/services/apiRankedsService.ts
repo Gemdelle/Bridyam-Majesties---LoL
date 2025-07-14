@@ -53,7 +53,7 @@ export interface RankedResponse {
 // Fetch ranked data from API
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/ranked');
+        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -70,7 +70,7 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
 // Update ranked data via POST to API
 export const updateRankedData = async (rankedData: RankedData[]): Promise<RankedData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/ranked', {
+        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
