@@ -67,6 +67,31 @@
 .essencer__container span {
     margin-left: 5%;
     color: #e4c493;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.essencer__container span:hover {
+    color: #f0e6d2;
+}
+
+.essencer__input {
+    margin-left: 5%;
+    background: transparent;
+    border: 1px solid #c89b3c;
+    border-radius: 2px;
+    color: #e4c493;
+    font-size: 0.8vw;
+    padding: 2px 4px;
+    width: 90%;
+    font-family: inherit;
+}
+
+.essencer__input:focus {
+    outline: none;
+    border-color: #f0e6d2;
+    color: #f0e6d2;
+    background: rgba(200, 155, 60, 0.1);
 }
 
 .level__container {

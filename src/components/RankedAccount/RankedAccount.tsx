@@ -30,7 +30,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
-    
+
+    // States for essencer editing
+    const [isEditingEssencer, setIsEditingEssencer] = useState(false);
+    const [tempEssencerName, setTempEssencerName] = useState(rankedData.name);
+
     // Refs for rank containers
     const soloqRef = useRef<HTMLDivElement>(null);
     const flexRef = useRef<HTMLDivElement>(null);
@@ -75,13 +79,16 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             newWins[i] = true;
         }
         setSelectedWins(newWins);
+
+        // Update essencer name
+        setTempEssencerName(rankedData.name);
     }, [rankedData]);
 
     // Close rank selectors when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
-            
+
             // Check if click is outside both containers
             if (soloqRef.current && !soloqRef.current.contains(target)) {
                 setShowSoloqSelector(false);
@@ -186,6 +193,32 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             return newState;
         });
+    };
+
+    const handleEssencerEdit = () => {
+        setIsEditingEssencer(true);
+    };
+
+    const handleEssencerSave = () => {
+        const updatedRankedData = {
+            ...rankedData,
+            name: tempEssencerName.trim()
+        };
+        onUpdateRankedData(updatedRankedData);
+        setIsEditingEssencer(false);
+    };
+
+    const handleEssencerCancel = () => {
+        setTempEssencerName(rankedData.name);
+        setIsEditingEssencer(false);
+    };
+
+    const handleEssencerKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleEssencerSave();
+        } else if (e.key === 'Escape') {
+            handleEssencerCancel();
+        }
     };
 
     const getTierImage = (tier: string) => {
@@ -296,7 +329,19 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div className={styles.essencer__container}>
-                <span>{rankedData.name}</span>
+                {isEditingEssencer ? (
+                    <input
+                        type="text"
+                        value={tempEssencerName}
+                        onChange={(e) => setTempEssencerName(e.target.value)}
+                        onBlur={handleEssencerSave}
+                        onKeyDown={handleEssencerKeyPress}
+                        className={styles.essencer__input}
+                        autoFocus
+                    />
+                ) : (
+                    <span onClick={handleEssencerEdit}>{rankedData.name}</span>
+                )}
             </div>
 
             <div className={styles.divider}></div>
