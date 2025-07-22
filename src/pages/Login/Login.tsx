@@ -121,6 +121,10 @@ const Login: React.FC = () => {
                         >
                             {isLoading ? 'Logging in...' : 'Login'}
                         </button>
+
+                        <div className={styles.signUpLink}>
+                            Don't have an account? <a href="/signup">Sign up here</a>
+                        </div>
                     </form>
                 </div>
             </div>

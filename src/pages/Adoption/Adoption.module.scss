@@ -8,22 +8,22 @@
 
   &__container {
     width: 92%;
-    height: 83%;
+    height: 85%;
     margin: 0 auto;
-    margin-top: 7%;
+    margin-top: 3%;
     @include flex-col-between;
-    // background-color: red;
+    background-color: red;
   }
 
   &__header {
     height: 15%;
     text-align: center;
-    // background-color: blue;
+    background-color: blue;
   }
 
   &__title {
     margin: 0;
-    height: 60%;
+    height: 48%;
     font-size: 3.5rem;
     color: #c89b3c;
     font-weight: bold;
@@ -34,7 +34,7 @@
   }
 
   &__subtitle {
-    height: 40%;
+    height: 20%;
     margin: 0;
     font-size: 1.4rem;
     color: #cdbe91;
@@ -42,30 +42,29 @@
   }
 
   &__content {
-    height: 75%;
+    height: 85%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 3rem;
-    // background-color: violet;
+    background-color: violet;
   }
 }
 
 .egg__cards {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  width: 100%;
-  height: 80%;
+  @include flex-between;
+  width: 92%;
+  height: 100%;
   align-items: center;
   flex-wrap: wrap;
+  background-color: blue;
 }
 
 .egg__card {
-  width: 280px;
-  height: 400px;
+  width: 22%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.4);
   border: 3px solid #c89b3c;
   border-radius: 20px;
@@ -129,22 +128,22 @@
   position: relative;
   z-index: 1;
   height: 100%;
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   text-align: center;
 }
 
 .egg__image {
-  width: 120px;
-  height: 120px;
+  width: 100%;
+  height: 50%;
   position: relative;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: yellow;
 }
 
 .spinning__circle {
@@ -152,19 +151,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 140px;
-  height: 140px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: url('/images/achievement/circle.png') no-repeat center center;
   background-size: contain;
-  animation: spin 4s linear infinite;
+  animation: spin 40s linear infinite;
   z-index: 1;
+  // background-color: red;
 }
 
 .egg__badge {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 80%;
+  height: 80%;
   border-radius: 50%;
   background: rgba(200, 155, 60, 0.2);
   border: 3px solid #c89b3c;
@@ -176,10 +176,11 @@
   z-index: 2;
 
   img {
-    width: 80px;
-    height: 80px;
+    width: 90%;
+    height: 90%;
     object-fit: contain;
     filter: brightness(1.2) saturate(1.2);
+    // background-color: red;
   }
 }
 

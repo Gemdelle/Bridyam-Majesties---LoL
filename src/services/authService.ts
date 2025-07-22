@@ -64,7 +64,7 @@ export class AuthService {
         // Store token in localStorage and instance
         this.token = data.token;
         localStorage.setItem('auth_token', data.token);
-        
+
         // Store user data
         if (data.user) {
           localStorage.setItem('user_data', JSON.stringify(data.user));
@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   // Register method
-  async register(userData: { email: string; password: string; fullName?: string }): Promise<LoginResponse> {
+  async register(userData: { email: string; password: string; fullName?: string; birthDate?: string }): Promise<LoginResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
@@ -101,7 +101,7 @@ export class AuthService {
         // Store token in localStorage and instance
         this.token = data.token;
         localStorage.setItem('auth_token', data.token);
-        
+
         // Store user data
         if (data.user) {
           localStorage.setItem('user_data', JSON.stringify(data.user));
