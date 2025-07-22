@@ -6,7 +6,7 @@ import styles from './SignUp.module.scss';
 
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState('');
-    const [twitchName, setTwitchName] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [birthDate, setBirthDate] = useState('');
@@ -59,7 +59,7 @@ const SignUp: React.FC = () => {
             const response = await authService.register({
                 email,
                 password,
-                fullName: twitchName,
+                name,
                 birthDate
             });
 
@@ -67,7 +67,7 @@ const SignUp: React.FC = () => {
                 setSuccess('Registration successful! You can now login with your credentials.');
                 // Clear form
                 setEmail('');
-                setTwitchName('');
+                setName('');
                 setPassword('');
                 setConfirmPassword('');
                 setBirthDate('');
@@ -131,12 +131,12 @@ const SignUp: React.FC = () => {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="twitchName" className={styles.label}>Twitch Name</label>
+                        <label htmlFor="name" className={styles.label}>Twitch Name</label>
                         <input
                             type="text"
-                            id="twitchName"
-                            value={twitchName}
-                            onChange={(e) => setTwitchName(e.target.value)}
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             className={styles.input}
                             placeholder="Enter your Twitch username"
                             required
