@@ -10,7 +10,7 @@ export interface LoginRequest {
 export interface User {
   id: string;
   email: string;
-  fullName?: string;
+  name?: string;
   isActive: boolean;
   createdAt: string;
   authProvider: string;
@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   // Register method
-  async register(userData: { email: string; password: string; fullName?: string; birthDate?: string }): Promise<LoginResponse> {
+  async register(userData: { email: string; password: string; name?: string; birthDate?: string }): Promise<LoginResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
