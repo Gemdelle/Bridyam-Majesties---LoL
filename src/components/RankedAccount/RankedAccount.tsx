@@ -274,6 +274,13 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
     };
 
+    const isAccountRanked = (): boolean => {
+        const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+        const soloqRanked = validTiers.includes(rankedData.elo_soloq.tier.toLowerCase());
+        const flexRanked = validTiers.includes(rankedData.elo_flex.tier.toLowerCase());
+        return soloqRanked || flexRanked;
+    };
+
     const availableTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
     const availableDivisions = [1, 2, 3, 4];
 
@@ -317,7 +324,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div className={styles.portrait__container}>
-                <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
+                {isAccountRanked() && (
+                    <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
+                )}
             </div>
 
             <div className={styles.divider}></div>

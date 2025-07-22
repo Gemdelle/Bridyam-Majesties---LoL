@@ -46,7 +46,7 @@
 }
 
 .search__container {
-  width: 30%;
+  width: 25%;
   height: 70%;
   @include flex-center;
   position: relative;
@@ -61,7 +61,7 @@
   color: #cdbe91;
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0 1rem;
+  padding: 0 0.8rem;
   outline: none;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -114,7 +114,7 @@
 }
 
 .stats__container {
-  width: 68%;
+  width: 78%;
   height: 100%;
   display: flex;
   gap: 6px;
