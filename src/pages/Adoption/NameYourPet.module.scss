@@ -142,7 +142,8 @@
 }
 
 .pet__underneath.fadeIn {
-  animation: petFadeIn 2s ease-in-out forwards;
+  animation: petFadeIn 2s ease-in-out forwards, petBreathe 3s ease-in-out infinite;
+  transform-origin: bottom center;
 }
 
 .input__container {
@@ -229,6 +230,12 @@
 @keyframes petFadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes petBreathe {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.02); }
+  100% { transform: scaleY(1); }
 }
 
 @media (max-width: 768px) {
