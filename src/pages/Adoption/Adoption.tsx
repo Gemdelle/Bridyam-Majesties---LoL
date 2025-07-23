@@ -119,7 +119,7 @@ const Adoption: React.FC = () => {
                     onClick={handleConfirmSelection}
                     disabled={!selectedEgg}
                 >
-                    {selectedEgg ? 'Adopt Pet' : 'Select a Pet to Adopt'}
+                    Adopt
                 </button>
             </div>
         </div>
