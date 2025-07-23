@@ -1,9 +1,63 @@
 @use '../../styles/variables.scss' as *;
 
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: black;
+  position: relative;
+}
+
+.pageBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/bg/bg-2.png');
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 0;
+  filter: brightness(0.2);
+}
+
+.majestyLoop {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  z-index: 1;
+  animation: scrollLeft 60s linear infinite;
+  will-change: transform;
+  gap: 8vw;
+}
+
+.majestyImage {
+  height: 70%;
+  width: auto;
+  object-fit: contain;
+  object-position: center top;
+  transition: opacity 0.3s ease;
+  flex-shrink: 0;
+  filter: brightness(0.5);
+}
+
 .container {
   width: 35%;
-  height: 85%; // Made taller than login for more fields
-  margin-top: 3%;
+  height: 85%;
+  margin-top: 5%;
+  margin-bottom: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,32 +65,45 @@
   border-radius: 50%;
   position: relative;
   z-index: 900;
-  // Ensure we're properly positioned in the viewport
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
-.spinningBackground {
+.backgroundImage {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  z-index: -1;
+  top: 4.5%;
+  left: 27.5%;
+  transform: translate(-50%, -50%);
+  width: 45%;
+  height: 92%;
+  background-image: url('/images/frames/essence-ring.png');
+  @include background-center;
+  background-size: 106% 106%;
+  animation: spin 70s linear infinite;
+  z-index: 99;
 }
+
+// .spinningBackground {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   border-radius: 50%;
+//   z-index: -1;
+// }
 
 .blurOverlay {
   position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
+  /* top: 7%; */
+  /* left: 1%; */
+  width: 100%;
+  height: 89%;
+  justify-self: anchor-center;
+  /* right: 1%; */
+  /* bottom: -3%; */
   border-radius: 50%;
   backdrop-filter: blur(10px);
   z-index: 49;
+  /* background-color: #287a28; */
 }
 
 .content {
@@ -68,8 +135,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem; // Reduced gap to fit more fields
-  max-height: 60vh; // Limit height
-  overflow-y: auto; // Add scroll if needed
+  max-height: 73vh; // Limit height
+  overflow: auto; // Add scroll if needed
 }
 
 .inputGroup {
@@ -87,7 +154,7 @@
 }
 
 .input {
-  width: 100%;
+  width: auto;
   height: 2.5rem; // Slightly smaller height
   background: linear-gradient(145deg, #1e2328, #0f1419);
   border: 2px solid #463714;
@@ -228,51 +295,51 @@
 }
 
 // Background portraits container
-.portraitsContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-  pointer-events: none;
-}
+// .portraitsContainer {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100vw;
+//   height: 100vh;
+//   z-index: 1;
+//   pointer-events: none;
+// }
 
-.portrait {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  opacity: 0.3;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: all 0.3s ease;
+// .portrait {
+//   position: absolute;
+//   width: 120px;
+//   height: 120px;
+//   opacity: 0.3;
+//   border-radius: 50%;
+//   overflow: hidden;
+//   transition: all 0.3s ease;
   
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+//   img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//   }
   
-  &:hover {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
-}
+//   &:hover {
+//     opacity: 0.6;
+//     transform: scale(1.1);
+//   }
+// }
 
 // Portrait positions
-.portrait1 { top: 10%; left: 5%; animation: float 6s ease-in-out infinite; }
-.portrait2 { top: 20%; right: 8%; animation: float 8s ease-in-out infinite 1s; }
-.portrait3 { bottom: 30%; left: 3%; animation: float 7s ease-in-out infinite 2s; }
-.portrait4 { bottom: 15%; right: 10%; animation: float 9s ease-in-out infinite 3s; }
-.portrait5 { top: 50%; left: 2%; animation: float 5s ease-in-out infinite 4s; }
-.portrait6 { top: 60%; right: 4%; animation: float 6s ease-in-out infinite 5s; }
-.portrait7 { top: 30%; left: 8%; animation: float 7s ease-in-out infinite 1.5s; }
-.portrait8 { bottom: 50%; right: 12%; animation: float 8s ease-in-out infinite 2.5s; }
-.portrait9 { top: 5%; right: 25%; animation: float 6s ease-in-out infinite 3.5s; }
-.portrait10 { bottom: 5%; left: 20%; animation: float 9s ease-in-out infinite 4.5s; }
-.portrait11 { top: 80%; left: 15%; animation: float 5s ease-in-out infinite 0.5s; }
-.portrait12 { top: 40%; right: 20%; animation: float 7s ease-in-out infinite 1.8s; }
-.portrait13 { bottom: 40%; left: 25%; animation: float 8s ease-in-out infinite 3.2s; }
+// .portrait1 { top: 10%; left: 5%; animation: float 6s ease-in-out infinite; }
+// .portrait2 { top: 20%; right: 8%; animation: float 8s ease-in-out infinite 1s; }
+// .portrait3 { bottom: 30%; left: 3%; animation: float 7s ease-in-out infinite 2s; }
+// .portrait4 { bottom: 15%; right: 10%; animation: float 9s ease-in-out infinite 3s; }
+// .portrait5 { top: 50%; left: 2%; animation: float 5s ease-in-out infinite 4s; }
+// .portrait6 { top: 60%; right: 4%; animation: float 6s ease-in-out infinite 5s; }
+// .portrait7 { top: 30%; left: 8%; animation: float 7s ease-in-out infinite 1.5s; }
+// .portrait8 { bottom: 50%; right: 12%; animation: float 8s ease-in-out infinite 2.5s; }
+// .portrait9 { top: 5%; right: 25%; animation: float 6s ease-in-out infinite 3.5s; }
+// .portrait10 { bottom: 5%; left: 20%; animation: float 9s ease-in-out infinite 4.5s; }
+// .portrait11 { top: 80%; left: 15%; animation: float 5s ease-in-out infinite 0.5s; }
+// .portrait12 { top: 40%; right: 20%; animation: float 7s ease-in-out infinite 1.8s; }
+// .portrait13 { bottom: 40%; left: 25%; animation: float 8s ease-in-out infinite 3.2s; }
 
 @keyframes errorSlide {
   from {
@@ -296,11 +363,27 @@
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+// @keyframes float {
+//   0%, 100% {
+//     transform: translateY(0px);
+//   }
+//   50% {
+//     transform: translateY(-20px);
+//   }
+// } 
+@keyframes scrollLeft {
+  from {
+    transform: translateX(0%);
   }
-  50% {
-    transform: translateY(-20px);
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 } 
