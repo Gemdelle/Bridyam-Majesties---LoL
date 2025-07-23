@@ -65,10 +65,13 @@ const Adoption: React.FC = () => {
 
                 <div className={styles.adoption__content}>
                     <div className={styles.egg__cards}>
-                        {eggOptions.map((egg) => (
+                        {eggOptions.map((egg, index) => (
                             <div
                                 key={egg.id}
                                 className={`${styles.egg__card} ${selectedEgg === egg.id ? styles.selected : ''}`}
+                                style={{
+                                    backgroundImage: `url('/images/statues/statue-pet-${index + 1}.png')`
+                                }}
                                 onClick={() => handleEggSelect(egg.id)}
                             >
                                 <div className={styles.card__glow}></div>
@@ -81,7 +84,6 @@ const Adoption: React.FC = () => {
                                     </div>
                                     <div className={styles.egg__info}>
                                         <h3 className={styles.egg__name}>{egg.name}</h3>
-                                        <p className={styles.egg__rarity}>{egg.rarity}</p>
                                         <p className={styles.egg__description}>{egg.description}</p>
                                     </div>
                                 </div>
