@@ -60,6 +60,41 @@
 
 }
 
+.gem__container {
+  position: absolute;
+  top: 2%;
+  left: 46.7%;
+  width: 6vw;
+  height: 6vw;
+  z-index: 99;
+  @include flex-col;
+  justify-content: flex-end;
+  transition: filter 1.5s ease-in-out;
+  // background-color: red;
+
+  .gem__image {
+    position: absolute;
+    top: -25%;
+    left: 30%;
+    width: 40%;
+    height: 80%;
+    z-index: 99;
+    animation: slowFloat 5s ease-in-out infinite;
+    filter: saturate(0) brightness(0.6);
+    transition: all 1s ease-in-out;
+  }
+
+  .gem__image.active {
+    filter: saturate(1) brightness(1);
+  }
+
+  .gem__base__image {
+    width: auto;
+    height: 100%;
+    z-index: 9;
+  }
+}
+
 .egg__cards {
   @include flex-center;
   width: 92%;
@@ -326,6 +361,12 @@
     font-size: 1.2rem;
   }
 } 
+
+@keyframes slowFloat {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
 
 @keyframes shake {
   0% { transform: rotate(0); }
