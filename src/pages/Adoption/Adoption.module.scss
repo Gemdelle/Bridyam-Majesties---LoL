@@ -9,7 +9,7 @@
 
   &__container {
     width: 92%;
-    height: 85%;
+    height: 92%;
     margin: 0 auto;
     margin-top: 3%;
     @include flex-col-between;
@@ -47,7 +47,7 @@
   }
 
   &__content {
-    height: 85%;
+    height: 83%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -144,6 +144,12 @@
   &:nth-child(4) {
     border-left: 3px solid #c89b3c;
   }
+  // Make the third egg image bigger
+  &:nth-child(3) .egg__badge img {
+    width: 100%;
+    height: auto;
+    transform: scale(1.05);
+  }
 }
 
 .card__glow {
@@ -230,6 +236,8 @@
 }
 
 .egg__info {
+  padding-top: 3%;
+  border-top: 5px double #c89b3c;
   height: 15%;
   width: 70%;
   @include flex-col;
@@ -237,7 +245,7 @@
 }
 
 .egg__name {
-  font-size: 1.8rem;
+  font-size: 1.5vw;
   color: #c89b3c;
   font-weight: bold;
   text-transform: uppercase;
@@ -247,7 +255,7 @@
 }
 
 .egg__description {
-  font-size: 1rem;
+  font-size: 1vw;
   color: #cdbe91;
   line-height: 1.4;
   margin: 0;

@@ -112,16 +112,15 @@ const Adoption: React.FC = () => {
                             </div>
                         ))}
                     </div>
-
-                    {selectedEgg && (
-                        <button
-                            className={styles.confirm__button}
-                            onClick={handleConfirmSelection}
-                        >
-                            Confirm Selection
-                        </button>
-                    )}
                 </div>
+
+                <button
+                    className={styles.adopt__button}
+                    onClick={handleConfirmSelection}
+                    disabled={!selectedEgg}
+                >
+                    {selectedEgg ? 'Adopt Pet' : 'Select a Pet to Adopt'}
+                </button>
             </div>
         </div>
     );
