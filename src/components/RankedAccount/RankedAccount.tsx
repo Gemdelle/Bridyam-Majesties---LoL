@@ -274,6 +274,23 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
     };
 
+    const isAccountRanked = (): boolean => {
+        const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+        const soloqRanked = validTiers.includes(rankedData.elo_soloq.tier.toLowerCase());
+        const flexRanked = validTiers.includes(rankedData.elo_flex.tier.toLowerCase());
+        return soloqRanked || flexRanked;
+    };
+
+    const isSoloqRanked = (): boolean => {
+        const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+        return validTiers.includes(rankedData.elo_soloq.tier.toLowerCase());
+    };
+
+    const isFlexRanked = (): boolean => {
+        const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+        return validTiers.includes(rankedData.elo_flex.tier.toLowerCase());
+    };
+
     const availableTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
     const availableDivisions = [1, 2, 3, 4];
 
@@ -317,7 +334,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div className={styles.portrait__container}>
-                <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
+                {isAccountRanked() && (
+                    <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
+                )}
             </div>
 
             <div className={styles.divider}></div>
@@ -379,8 +398,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div ref={soloqRef} className={styles.soloq__container} onClick={() => setShowSoloqSelector(!showSoloqSelector)}>
-                <span>{convertToRomanNumeral(rankedData.elo_soloq.division)}</span>
-                <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
+                {isSoloqRanked() && (
+                    <>
+                        <span>{convertToRomanNumeral(rankedData.elo_soloq.division)}</span>
+                        <img src={getTierImage(rankedData.elo_soloq.tier)} alt={rankedData.elo_soloq.tier} />
+                    </>
+                )}
                 {showSoloqSelector && (
                     <div className={styles.rank__selector}>
                         <div className={styles.divisions__row}>
@@ -420,8 +443,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div ref={flexRef} className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
-                <span>{convertToRomanNumeral(rankedData.elo_flex.division)}</span>
-                <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
+                {isFlexRanked() && (
+                    <>
+                        <span>{convertToRomanNumeral(rankedData.elo_flex.division)}</span>
+                        <img src={getTierImage(rankedData.elo_flex.tier)} alt={rankedData.elo_flex.tier} />
+                    </>
+                )}
                 {showFlexSelector && (
                     <div className={styles.rank__selector}>
                         <div className={styles.divisions__row}>

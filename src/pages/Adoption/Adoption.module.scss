@@ -3,22 +3,27 @@
 .adoption {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #0f1419 0%, #1e2328 100%);
+  background-image: url('/images/bg/adoption-bg.png');
+  @include background-center;
   overflow: hidden;
 
   &__container {
     width: 92%;
-    height: 85%;
+    height: 92%;
     margin: 0 auto;
     margin-top: 3%;
     @include flex-col-between;
-    background-color: red;
+    // background-color: red;
   }
 
   &__header {
     height: 15%;
+    width: 100%;
     text-align: center;
-    background-color: blue;
+    background-image: url('/images/frames/title-frame.png');
+    @include background-center;
+    background-size: auto 100%;
+    // background-color: black;
   }
 
   &__title {
@@ -42,66 +47,114 @@
   }
 
   &__content {
-    height: 85%;
+    height: 75%;
     width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
-    background-color: violet;
+    position: relative;
+    background-image: url('/images/frames/egg-frame.png');
+    @include background;
+    // background-color: violet;
+  }
+
+}
+
+.gem__container {
+  position: absolute;
+  top: 2%;
+  left: 46.7%;
+  width: 6vw;
+  height: 6vw;
+  z-index: 99;
+  @include flex-col;
+  justify-content: flex-end;
+  transition: filter 1.5s ease-in-out;
+  // background-color: red;
+
+  .gem__image {
+    position: absolute;
+    top: -25%;
+    left: 30%;
+    width: 40%;
+    height: 80%;
+    z-index: 99;
+    animation: slowFloat 5s ease-in-out infinite;
+    filter: saturate(0) brightness(0.6);
+    transition: all 1s ease-in-out;
+  }
+
+  .gem__image.active {
+    filter: saturate(1) brightness(1);
+  }
+
+  .gem__base__image {
+    width: auto;
+    height: 100%;
+    z-index: 9;
   }
 }
 
 .egg__cards {
-  @include flex-between;
+  @include flex-center;
   width: 92%;
-  height: 100%;
+  height: 98%;
   align-items: center;
   flex-wrap: wrap;
-  background-color: blue;
+  
+    // background-color: blue;
 }
 
 .egg__card {
-  width: 22%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  border: 3px solid #c89b3c;
-  border-radius: 20px;
+  width: 24%;
+  height: 95%;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.7s ease-in-out;
   position: relative;
   overflow: hidden;
+  @include background;
+  background-size: 100% 100%;
+  overflow: hidden;
+  filter: saturate(0) brightness(0.2);
+  z-index: 2;
 
   &:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(200, 155, 60, 0.4);
-    border-color: #d4a94a;
+    filter: saturate(1) brightness(1);
   }
 
-  &.selected {
-    border-color: #f0c040;
-    box-shadow: 0 0 30px rgba(240, 192, 64, 0.6);
+  &.selected {    
     transform: translateY(-5px);
+    filter: saturate(1) brightness(1);
     
     .card__glow {
       opacity: 1;
     }
+    
+    .egg__badge {
+      transform: scale(1.1);
+      animation: shake 2s linear infinite;
+    }
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, 
-      rgba(200, 155, 60, 0.1) 0%, 
-      transparent 50%, 
-      rgba(200, 155, 60, 0.1) 100%
-    );
-    pointer-events: none;
+  // Add borders for specific eggs
+  &:nth-child(1) {
+    border-right: 3px solid #c89b3c;
+  }
+  
+  &:nth-child(2),
+  &:nth-child(3) {
+    border-left: 3px solid #c89b3c;
+    border-right: 3px solid #c89b3c;
+  }
+  
+  &:nth-child(4) {
+    border-left: 3px solid #c89b3c;
+  }
+  // Make the third egg image bigger
+  &:nth-child(3) .egg__badge img {
+    width: 100%;
+    height: auto;
+    transform: scale(1.05);
   }
 }
 
@@ -111,7 +164,6 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #c89b3c, #f0c040, #c89b3c);
   border-radius: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -126,24 +178,22 @@
 
 .card__content {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
+  @include flex-col;
+  justify-content: flex-start;
+  // background-color: violet;
 }
 
 .egg__image {
+  margin-top: 5%;
   width: 100%;
-  height: 50%;
+  height: 70%;
   position: relative;
-  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: yellow;
+  // background-color: yellow;
 }
 
 .spinning__circle {
@@ -151,8 +201,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   border-radius: 50%;
   background: url('/images/achievement/circle.png') no-repeat center center;
   background-size: contain;
@@ -164,22 +214,20 @@
 .egg__badge {
   position: relative;
   width: 80%;
-  height: 80%;
+  height: 100%;
   border-radius: 50%;
-  background: rgba(200, 155, 60, 0.2);
-  border: 3px solid #c89b3c;
+  // border: 3px solid #c89b3c;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
   transition: all 0.3s ease;
+  transform-origin: center bottom;
   z-index: 2;
 
   img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-    filter: brightness(1.2) saturate(1.2);
+    width: 85%;
+    height: auto;
+    filter: brightness(1) saturate(1);
     // background-color: red;
   }
 }
@@ -194,15 +242,16 @@
 }
 
 .egg__info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
+  padding-top: 3%;
+  border-top: 5px double #c89b3c;
+  height: 15%;
+  width: 75%;
+  @include flex-col;
+  // background-color: blue;
 }
 
 .egg__name {
-  font-size: 1.8rem;
+  font-size: 1.5vw;
   color: #c89b3c;
   font-weight: bold;
   text-transform: uppercase;
@@ -211,39 +260,33 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.egg__rarity {
-  font-size: 1rem;
-  color: #f0c040;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  margin: 0;
-  opacity: 0.9;
-}
-
 .egg__description {
-  font-size: 1rem;
+  font-size: 1vw;
   color: #cdbe91;
-  line-height: 1.4;
+  line-height: 1.2;
   margin: 0;
   opacity: 0.8;
 }
 
-.confirm__button {
-  width: 300px;
-  padding: 1.5rem 2rem;
-  background: rgba(200, 155, 60, 0.2);
+.adopt__button {
+  position: absolute;
+  bottom: 5%;
+  width: 10vw;
+  height: 3vw;
+  background: rgba(28, 27, 25, 0.8);
   border: 3px solid #c89b3c;
   border-radius: 15px;
   color: #c89b3c;
-  font-size: 1.4rem;
+  font-size: 1.2vw;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.2vw;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  z-index: 99;
+  @include flex-center;
 
   &:hover {
     background: #c89b3c;
@@ -278,12 +321,7 @@
 
 .egg__card:hover .egg__badge {
   transform: scale(1.1);
-  box-shadow: 0 0 30px rgba(200, 155, 60, 0.5);
-}
-
-.egg__card.selected .egg__badge {
-  transform: scale(1.1);
-  box-shadow: 0 0 30px rgba(240, 192, 64, 0.6);
+  animation: shake 2s linear infinite;
 }
 
 @media (max-width: 768px) {
@@ -317,11 +355,6 @@
     height: 100px;
   }
 
-  .spinning__circle {
-    width: 120px;
-    height: 120px;
-  }
-
   .egg__badge {
     width: 100px;
     height: 100px;
@@ -342,3 +375,17 @@
     font-size: 1.2rem;
   }
 } 
+
+@keyframes slowFloat {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes shake {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-1deg); }
+  50% { transform: rotate(2deg); }
+  75% { transform: rotate(-1deg); }
+  100% { transform: rotate(0); }
+}
