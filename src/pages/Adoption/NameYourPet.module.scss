@@ -133,11 +133,16 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
+  opacity: 0;
   
   img {
     width: auto;
     height: 90%;
   }
+}
+
+.pet__underneath.fadeIn {
+  animation: petFadeIn 2s ease-in-out forwards;
 }
 
 .input__container {
@@ -219,6 +224,11 @@
   86.67% { transform: rotate(-2deg);}
   93.33% { transform: rotate(2deg);}
   100% { transform: rotate(0); opacity: 0; }
+}
+
+@keyframes petFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @media (max-width: 768px) {

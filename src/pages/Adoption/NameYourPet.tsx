@@ -16,6 +16,7 @@ interface NameYourPetProps {
 const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggIndex }) => {
     const [petName, setPetName] = useState('');
     const [clickCount, setClickCount] = useState(0);
+    const [showPetFadeIn, setShowPetFadeIn] = useState(false);
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -26,12 +27,19 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const handleEggTap = () => {
         if (clickCount < 4) {
             playRandomSound();
-            setClickCount(prev => prev + 1);
-            console.log('Click count:', clickCount + 1);
+            const newClickCount = clickCount + 1;
+            setClickCount(newClickCount);
+            console.log('Click count:', newClickCount);
 
-            if (clickCount === 4) {
+            if (newClickCount === 4) {
                 console.log('4th click detected! Starting hatching process...');
                 // The animation will handle the fade out automatically
+
+                // After 4 seconds (when hatching animation ends), start pet fade in
+                setTimeout(() => {
+                    console.log('Starting pet fade in!');
+                    setShowPetFadeIn(true);
+                }, 4000);
             }
         }
     };
@@ -62,7 +70,10 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         >
                             {/* Pet image that appears under the egg from 3rd click */}
                             {clickCount >= 3 && (
-                                <div className={styles.pet__underneath}>
+                                <div
+                                    className={`${styles.pet__underneath} ${showPetFadeIn ? styles.fadeIn : ''}`}
+                                    onLoad={() => console.log('Pet div rendered, showPetFadeIn:', showPetFadeIn)}
+                                >
                                     <img
                                         src={`/images/pets/pet-${eggIndex + 1}-1.png`}
                                         alt={`${selectedEgg.name} pet`}
