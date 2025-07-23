@@ -153,14 +153,14 @@ const SignUp: React.FC = () => {
                         </div>
 
                         <div className={styles.inputGroup}>
-                            <label htmlFor="name" className={styles.label}>Twitch Name</label>
+                            <label htmlFor="name" className={styles.label}>Your Username</label>
                             <input
                                 type="text"
                                 id="name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 className={styles.input}
-                                placeholder="Enter your Twitch username"
+                                placeholder="Enter your username"
                                 required
                                 disabled={isLoading}
                             />
