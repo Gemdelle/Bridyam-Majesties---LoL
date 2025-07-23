@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Adoption.module.scss';
+import NameYourPet from './NameYourPet';
 
 interface EggOption {
     id: string;
@@ -43,6 +44,7 @@ const eggOptions: EggOption[] = [
 const Adoption: React.FC = () => {
     const [selectedEgg, setSelectedEgg] = useState<string | null>(null);
     const [hoveredEgg, setHoveredEgg] = useState<number | null>(null);
+    const [currentScreen, setCurrentScreen] = useState<'adoption' | 'name'>('adoption');
 
     const handleEggSelect = (eggId: string) => {
         setSelectedEgg(eggId);
@@ -58,11 +60,27 @@ const Adoption: React.FC = () => {
 
     const handleConfirmSelection = () => {
         if (selectedEgg) {
-            const selectedOption = eggOptions.find(egg => egg.id === selectedEgg);
-            alert(`You've adopted the ${selectedOption?.name}! Welcome to your adventure!`);
-            // Here you would typically navigate to the main app or save the selection
+            setCurrentScreen('name');
         }
     };
+
+    const handlePetNamed = (petName: string) => {
+        const selectedOption = eggOptions.find(egg => egg.id === selectedEgg);
+        alert(`Congratulations! You've adopted ${petName}, the ${selectedOption?.name}! Welcome to your adventure!`);
+        // Here you would typically navigate to the main app or save the selection
+    };
+
+    if (currentScreen === 'name' && selectedEgg) {
+        const selectedOption = eggOptions.find(egg => egg.id === selectedEgg);
+        const eggIndex = eggOptions.findIndex(egg => egg.id === selectedEgg);
+        return (
+            <NameYourPet
+                selectedEgg={selectedOption!}
+                onPetNamed={handlePetNamed}
+                eggIndex={eggIndex}
+            />
+        );
+    }
 
     return (
         <div className={styles.adoption}>
