@@ -124,9 +124,15 @@
 
   &.selected {    
     transform: translateY(-5px);
+    filter: saturate(1) brightness(1);
     
     .card__glow {
       opacity: 1;
+    }
+    
+    .egg__badge {
+      transform: scale(1.1);
+      animation: shake 2s linear infinite;
     }
   }
 
@@ -239,7 +245,7 @@
   padding-top: 3%;
   border-top: 5px double #c89b3c;
   height: 15%;
-  width: 70%;
+  width: 75%;
   @include flex-col;
   // background-color: blue;
 }
@@ -257,7 +263,7 @@
 .egg__description {
   font-size: 1vw;
   color: #cdbe91;
-  line-height: 1.4;
+  line-height: 1.2;
   margin: 0;
   opacity: 0.8;
 }

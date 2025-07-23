@@ -11,30 +11,30 @@ interface EggOption {
 
 const eggOptions: EggOption[] = [
     {
-        id: 'dragon-egg',
-        name: 'Dragon Egg',
-        description: 'A mysterious egg with ancient draconic energy',
+        id: 'flarnit-egg',
+        name: 'Flarnit',
+        description: 'Strong-willed and fierce, thrives on challenge and protects what it trusts.',
         imageSrc: '/images/eggs/1.png',
         rarity: 'Legendary'
     },
     {
-        id: 'phoenix-egg',
-        name: 'Phoenix Egg',
-        description: 'A warm egg that pulses with fiery life',
+        id: 'petlewyn-egg',
+        name: 'Petlewyn',
+        description: 'Elegant and quiet, but surprisingly dangerous when pushed.',
         imageSrc: '/images/eggs/2.png',
         rarity: 'Epic'
     },
     {
-        id: 'void-egg',
-        name: 'Void Egg',
-        description: 'A dark egg from the depths of the void',
+        id: 'peewee-egg',
+        name: 'Peewee',
+        description: 'Calm and watchful, with a powerful sense of justice.',
         imageSrc: '/images/eggs/3.png',
         rarity: 'Mythic'
     },
     {
-        id: 'celestial-egg',
-        name: 'Celestial Egg',
-        description: 'A radiant egg blessed by the stars above',
+        id: 'vindeloon-egg',
+        name: 'Vindeloon',
+        description: 'Thoughtful and focused, never forgets what matters.',
         imageSrc: '/images/eggs/4.png',
         rarity: 'Divine'
     }
@@ -75,11 +75,11 @@ const Adoption: React.FC = () => {
                 <div className={styles.adoption__content}>
                     <div className={styles.gem__container}>
                         <img
-                            className={`${styles.gem__image} ${hoveredEgg !== null ? styles.active : ''}`}
-                            src={hoveredEgg !== null ? `/images/gems/gem-pet-${hoveredEgg + 1}.png` : "/images/gems/gem-inactive.png"}
+                            className={`${styles.gem__image} ${hoveredEgg !== null || selectedEgg ? styles.active : ''}`}
+                            src={hoveredEgg !== null ? `/images/gems/gem-pet-${hoveredEgg + 1}.png` : selectedEgg ? `/images/gems/gem-pet-${eggOptions.findIndex(egg => egg.id === selectedEgg) + 1}.png` : "/images/gems/gem-inactive.png"}
                             alt="Gem"
                             style={{
-                                opacity: hoveredEgg !== null ? 1 : 0.7
+                                opacity: hoveredEgg !== null || selectedEgg ? 1 : 0.7
                             }}
                         />
                         <img className={styles.gem__base__image} src="/images/gems/gem-base.png" alt="Gem base" />
