@@ -16,6 +16,7 @@ interface NameYourPetProps {
 const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggIndex }) => {
     const [petName, setPetName] = useState('');
     const [clickCount, setClickCount] = useState(0);
+    const [showPet, setShowPet] = useState(false);
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -24,15 +25,22 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     };
 
     const handleEggTap = () => {
-        if (clickCount < 3) {
+        if (clickCount < 4) {
             playRandomSound();
             setClickCount(prev => prev + 1);
 
-            if (clickCount === 2 && petName.trim()) {
-                // On the third click, proceed with naming
+            if (clickCount === 3 && petName.trim()) {
+                // On the fourth click, start hatching process
+
+                // After 3 seconds, show the pet
+                setTimeout(() => {
+                    setShowPet(true);
+                }, 3000);
+
+                // After pet appears, proceed with naming
                 setTimeout(() => {
                     onPetNamed(petName.trim());
-                }, 1000); // Small delay to let the sound play
+                }, 5000); // Total delay to let the hatching and pet reveal play
             }
         }
     };
@@ -57,11 +65,17 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             className={styles.egg__badge}
                             onClick={handleEggTap}
                             style={{
-                                transform: `scale(${0.8 + (clickCount * 0.1)})`
+                                transform: `scale(${0.7 + (Math.min(clickCount, 3) * 0.1)})`,
+                                filter: showPet ? 'brightness(1) saturate(1)' :
+                                    clickCount === 4 ? 'brightness(9999) saturate(0)' :
+                                        'brightness(1) saturate(1)'
                             }}
                         >
-                            <div className={styles.egg__inner}>
-                                <img src={selectedEgg.imageSrc} alt={selectedEgg.name} />
+                            <div className={`${styles.egg__inner} ${clickCount === 4 ? styles.hatching : ''}`}>
+                                <img
+                                    src={showPet ? `/images/pets/pet-${eggIndex + 1}-1.png` : selectedEgg.imageSrc}
+                                    alt={selectedEgg.name}
+                                />
                             </div>
                         </div>
                     </div>
@@ -78,7 +92,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                     </div>
 
                     <div className={styles.instruction__text}>
-                        Tap the egg 3 times to hatch it
+                        Tap the egg 4 times to hatch it
                     </div>
                 </div>
             </div>
