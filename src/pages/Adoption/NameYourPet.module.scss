@@ -116,7 +116,28 @@
 }
 
 .egg__inner.hatching {
-  animation: hatching 0.5s linear infinite;
+  animation: hatching 4s linear forwards;
+}
+
+.egg__inner.pet {
+  animation: none !important;
+}
+
+.pet__underneath {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  
+  img {
+    width: auto;
+    height: 90%;
+  }
 }
 
 .input__container {
@@ -182,11 +203,22 @@
 }
 
 @keyframes hatching {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-  75% { transform: rotate(-3deg); }
-  100% { transform: rotate(0); }
+  0% { transform: rotate(0); opacity: 1; }
+  6.67% { transform: rotate(-2deg); opacity: 1; }
+  13.33% { transform: rotate(2deg); opacity: 1; }
+  20% { transform: rotate(-2deg); opacity: 1; }
+  26.67% { transform: rotate(2deg); opacity: 1; }
+  33.33% { transform: rotate(-2deg); opacity: 1; }
+  40% { transform: rotate(2deg); opacity: 1; }
+  46.67% { transform: rotate(-2deg); opacity: 1; }
+  53.33% { transform: rotate(2deg); opacity: 1; }
+  60% { transform: rotate(-2deg); opacity: 1; }
+  66.67% { transform: rotate(2deg); opacity: 1; }
+  73.33% { transform: rotate(-2deg);}
+  80% { transform: rotate(2deg);}
+  86.67% { transform: rotate(-2deg);}
+  93.33% { transform: rotate(2deg);}
+  100% { transform: rotate(0); opacity: 0; }
 }
 
 @media (max-width: 768px) {

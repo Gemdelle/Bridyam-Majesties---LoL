@@ -16,7 +16,6 @@ interface NameYourPetProps {
 const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggIndex }) => {
     const [petName, setPetName] = useState('');
     const [clickCount, setClickCount] = useState(0);
-    const [showPet, setShowPet] = useState(false);
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -28,19 +27,11 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         if (clickCount < 4) {
             playRandomSound();
             setClickCount(prev => prev + 1);
+            console.log('Click count:', clickCount + 1);
 
-            if (clickCount === 3 && petName.trim()) {
-                // On the fourth click, start hatching process
-
-                // After 3 seconds, show the pet
-                setTimeout(() => {
-                    setShowPet(true);
-                }, 3000);
-
-                // After pet appears, proceed with naming
-                setTimeout(() => {
-                    onPetNamed(petName.trim());
-                }, 5000); // Total delay to let the hatching and pet reveal play
+            if (clickCount === 4) {
+                console.log('4th click detected! Starting hatching process...');
+                // The animation will handle the fade out automatically
             }
         }
     };
@@ -66,14 +57,26 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             onClick={handleEggTap}
                             style={{
                                 transform: `scale(${0.7 + (Math.min(clickCount, 3) * 0.1)})`,
-                                filter: showPet ? 'brightness(1) saturate(1)' :
-                                    clickCount === 4 ? 'brightness(9999) saturate(0)' :
-                                        'brightness(1) saturate(1)'
+                                filter: clickCount === 4 ? 'brightness(9999) saturate(0)' : 'brightness(1) saturate(1)'
                             }}
                         >
-                            <div className={`${styles.egg__inner} ${clickCount === 4 ? styles.hatching : ''}`}>
+                            {/* Pet image that appears under the egg from 3rd click */}
+                            {clickCount >= 3 && (
+                                <div className={styles.pet__underneath}>
+                                    <img
+                                        src={`/images/pets/pet-${eggIndex + 1}-1.png`}
+                                        alt={`${selectedEgg.name} pet`}
+                                        style={{
+                                            filter: 'brightness(9999) saturate(0)'
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            <div
+                                className={`${styles.egg__inner} ${clickCount === 4 ? styles.hatching : ''}`}
+                            >
                                 <img
-                                    src={showPet ? `/images/pets/pet-${eggIndex + 1}-1.png` : selectedEgg.imageSrc}
+                                    src={selectedEgg.imageSrc}
                                     alt={selectedEgg.name}
                                 />
                             </div>
