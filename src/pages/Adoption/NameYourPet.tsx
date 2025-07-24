@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './NameYourPet.module.scss';
+import petLore from '../../data/petLore.json';
 
 interface NameYourPetProps {
     selectedEgg: {
@@ -27,6 +28,9 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const [hearts, setHearts] = useState<Heart[]>([]);
     const [heartId, setHeartId] = useState(0);
     const [isPetting, setIsPetting] = useState(false);
+
+    // Get the current pet's lore
+    const currentPetLore = petLore.pets[eggIndex];
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -160,6 +164,23 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             </div>
                         </div>
                     </div>
+
+                    {/* Lore display - only show when pet is hatched */}
+                    {clickCount >= 4 && currentPetLore && (
+                        <div className={styles.lore__container}>
+                            <div
+                                className={styles.lore__frame}
+                                style={{
+                                    backgroundImage: `url('/images/frames/lore-frame-pet-${eggIndex + 1}.png')`
+                                }}
+                            >
+                                <div className={styles.lore__content}>
+                                    <h3 className={styles.lore__title}>{currentPetLore.name}</h3>
+                                    <p className={styles.lore__text}>{currentPetLore.lore}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Render hearts */}
                     {hearts.map(heart => (
