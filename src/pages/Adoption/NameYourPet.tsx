@@ -41,9 +41,18 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
 
     const spawnHeart = (event: React.MouseEvent) => {
         const rect = event.currentTarget.getBoundingClientRect();
-        // Position heart at the top of the pet's head (center horizontally, top vertically)
-        const x = rect.width * 2; // Center horizontally
-        const y = -30; // Start from the very top of the pet
+
+        // Pet-specific heart positioning variables
+        const petHeartPositions = {
+            0: { x: rect.width * 2.5, y: -30 }, // Flarnit (pet-1)
+            1: { x: rect.width * 1.9, y: -30 }, // Petlewyn (pet-2)
+            2: { x: rect.width * 2.5, y: -30 }, // Peewee (pet-3)
+            3: { x: rect.width * 2, y: -30 }  // Vindeloon (pet-4)
+        };
+
+        const position = petHeartPositions[eggIndex as keyof typeof petHeartPositions];
+        const x = position.x;
+        const y = position.y;
         const heartType = Math.floor(Math.random() * 3) + 1;
 
         console.log('Spawning heart type:', heartType); // Debug log
