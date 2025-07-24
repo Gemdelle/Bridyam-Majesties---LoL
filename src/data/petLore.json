@@ -1,0 +1,24 @@
+{
+    "pets": [
+        {
+            "id": 1,
+            "name": "Flarnit",
+            "lore": "Legends say the first Flarnit rose from molten craters, howling at lightning. Once bonded, they guard for life — but without loyalty, they destroy without pause. Many trainers fear the middle stage more than the final, as it's harder to predict. Some tribes worship them as war heralds, feeding them smoke and hot stone. Their roars have cracked battlefield armor. Their claws can carve through steel. When cornered, a Flarnit doesn't flee — it detonates. Only those who prove strength without cruelty earn their full trust."
+        },
+        {
+            "id": 2,
+            "name": "Pettlewyn",
+            "lore": "Pettlewyn hatchlings are raised in hidden groves, trained in beauty and stillness. They're mistaken for harmless creatures — until they act. When a Pettlewyn strikes, there's no warning, only elegance and aftermath. They don't enjoy violence, but they're excellent at it. Gardens with white petals often grow from places Pettlewyn has defended. Some believe their wings are made of crystallized regret. They bond quietly, almost like scent — not affection, but mutual acceptance."
+        },
+        {
+            "id": 3,
+            "name": "Peewee",
+            "lore": "Born in trench-light and silence, Peewee hears every sound in the dark. Its eye doesn't blink — it remembers, and it holds you in place. Those who lie near it feel dizzy, then weak. Some believe it speaks only once in its lifetime — to deliver judgment. Peewee protects balance, not people. And its balance is absolute. It's less pet, more presence. Less monster, more reckoning. Still, it watches the ones it likes. It remembers kindness."
+        },
+        {
+            "id": 4,
+            "name": "Vindeloon",
+            "lore": "Vindeloon are planted, not born — sprouting from memory roots in forgotten places. They're slow to move, but always watching. When they speak, they speak in other voices — ones you've heard before. Trainers often forget arguments they had near one. Its garden is not physical, but mental — blooming inside those nearby. Vindeloon do not forgive, but they do remove. Their loyalty is rare, but total. Their peace... slightly unnerving."
+        }
+    ]
+}
