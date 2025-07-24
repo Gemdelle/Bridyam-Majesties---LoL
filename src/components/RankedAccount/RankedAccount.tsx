@@ -113,7 +113,20 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     const handleMissionClick = (index: number) => {
         setSelectedMissions(prev => {
             const newState = [...prev];
-            newState[index] = !newState[index];
+
+            // If clicking on a mission that's already selected, unselect it and all subsequent missions
+            if (newState[index]) {
+                for (let i = index; i < newState.length; i++) {
+                    newState[i] = false;
+                }
+            }
+            // If clicking on a mission that's not selected, select it and all previous missions
+            else {
+                // Select all missions from 0 to index (autocomplete previous levels)
+                for (let i = 0; i <= index; i++) {
+                    newState[i] = true;
+                }
+            }
 
             // Update rankedData with new mission count
             const newCurrent = newState.filter(Boolean).length;
@@ -138,7 +151,20 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     const handleHallMissionClick = (index: number) => {
         setSelectedHallMissions(prev => {
             const newState = [...prev];
-            newState[index] = !newState[index];
+
+            // If clicking on a hall mission that's already selected, unselect it and all subsequent missions
+            if (newState[index]) {
+                for (let i = index; i < newState.length; i++) {
+                    newState[i] = false;
+                }
+            }
+            // If clicking on a hall mission that's not selected, select it and all previous missions
+            else {
+                // Select all hall missions from 0 to index (autocomplete previous levels)
+                for (let i = 0; i <= index; i++) {
+                    newState[i] = true;
+                }
+            }
 
             // Update rankedData with new hall mission count
             const newCurrent = newState.filter(Boolean).length;

@@ -111,7 +111,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                     </div>
 
                     {clickCount < 4 && (
-                        <div className={styles.instruction__text}>
+                        <div className={`${styles.instruction__text} ${clickCount === 4 ? styles.fadeOut : ''}`}>
                             Tap the egg to hatch it
                         </div>
                     )}
