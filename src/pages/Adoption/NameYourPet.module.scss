@@ -213,23 +213,28 @@
 }
 
 @keyframes hatching {
-  0% { transform: rotate(0); opacity: 1; }
-  6.67% { transform: rotate(-2deg); opacity: 1; }
-  13.33% { transform: rotate(2deg); opacity: 1; }
-  20% { transform: rotate(-2deg); opacity: 1; }
-  26.67% { transform: rotate(2deg); opacity: 1; }
-  33.33% { transform: rotate(-2deg); opacity: 1; }
-  40% { transform: rotate(2deg); opacity: 1; }
-  46.67% { transform: rotate(-2deg); opacity: 1; }
-  53.33% { transform: rotate(2deg); opacity: 1; }
-  60% { transform: rotate(-2deg); opacity: 1; }
-  66.67% { transform: rotate(2deg); opacity: 1; }
-  73.33% { transform: rotate(-2deg);}
-  80% { transform: rotate(2deg);}
-  86.67% { transform: rotate(-2deg);}
-  93.33% { transform: rotate(2deg);}
-  100% { transform: rotate(0); opacity: 0; }
-}
+    0%      { transform: rotate(0);     opacity: 1; filter: brightness(1); }
+    6.67%   { transform: rotate(-2deg); opacity: 1; filter: brightness(1.2); }
+    13.33%  { transform: rotate(2deg);  opacity: 1; filter: brightness(1.6); }
+    20%     { transform: rotate(-2deg); opacity: 1; filter: brightness(2.4); }
+    26.67%  { transform: rotate(2deg);  opacity: 1; filter: brightness(3.8); }
+    30%     { transform: rotate(-2deg); opacity: 1; filter: brightness(5); }
+    33.33%  { transform: rotate(2deg);  opacity: 1; filter: brightness(5); }
+    40%     { transform: rotate(-2deg); opacity: 1; filter: brightness(5); }
+    46.67%  { transform: rotate(-2deg); opacity: 1; filter: brightness(5); }
+    53.33%  { transform: rotate(2deg);  opacity: 1; filter: brightness(5); }
+    60%     { transform: rotate(-2deg); opacity: 1; filter: brightness(5); }
+    66.67%  { transform: rotate(2deg);  opacity: 1; filter: brightness(5); }
+    70%     { transform: rotate(-2deg);               filter: brightness(5); }
+    73.33%  { transform: rotate(2deg);                filter: brightness(5); }
+    80%     { transform: rotate(-2deg);               filter: brightness(5); }
+    86.67%  { transform: rotate(2deg);                filter: brightness(5); }
+    90%     { transform: rotate(-2deg);               filter: brightness(5); }
+    93.33%  { transform: rotate(2deg);                filter: brightness(5); }
+    100%    { transform: rotate(0);     opacity: 0;   filter: brightness(5); }
+  }
+  
+  
 
 @keyframes petFadeIn {
   0% { opacity: 0; }

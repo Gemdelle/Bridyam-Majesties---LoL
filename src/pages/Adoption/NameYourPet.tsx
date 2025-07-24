@@ -64,8 +64,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             className={styles.egg__badge}
                             onClick={handleEggTap}
                             style={{
-                                transform: `scale(${0.7 + (Math.min(clickCount, 3) * 0.1)})`,
-                                filter: clickCount === 4 ? 'brightness(9999) saturate(0)' : 'brightness(1) saturate(1)'
+                                transform: `scale(${0.7 + (Math.min(clickCount, 3) * 0.1)})`
                             }}
                         >
                             {/* Pet image that appears under the egg from 3rd click */}
