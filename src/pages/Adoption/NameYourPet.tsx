@@ -189,16 +189,15 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         />
                     </div>
 
+                    {clickCount < 4 && (
+                        <div className={`${styles.instruction__text} ${clickCount === 4 ? styles.fadeOut : ''}`}>
+                            Tap the egg to hatch it
+                        </div>
+                    )}
+
                     {clickCount >= 4 && (
-                        <div className={styles.input__container}>
-                            <input
-                                type="text"
-                                className={styles.pet__name__input}
-                                placeholder="Enter your pet's name..."
-                                value={petName}
-                                onChange={(e) => setPetName(e.target.value)}
-                                maxLength={20}
-                            />
+                        <div className={styles.instruction__text}>
+                            ¡WOW, you hatched a {selectedEgg.name}!
                         </div>
                     )}
                 </div>
