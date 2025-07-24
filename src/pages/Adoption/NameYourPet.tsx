@@ -24,6 +24,11 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         audio.play().catch(error => console.log('Audio play failed:', error));
     };
 
+    const playPetSound = () => {
+        const audio = new Audio(`/sounds/pet-${eggIndex + 1}-stage-1.mp3`);
+        audio.play().catch(error => console.log('Pet sound play failed:', error));
+    };
+
     const handleEggTap = () => {
         if (clickCount < 4) {
             playRandomSound();
@@ -54,7 +59,9 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
             <div className={styles.nameYourPet__container}>
                 <header className={styles.nameYourPet__header}>
                     <h1 className={styles.nameYourPet__title}>NAME YOUR PET</h1>
-                    <p className={styles.nameYourPet__subtitle}>Make it original!</p>
+                    <p className={styles.nameYourPet__subtitle}>
+                        {clickCount < 4 ? "Make it original!" : "Write your pet's name"}
+                    </p>
                 </header>
 
                 <div className={styles.nameYourPet__content}>
@@ -76,6 +83,8 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     <img
                                         src={`/images/pets/pet-${eggIndex + 1}-1.png`}
                                         alt={`${selectedEgg.name} pet`}
+                                        onClick={playPetSound}
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 </div>
                             )}
@@ -101,9 +110,24 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         />
                     </div>
 
-                    <div className={styles.instruction__text}>
-                        Tap the egg 4 times to hatch it
-                    </div>
+                    {clickCount < 4 && (
+                        <div className={styles.instruction__text}>
+                            Tap the egg to hatch it
+                        </div>
+                    )}
+
+                    {clickCount >= 4 && (
+                        <div className={styles.input__container}>
+                            <input
+                                type="text"
+                                className={styles.pet__name__input}
+                                placeholder="Enter your pet's name..."
+                                value={petName}
+                                onChange={(e) => setPetName(e.target.value)}
+                                maxLength={20}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
