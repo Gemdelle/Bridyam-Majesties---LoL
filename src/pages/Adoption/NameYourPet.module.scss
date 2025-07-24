@@ -146,6 +146,11 @@
   transform-origin: bottom center;
 }
 
+.pet__underneath.petting {
+  animation: petFadeIn 3s ease-in-out forwards, petBreathe 3s ease-in-out infinite, petShrink 0.6s ease-in-out;
+  transform-origin: bottom center;
+}
+
 .input__container {
   margin-bottom: 2rem;
   width: 100%;
@@ -279,6 +284,14 @@
 @keyframes petBreathe {
   0% { transform: scaleY(1); }
   50% { transform: scaleY(1.02); }
+  100% { transform: scaleY(1); }
+}
+
+@keyframes petShrink {
+  0% { transform: scaleY(1); }
+  25% { transform: scaleY(0.98); }
+  50% { transform: scaleY(1); }
+  75% { transform: scaleY(0.98); }
   100% { transform: scaleY(1); }
 }
 

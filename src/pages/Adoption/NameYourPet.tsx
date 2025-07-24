@@ -26,6 +26,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const [showPetFadeIn, setShowPetFadeIn] = useState(false);
     const [hearts, setHearts] = useState<Heart[]>([]);
     const [heartId, setHeartId] = useState(0);
+    const [isPetting, setIsPetting] = useState(false);
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -64,6 +65,12 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const handlePetClick = (event: React.MouseEvent) => {
         playPetSound();
         spawnHeart(event);
+
+        // Trigger petting animation
+        setIsPetting(true);
+        setTimeout(() => {
+            setIsPetting(false);
+        }, 600); // Match the animation duration
     };
 
     const handleEggTap = () => {
@@ -117,7 +124,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             {/* Pet image that appears under the egg from 3rd click */}
                             {clickCount >= 3 && (
                                 <div
-                                    className={`${styles.pet__underneath} ${showPetFadeIn ? styles.fadeIn : ''}`}
+                                    className={`${styles.pet__underneath} ${showPetFadeIn ? styles.fadeIn : ''} ${isPetting ? styles.petting : ''}`}
                                     onLoad={() => console.log('Pet div rendered, showPetFadeIn:', showPetFadeIn)}
                                 >
                                     <img
