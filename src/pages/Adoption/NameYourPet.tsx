@@ -13,10 +13,19 @@ interface NameYourPetProps {
     eggIndex: number;
 }
 
+interface Heart {
+    id: number;
+    x: number;
+    y: number;
+    type: number;
+}
+
 const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggIndex }) => {
     const [petName, setPetName] = useState('');
     const [clickCount, setClickCount] = useState(0);
     const [showPetFadeIn, setShowPetFadeIn] = useState(false);
+    const [hearts, setHearts] = useState<Heart[]>([]);
+    const [heartId, setHeartId] = useState(0);
 
     const playRandomSound = () => {
         const soundNumber = Math.floor(Math.random() * 3) + 1;
@@ -29,9 +38,40 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         audio.play().catch(error => console.log('Pet sound play failed:', error));
     };
 
+    const spawnHeart = (event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        // Position heart at the top of the pet's head (center horizontally, top vertically)
+        const x = rect.width * 2;
+        const y = -30; // Start from the very top of the pet
+        const heartType = Math.floor(Math.random() * 3) + 1;
+
+        const newHeart: Heart = {
+            id: heartId,
+            x: x,
+            y: y,
+            type: heartType
+        };
+
+        setHearts(prev => [...prev, newHeart]);
+        setHeartId(prev => prev + 1);
+
+        // Remove heart after animation completes
+        setTimeout(() => {
+            setHearts(prev => prev.filter(heart => heart.id !== newHeart.id));
+        }, 2000);
+    };
+
+    const handlePetClick = (event: React.MouseEvent) => {
+        playPetSound();
+        spawnHeart(event);
+    };
+
     const handleEggTap = () => {
         if (clickCount < 4) {
-            playRandomSound();
+            // Only play sound if it's not the 4th click
+            if (clickCount < 3) {
+                playRandomSound();
+            }
             const newClickCount = clickCount + 1;
             setClickCount(newClickCount);
             console.log('Click count:', newClickCount);
@@ -83,7 +123,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     <img
                                         src={`/images/pets/pet-${eggIndex + 1}-1.png`}
                                         alt={`${selectedEgg.name} pet`}
-                                        onClick={playPetSound}
+                                        onClick={handlePetClick}
                                         style={{ cursor: 'pointer' }}
                                     />
                                 </div>
@@ -98,6 +138,23 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             </div>
                         </div>
                     </div>
+
+                    {/* Render hearts */}
+                    {hearts.map(heart => (
+                        <div
+                            key={heart.id}
+                            className={styles.heart}
+                            style={{
+                                left: heart.x,
+                                top: heart.y,
+                            }}
+                        >
+                            <img
+                                src={`/images/icons/love-icon-${heart.type}.png`}
+                                alt="heart"
+                            />
+                        </div>
+                    ))}
 
                     <div className={styles.input__container}>
                         <input

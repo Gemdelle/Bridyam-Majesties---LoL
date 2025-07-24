@@ -196,6 +196,21 @@
   opacity: 0;
 }
 
+.heart {
+  position: absolute;
+  width: auto;
+  height: 5vw;
+  pointer-events: none;
+  z-index: 10;
+  animation: heartFloat 2s ease-out forwards;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
 @keyframes spin {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -211,6 +226,21 @@
   50% { transform: rotate(2deg); }
   75% { transform: rotate(-1deg); }
   100% { transform: rotate(0); }
+}
+
+@keyframes heartFloat {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50px) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
 }
 
 @keyframes hatching {
