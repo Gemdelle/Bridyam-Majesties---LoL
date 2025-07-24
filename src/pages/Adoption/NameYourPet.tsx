@@ -77,9 +77,6 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     <img
                                         src={`/images/pets/pet-${eggIndex + 1}-1.png`}
                                         alt={`${selectedEgg.name} pet`}
-                                        style={{
-                                            filter: 'brightness(9999) saturate(0)'
-                                        }}
                                     />
                                 </div>
                             )}

@@ -146,6 +146,10 @@
   transform-origin: bottom center;
 }
 
+.pet__underneath.fadeIn img {
+  animation: petColorTransition 2s ease-in-out 2s forwards;
+}
+
 .input__container {
   margin-bottom: 2rem;
   width: 100%;
@@ -230,6 +234,12 @@
 @keyframes petFadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes petColorTransition {
+  0% { filter: brightness(9999) saturate(0); }
+  50% { filter: brightness(9999) saturate(0); }
+  100% { filter: brightness(1) saturate(1); }
 }
 
 @keyframes petBreathe {
