@@ -66,7 +66,11 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
 
     const handlePetClick = (event: React.MouseEvent) => {
         playPetSound();
-        spawnHeart(event);
+
+        // Only spawn heart if pet is fully hatched (not during hatching process)
+        if (clickCount >= 4) {
+            spawnHeart(event);
+        }
 
         // Trigger petting animation
         setIsPetting(true);
