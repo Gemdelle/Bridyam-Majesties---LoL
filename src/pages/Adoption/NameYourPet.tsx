@@ -28,6 +28,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const [hearts, setHearts] = useState<Heart[]>([]);
     const [heartId, setHeartId] = useState(0);
     const [isPetting, setIsPetting] = useState(false);
+    const [hoveredAbility, setHoveredAbility] = useState<number | null>(null);
 
     // Get the current pet's lore
     const currentPetLore = petLore.pets[eggIndex];
@@ -187,11 +188,21 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         <div className={styles.abilities__container}>
 
                             <div className={styles.panel__header}><h3 className={styles.panel__title}>Abilities</h3>
-                                <p className={styles.panel__subtitle}>Hover through abilities to learn more about them</p></div>
+                                <p className={styles.panel__subtitle}>
+                                    {hoveredAbility !== null
+                                        ? currentPetLore.abilities[hoveredAbility].description
+                                        : "Hover through abilities to learn more about them"
+                                    }
+                                </p></div>
 
                             <div className={styles.abilities__grid}>
                                 {currentPetLore.abilities?.map((ability, index) => (
-                                    <div key={ability.name} className={styles.ability__item}>
+                                    <div
+                                        key={ability.name}
+                                        className={`${styles.ability__item} ${hoveredAbility !== null && hoveredAbility !== index ? styles.dimmed : ''}`}
+                                        onMouseEnter={() => setHoveredAbility(index)}
+                                        onMouseLeave={() => setHoveredAbility(null)}
+                                    >
                                         <div className={styles.ability__icon}>
                                             <img
                                                 src={`/images/abilities/pet-${eggIndex + 1}-ability-${index + 1}.png`}
@@ -211,6 +222,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                             <h3 className={styles.stats__title}>Stats</h3>
                             <div className={styles.stats__list}>
                                 <div className={styles.stat__row}>
+                                    <div className={styles.stat__timeline}></div>
                                     <span className={styles.stat__name}>Instinct</span>
                                     <div className={styles.stat__bars}>
                                         {[1, 2, 3, 4, 5].map((level) => (
@@ -224,6 +236,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     </div>
                                 </div>
                                 <div className={styles.stat__row}>
+                                    <div className={styles.stat__timeline}></div>
                                     <span className={styles.stat__name}>Force</span>
                                     <div className={styles.stat__bars}>
                                         {[1, 2, 3, 4, 5].map((level) => (
@@ -237,6 +250,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     </div>
                                 </div>
                                 <div className={styles.stat__row}>
+                                    <div className={styles.stat__timeline}></div>
                                     <span className={styles.stat__name}>Pressure</span>
                                     <div className={styles.stat__bars}>
                                         {[1, 2, 3, 4, 5].map((level) => (
@@ -250,6 +264,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                     </div>
                                 </div>
                                 <div className={styles.stat__row}>
+                                    <div className={styles.stat__timeline}></div>
                                     <span className={styles.stat__name}>Cleverness</span>
                                     <div className={styles.stat__bars}>
                                         {[1, 2, 3, 4, 5].map((level) => (

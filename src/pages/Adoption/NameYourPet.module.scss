@@ -178,11 +178,6 @@
     color: #cdbe91;
     opacity: 0.7;
   }
-
-  &:focus {
-    border-color: #cdbe91;
-    box-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
-  }
 }
 
 .instruction__text {
@@ -422,8 +417,37 @@
   height: 100%;
   @include flex-col-between;
   @include flex-center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border-radius: 8px;
+  padding: 8px;
   // background-color: blue;
 }
+
+.ability__item.dimmed {
+  filter: brightness(0.3) saturate(0.5);
+  opacity: 0.7;
+}
+
+.ability__item:not(.dimmed):hover {
+  animation: goldEssence 2s ease-in-out infinite;
+}
+
+        .ability__item:not(.dimmed):hover::before {
+          content: '';
+          position: absolute;
+          top: -4px;
+          left: -4px;
+          right: -4px;
+          bottom: -4px;
+          background: radial-gradient(ellipse at center, rgba(200, 155, 60, 0.9) 0%, rgba(244, 228, 188, 0.5) 40%, rgba(200, 155, 60, 0.2) 70%, transparent 100%);
+          border-radius: 10px;
+          z-index: -1;
+          animation: goldEssenceGlow 2s ease-in-out infinite;
+          filter: blur(3px);
+          transform-origin: center;
+        }
 
 .ability__icon {
   width: 100%;
@@ -441,11 +465,19 @@
 
 .ability__name {
   color: #cdbe91;
-  font-size: 0.7rem;
-  font-weight: bold;
+  font-size: 0.9vw;
+  margin-top: 0.5vw;
+  // font-weight: bold;
+  font-style: italic;
+  font-family: 'Georgia', sans-serif;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
+  // text-transform: uppercase;
+  letter-spacing: 0.1vw;
+  transition: all 0.3s ease;
+}
+
+.ability__item.dimmed .ability__name {
+  color: #8b7355;
 }
 
 // Stats Panel
@@ -487,12 +519,27 @@ margin-top: 5%;
 }
 
 .stat__row {
+  position: relative;
   height: 23%;
   width: 100%;
   padding-top: 1%;
   border-top: 5px double #cdbe91;
   @include flex-between;
   // background-color: red;
+}
+
+.stat__timeline {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  width: 60%;
+  margin-left: 5%;
+  height: 0.1vw;
+  background: #b5b1ac;
+  opacity: 0.7;
+  z-index: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .stat__name {
@@ -519,15 +566,53 @@ margin-top: 5%;
   width: auto;
   max-width: 15%;
   transition: all 0.3s ease;
+  z-index: 99;
 
   &.active {
     filter: brightness(1) saturate(1);
+    animation: statGlow 3s ease-in-out infinite;
   }
 
   &.inactive {
     filter: brightness(0.3) saturate(0.5);
   }
 }
+
+@keyframes statGlow {
+  0% {
+    filter: brightness(1) saturate(1) ;
+  }
+  50% {
+    filter: brightness(1.2) saturate(1.1) ;
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes goldEssence {
+  0% {
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    filter: brightness(1.1) saturate(1.1) drop-shadow(1px 1px 0px rgba(200, 155, 60, 0.6));
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+        @keyframes goldEssenceGlow {
+          0% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.8;
+          }
+          100% {
+            opacity: 0.4;
+          }
+        }
 
 @keyframes loreFadeIn {
   0% {
