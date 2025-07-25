@@ -128,6 +128,12 @@ $breakpoint-xl: 1200px;
   justify-content: space-between;
 }
 
+@mixin flex-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 @mixin background {
   background-size: 100% 100%;
   background-position: center;

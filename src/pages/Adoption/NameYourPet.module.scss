@@ -271,7 +271,6 @@
   }
   
   
-  
 
 @keyframes petFadeIn {
   0% { opacity: 0; filter: brightness(0)}
@@ -357,10 +356,205 @@
   // background-color: #c89b3c;
 }
 
+// Abilities Panel
+.abilities__container {
+  position: absolute;
+  right: 0vw;
+  top: 5%;
+  transform: translateY(-50%);
+  width: 30vw;
+  height: 22vh;
+  z-index: 5;
+  cursor: default;
+  @include flex-col-between;
+  // background-color: pink;
+  animation: abilitiesFadeIn 2s ease-in-out;
+}
+
+.panel__header {
+  height: 25%;
+  width: 100%;
+  @include flex-center;
+  // background-color: blue;
+}
+
+.panel_title,
+.panel__subtitle {
+  margin: 0;
+}
+
+.panel__title {
+  height: 100%;
+  width: auto;
+  color: #cdbe91;
+  font-size: 1.5vw;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.2vw;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  // background-color: #c89b3c;
+}
+
+.panel__subtitle {
+  height: 80%;
+  width: 70%;
+  padding-left: 5%;
+  color: #cdbe91;
+  font-size: 0.9vw;
+  font-style: italic;
+  @include flex-center;
+  @include background;
+  background-image: url('/images/frames/ability-description.png');
+  // background-color: red;
+}
+
+.abilities__grid {
+  height: 70%;
+  width: 100%;
+  @include flex-between;
+  // background-color: #c89b3c;
+}
+
+.ability__item {
+  width: 22%;
+  height: 100%;
+  @include flex-col-between;
+  @include flex-center;
+  // background-color: blue;
+}
+
+.ability__icon {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.ability__name {
+  color: #cdbe91;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+// Stats Panel
+
+.stats__container {
+position: absolute;
+right: 0vw;
+bottom: 10%;
+width: 30vw;
+height: 22vw;
+z-index: 5;
+backdrop-filter: blur(20px);
+cursor: default;
+// background-color: #423d31;
+@include flex-col-between;
+align-items: flex-start;
+animation: statsFadeIn 2s ease-in-out;
+}
+
+.stats__title {
+height: auto;
+width: auto;
+color: #cdbe91;
+font-size: 1.5vw;
+font-weight: bold;
+text-transform: uppercase;
+letter-spacing: 0.2vw;
+text-align: left;
+margin: 0;
+margin-top: 5%;
+// background-color: red;
+}
+
+.stats__list {
+  width: 100%;
+  height: 85%;
+  @include flex-col-between;
+  // background-color: pink;
+}
+
+.stat__row {
+  height: 23%;
+  width: 100%;
+  padding-top: 1%;
+  border-top: 5px double #cdbe91;
+  @include flex-between;
+  // background-color: red;
+}
+
+.stat__name {
+  height: 100%;
+  width: 25%;
+  color: #cdbe91;
+  font-size: 1vw;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1vw;
+  // background-color: blue;
+  @include flex-title;
+}
+
+.stat__bars {
+  height: 100%;
+  width: 70%;
+  // background-color: green;
+  @include flex-between;
+}
+
+.stat__icon {
+  height: 85%;
+  width: auto;
+  max-width: 15%;
+  transition: all 0.3s ease;
+
+  &.active {
+    filter: brightness(1) saturate(1);
+  }
+
+  &.inactive {
+    filter: brightness(0.3) saturate(0.5);
+  }
+}
+
 @keyframes loreFadeIn {
   0% {
     opacity: 0;
     transform: translateY(-50%) translateX(2vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes abilitiesFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-2vw);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes statsFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-2vw);
   }
   100% {
     opacity: 1;

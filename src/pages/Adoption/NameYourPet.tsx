@@ -182,6 +182,90 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         </div>
                     )}
 
+                    {/* Abilities Panel - only show when pet is hatched */}
+                    {clickCount >= 4 && currentPetLore && (
+                        <div className={styles.abilities__container}>
+
+                            <div className={styles.panel__header}><h3 className={styles.panel__title}>Abilities</h3>
+                                <p className={styles.panel__subtitle}>Hover through abilities to learn more about them</p></div>
+
+                            <div className={styles.abilities__grid}>
+                                {currentPetLore.abilities?.map((ability, index) => (
+                                    <div key={ability.name} className={styles.ability__item}>
+                                        <div className={styles.ability__icon}>
+                                            <img
+                                                src={`/images/abilities/pet-${eggIndex + 1}-ability-${index + 1}.png`}
+                                                alt={ability.name}
+                                            />
+                                        </div>
+                                        <span className={styles.ability__name}>{ability.name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Stats Panel - only show when pet is hatched */}
+                    {clickCount >= 4 && currentPetLore && (
+                        <div className={styles.stats__container}>
+                            <h3 className={styles.stats__title}>Stats</h3>
+                            <div className={styles.stats__list}>
+                                <div className={styles.stat__row}>
+                                    <span className={styles.stat__name}>Instinct</span>
+                                    <div className={styles.stat__bars}>
+                                        {[1, 2, 3, 4, 5].map((level) => (
+                                            <img
+                                                key={level}
+                                                src="/images/stats/stat-instinct.png"
+                                                alt="instinct stat"
+                                                className={`${styles.stat__icon} ${level <= (currentPetLore.stats?.instinct || 0) ? styles.active : styles.inactive}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className={styles.stat__row}>
+                                    <span className={styles.stat__name}>Force</span>
+                                    <div className={styles.stat__bars}>
+                                        {[1, 2, 3, 4, 5].map((level) => (
+                                            <img
+                                                key={level}
+                                                src="/images/stats/stat-force.png"
+                                                alt="force stat"
+                                                className={`${styles.stat__icon} ${level <= (currentPetLore.stats?.force || 0) ? styles.active : styles.inactive}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className={styles.stat__row}>
+                                    <span className={styles.stat__name}>Pressure</span>
+                                    <div className={styles.stat__bars}>
+                                        {[1, 2, 3, 4, 5].map((level) => (
+                                            <img
+                                                key={level}
+                                                src="/images/stats/stat-pressure.png"
+                                                alt="pressure stat"
+                                                className={`${styles.stat__icon} ${level <= (currentPetLore.stats?.pressure || 0) ? styles.active : styles.inactive}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className={styles.stat__row}>
+                                    <span className={styles.stat__name}>Cleverness</span>
+                                    <div className={styles.stat__bars}>
+                                        {[1, 2, 3, 4, 5].map((level) => (
+                                            <img
+                                                key={level}
+                                                src="/images/stats/stat-cleverness.png"
+                                                alt="cleverness stat"
+                                                className={`${styles.stat__icon} ${level <= (currentPetLore.stats?.cleverness || 0) ? styles.active : styles.inactive}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Render hearts */}
                     {hearts.map(heart => (
                         <div
