@@ -165,7 +165,7 @@
   top: 90%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: nameInputFadeIn 0.8s ease-in-out;
+  animation: nameInputFadeIn 2s ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -667,11 +667,11 @@ margin-top: 5%;
 @keyframes nameInputFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(1vw);
+    transform: translate(-50%, -50%) translateY(1vw);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%) translateY(0);
   }
 }
 
