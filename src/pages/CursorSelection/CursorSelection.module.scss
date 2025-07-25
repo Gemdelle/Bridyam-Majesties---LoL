@@ -1,0 +1,56 @@
+@use '../../styles/variables.scss' as *;
+
+.cursorSelection {
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  background-position: 60% 90%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+
+  &__container {
+    width: 92%;
+    height: 92%;
+    margin: 0 auto;
+    margin-top: 3%;
+    @include flex-col-between;
+  }
+
+  &__header {
+    height: 15%;
+    width: 100%;
+    text-align: center;
+    background-image: url('/images/frames/title-frame.png');
+    @include background-center;
+    background-size: auto 100%;
+  }
+
+  &__title {
+    margin: 0;
+    height: 48%;
+    font-size: 3.5rem;
+    color: #c89b3c;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  &__subtitle {
+    height: 20%;
+    margin: 0;
+    font-size: 1.4rem;
+    color: #cdbe91;
+  }
+
+  &__content {
+    height: 75%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+} 
