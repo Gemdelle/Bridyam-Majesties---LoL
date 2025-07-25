@@ -127,7 +127,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                 <header className={styles.nameYourPet__header}>
                     <h1 className={styles.nameYourPet__title}>NAME YOUR PET</h1>
                     <p className={styles.nameYourPet__subtitle}>
-                        {clickCount < 4 ? "Make it original!" : "Write your pet's name"}
+                        {clickCount < 4 ? "Make it original!" : `¡WOW, you hatched a ${selectedEgg.name}!`}
                     </p>
                 </header>
 
@@ -298,26 +298,25 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                         </div>
                     ))}
 
-                    <div className={styles.input__container}>
-                        <input
-                            type="text"
-                            className={styles.pet__name__input}
-                            placeholder="Enter your pet's name..."
-                            value={petName}
-                            onChange={(e) => setPetName(e.target.value)}
-                            maxLength={20}
-                        />
+                    <div className={`${styles.instruction__text} ${clickCount >= 4 ? styles.fadeOut : ''}`}>
+                        Tap the egg to hatch it
                     </div>
 
-                    {clickCount < 4 && (
-                        <div className={`${styles.instruction__text} ${clickCount === 4 ? styles.fadeOut : ''}`}>
-                            Tap the egg to hatch it
-                        </div>
-                    )}
-
                     {clickCount >= 4 && (
-                        <div className={styles.instruction__text}>
-                            ¡WOW, you hatched a {selectedEgg.name}!
+                        <div className={styles.nameInput__container}>
+                            <input
+                                type="text"
+                                className={styles.pet__name__input}
+                                placeholder="Name me..."
+                                value={petName}
+                                onChange={(e) => setPetName(e.target.value)}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter' && petName.trim()) {
+                                        onPetNamed(petName.trim());
+                                    }
+                                }}
+                                maxLength={20}
+                            />
                         </div>
                     )}
                 </div>
