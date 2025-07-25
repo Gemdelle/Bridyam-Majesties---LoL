@@ -580,13 +580,13 @@ margin-top: 5%;
 
 @keyframes statGlow {
   0% {
-    filter: brightness(1) saturate(1) ;
+    filter: brightness(1) saturate(1) drop-shadow(0 0 10px rgba(200, 155, 60, 0.6));
   }
   50% {
-    filter: brightness(1.2) saturate(1.1) ;
+    filter: brightness(1.2) saturate(1.1) drop-shadow(0 0 15px rgba(200, 155, 60, 0.8));
   }
   100% {
-    filter: brightness(1) saturate(1);
+    filter: brightness(1) saturate(1) drop-shadow(0 0 10px rgba(200, 155, 60, 0.6));
   }
 }
 
