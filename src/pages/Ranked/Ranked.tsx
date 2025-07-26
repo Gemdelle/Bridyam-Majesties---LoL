@@ -155,44 +155,88 @@ const Ranked: React.FC = () => {
         const sortBy = selectedSorts[0]; // Take the first selected sort option
         const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
 
+        // Count accounts per essencer for secondary sorting
+        const essencerAccountCounts = new Map<string, number>();
+        dataToSort.forEach(account => {
+            const essencerName = account.name;
+            essencerAccountCounts.set(essencerName, (essencerAccountCounts.get(essencerName) || 0) + 1);
+        });
+
         return [...dataToSort].sort((a, b) => {
+            let primaryComparison = 0;
+
             switch (sortBy) {
                 case 'tier-soloq': {
                     // Sort by tier and division (tier priority, then division)
                     const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
                     const bTierIndex = tierOrder.indexOf(b.elo_soloq.tier.toLowerCase());
                     if (aTierIndex !== bTierIndex) {
-                        return bTierIndex - aTierIndex; // Higher tier first
+                        primaryComparison = bTierIndex - aTierIndex; // Higher tier first
+                    } else {
+                        primaryComparison = b.elo_soloq.division - a.elo_soloq.division; // Higher division first
                     }
-                    return b.elo_soloq.division - a.elo_soloq.division; // Higher division first
+                    break;
                 }
                 case 'tier-flex': {
                     const aTierIndexFlex = tierOrder.indexOf(a.elo_flex.tier.toLowerCase());
                     const bTierIndexFlex = tierOrder.indexOf(b.elo_flex.tier.toLowerCase());
                     if (aTierIndexFlex !== bTierIndexFlex) {
-                        return bTierIndexFlex - aTierIndexFlex; // Higher tier first
+                        primaryComparison = bTierIndexFlex - aTierIndexFlex; // Higher tier first
+                    } else {
+                        primaryComparison = b.elo_flex.division - a.elo_flex.division; // Higher division first
                     }
-                    return b.elo_flex.division - a.elo_flex.division; // Higher division first
+                    break;
                 }
                 case 'wins':
                     // Sort by wins current (descending)
-                    return b.wins.current - a.wins.current;
+                    primaryComparison = b.wins.current - a.wins.current;
+                    break;
                 case 'missions':
                     // Sort by missions current (descending)
-                    return b.missions.current_act.current - a.missions.current_act.current;
+                    primaryComparison = b.missions.current_act.current - a.missions.current_act.current;
+                    break;
                 case 'hall missions':
                     // Sort by hall missions current (descending)
-                    return b.missions.current_hall_of_legends.current - a.missions.current_hall_of_legends.current;
+                    primaryComparison = b.missions.current_hall_of_legends.current - a.missions.current_hall_of_legends.current;
+                    break;
                 case 'bloodline': {
                     // Sort by bloodline in the order: Porveldam, Spadelline, Zephiroth, Gladasmy
                     const bloodlineOrder = ['porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
                     const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
                     const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-                    return aBloodlineIndex - bBloodlineIndex;
+                    primaryComparison = aBloodlineIndex - bBloodlineIndex;
+                    break;
                 }
                 default:
                     return 0;
             }
+
+            // If primary comparison is not 0, return it
+            if (primaryComparison !== 0) {
+                return primaryComparison;
+            }
+
+            // Secondary sort: by number of accounts per essencer (descending)
+            const aAccountCount = essencerAccountCounts.get(a.name) || 0;
+            const bAccountCount = essencerAccountCounts.get(b.name) || 0;
+            const accountCountComparison = bAccountCount - aAccountCount;
+
+            if (accountCountComparison !== 0) {
+                return accountCountComparison;
+            }
+
+            // Tertiary sort: by bloodline within the same essencer (Primogenit, Porveldam, Spadelline, Zephiroth, Gladasmy)
+            const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
+            const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
+            const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
+            const bloodlineComparison = aBloodlineIndex - bBloodlineIndex;
+
+            if (bloodlineComparison !== 0) {
+                return bloodlineComparison;
+            }
+
+            // Quaternary sort: by essencer name (ascending) for essencers with same account count and bloodline
+            return a.name.localeCompare(b.name);
         });
     };
 
