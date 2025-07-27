@@ -211,6 +211,7 @@
 .header__name,
 .header__essencer,
 .header__wins,
+.header__honor,
 .header__soloq,
 .header__flex,
 .header__missions {
@@ -238,7 +239,12 @@
 }
 
 .header__wins {
-  width: 23%;
+  width: 20%;
+  height: 100%;
+}
+
+.header__honor {
+  width: 2.5%;
   height: 100%;
 }
 
@@ -259,7 +265,7 @@
 }
 
 .header__missions {
-  width: 48.5%;
+  width: 46%;
   height: 100%;
   @include flex-evenly;
   // background-color: red;

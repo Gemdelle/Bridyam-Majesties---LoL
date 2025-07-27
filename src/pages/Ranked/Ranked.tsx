@@ -61,7 +61,14 @@ const Ranked: React.FC = () => {
             try {
                 setLoading(true);
                 const data = await fetchRankedData();
-                setRankedData(data);
+
+                // Set default honor level to 3 only for accounts that don't have honor set
+                const dataWithDefaultHonor = data.map(account => ({
+                    ...account,
+                    honor: account.honor && account.honor > 0 ? account.honor : 3 // Only set to 3 if honor is 0, null, or undefined
+                }));
+
+                setRankedData(dataWithDefaultHonor);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Error loading ranked data');
             } finally {
@@ -429,6 +436,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.header__name}>ACCOUNT</div>
                             <div className={styles.header__essencer}>ESSENCER</div>
                             <div className={styles.header__wins}>WINS</div>
+                            <div className={styles.header__honor}>HONOR</div>
                             <div className={styles.header__soloq}>SOLO</div>
                             <div className={styles.header__flex}>FLEX</div>
                             <div className={styles.header__missions}>

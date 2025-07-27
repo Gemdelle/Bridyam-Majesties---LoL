@@ -30,6 +30,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
+    const [showHonorSelector, setShowHonorSelector] = useState(false);
 
     // States for essencer editing
     const [isEditingEssencer, setIsEditingEssencer] = useState(false);
@@ -38,6 +39,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     // Refs for rank containers
     const soloqRef = useRef<HTMLDivElement>(null);
     const flexRef = useRef<HTMLDivElement>(null);
+    const honorRef = useRef<HTMLDivElement>(null);
 
     const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
         const initialHallMissions = Array(38).fill(false);
@@ -89,12 +91,15 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
 
-            // Check if click is outside both containers
+            // Check if click is outside all containers
             if (soloqRef.current && !soloqRef.current.contains(target)) {
                 setShowSoloqSelector(false);
             }
             if (flexRef.current && !flexRef.current.contains(target)) {
                 setShowFlexSelector(false);
+            }
+            if (honorRef.current && !honorRef.current.contains(target)) {
+                setShowHonorSelector(false);
             }
         };
 
@@ -295,6 +300,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                 return 'III';
             case 4:
                 return 'IV';
+            case 5:
+                return 'V';
             default:
                 return num.toString();
         }
@@ -348,6 +355,26 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         } else {
             setShowFlexSelector(false);
         }
+    };
+
+    const getHonorImage = (honorLevel: number): string => {
+        return `/images/honor/honor-${honorLevel}.png`;
+    };
+
+    const handleHonorChange = (honorLevel: number) => {
+        console.log('Honor change:', honorLevel); // Debug log
+
+        const updatedData = {
+            ...rankedData,
+            honor: honorLevel
+        };
+
+        console.log('Updated data:', updatedData); // Debug log
+        console.log('Calling onUpdateRankedData with:', updatedData);
+        onUpdateRankedData(updatedData);
+
+        // Close the selector
+        setShowHonorSelector(false);
     };
 
     return (
@@ -419,6 +446,31 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
                 <div className={styles.wins__count}>
                     {rankedData.wins.current} / {rankedData.wins.totals}
                 </div>
+            </div>
+
+            <div className={styles.divider}></div>
+
+            <div ref={honorRef} className={styles.honor__container} onClick={() => setShowHonorSelector(!showHonorSelector)}>
+                <span>{convertToRomanNumeral(rankedData.honor)}</span>
+                <img src={getHonorImage(rankedData.honor)} alt={`Honor ${rankedData.honor}`} />
+                {showHonorSelector && (
+                    <div className={styles.honor__selector}>
+                        <div className={styles.honor__options}>
+                            {[1, 2, 3, 4, 5].map(honorLevel => (
+                                <div
+                                    key={honorLevel}
+                                    className={`${styles.honor__option} ${rankedData.honor === honorLevel ? styles.honor__selected : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleHonorChange(honorLevel);
+                                    }}
+                                >
+                                    <img src={getHonorImage(honorLevel)} alt={`Honor ${honorLevel}`} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className={styles.divider}></div>
