@@ -37,7 +37,7 @@
   align-items: center;
   justify-content: flex-start;
   z-index: 1;
-  animation: scrollLeft 60s linear infinite;
+  animation: scrollLeft 120s linear infinite;
   will-change: transform;
   gap: 8vw;
 }
@@ -296,7 +296,7 @@
     transform: translateX(0%);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
