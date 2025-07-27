@@ -55,30 +55,30 @@
 
 .container {
   width: 35%;
-  height: 75%;
+  height: 85%;
   margin-top: 5%;
+  margin-bottom: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // background-color: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
-  // backdrop-filter: blur(10px);
   position: relative;
   z-index: 900;
 }
 
 .backgroundImage {
   position: absolute;
-  top: 10%;
-  left: 28%;
-  transform: translate(-50%, -50%);
+  top: 4.5%;
+  left: 27.5%;
   width: 45%;
   height: 92%;
-  background-image: url('/images/frames/essence-ring.png');
-  @include background-center;
-  background-size: 100% 100%;
-  animation: spin 70s linear infinite;
+  background-image: url(/images/frames/essence-ring.png);
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 106% 106%;
+  animation: _spin_mpefe_1 70s linear infinite;
   z-index: 99;
 }
 
@@ -300,23 +300,23 @@
 
 // Sign up link styles
 .signUpLink {
-  margin-top: 1rem;
-  color: #cdbe91;
-  font-size: 0.9rem;
-  text-align: center;
-  
-  a {
-    color: #c89b3c;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
+    margin-top: 1rem;
+    color: #cdbe91;
+    font-size: 0.9vw;
+    text-align: center;
     
-    &:hover {
-      color: #d4a94a;
-      text-decoration: underline;
+    a {
+      color: #c89b3c;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #d4a94a;
+        text-decoration: underline;
+      }
     }
   }
-}
 
 @keyframes spin {
   from {
