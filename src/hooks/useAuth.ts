@@ -28,11 +28,11 @@ export const useAuth = () => {
     });
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (username: string, password: string) => {
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      const response = await authService.login({ email, password });
+      const response = await authService.login({ username, password });
       
       if (response.success && response.token && response.user) {
         updateAuthState(response.user, response.token);

@@ -3,7 +3,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const { login, isLoading, isAuthenticated } = useAuthContext();
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
         setError(null);
 
         try {
-            const result = await login(email, password);
+            const result = await login(username, password);
 
             if (result.success) {
                 // Login successful - context will handle state updates
@@ -89,12 +89,12 @@ const Login: React.FC = () => {
                             </div>
                         )}
                         <div className={styles.inputGroup}>
-                            <label htmlFor="email" className={styles.label}>Username</label>
+                            <label htmlFor="username" className={styles.label}>Username</label>
                             <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="text"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 className={styles.input}
                                 placeholder="Enter your username"
                                 required
