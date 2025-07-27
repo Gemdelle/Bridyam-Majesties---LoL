@@ -435,7 +435,7 @@
   top: 5%;
   transform: translateY(-50%);
   width: 30vw;
-  height: 22vh;
+  height: 25vh;
   z-index: 5;
   cursor: default;
   @include flex-col-between;
@@ -544,11 +544,9 @@
   color: #cdbe91;
   font-size: 0.9vw;
   margin-top: 0.5vw;
-  // font-weight: bold;
   font-style: italic;
   font-family: 'Georgia', sans-serif;
   text-align: center;
-  // text-transform: uppercase;
   letter-spacing: 0.1vw;
   transition: all 0.3s ease;
 }
