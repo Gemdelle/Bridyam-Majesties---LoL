@@ -11,6 +11,7 @@ import Achievements from './pages/Achievements/Achievements'
 import Redeem from './pages/Redeem/Redeem'
 import Adoption from './pages/Adoption/Adoption'
 import Login from './pages/Login/Login'
+import SignUp from './pages/SignUp/SignUp'
 import CursorSelection from './pages/CursorSelection/CursorSelection'
 
 function AppContent() {
@@ -34,7 +35,7 @@ function AppContent() {
         <Route
           path="/signup"
           element={
-            isAuthenticated ? <Navigate to="/" replace /> : <Navigate to="/" replace />// TODO: Habilitar <SignUp />
+            isAuthenticated ? <Navigate to="/" replace /> : <SignUp />
           }
         />
 

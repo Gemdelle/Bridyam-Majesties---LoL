@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { authService } from '../../services/authService';
+import SignUpSuccess from '../../components/SignUpSuccess';
 import styles from './SignUp.module.scss';
 
 const SignUp: React.FC = () => {
@@ -13,6 +14,7 @@ const SignUp: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showSuccessScreen, setShowSuccessScreen] = useState(false);
     const { isAuthenticated } = useAuthContext();
 
     // Redirect if already authenticated
@@ -64,7 +66,7 @@ const SignUp: React.FC = () => {
             });
 
             if (response.success) {
-                setSuccess('Registration successful! You can now login with your credentials.');
+                setShowSuccessScreen(true);
                 // Clear form
                 setEmail('');
                 setName('');
@@ -97,6 +99,11 @@ const SignUp: React.FC = () => {
         'Orzyadhere',
         'Vrillyarethez'
     ];
+
+    // Show success screen if registration was successful
+    if (showSuccessScreen) {
+        return <SignUpSuccess onComplete={() => setShowSuccessScreen(false)} />;
+    }
 
     return (
         <div className={styles.page}>
@@ -132,11 +139,7 @@ const SignUp: React.FC = () => {
                                 {error}
                             </div>
                         )}
-                        {success && (
-                            <div className={styles.success}>
-                                {success}
-                            </div>
-                        )}
+
 
                         <div className={styles.inputsContainer}>
                             <div className={styles.inputGroup}>

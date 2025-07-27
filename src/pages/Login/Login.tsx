@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const { login, isLoading, isAuthenticated } = useAuthContext();
+    const location = useLocation();
 
     // Redirect if already authenticated
     useEffect(() => {
@@ -15,6 +18,14 @@ const Login: React.FC = () => {
             console.log('User is already authenticated, redirecting...');
         }
     }, [isAuthenticated]);
+
+    // Check if user came from signup
+    useEffect(() => {
+        const state = location.state as { fromSignup?: boolean } | null;
+        if (state?.fromSignup) {
+            setSuccessMessage('¡Cuenta creada exitosamente! Ya puedes iniciar sesión con tus credenciales.');
+        }
+    }, [location]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -86,6 +97,11 @@ const Login: React.FC = () => {
                         {error && (
                             <div className={styles.error}>
                                 {error}
+                            </div>
+                        )}
+                        {successMessage && (
+                            <div className={styles.success}>
+                                {successMessage}
                             </div>
                         )}
                         <div className={styles.inputGroup}>
