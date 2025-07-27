@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './CursorSelection.module.scss';
 
@@ -6,18 +6,60 @@ interface CursorSelectionProps {
     onCursorSelected?: (cursorId: string) => void;
 }
 
+interface Heart {
+    id: number;
+    x: number;
+    y: number;
+    type: number;
+}
+
 const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) => {
     const navigate = useNavigate();
+    const [hearts, setHearts] = useState<Heart[]>([]);
+    const [heartId, setHeartId] = useState(0);
+    const [isPetting, setIsPetting] = useState(false);
 
-    // useEffect(() => {
-    //     // Navigate to adoption page after 5 seconds
-    //     const timer = setTimeout(() => {
-    //         console.log('Navigating to adoption page...');
-    //         navigate('/adoption');
-    //     }, 5000);
+    const playPetSound = () => {
+        const audio = new Audio('/sounds/pet-3-stage-1.mp3');
+        audio.play().catch(error => console.log('Pet sound play failed:', error));
+    };
 
-    //     return () => clearTimeout(timer);
-    // }, [navigate]);
+    const spawnHeart = (event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const containerRect = event.currentTarget.closest(`.${styles.cursorSelection__content__crystalPet}`)?.getBoundingClientRect();
+
+        if (containerRect) {
+            const x = rect.left - containerRect.left + rect.width * 0.35;
+            const y = rect.top - containerRect.top + 80;
+            const heartType = Math.floor(Math.random() * 3) + 1;
+
+            const newHeart: Heart = {
+                id: heartId,
+                x: x,
+                y: y,
+                type: heartType
+            };
+
+            setHearts(prev => [...prev, newHeart]);
+            setHeartId(prev => prev + 1);
+
+            // Remove heart after animation completes
+            setTimeout(() => {
+                setHearts(prev => prev.filter(heart => heart.id !== newHeart.id));
+            }, 2000);
+        }
+    };
+
+    const handlePetClick = (event: React.MouseEvent) => {
+        playPetSound();
+        spawnHeart(event);
+
+        // Trigger petting animation
+        setIsPetting(true);
+        setTimeout(() => {
+            setIsPetting(false);
+        }, 600); // Match the animation duration
+    };
 
     return (
         <div className={styles.cursorSelection}>
@@ -60,8 +102,31 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
                     </div>
                     <div className={styles.cursorSelection__content__crystalPet}>
                         <img src="/images/pets/crystal-pet-3sparkles.png" alt="Crystal Pet Sparkles" className={styles.cursorSelection__content__crystalPet__sparkles} />
-                        <img src="/images/pets/crystal-pet-3.png" alt="Crystal Pet" className={styles.cursorSelection__content__crystalPet__pet} />
+                        <img
+                            src="/images/pets/crystal-pet-3.png"
+                            alt="Crystal Pet"
+                            className={`${styles.cursorSelection__content__crystalPet__pet} ${isPetting ? styles.petting : ''}`}
+                            onClick={handlePetClick}
+                            style={{ cursor: 'pointer' }}
+                        />
                         <img src="/images/pets/crystal-pet-3-shadow.png" alt="Crystal Pet Shadow" className={styles.cursorSelection__content__crystalPet__shadow} />
+
+                        {/* Render hearts */}
+                        {hearts.map(heart => (
+                            <div
+                                key={heart.id}
+                                className={styles.heart}
+                                style={{
+                                    left: heart.x,
+                                    top: heart.y,
+                                }}
+                            >
+                                <img
+                                    src={`/images/icons/love-icon-${heart.type}.png`}
+                                    alt="heart"
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
