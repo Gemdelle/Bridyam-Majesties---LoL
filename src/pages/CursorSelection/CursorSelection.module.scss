@@ -67,12 +67,39 @@
     }
 
     &__crystalPet {
-      height: 35%;
-      width: 50%;
+      height: 80%;
+      width: 30%;
+      position: relative;
       margin: 0 auto;
+      margin-bottom: 7%;
       @include flex-col-between;
-      // border: 1px solid red;
       // background-color: green;
+
+      &__sparkles {
+        height: 40%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9;
+      }
+
+      &__pet {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        z-index: 5;
+        // background-color: white;
+      }
+
+      &__shadow {
+        height: 80%;
+        width: 120%;
+        position: absolute;
+        top: -10%;
+        left: -8%;
+        z-index: 1;
+      }
     }
 
     &__frame {

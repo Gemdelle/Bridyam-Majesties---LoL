@@ -9,15 +9,15 @@ interface CursorSelectionProps {
 const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) => {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Navigate to adoption page after 5 seconds
-        const timer = setTimeout(() => {
-            console.log('Navigating to adoption page...');
-            navigate('/adoption');
-        }, 5000);
+    // useEffect(() => {
+    //     // Navigate to adoption page after 5 seconds
+    //     const timer = setTimeout(() => {
+    //         console.log('Navigating to adoption page...');
+    //         navigate('/adoption');
+    //     }, 5000);
 
-        return () => clearTimeout(timer);
-    }, [navigate]);
+    //     return () => clearTimeout(timer);
+    // }, [navigate]);
 
     return (
         <div className={styles.cursorSelection}>
@@ -59,7 +59,9 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
                         </div>
                     </div>
                     <div className={styles.cursorSelection__content__crystalPet}>
-                        <img src="/images/pets/crystal-pet-3.png" alt="Crystal Pet" />
+                        <img src="/images/pets/crystal-pet-3sparkles.png" alt="Crystal Pet Sparkles" className={styles.cursorSelection__content__crystalPet__sparkles} />
+                        <img src="/images/pets/crystal-pet-3.png" alt="Crystal Pet" className={styles.cursorSelection__content__crystalPet__pet} />
+                        <img src="/images/pets/crystal-pet-3-shadow.png" alt="Crystal Pet Shadow" className={styles.cursorSelection__content__crystalPet__shadow} />
                     </div>
                 </div>
             </div>
