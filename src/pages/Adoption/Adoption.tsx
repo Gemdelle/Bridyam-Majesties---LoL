@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { usePetContext } from '../../contexts/PetContext';
+import { tutorialService } from '../../services/tutorialService';
 import styles from './Adoption.module.scss';
 import NameYourPet from './NameYourPet';
 
@@ -45,6 +47,7 @@ const Adoption: React.FC = () => {
     const [selectedEgg, setSelectedEgg] = useState<string | null>(null);
     const [hoveredEgg, setHoveredEgg] = useState<number | null>(null);
     const [currentScreen, setCurrentScreen] = useState<'adoption' | 'name'>('adoption');
+    const { setSelectedPet } = usePetContext();
 
     const handleEggSelect = (eggId: string) => {
         setSelectedEgg(eggId);
@@ -66,6 +69,28 @@ const Adoption: React.FC = () => {
 
     const handlePetNamed = (petName: string) => {
         const selectedOption = eggOptions.find(egg => egg.id === selectedEgg);
+        if (selectedOption) {
+            // Get the pet index (0-3) to construct the correct pet image path
+            const petIndex = eggOptions.findIndex(egg => egg.id === selectedEgg);
+            const petImageSrc = `/images/pets/pet-${petIndex + 1}-1.png`;
+            
+            const petData = {
+                id: selectedOption.id,
+                name: selectedOption.name,
+                imageSrc: petImageSrc, // Use pet image instead of egg image
+                rarity: selectedOption.rarity,
+                petName: petName,
+                petNumber: petIndex + 1 // Add the pet number (1-4)
+            };
+            
+            // Save the selected pet to context
+            setSelectedPet(petData);
+            
+            // Save the selected pet to localStorage for tutorial
+            tutorialService.saveSelectedPet(petData);
+            console.log('Pet saved to localStorage:', petData);
+            console.log('Tutorial state after saving pet:', tutorialService.getTutorialState());
+        }
         alert(`Congratulations! You've adopted ${petName}, the ${selectedOption?.name}! Welcome to your adventure!`);
         // Here you would typically navigate to the main app or save the selection
     };

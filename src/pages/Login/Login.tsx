@@ -15,7 +15,6 @@ const Login: React.FC = () => {
     // Redirect if already authenticated
     useEffect(() => {
         if (isAuthenticated) {
-            console.log('User is already authenticated, redirecting to cursor selection...');
             navigate('/cursor-selection');
         }
     }, [isAuthenticated, navigate]);
@@ -37,8 +36,6 @@ const Login: React.FC = () => {
 
             if (result.success) {
                 // Login successful - context will handle state updates
-                console.log('Login successful, user authenticated');
-                // Clear any previous error messages
                 setError(null);
                 // Navigation will be handled by the useEffect that watches isAuthenticated
             } else {

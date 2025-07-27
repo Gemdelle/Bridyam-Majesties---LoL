@@ -17,25 +17,43 @@ export const Nav = () => {
         <div className={styles.nav}>
             <div className={styles.nav__container}>
                 <ul className={styles.nav__container__links__left}>
-                    <li className={location.pathname === '/' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/' ? styles.active : ''}
+                        data-nav="accounts"
+                    >
                         <Link to="/">Home</Link>
                     </li>
-                    <li className={location.pathname === '/bloodlines' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/bloodlines' ? styles.active : ''}
+                        data-nav="bloodlines"
+                    >
                         <Link to="/bloodlines">Bloodlines</Link>
                     </li>
-                    <li className={location.pathname === '/ranked' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/ranked' ? styles.active : ''}
+                        data-nav="ranked"
+                    >
                         <Link to="/ranked">Ranked</Link>
                     </li>
-                    <li className={location.pathname === '/champions' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/champions' ? styles.active : ''}
+                        data-nav="champions"
+                    >
                         <Link to="/champions">Champions</Link>
                     </li>
-                    <li className={location.pathname === '/achievements' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/achievements' ? styles.active : ''}
+                        data-nav="achievements"
+                    >
                         <Link to="/achievements">Achievements</Link>
                     </li>
                 </ul>
                 <PetDisplay name={user?.fullName || ''} />
                 <ul className={styles.nav__container__links__right}>
-                    <li className={location.pathname === '/redeem' ? styles.active : ''}>
+                    <li 
+                        className={location.pathname === '/redeem' ? styles.active : ''}
+                        data-nav="redeem"
+                    >
                         <Link to="/redeem">Redeem</Link>
                     </li>
                     <li>

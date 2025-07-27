@@ -2,7 +2,10 @@ import { BrowserRouter, Route, Routes, Navigate, useLocation } from 'react-route
 import './App.scss'
 import { Nav } from './components/Nav/Nav'
 import { useAuthContext } from './contexts/AuthContext'
+import { PetProvider } from './contexts/PetContext'
+import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
+import Tutorial from './components/Tutorial'
 import Accounts from './pages/Accounts/Accounts'
 import Bloodlines from './pages/Bloodlines/Bloodlines'
 import Ranked from './pages/Ranked/Ranked'
@@ -18,18 +21,25 @@ function AppContent() {
   const { isAuthenticated } = useAuthContext();
   const location = useLocation();
 
+  // Check if user has a pet
+  const hasPet = () => {
+    const pet = tutorialService.getSelectedPet();
+    return pet && pet.petName; // Must have both pet and pet name
+  };
+
   // Hide navigation on adoption and cursor-selection pages
   const showNav = isAuthenticated && location.pathname !== '/adoption' && location.pathname !== '/cursor-selection';
 
   return (
-    <>
+    <PetProvider>
       {showNav && <Nav />}
+      <Tutorial />
       <Routes>
         {/* Public routes */}
         <Route
           path="/login"
           element={
-            isAuthenticated ? <Navigate to="/" replace /> : <Login />
+            isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
           }
         />
         <Route
@@ -81,11 +91,11 @@ function AppContent() {
         <Route path="/adoption" element={<Adoption />} />
         <Route path="*"
           element={
-            <Navigate to={isAuthenticated ? "/" : "/login"} replace />
+            <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
           }
         />
       </Routes>
-    </>
+    </PetProvider>
   )
 }
 

@@ -1,0 +1,55 @@
+// Global styles for tutorial highlights
+.tutorial-highlight {
+  position: relative;
+  z-index: 10000 !important;
+  animation: tutorialGlow 2s ease-in-out infinite !important;
+  box-shadow: 
+    0 0 30px rgba(74, 144, 226, 1),
+    0 0 60px rgba(74, 144, 226, 0.8),
+    0 0 90px rgba(74, 144, 226, 0.4) !important;
+  border: 4px solid #4a90e2 !important;
+  border-radius: 8px !important;
+  background: rgba(74, 144, 226, 0.3) !important;
+  transform: scale(1.05) !important;
+  transition: all 0.3s ease !important;
+  outline: 2px solid rgba(255, 255, 255, 0.8) !important;
+  outline-offset: 2px !important;
+}
+
+@keyframes tutorialGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 30px rgba(74, 144, 226, 1),
+      0 0 60px rgba(74, 144, 226, 0.8),
+      0 0 90px rgba(74, 144, 226, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 0 40px rgba(74, 144, 226, 1),
+      0 0 80px rgba(74, 144, 226, 0.9),
+      0 0 120px rgba(74, 144, 226, 0.6);
+  }
+}
+
+// Specific styles for Nav component elements
+.nav__container__links__left li.tutorial-highlight,
+.nav__container__links__right li.tutorial-highlight {
+  background: rgba(74, 144, 226, 0.4) !important;
+  transform: scale(1.1) !important;
+  transition: all 0.3s ease !important;
+  padding: 8px 16px !important;
+  margin: 0 4px !important;
+  border-radius: 12px !important;
+}
+
+.nav__container__links__left li.tutorial-highlight a,
+.nav__container__links__right li.tutorial-highlight a {
+  color: #ffffff !important;
+  font-weight: bold !important;
+  font-size: 1.1em !important;
+  text-shadow: 
+    0 0 10px rgba(74, 144, 226, 1),
+    0 0 20px rgba(74, 144, 226, 0.8) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+} 
