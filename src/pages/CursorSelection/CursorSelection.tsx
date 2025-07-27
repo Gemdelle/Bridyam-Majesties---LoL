@@ -19,6 +19,7 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
     const [heartId, setHeartId] = useState(0);
     const [isPetting, setIsPetting] = useState(false);
     const [petCount, setPetCount] = useState(0);
+    const [selectedCursorSet, setSelectedCursorSet] = useState<string | null>(null);
 
     const playPetSound = () => {
         const audio = new Audio('/sounds/pet-3-stage-1.mp3');
@@ -51,6 +52,11 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
         }
     };
 
+    const handleCursorSetSelect = (cursorSet: string) => {
+        setSelectedCursorSet(cursorSet);
+        setPetCount(0); // Reset pet count when selecting a new cursor set
+    };
+
     const handlePetClick = (event: React.MouseEvent) => {
         playPetSound();
         spawnHeart(event);
@@ -67,8 +73,8 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
 
         // If pet count reaches 5, confirm cursor selection
         if (newPetCount >= 5) {
-            if (onCursorSelected) {
-                onCursorSelected('cursor-3'); // Assuming this is the cursor for pet-3
+            if (onCursorSelected && selectedCursorSet) {
+                onCursorSelected(selectedCursorSet);
             }
             // Reset pet count after confirmation
             setPetCount(0);
@@ -86,13 +92,19 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
                 <div className={styles.cursorSelection__content}>
                     <div className={styles.cursorSelection__content__framesContainer}>
                         <div className={styles.cursorSelection__content__framesRow}>
-                            <div className={`${styles.cursorSelection__content__frame} ${styles.frame1}`}>
+                            <div
+                                className={`${styles.cursorSelection__content__frame} ${styles.frame1} ${selectedCursorSet === 'cursor-1' ? styles.selected : ''}`}
+                                onClick={() => handleCursorSetSelect('cursor-1')}
+                            >
                                 <div className={styles.cursorSelection__content__frameContent}>
                                     <img src="/images/cursors/cursor-default-1.png" alt="Cursor 1" />
                                     <img src="/images/cursors/cursor-pointer-1.png" alt="Cursor 2" />
                                 </div>
                             </div>
-                            <div className={`${styles.cursorSelection__content__frame} ${styles.frame2}`}>
+                            <div
+                                className={`${styles.cursorSelection__content__frame} ${styles.frame2} ${selectedCursorSet === 'cursor-2' ? styles.selected : ''}`}
+                                onClick={() => handleCursorSetSelect('cursor-2')}
+                            >
                                 <div className={styles.cursorSelection__content__frameContent}>
                                     <img src="/images/cursors/cursor-default-2.png" alt="Cursor 1" />
                                     <img src="/images/cursors/cursor-pointer-2.png" alt="Cursor 2" />
@@ -100,13 +112,19 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
                             </div>
                         </div>
                         <div className={styles.cursorSelection__content__framesRow}>
-                            <div className={`${styles.cursorSelection__content__frame} ${styles.frame3}`}>
+                            <div
+                                className={`${styles.cursorSelection__content__frame} ${styles.frame3} ${selectedCursorSet === 'cursor-3' ? styles.selected : ''}`}
+                                onClick={() => handleCursorSetSelect('cursor-3')}
+                            >
                                 <div className={styles.cursorSelection__content__frameContent}>
                                     <img src="/images/cursors/cursor-default-3.png" alt="Cursor 1" />
                                     <img src="/images/cursors/cursor-pointer-3.png" alt="Cursor 2" />
                                 </div>
                             </div>
-                            <div className={`${styles.cursorSelection__content__frame} ${styles.frame4}`}>
+                            <div
+                                className={`${styles.cursorSelection__content__frame} ${styles.frame4} ${selectedCursorSet === 'cursor-4' ? styles.selected : ''}`}
+                                onClick={() => handleCursorSetSelect('cursor-4')}
+                            >
                                 <div className={styles.cursorSelection__content__frameContent}>
                                     <img src="/images/cursors/cursor-default-4.png" alt="Cursor 1" />
                                     <img src="/images/cursors/cursor-pointer-4.png" alt="Cursor 2" />
@@ -144,7 +162,12 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
 
                         {/* Pet instruction text */}
                         <div className={styles.cursorSelection__content__crystalPet__instruction}>
-                            <p>Pet me {5 - petCount} times to confirm cursor</p>
+                            <p>
+                                {selectedCursorSet
+                                    ? `Pet me ${5 - petCount} times to confirm cursor`
+                                    : 'Select a cursor set first'
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
