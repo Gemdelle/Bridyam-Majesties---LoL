@@ -49,56 +49,73 @@
   &__content {
     height: 83%;
     width: 100%;
-    @include flex-col-between;
+    @include flex-between;
     // background-color: violet;
 
     &__framesContainer {
-      height: 70%;
-      width: 83%;
-      @include flex-between;
+      height: 80%;
+      width: 50%;
+      @include flex-col-between;
+      // background-color: yellow;
+    }
+
+    &__framesRow {
+      height: 45%;
+      width: 90%;
       // background-color: red;
+      @include flex-between;
     }
 
     &__crystalPet {
-      height: 20%;
+      height: 35%;
       width: 50%;
       margin: 0 auto;
-      @include flex-center;
-      border: 1px solid red;
+      @include flex-col-between;
+      // border: 1px solid red;
       // background-color: green;
     }
 
     &__frame {
       height: 100%;
-      width: 23%;
-      @include flex-col-between;
+      width: 45%;
+      @include flex-center;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      backdrop-filter: blur(8px);
 
-      > img {
-        height: 100%;
-        width: auto;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(7px);
-        // background-color: blue;
+      &.frame1 {
+        background-image: url('/images/frames/cursor-frame-1.png');
+      }
+
+      &.frame2 {
+        background-image: url('/images/frames/cursor-frame-2.png');
+      }
+
+      &.frame3 {
+        background-image: url('/images/frames/cursor-frame-3.png');
+      }
+
+      &.frame4 {
+        background-image: url('/images/frames/cursor-frame-4.png');
       }
 
       &Content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        gap: 1vw;
-        @include flex-col;
+        position: relative;
+        height: 60%;
+        width: 55%;
+        // background-color: blue;
+        @include flex-between;
 
         img {
-          height: 30%;
+          height: 60%;
           width: auto;
           object-fit: contain;
           transition: all 0.3s ease;
-          // background-color: red;
+          // background-color: white;
         }
       }
 
