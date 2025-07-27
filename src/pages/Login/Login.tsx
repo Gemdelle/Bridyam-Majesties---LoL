@@ -89,14 +89,14 @@ const Login: React.FC = () => {
                             </div>
                         )}
                         <div className={styles.inputGroup}>
-                            <label htmlFor="email" className={styles.label}>Email</label>
+                            <label htmlFor="email" className={styles.label}>Username</label>
                             <input
                                 type="email"
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className={styles.input}
-                                placeholder="Enter your email"
+                                placeholder="Enter your username"
                                 required
                                 disabled={isLoading}
                             />
