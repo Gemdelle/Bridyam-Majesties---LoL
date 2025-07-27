@@ -78,6 +78,8 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
             }
             // Reset pet count after confirmation
             setPetCount(0);
+            // Redirect to adoption page
+            navigate('/adoption');
         }
     };
 
