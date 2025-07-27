@@ -154,7 +154,7 @@ const SignUp: React.FC = () => {
                             </div>
 
                             <div className={styles.inputGroup}>
-                                <label htmlFor="name" className={styles.label}>Your Username</label>
+                                <label htmlFor="name" className={styles.label}>Twitch Username</label>
                                 <input
                                     type="text"
                                     id="name"
