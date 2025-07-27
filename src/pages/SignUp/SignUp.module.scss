@@ -173,24 +173,26 @@
 .input {
   width: 50%; // Fixed width for all inputs
   height: 80%; // Slightly smaller height
+  font-family: 'Pixel';
   background: linear-gradient(145deg, #1e2328, #0f1419);
   border: 2px solid #463714;
   border-radius: 8px;
   color: #cdbe91;
-  font-size: 0.9rem;
+  font-size: 0.9vw;
   font-weight: 600;
   padding: 0 1rem;
   outline: none;
   transition: all 0.3s ease;
   text-transform: none;
   letter-spacing: 0.05rem;
-  background-color: red;
 }
 
 .input::placeholder {
   color: #8b7355;
+  font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
   font-weight: 400;
+  font-size: 0.75vw;
 }
 
 .input:focus {
