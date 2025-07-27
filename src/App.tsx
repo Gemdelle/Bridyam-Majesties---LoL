@@ -17,8 +17,8 @@ function AppContent() {
   const { isAuthenticated } = useAuthContext();
   const location = useLocation();
 
-  // Hide navigation on adoption page
-  const showNav = isAuthenticated && location.pathname !== '/adoption';
+  // Hide navigation on adoption and cursor-selection pages
+  const showNav = isAuthenticated && location.pathname !== '/adoption' && location.pathname !== '/cursor-selection';
 
   return (
     <>

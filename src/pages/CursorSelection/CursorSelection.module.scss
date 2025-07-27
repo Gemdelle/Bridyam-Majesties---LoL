@@ -3,18 +3,17 @@
 .cursorSelection {
   height: 100vh;
   width: 100vw;
-  background-color: black;
-  background-position: 60% 90%;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  background-image: url('/images/bg/cursor-selection-bg.webp');
+  @include background;
   overflow: hidden;
 
   &__container {
     width: 92%;
-    height: 92%;
+    height: 87%;
     margin: 0 auto;
     margin-top: 3%;
     @include flex-col-between;
+    // background-color: red;
   }
 
   &__header {
@@ -24,6 +23,7 @@
     background-image: url('/images/frames/title-frame.png');
     @include background-center;
     background-size: auto 100%;
+    // background-color: black;
   }
 
   &__title {
@@ -35,6 +35,7 @@
     text-transform: uppercase;
     letter-spacing: 0.3rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    // background-color: yellow;
   }
 
   &__subtitle {
@@ -42,15 +43,80 @@
     margin: 0;
     font-size: 1.4rem;
     color: #cdbe91;
+    // background-color: green;
   }
 
   &__content {
-    height: 75%;
+    height: 83%;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    @include flex-col-between;
+    // background-color: violet;
+
+    &__framesContainer {
+      height: 70%;
+      width: 83%;
+      @include flex-between;
+      // background-color: red;
+    }
+
+    &__crystalPet {
+      height: 20%;
+      width: 50%;
+      margin: 0 auto;
+      @include flex-center;
+      border: 1px solid red;
+      // background-color: green;
+    }
+
+    &__frame {
+      height: 100%;
+      width: 23%;
+      @include flex-col-between;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+
+      > img {
+        height: 100%;
+        width: auto;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(7px);
+        // background-color: blue;
+      }
+
+      &Content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        gap: 1vw;
+        @include flex-col;
+
+        img {
+          height: 30%;
+          width: auto;
+          object-fit: contain;
+          transition: all 0.3s ease;
+          // background-color: red;
+        }
+      }
+
+      &:hover {
+        transform: scale(1.05);
+
+        > img {
+          filter: brightness(1.2) drop-shadow(0 0 10px rgba(200, 155, 60, 0.5));
+        }
+
+        &Content img {
+          filter: brightness(1.2) drop-shadow(0 0 10px rgba(200, 155, 60, 0.5));
+        }
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
   }
-} 
+}
