@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './NameYourPet.module.scss';
 import petLore from '../../data/petLore.json';
 
@@ -29,6 +30,7 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     const [heartId, setHeartId] = useState(0);
     const [isPetting, setIsPetting] = useState(false);
     const [hoveredAbility, setHoveredAbility] = useState<number | null>(null);
+    const navigate = useNavigate();
 
     // Get the current pet's lore
     const currentPetLore = petLore.pets[eggIndex];
@@ -91,6 +93,13 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         setTimeout(() => {
             setIsPetting(false);
         }, 600); // Match the animation duration
+    };
+
+    const handleContinueClick = () => {
+        if (petName.trim().length > 3) {
+            onPetNamed(petName.trim());
+            navigate('/');
+        }
     };
 
     const handleEggTap = () => {
@@ -311,12 +320,23 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                 value={petName}
                                 onChange={(e) => setPetName(e.target.value)}
                                 onKeyPress={(e) => {
-                                    if (e.key === 'Enter' && petName.trim()) {
-                                        onPetNamed(petName.trim());
+                                    if (e.key === 'Enter' && petName.trim().length > 3) {
+                                        handleContinueClick();
                                     }
                                 }}
                                 maxLength={20}
                             />
+                            {petName.trim().length > 3 && (
+                                <button
+                                    className={styles.continue__button}
+                                    onClick={handleContinueClick}
+                                    title="Continue"
+                                >
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>

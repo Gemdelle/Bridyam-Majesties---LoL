@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => {
@@ -10,14 +10,15 @@ const Login: React.FC = () => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const { login, isLoading, isAuthenticated } = useAuthContext();
     const location = useLocation();
+    const navigate = useNavigate();
 
     // Redirect if already authenticated
     useEffect(() => {
         if (isAuthenticated) {
-            // TODO: Implement navigation to main app
-            console.log('User is already authenticated, redirecting...');
+            console.log('User is already authenticated, redirecting to cursor selection...');
+            navigate('/cursor-selection');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, navigate]);
 
     // Check if user came from signup
     useEffect(() => {
@@ -37,8 +38,9 @@ const Login: React.FC = () => {
             if (result.success) {
                 // Login successful - context will handle state updates
                 console.log('Login successful, user authenticated');
-                // TODO: Implement navigation to main app
-                alert('Login successful! Welcome back.');
+                // Clear any previous error messages
+                setError(null);
+                // Navigation will be handled by the useEffect that watches isAuthenticated
             } else {
                 // Login failed
                 setError(result.message || 'Login failed. Please try again.');
@@ -110,7 +112,11 @@ const Login: React.FC = () => {
                                 type="text"
                                 id="username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => {
+                                    setUsername(e.target.value);
+                                    setError(null);
+                                    setSuccessMessage(null);
+                                }}
                                 className={styles.input}
                                 placeholder="Enter your username"
                                 required
@@ -123,7 +129,11 @@ const Login: React.FC = () => {
                                 type="password"
                                 id="password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    setError(null);
+                                    setSuccessMessage(null);
+                                }}
                                 className={styles.input}
                                 placeholder="Enter your password"
                                 required

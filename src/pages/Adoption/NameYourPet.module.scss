@@ -205,6 +205,54 @@
   }
 }
 
+.continue__button {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(145deg, #c89b3c, #a07a2e);
+  border: 2px solid #463714;
+  border-radius: 8px;
+  color: #0f1419;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: buttonFadeIn 0.5s ease-in-out;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(145deg, #d4a94a, #b8842f);
+    transform: translateX(2px);
+    box-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
+
+    svg {
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: translateX(1px);
+    box-shadow: 0 0 8px rgba(200, 155, 60, 0.2);
+  }
+}
+
+@keyframes buttonFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .instruction__text {
   position: absolute;
   top: 90%;

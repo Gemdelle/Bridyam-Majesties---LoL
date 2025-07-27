@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './CursorSelection.module.scss';
 
 interface CursorSelectionProps {
@@ -6,6 +7,18 @@ interface CursorSelectionProps {
 }
 
 const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Navigate to adoption page after 5 seconds
+        const timer = setTimeout(() => {
+            console.log('Navigating to adoption page...');
+            navigate('/adoption');
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className={styles.cursorSelection}>
             <div className={styles.cursorSelection__container}>
