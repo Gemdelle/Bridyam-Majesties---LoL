@@ -138,88 +138,92 @@ const SignUp: React.FC = () => {
                             </div>
                         )}
 
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="email" className={styles.label}>Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className={styles.input}
-                                placeholder="Enter your email"
-                                required
-                                disabled={isLoading}
-                            />
+                        <div className={styles.inputsContainer}>
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="email" className={styles.label}>Email</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className={styles.input}
+                                    placeholder="Enter your email"
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="name" className={styles.label}>Your Username</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className={styles.input}
+                                    placeholder="Enter your username"
+                                    required
+                                    disabled={isLoading}
+                                />
+                            </div>
+
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="password" className={styles.label}>Password</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={styles.input}
+                                    placeholder="Enter your password"
+                                    required
+                                    disabled={isLoading}
+                                    minLength={6}
+                                />
+                            </div>
+
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className={styles.input}
+                                    placeholder="Confirm your password"
+                                    required
+                                    disabled={isLoading}
+                                    minLength={6}
+                                />
+                            </div>
+
+                            <div className={styles.inputGroup}>
+                                <label htmlFor="birthDate" className={styles.label}>Birth Date</label>
+                                <input
+                                    type="date"
+                                    id="birthDate"
+                                    value={birthDate}
+                                    onChange={(e) => setBirthDate(e.target.value)}
+                                    className={styles.input}
+                                    required
+                                    disabled={isLoading}
+                                    max={new Date().toISOString().split('T')[0]}
+                                />
+                            </div>
                         </div>
 
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="name" className={styles.label}>Your Username</label>
-                            <input
-                                type="text"
-                                id="name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className={styles.input}
-                                placeholder="Enter your username"
-                                required
+                        <div className={styles.actionsContainer}>
+                            <button
+                                type="submit"
+                                className={styles.submitButton}
                                 disabled={isLoading}
-                            />
-                        </div>
+                            >
+                                {isLoading ? 'Creating Account...' : 'Sign Up'}
+                            </button>
 
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="password" className={styles.label}>Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className={styles.input}
-                                placeholder="Enter your password"
-                                required
-                                disabled={isLoading}
-                                minLength={6}
-                            />
-                        </div>
-
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className={styles.input}
-                                placeholder="Confirm your password"
-                                required
-                                disabled={isLoading}
-                                minLength={6}
-                            />
-                        </div>
-
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="birthDate" className={styles.label}>Birth Date</label>
-                            <input
-                                type="date"
-                                id="birthDate"
-                                value={birthDate}
-                                onChange={(e) => setBirthDate(e.target.value)}
-                                className={styles.input}
-                                required
-                                disabled={isLoading}
-                                max={new Date().toISOString().split('T')[0]}
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className={styles.submitButton}
-                            disabled={isLoading}
-                        >
-                            {isLoading ? 'Creating Account...' : 'Sign Up'}
-                        </button>
-
-                        <div className={styles.loginLink}>
-                            Already have an account? <Link to="/login">Login here</Link>
+                            <div className={styles.loginLink}>
+                                Already have an account? <Link to="/login">Login here</Link>
+                            </div>
                         </div>
                     </form>
                 </div>
