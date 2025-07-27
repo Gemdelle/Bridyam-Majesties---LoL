@@ -41,9 +41,26 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         audio.play().catch(error => console.log('Audio play failed:', error));
     };
 
+    // Store the current audio instance to prevent overlapping sounds
+    const [currentPetAudio, setCurrentPetAudio] = useState<HTMLAudioElement | null>(null);
+
     const playPetSound = () => {
+        // Stop any currently playing pet audio
+        if (currentPetAudio) {
+            currentPetAudio.pause();
+            currentPetAudio.currentTime = 0;
+        }
+
+        // Create and play new audio
         const audio = new Audio(`/sounds/pet-${eggIndex + 1}-stage-1.mp3`);
+        setCurrentPetAudio(audio);
+        
         audio.play().catch(error => console.log('Pet sound play failed:', error));
+        
+        // Clean up the audio reference when it finishes
+        audio.addEventListener('ended', () => {
+            setCurrentPetAudio(null);
+        });
     };
 
     const spawnHeart = (event: React.MouseEvent) => {
@@ -81,12 +98,13 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
     };
 
     const handlePetClick = (event: React.MouseEvent) => {
-        playPetSound();
-
         // Only spawn heart if pet is fully hatched (not during hatching process)
         if (clickCount >= 4) {
             spawnHeart(event);
         }
+
+        // Play petting sound
+        playPetSound();
 
         // Trigger petting animation
         setIsPetting(true);
@@ -120,6 +138,10 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                 setTimeout(() => {
                     console.log('Starting pet fade in!');
                     setShowPetFadeIn(true);
+                    // Play pet sound at 70% of the fade-in animation (2.1 seconds later)
+                    setTimeout(() => {
+                        playPetSound();
+                    }, 2100);
                 }, 4000);
             }
         }
@@ -150,10 +172,10 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
                                 transform: `scale(${0.7 + (Math.min(clickCount, 3) * 0.1)})`
                             }}
                         >
-                            {/* Pet image that appears under the egg from 3rd click */}
-                            {clickCount >= 3 && (
+                            {/* Pet image that appears under the egg when fade-in animation starts */}
+                            {showPetFadeIn && (
                                 <div
-                                    className={`${styles.pet__underneath} ${showPetFadeIn ? styles.fadeIn : ''} ${isPetting ? styles.petting : ''}`}
+                                    className={`${styles.pet__underneath} ${styles.fadeIn} ${isPetting ? styles.petting : ''}`}
                                     onLoad={() => console.log('Pet div rendered, showPetFadeIn:', showPetFadeIn)}
                                 >
                                     <img
