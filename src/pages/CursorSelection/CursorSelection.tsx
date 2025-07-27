@@ -141,11 +141,11 @@ const CursorSelection: React.FC<CursorSelectionProps> = ({ onCursorSelected }) =
                                 />
                             </div>
                         ))}
-                    </div>
 
-                    {/* Pet instruction text */}
-                    <div className={styles.cursorSelection__content__petInstruction}>
-                        <p>Pet me {5 - petCount} times to confirm cursor</p>
+                        {/* Pet instruction text */}
+                        <div className={styles.cursorSelection__content__crystalPet__instruction}>
+                            <p>Pet me {5 - petCount} times to confirm cursor</p>
+                        </div>
                     </div>
                 </div>
             </div>
