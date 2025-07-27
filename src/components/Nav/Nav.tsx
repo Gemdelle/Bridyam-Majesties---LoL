@@ -32,6 +32,9 @@ export const Nav = () => {
                     <li className={location.pathname === '/achievements' ? styles.active : ''}>
                         <Link to="/achievements">Achievements</Link>
                     </li>
+                    <li className={location.pathname === '/cursor-selection' ? styles.active : ''}>
+                        <Link to="/cursor-selection">Cursor</Link>
+                    </li>
                 </ul>
                 <PetDisplay name={user?.fullName || ''} />
                 <ul className={styles.nav__container__links__right}>

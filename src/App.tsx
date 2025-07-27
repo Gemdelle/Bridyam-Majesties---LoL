@@ -12,6 +12,7 @@ import Redeem from './pages/Redeem/Redeem'
 import Adoption from './pages/Adoption/Adoption'
 import Login from './pages/Login/Login'
 import SignUp from './pages/SignUp/SignUp'
+import CursorSelection from './pages/CursorSelection/CursorSelection'
 
 function AppContent() {
   const { isAuthenticated } = useAuthContext();
@@ -60,6 +61,14 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Ranked />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cursor-selection"
+          element={
+            <ProtectedRoute>
+              <CursorSelection />
             </ProtectedRoute>
           }
         />
