@@ -41,9 +41,26 @@ const NameYourPet: React.FC<NameYourPetProps> = ({ selectedEgg, onPetNamed, eggI
         audio.play().catch(error => console.log('Audio play failed:', error));
     };
 
+    // Store the current audio instance to prevent overlapping sounds
+    const [currentPetAudio, setCurrentPetAudio] = useState<HTMLAudioElement | null>(null);
+
     const playPetSound = () => {
+        // Stop any currently playing pet audio
+        if (currentPetAudio) {
+            currentPetAudio.pause();
+            currentPetAudio.currentTime = 0;
+        }
+
+        // Create and play new audio
         const audio = new Audio(`/sounds/pet-${eggIndex + 1}-stage-1.mp3`);
+        setCurrentPetAudio(audio);
+        
         audio.play().catch(error => console.log('Pet sound play failed:', error));
+        
+        // Clean up the audio reference when it finishes
+        audio.addEventListener('ended', () => {
+            setCurrentPetAudio(null);
+        });
     };
 
     const spawnHeart = (event: React.MouseEvent) => {
