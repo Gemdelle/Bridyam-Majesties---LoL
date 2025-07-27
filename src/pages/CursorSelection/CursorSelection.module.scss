@@ -6,6 +6,7 @@
   background-image: url('/images/bg/cursor-selection-bg.webp');
   @include background;
   overflow: hidden;
+  position: relative;
 
   &__container {
     width: 92%;
@@ -48,13 +49,13 @@
 
   &__content {
     height: 83%;
-    width: 100%;
-    @include flex-between;
+    width: 90%;
+    @include flex-center;
     // background-color: violet;
 
     &__framesContainer {
       height: 80%;
-      width: 50%;
+      width: 60%;
       @include flex-col-between;
       // background-color: yellow;
     }
@@ -72,6 +73,7 @@
       position: relative;
       margin: 0 auto;
       margin-bottom: 7%;
+      margin-right: 10%;
       @include flex-col-between;
       animation: petBreathe 3s ease-in-out infinite;
       transform-origin: bottom center;
