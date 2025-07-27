@@ -74,6 +74,7 @@
       margin: 0 auto;
       margin-bottom: 7%;
       margin-right: 10%;
+      transform-origin: bottom center;
       @include flex-col-between;
       animation: petBreathe 3s ease-in-out infinite;
       // background-color: green;
