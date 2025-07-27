@@ -193,6 +193,28 @@
         }
       }
     }
+
+    &__petInstruction {
+      position: absolute;
+      bottom: 12%;
+      left: 63%;
+      text-align: center;
+      z-index: 10;
+
+      p {
+        margin: 0;
+        font-family: 'Pixel', sans-serif;
+        font-style: italic;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #cdbe91;
+        letter-spacing: 0.1vw;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+        padding: 0.6vw;
+        border-radius: 1vw;
+        animation: instructionGlow 2s ease-in-out infinite;
+      }
+    }
   }
 }
 
@@ -265,5 +287,20 @@
   100% {
     transform: translateY(-100px) scale(0.8);
     opacity: 0;
+  }
+}
+
+@keyframes instructionGlow {
+  0% {
+    border-color: rgba(200, 155, 60, 0.3);
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.2);
+  }
+  50% {
+    border-color: rgba(200, 155, 60, 0.6);
+    box-shadow: 0 0 20px rgba(200, 155, 60, 0.4);
+  }
+  100% {
+    border-color: rgba(200, 155, 60, 0.3);
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.2);
   }
 }
