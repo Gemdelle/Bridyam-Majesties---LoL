@@ -90,6 +90,30 @@ const Login: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.spinningBackground}></div>
                 <div className={styles.blurOverlay}></div>
+
+                {/* Gemstones positioned around the essence ring */}
+                <div className={styles.gemstonesContainer}>
+                    {/* Top-Left Cluster - 3 gemstones */}
+                    <img src="/images/frames/ring-gems-1.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone1}`} />
+                    <img src="/images/frames/ring-gems-2.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone2}`} />
+                    <img src="/images/frames/ring-gems-3.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone3}`} />
+
+                    {/* Mid-Left - 1 gemstone */}
+                    <img src="/images/frames/ring-gems-4.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone4}`} />
+
+                    {/* Bottom-Left Cluster - 3 gemstones */}
+                    <img src="/images/frames/ring-gems-5.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone5}`} />
+                    <img src="/images/frames/ring-gems-6.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone6}`} />
+                    <img src="/images/frames/ring-gems-1.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone7}`} />
+
+                    {/* Bottom-Center - 1 gemstone */}
+                    <img src="/images/frames/ring-gems-2.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone8}`} />
+
+                    {/* Bottom-Right Cluster - 2 gemstones */}
+                    <img src="/images/frames/ring-gems-3.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone9}`} />
+                    <img src="/images/frames/ring-gems-4.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone10}`} />
+                </div>
+
                 <div className={styles.content}>
                     <h1>Login</h1>
                     <form className={styles.loginForm} onSubmit={handleSubmit}>

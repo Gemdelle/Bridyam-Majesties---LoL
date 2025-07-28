@@ -81,6 +81,105 @@
   z-index: 99;
 }
 
+// Gemstones container and positioning
+.gemstonesContainer {
+  position: absolute;
+  top: 4.5%;
+  left: 27.5%;
+  width: 45%;
+  height: 92%;
+  z-index: 98;
+  pointer-events: none;
+}
+
+.gemstone {
+  position: absolute;
+  height: 4vw;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(1.2) drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
+  animation: gemstoneGlow 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+// Top-Left Cluster - 3 gemstones
+.gemstone1 {
+  top: 5%;
+  left: -35%;
+  height: 6vw;
+  animation-delay: 0s;
+  // background-color: #c89b3c;
+}
+
+.gemstone2 {
+  top: 25%;
+  left: -75%;
+  height: 6vw;
+  animation-delay: 0.5s;
+  background-color: #c89b3c;
+}
+
+.gemstone3 {
+  height: 4vw;
+  top: 12%;
+  left: 12%;
+  
+  animation-delay: 1s;
+}
+
+// Mid-Left - 1 gemstone
+.gemstone4 {
+  top: 45%;
+  left: 18%;
+  height: 3.5vw;
+  animation-delay: 1.5s;
+}
+
+// Bottom-Left Cluster - 3 gemstones
+.gemstone5 {
+  top: 70%;
+  left: 22%;
+  height: 3.8vw;
+  animation-delay: 2s;
+}
+
+.gemstone6 {
+  top: 75%;
+  left: 18%;
+  height: 2.8vw;
+  animation-delay: 2.5s;
+}
+
+.gemstone7 {
+  top: 78%;
+  left: 15%;
+  height: 2.2vw;
+  animation-delay: 3s;
+}
+
+// Bottom-Center - 1 gemstone
+.gemstone8 {
+  top: 80%;
+  left: 42%;
+  height: 2.5vw;
+  animation-delay: 3.5s;
+}
+
+// Bottom-Right Cluster - 2 gemstones
+.gemstone9 {
+  top: 72%;
+  left: 65%;
+  height: 4.2vw;
+  animation-delay: 4s;
+}
+
+.gemstone10 {
+  top: 76%;
+  left: 70%;
+  height: 2.8vw;
+  animation-delay: 4.5s;
+}
+
 .spinningBackground {
   position: absolute;
   top: 0;
@@ -323,6 +422,22 @@
   }
   to {
     transform: translateX(-100%);
+  }
+}
+
+// Gemstone glow animation
+@keyframes gemstoneGlow {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.1) drop-shadow(0 0 25px rgba(0, 255, 255, 0.9));
+    transform: scale(1.05);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
+    transform: scale(1);
   }
 }
 
