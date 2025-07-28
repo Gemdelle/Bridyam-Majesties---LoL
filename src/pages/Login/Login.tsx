@@ -111,7 +111,6 @@ const Login: React.FC = () => {
 
                     {/* Bottom-Right Cluster - 2 gemstones */}
                     <img src="/images/frames/ring-gems-3.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone9}`} />
-                    <img src="/images/frames/ring-gems-4.png" alt="Gemstone" className={`${styles.gemstone} ${styles.gemstone10}`} />
                 </div>
 
                 <div className={styles.content}>

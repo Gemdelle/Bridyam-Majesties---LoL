@@ -105,8 +105,8 @@
 // Top-Left Cluster - 3 gemstones
 .gemstone1 {
   top: 5%;
-  left: -35%;
-  height: 6vw;
+  left: -65%;
+  height: 8vw;
   animation-delay: 0s;
   // background-color: #c89b3c;
 }
@@ -116,68 +116,67 @@
   left: -75%;
   height: 6vw;
   animation-delay: 0.5s;
-  background-color: #c89b3c;
+  // background-color: #c89b3c;
 }
 
 .gemstone3 {
-  height: 4vw;
-  top: 12%;
-  left: 12%;
-  
+  height: 7vw;
+  bottom: 22%;
+  left: -80%;
   animation-delay: 1s;
+  // background-color: #c89b3c;  
 }
 
 // Mid-Left - 1 gemstone
 .gemstone4 {
-  top: 45%;
-  left: 18%;
-  height: 3.5vw;
+  bottom: 5%;
+  left: -40%;
+  height: 4vw;
   animation-delay: 1.5s;
+  // background-color: #c89b3c;
 }
 
 // Bottom-Left Cluster - 3 gemstones
 .gemstone5 {
-  top: 70%;
-  left: 22%;
-  height: 3.8vw;
+  top: 10%;
+  right: -65%;
+  height: 9vw;
   animation-delay: 2s;
+  // background-color: #c89b3c;
 }
 
 .gemstone6 {
-  top: 75%;
-  left: 18%;
-  height: 2.8vw;
+  top: 40%;
+  right: -95%;
+  height: 10vw;
   animation-delay: 2.5s;
+  // background-color: purple;
 }
 
 .gemstone7 {
   top: 78%;
-  left: 15%;
-  height: 2.2vw;
+  right: -50%;
+  height: 7vw;
   animation-delay: 3s;
+  // background-color: #c89b3c;
 }
 
 // Bottom-Center - 1 gemstone
 .gemstone8 {
-  top: 80%;
+  bottom: -10%;
   left: 42%;
-  height: 2.5vw;
+  height: 7vw;
   animation-delay: 3.5s;
+  // background-color: red;
 }
 
 // Bottom-Right Cluster - 2 gemstones
 .gemstone9 {
-  top: 72%;
-  left: 65%;
-  height: 4.2vw;
+  top: -10%;
+  left: 35%;
+  height: 9vw;
   animation-delay: 4s;
-}
-
-.gemstone10 {
-  top: 76%;
-  left: 70%;
-  height: 2.8vw;
-  animation-delay: 4.5s;
+  // background-color: #c89b3c;
 }
 
 .spinningBackground {
