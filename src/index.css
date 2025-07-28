@@ -13,6 +13,176 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Custom cursor classes - Default cursors for body */
+.cursor-1 {
+  cursor: url('/images/cursors/resized/cursor-default-1.png') 0 0, auto !important;
+  /* Debug: Add a subtle background color to verify class is applied */
+  background-color: rgba(255, 0, 0, 0.01) !important;
+}
+
+.cursor-2 {
+  cursor: url('/images/cursors/resized/cursor-default-2.png') 0 0, auto !important;
+  background-color: rgba(0, 255, 0, 0.01) !important;
+}
+
+.cursor-3 {
+  cursor: url('/images/cursors/resized/cursor-default-3.png') 0 0, auto !important;
+  background-color: rgba(0, 0, 255, 0.01) !important;
+}
+
+.cursor-4 {
+  cursor: url('/images/cursors/resized/cursor-default-4.png') 0 0, auto !important;
+  background-color: rgba(255, 255, 0, 0.01) !important;
+}
+
+/* Alternative approach using data attributes */
+[data-cursor="cursor-1"] {
+  cursor: url('/images/cursors/resized/cursor-default-1.png') 0 0, auto !important;
+}
+
+[data-cursor="cursor-2"] {
+  cursor: url('/images/cursors/resized/cursor-default-2.png') 0 0, auto !important;
+}
+
+[data-cursor="cursor-3"] {
+  cursor: url('/images/cursors/resized/cursor-default-3.png') 0 0, auto !important;
+}
+
+[data-cursor="cursor-4"] {
+  cursor: url('/images/cursors/resized/cursor-default-4.png') 0 0, auto !important;
+}
+
+/* Pointer cursors for clickable elements with data attributes */
+[data-cursor="cursor-1"] button,
+[data-cursor="cursor-1"] [role="button"],
+[data-cursor="cursor-1"] a,
+[data-cursor="cursor-1"] input[type="submit"],
+[data-cursor="cursor-1"] input[type="button"],
+[data-cursor="cursor-1"] [style*="cursor: pointer"],
+[data-cursor="cursor-1"] [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-1.png') 0 0, pointer !important;
+}
+
+[data-cursor="cursor-2"] button,
+[data-cursor="cursor-2"] [role="button"],
+[data-cursor="cursor-2"] a,
+[data-cursor="cursor-2"] input[type="submit"],
+[data-cursor="cursor-2"] input[type="button"],
+[data-cursor="cursor-2"] [style*="cursor: pointer"],
+[data-cursor="cursor-2"] [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-2.png') 0 0, pointer !important;
+}
+
+[data-cursor="cursor-3"] button,
+[data-cursor="cursor-3"] [role="button"],
+[data-cursor="cursor-3"] a,
+[data-cursor="cursor-3"] input[type="submit"],
+[data-cursor="cursor-3"] input[type="button"],
+[data-cursor="cursor-3"] [style*="cursor: pointer"],
+[data-cursor="cursor-3"] [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-3.png') 0 0, pointer !important;
+}
+
+[data-cursor="cursor-4"] button,
+[data-cursor="cursor-4"] [role="button"],
+[data-cursor="cursor-4"] a,
+[data-cursor="cursor-4"] input[type="submit"],
+[data-cursor="cursor-4"] input[type="button"],
+[data-cursor="cursor-4"] [style*="cursor: pointer"],
+[data-cursor="cursor-4"] [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-4.png') 0 0, pointer !important;
+}
+
+/* Test cursor class to verify CSS is working */
+.cursor-test {
+  cursor: crosshair !important;
+  background-color: rgba(255, 0, 255, 0.1) !important;
+}
+
+/* Alternative cursor classes with different fallbacks */
+.cursor-1-alt {
+  cursor: url('/images/cursors/resized/cursor-default-1.png') 0 0, crosshair !important;
+  background-color: rgba(255, 0, 0, 0.05) !important;
+}
+
+.cursor-2-alt {
+  cursor: url('/images/cursors/resized/cursor-default-2.png') 0 0, crosshair !important;
+  background-color: rgba(0, 255, 0, 0.05) !important;
+}
+
+.cursor-3-alt {
+  cursor: url('/images/cursors/resized/cursor-default-3.png') 0 0, crosshair !important;
+  background-color: rgba(0, 0, 255, 0.05) !important;
+}
+
+.cursor-4-alt {
+  cursor: url('/images/cursors/resized/cursor-default-4.png') 0 0, crosshair !important;
+  background-color: rgba(255, 255, 0, 0.05) !important;
+}
+
+/* Default cursor class to reset to system default */
+.cursor-default {
+  cursor: default !important;
+}
+
+/* Default cursor for elements that should use default cursor */
+.cursor-1 *,
+.cursor-2 *,
+.cursor-3 *,
+.cursor-4 *,
+.cursor-default * {
+  cursor: inherit;
+}
+
+/* Override for clickable elements to use pointer cursor */
+.cursor-1 button,
+.cursor-1 [role="button"],
+.cursor-1 a,
+.cursor-1 input[type="submit"],
+.cursor-1 input[type="button"],
+.cursor-1 [style*="cursor: pointer"],
+.cursor-1 [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-1.png') 0 0, pointer !important;
+}
+
+.cursor-2 button,
+.cursor-2 [role="button"],
+.cursor-2 a,
+.cursor-2 input[type="submit"],
+.cursor-2 input[type="button"],
+.cursor-2 [style*="cursor: pointer"],
+.cursor-2 [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-2.png') 0 0, pointer !important;
+}
+
+.cursor-3 button,
+.cursor-3 [role="button"],
+.cursor-3 a,
+.cursor-3 input[type="submit"],
+.cursor-3 input[type="button"],
+.cursor-3 [style*="cursor: pointer"],
+.cursor-3 [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-3.png') 0 0, pointer !important;
+}
+
+.cursor-4 button,
+.cursor-4 [role="button"],
+.cursor-4 a,
+.cursor-4 input[type="submit"],
+.cursor-4 input[type="button"],
+.cursor-4 [style*="cursor: pointer"],
+.cursor-4 [style*="cursor:pointer"] {
+  cursor: url('/images/cursors/resized/cursor-pointer-4.png') 0 0, pointer !important;
+}
+
+.cursor-default button,
+.cursor-default [role="button"],
+.cursor-default a,
+.cursor-default input[type="submit"],
+.cursor-default input[type="button"] {
+  cursor: pointer !important;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

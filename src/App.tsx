@@ -3,6 +3,7 @@ import './App.scss'
 import { Nav } from './components/Nav/Nav'
 import { useAuthContext } from './contexts/AuthContext'
 import { PetProvider } from './contexts/PetContext'
+import { CursorProvider } from './contexts/CursorContext'
 import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Tutorial from './components/Tutorial'
@@ -31,71 +32,73 @@ function AppContent() {
   const showNav = isAuthenticated && location.pathname !== '/adoption' && location.pathname !== '/cursor-selection';
 
   return (
-    <PetProvider>
-      {showNav && <Nav />}
-      <Tutorial />
-      <Routes>
-        {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            isAuthenticated ? <Navigate to="/" replace /> : <SignUp />
-          }
-        />
+    <CursorProvider>
+      <PetProvider>
+        {showNav && <Nav />}
+        <Tutorial />
+        <Routes>
+          {/* Public routes */}
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              isAuthenticated ? <Navigate to="/" replace /> : <SignUp />
+            }
+          />
 
-        {/* Protected routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Accounts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/bloodlines"
-          element={
-            <ProtectedRoute>
-              <Bloodlines />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ranked"
-          element={
-            <ProtectedRoute>
-              <Ranked />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cursor-selection"
-          element={
-            <ProtectedRoute>
-              <CursorSelection />
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Accounts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bloodlines"
+            element={
+              <ProtectedRoute>
+                <Bloodlines />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ranked"
+            element={
+              <ProtectedRoute>
+                <Ranked />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cursor-selection"
+            element={
+              <ProtectedRoute>
+                <CursorSelection />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Redirect unknown routes to home or login */}
-        <Route
-          path="/champions" element={<Champions />} />
-        <Route path="/achievements" element={<Achievements />} />
-        <Route path="/redeem" element={<Redeem />} />
-        <Route path="/adoption" element={<Adoption />} />
-        <Route path="*"
-          element={
-            <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
-          }
-        />
-      </Routes>
-    </PetProvider>
+          {/* Redirect unknown routes to home or login */}
+          <Route
+            path="/champions" element={<Champions />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/redeem" element={<Redeem />} />
+          <Route path="/adoption" element={<Adoption />} />
+          <Route path="*"
+            element={
+              <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
+            }
+          />
+        </Routes>
+      </PetProvider>
+    </CursorProvider>
   )
 }
 
