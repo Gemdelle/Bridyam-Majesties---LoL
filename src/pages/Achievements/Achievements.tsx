@@ -36,7 +36,7 @@ const achievements: Achievement[] = [
     },
     {
         name: "Initiate",
-        description: "Earn your first champion mastery",
+        description: "Obtain first blood",
         iconSrc: "/images/masteries/mastery/1.png",
         completedSteps: 1
     },
@@ -54,31 +54,31 @@ const achievements: Achievement[] = [
     },
     {
         name: "Majesty",
-        description: "Redeem majesty rewards",
+        description: "Redeem majesty accounts",
         iconSrc: "/images/ranked-btn/porveldam.png",
         completedSteps: 6
     },
     {
         name: "Warrior",
-        description: "Win ranked games with victorious champions",
+        description: "Win victorious champion ranked games",
         iconSrc: "/images/ranked-btn/gladasmy.png",
         completedSteps: 2
     },
     {
         name: "Guardian",
-        description: "Take care of your pets and nurture them",
+        description: "Pet your pet",
         iconSrc: "/images/achievement/achievement-10-1.png",
         completedSteps: 10
     },
     {
         name: "Companion",
-        description: "Build friendships and social connections",
+        description: "Play games in premade",
         iconSrc: "/images/achievement/achievement-11-1.png",
         completedSteps: 3
     },
     {
         name: "Questmaster",
-        description: "Complete various missions and challenges",
+        description: "Complete missions",
         iconSrc: "/images/achievement/achievement-12-1.png",
         completedSteps: 7
     }
