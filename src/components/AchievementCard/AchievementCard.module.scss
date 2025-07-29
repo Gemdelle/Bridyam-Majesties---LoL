@@ -73,6 +73,26 @@
   }
 }
 
+.achievement__progress__counter {
+  position: absolute;
+  bottom: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+
+  span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #c89b3c;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    border: 2px solid #c89b3c;
+  }
+}
+
 .achievement__prize {
   position: absolute;
   right: -5%;
@@ -182,10 +202,13 @@
 }
 
 .achievement__circles {
-  @include flex-between;
-  width: 70%;
   height: 100%;
-//   background-color: red;
+  width: 70%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  // background-color: red;
 }
 
 .achievement__circle {
@@ -242,6 +265,28 @@
   &:hover {
     transform: scale(1.1);
     cursor: pointer;
+  }
+}
+
+.badge__counter {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+
+  span {
+    font-size: 0.8vw;
+    font-weight: bold;
+    color: #c89b3c;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+    // background: rgba(0, 0, 0, 0.7);
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    // border: 1px solid #c89b3c;
+    white-space: nowrap;
   }
 }
 
