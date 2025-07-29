@@ -5,7 +5,7 @@ import PetDisplay from '../PetDisplay'
 
 export const Nav = () => {
     const location = useLocation()
-    const { user, logout } = useAuthContext()
+    const { logout } = useAuthContext()
 
     const handleLogout = async () => {
         if (confirm('Are you sure you want to logout?')) {
@@ -48,7 +48,7 @@ export const Nav = () => {
                         <Link to="/achievements">Achievements</Link>
                     </li>
                 </ul>
-                <PetDisplay name={user?.fullName || ''} />
+                <PetDisplay />
                 <ul className={styles.nav__container__links__right}>
                     <li
                         className={location.pathname === '/redeem' ? styles.active : ''}

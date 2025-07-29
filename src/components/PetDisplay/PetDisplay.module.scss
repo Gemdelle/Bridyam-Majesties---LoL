@@ -2,45 +2,135 @@
 @use 'sass:color';
 
 .container {
-  height: 14vh;
-  width: 7.5vw;
+  position: relative;
+  height: 12vh;
+  width: 20vw;
   margin-top: 4%;
-  flex-direction: column;
-  background-image: url('/images/frames/frame-pet-2.png');
   cursor: pointer;
+  z-index: 10;
+  // background-color: blue;
+  @include flex-between;
+}
+.petContainer {
+  position: relative;
+  width: 40%;
+  height: 100%;
+  @include flex-center;
   // background-color: red;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  @include background;
-  @include flex-center;
 }
 
-.container:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+.petFrame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
 }
 
-.wrapper {
+.pet {
   position: relative;
-  width: 80%;
-  height: 80%;
-  @include flex-center;
-  margin-bottom: -25px; // Solapamiento con la placa del nombre
-  // background-color: blue;
-  border: 1px solid blue($color: #000000);
-}
-
-.pet img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-    transform-origin: center bottom;
-    animation: petBreathe 3s ease-in-out infinite;
+  height: 80%; 
+  width: auto;
+  margin-top: 10%;
+  transform-origin: center bottom;
+  animation: petBreathe 3s ease-in-out infinite;
+  z-index: 2;
+  // background-color: purple;
 }
 
 @keyframes petBreathe {
   0% { transform: scaleY(1); }
   50% { transform: scaleY(1.02); }
   100% { transform: scaleY(1); }
+}
+
+.emotionsPanel {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  width: 80%;
+  height: 90%;
+  background-image: url('/images/frames/emotions-panel.png');
+  @include background;
+  @include flex-center;
+  justify-content: flex-end;
+}
+
+.emotionsContainer {
+  width: 72%;
+  height: 80%;
+  margin-right: 7%;
+  @include flex-col-between;
+  color: #cdbe91;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  // background-color: purple;   
+
+  .petName {
+    width: 80%;
+    height: 25%;
+    text-align: center;
+    font-size: 1rem;
+    color: #f0e6d2;
+    background-color: red;
+    @include flex-center;
+  }
+
+  .barsContainer {
+    width: 100%;
+    height: 65%;
+    @include flex-col-between;
+    background-color: blue;
+  }
+
+  .hungerContainer, .energyContainer {
+    width: 100%;
+    height: 30%;
+    @include flex-between;
+    align-items: center;
+    padding: 5px;
+    // border: 1px solid #463714;
+
+    span {
+      margin: 0;
+      font-size: 1vw;
+    }
+
+    .barContainer {
+      height: 80%;
+      width: 65%;
+      background-color: #463714;
+      border-radius: 4px;
+
+      .bar {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+
+      .hungerBar {
+        background: linear-gradient(90deg, #c89b3c, #d4a94a);
+        width: 75%; // Example value
+      }
+
+      .energyBar {
+        background: linear-gradient(90deg, #4a90e2, #5ba0f2);
+        width: 60%; // Example value
+      }
+    }
+
+    .percentage {
+      margin: 0;
+      font-size: 0.8vw;
+      color: #f0e6d2;
+      min-width: 30px;
+      text-align: right;
+      @include flex-center;
+      // background-color: red;
+    }
+  }
 }
 
 // .name {
