@@ -18,46 +18,31 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     completedSteps,
     totalSteps = 10
 }) => {
-    const isMasteryJourney = name === "Mastery Journey";
-    const isRankClimber = name === "Rank Climber";
-    const isTierClimber = name === "Tier Climber";
+    // Get achievement number based on name for consistent image pattern
+    const getAchievementNumber = (achievementName: string): number => {
+        const achievementMap: { [key: string]: number } = {
+            "Mastery Journey": 1,
+            "Skill Builder": 2,
+            "Battle Tested": 3,
+            "Victory Seeker": 4,
+            "First Blood": 5,
+            "Rank Climber": 6,
+            "Tier Climber": 7,
+            "Majesty Collector": 8,
+            "Victorious Warrior": 9,
+            "Carer": 10,
+            "Friends": 11,
+            "Missions": 12
+        };
+        return achievementMap[achievementName] || 0;
+    };
 
-    // Define tier progression for rank climber
-    const tierImages = [
-        'tier-iron.webp',
-        'tier-bronze.webp',
-        'tier-silver.webp',
-        'tier-gold.webp',
-        'tier-platinum.webp',
-        'tier-emerald.webp',
-        'tier-diamond.webp',
-        'tier-master.webp',
-        'tier-grandmaster.webp',
-        'tier-challenger.webp'
-    ];
-
-    // Define helm progression for tier climber
-    const helmImages = [
-        'tier-iron-helm.webp',
-        'tier-bronze-helm.webp',
-        'tier-silver-helm.webp',
-        'tier-gold-helm.webp',
-        'tier-platinum-helm.webp',
-        'tier-emerald-helm.webp',
-        'tier-diamond-helm.webp',
-        'tier-master-helm.webp',
-        'tier-grandmaster-helm.webp',
-        'tier-challenger-heml.webp' // Note: typo in filename
-    ];
+    const achievementNumber = getAchievementNumber(name);
 
     // For special achievements, show current level on the left
-    const leftIconSrc = isMasteryJourney
-        ? `/images/achievement/achievement-1-${completedSteps}.png`
-        : isRankClimber
-            ? `/images/lol-elements/${tierImages[Math.min(completedSteps - 1, tierImages.length - 1)]}`
-            : isTierClimber
-                ? `/images/lol-elements/${helmImages[Math.min(completedSteps - 1, helmImages.length - 1)]}`
-                : iconSrc;
+    const leftIconSrc = achievementNumber > 0
+        ? `/images/achievement/achievement-${achievementNumber}-${completedSteps}.png`
+        : iconSrc;
 
     return (
         <div className={styles.achievement__card}>
@@ -83,13 +68,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                     const isCompleted = index < completedSteps;
 
                     // For special achievements, use appropriate images
-                    const circleImageSrc = isMasteryJourney
-                        ? `/images/achievement/achievement-1-${stepNumber}.png`
-                        : isRankClimber
-                            ? `/images/lol-elements/${tierImages[Math.min(stepNumber - 1, tierImages.length - 1)]}`
-                            : isTierClimber
-                                ? `/images/lol-elements/${helmImages[Math.min(stepNumber - 1, helmImages.length - 1)]}`
-                                : "/images/achievement/circle.png";
+                    const circleImageSrc = achievementNumber > 0
+                        ? `/images/achievement/achievement-${achievementNumber}-${stepNumber}.png`
+                        : "/images/achievement/circle.png";
 
                     return (
                         <div

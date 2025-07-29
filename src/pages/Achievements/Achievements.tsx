@@ -73,6 +73,27 @@ const achievements: Achievement[] = [
         iconSrc: "/images/ranked-btn/gladasmy.png",
         progress: 100,
         completedSteps: 10
+    },
+    {
+        name: "Carer",
+        description: "Take care of your pets and nurture them",
+        iconSrc: "/images/achievement/achievement-10-1.png",
+        progress: 100,
+        completedSteps: 10
+    },
+    {
+        name: "Friends",
+        description: "Build friendships and social connections",
+        iconSrc: "/images/achievement/achievement-11-1.png",
+        progress: 100,
+        completedSteps: 10
+    },
+    {
+        name: "Missions",
+        description: "Complete various missions and challenges",
+        iconSrc: "/images/achievement/achievement-12-1.png",
+        progress: 100,
+        completedSteps: 10
     }
 ];
 
