@@ -2,14 +2,16 @@
 @use 'sass:color';
 
 .container {
-    width: 8%;
-    height: 10vh;
-    margin-top: 3%;
-  @include flex-center;
+  height: 14vh;
+  width: 7.5vw;
+  margin-top: 4%;
   flex-direction: column;
-  background-color: red;
+  background-image: url('/images/frames/frame-pet-2.png');
   cursor: pointer;
+  // background-color: red;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  @include background;
+  @include flex-center;
 }
 
 .container:hover {
@@ -23,29 +25,39 @@
   height: 80%;
   @include flex-center;
   margin-bottom: -25px; // Solapamiento con la placa del nombre
-  background-color: blue;
+  // background-color: blue;
+  border: 1px solid blue($color: #000000);
 }
 
 .pet img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    transform-origin: center bottom;
+    animation: petBreathe 3s ease-in-out infinite;
 }
 
-.name {
-  height: 10%;
-  padding: $spacing-sm $spacing-xl;
-  z-index: 10;
-  position: relative;
-  box-shadow: $shadow-md;
-  background-color: #ffd1d1; // Mantenemos el rosa
-  @include flex-center;
+@keyframes petBreathe {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.02); }
+  100% { transform: scaleY(1); }
+}
+
+// .name {
+//   height: 15%;
+//   width: 40%;
+//   padding: $spacing-sm $spacing-xl;
+//   z-index: 10;
+//   position: relative;
+//   box-shadow: $shadow-md;
+//   background-image: url('/images/frames/name-frame.png');
+//   @include background;
+//   @include flex-center;
   
-  span {
-    font-size: 1.5rem;
-    color: $dark-color;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px $light-color;
-  }
-} 
+//   span {
+//     font-size: 1.5rem;
+//     color: $dark-color;
+//     font-weight: bold;
+//     text-shadow: 1px 1px 2px $light-color;
+//   }
+// } 

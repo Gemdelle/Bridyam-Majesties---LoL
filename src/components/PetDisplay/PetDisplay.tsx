@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import styles from './PetDisplay.module.scss';
 
 interface PetDisplayProps {
-    petImage?: string;
     name: string;
 }
 
-const PetDisplay: React.FC<PetDisplayProps> = ({ petImage, name }) => {
+const PetDisplay: React.FC<PetDisplayProps> = ({ name }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -18,7 +17,7 @@ const PetDisplay: React.FC<PetDisplayProps> = ({ petImage, name }) => {
         <div className={styles.container} onClick={handleClick}>
             <div className={styles.wrapper}>
                 <div className={styles.pet}>
-                    {petImage ? <img src={petImage} alt="Pet" /> : 'Login'}
+                    <img src="/images/pets/nav-pet-2.png" alt="Pet" />
                 </div>
             </div>
             <div className={styles.name}>

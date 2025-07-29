@@ -17,31 +17,31 @@ export const Nav = () => {
         <div className={styles.nav}>
             <div className={styles.nav__container}>
                 <ul className={styles.nav__container__links__left}>
-                    <li 
+                    <li
                         className={location.pathname === '/' ? styles.active : ''}
                         data-nav="accounts"
                     >
                         <Link to="/">Home</Link>
                     </li>
-                    <li 
+                    <li
                         className={location.pathname === '/bloodlines' ? styles.active : ''}
                         data-nav="bloodlines"
                     >
                         <Link to="/bloodlines">Bloodlines</Link>
                     </li>
-                    <li 
+                    <li
                         className={location.pathname === '/ranked' ? styles.active : ''}
                         data-nav="ranked"
                     >
                         <Link to="/ranked">Ranked</Link>
                     </li>
-                    <li 
+                    <li
                         className={location.pathname === '/champions' ? styles.active : ''}
                         data-nav="champions"
                     >
                         <Link to="/champions">Champions</Link>
                     </li>
-                    <li 
+                    <li
                         className={location.pathname === '/achievements' ? styles.active : ''}
                         data-nav="achievements"
                     >
@@ -50,7 +50,7 @@ export const Nav = () => {
                 </ul>
                 <PetDisplay name={user?.fullName || ''} />
                 <ul className={styles.nav__container__links__right}>
-                    <li 
+                    <li
                         className={location.pathname === '/redeem' ? styles.active : ''}
                         data-nav="redeem"
                     >
