@@ -278,9 +278,9 @@
   pointer-events: none;
 
   span {
-    font-size: 0.8vw;
+    font-size: 0.7vw;
     font-weight: bold;
-    color: #c89b3c;
+    color: #e4c493;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
     // background: rgba(0, 0, 0, 0.7);
     padding: 0.2rem 0.5rem;
@@ -288,6 +288,19 @@
     // border: 1px solid #c89b3c;
     white-space: nowrap;
   }
+}
+
+// Darker color for incomplete badges
+.achievement__circle:not(.completed) .badge__counter span {
+  color: #564b3c;
+}
+
+// Special styling for current level counter
+.achievement__circle.currentLevel .badge__counter span {
+  font-size: 0.9vw;
+  font-weight: bolder;
+  color: #e4c493;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1), 0 0 10px rgba(200, 155, 60, 0.5);
 }
 
 @keyframes pulse {
