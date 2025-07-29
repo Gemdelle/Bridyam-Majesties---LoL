@@ -3,46 +3,22 @@
 .achievements {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #0f1419 0%, #1e2328 100%);
+  background-image: url('/images/bg/achievement-bg.png');
+  @include background;
+  // background: linear-gradient(135deg, #0f1419 0%, #1e2328 100%);
   overflow: hidden;
 
   &__container {
     width: 92%;
-    height: 83%;
+    height: 80%;
     margin: 0 auto;
-    margin-top: 7%;
+    margin-top: 8%;
     @include flex-col-between;
     // background-color: red;
   }
 
-  &__header {
-    height: 10%;
-    text-align: center;
-    // background-color: blue;
-  }
-
-  &__title {
-    margin: 0;
-    height: 70%;
-    font-size: 3rem;
-    color: #c89b3c;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.3rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    // background-color: yellow;
-  }
-
-  &__subtitle {
-    height: 30%;
-    margin: 0;
-    font-size: 1.2rem;
-    color: #cdbe91;
-        // background-color: green;
-  }
-
   &__content {
-    height: 77%;
+    height: 88%;
     width: 100%;
     @include flex-col-between;
     // border: 1px solid white;

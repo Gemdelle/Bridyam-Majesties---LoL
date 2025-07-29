@@ -74,7 +74,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                     return (
                         <div
                             key={index}
-                            className={`${styles.achievement__circle} ${isCompleted ? styles.completed : ''}`}
+                            className={`${styles.achievement__circle} ${isCompleted ? styles.completed : ''} ${index === completedSteps - 1 ? styles.currentLevel : ''}`}
                         >
                             <img src={circleImageSrc} alt={`Step ${stepNumber}`} />
                         </div>

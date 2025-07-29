@@ -115,11 +115,6 @@ const Achievements: React.FC = () => {
     return (
         <div className={styles.achievements}>
             <div className={styles.achievements__container}>
-                <header className={styles.achievements__header}>
-                    <h1 className={styles.achievements__title}>Achievements</h1>
-                    <p className={styles.achievements__subtitle}>Track your progress and unlock rewards</p>
-                </header>
-
                 <div className={styles.achievements__content}>
                     {currentAchievements.map((achievement) => (
                         <AchievementCard
