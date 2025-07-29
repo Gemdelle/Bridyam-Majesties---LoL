@@ -11,73 +11,73 @@ interface Achievement {
 
 const achievements: Achievement[] = [
     {
-        name: "Mastery Journey",
+        name: "Ascension",
         description: "Take a champion from 0 to mastery 10",
         iconSrc: "/images/masteries/mastery/10.png",
         completedSteps: 7
     },
     {
-        name: "Skill Builder",
+        name: "Artisan",
         description: "Level up champion masteries",
         iconSrc: "/images/masteries/mastery/level_plate.png",
         completedSteps: 3
     },
     {
-        name: "Battle Tested",
+        name: "Battlelord",
         description: "Play matches",
         iconSrc: "/images/ranked-btn/mission.png",
         completedSteps: 9
     },
     {
-        name: "Victory Seeker",
+        name: "Victorious",
         description: "Win matches",
         iconSrc: "/images/ranked-btn/wins.png",
         completedSteps: 5
     },
     {
-        name: "First Blood",
+        name: "Initiate",
         description: "Earn your first champion mastery",
         iconSrc: "/images/masteries/mastery/1.png",
         completedSteps: 1
     },
     {
-        name: "Rank Climber",
+        name: "Conqueror",
         description: "Advance to the next division",
         iconSrc: "/images/lol-elements/tier-challenger.webp",
         completedSteps: 8
     },
     {
-        name: "Tier Climber",
+        name: "Champion",
         description: "Ascend to a higher tier",
         iconSrc: "/images/lol-elements/tier-challenger-heml.webp",
         completedSteps: 4
     },
     {
-        name: "Majesty Collector",
+        name: "Majesty",
         description: "Redeem majesty rewards",
         iconSrc: "/images/ranked-btn/porveldam.png",
         completedSteps: 6
     },
     {
-        name: "Victorious Warrior",
+        name: "Warrior",
         description: "Win ranked games with victorious champions",
         iconSrc: "/images/ranked-btn/gladasmy.png",
         completedSteps: 2
     },
     {
-        name: "Carer",
+        name: "Guardian",
         description: "Take care of your pets and nurture them",
         iconSrc: "/images/achievement/achievement-10-1.png",
         completedSteps: 10
     },
     {
-        name: "Friends",
+        name: "Companion",
         description: "Build friendships and social connections",
         iconSrc: "/images/achievement/achievement-11-1.png",
         completedSteps: 3
     },
     {
-        name: "Missions",
+        name: "Questmaster",
         description: "Complete various missions and challenges",
         iconSrc: "/images/achievement/achievement-12-1.png",
         completedSteps: 7
