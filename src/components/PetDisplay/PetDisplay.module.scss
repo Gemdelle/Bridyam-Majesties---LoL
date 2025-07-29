@@ -3,20 +3,20 @@
 
 .container {
   position: relative;
-  height: 12vh;
-  width: 20vw;
-  margin-top: 4%;
+  height: 15vh;
+  width: 17vw;
+  margin-top: 5%;
   cursor: pointer;
   z-index: 10;
-  // background-color: blue;
+  // background-color: purple;
   @include flex-between;
 }
 .petContainer {
   position: relative;
-  width: 40%;
+  width: 45%;
   height: 100%;
   @include flex-center;
-  // background-color: red;
+  // background-color: purple;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -26,13 +26,14 @@
   height: 100%;
   object-fit: contain;
   z-index: 1;
+  // background-color: red;
 }
 
 .pet {
   position: relative;
-  height: 80%; 
+  height: 65%; 
   width: auto;
-  margin-top: 10%;
+  margin-top: 8%;
   transform-origin: center bottom;
   animation: petBreathe 3s ease-in-out infinite;
   z-index: 2;
@@ -47,10 +48,10 @@
 
 .emotionsPanel {
   position: absolute;
-  top: 10%;
+  top: 20%;
   right: 0;
-  width: 80%;
-  height: 90%;
+  width: 75%;
+  height: 65%;
   background-image: url('/images/frames/emotions-panel.png');
   @include background;
   @include flex-center;
@@ -58,10 +59,10 @@
 }
 
 .emotionsContainer {
-  width: 72%;
+  width: 70%;
   height: 80%;
   margin-right: 7%;
-  @include flex-col-between;
+  @include flex-col;
   color: #cdbe91;
   font-size: 0.8rem;
   font-weight: bold;
@@ -69,20 +70,24 @@
   // background-color: purple;   
 
   .petName {
-    width: 80%;
+    width: 70%;
     height: 25%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
     text-align: center;
-    font-size: 1rem;
+    letter-spacing: 0.1vw;
+    font-size: 0.9vw;
+    font-weight: lighter;
     color: #f0e6d2;
-    background-color: red;
+    // background-color: red;
     @include flex-center;
   }
 
   .barsContainer {
     width: 100%;
     height: 65%;
-    @include flex-col-between;
-    background-color: blue;
+    @include flex-col;
+    // background-color: blue;
   }
 
   .hungerContainer, .energyContainer {
@@ -99,8 +104,8 @@
     }
 
     .barContainer {
-      height: 80%;
-      width: 65%;
+      height: 70%;
+      width: 60%;
       background-color: #463714;
       border-radius: 4px;
 
@@ -125,8 +130,8 @@
       margin: 0;
       font-size: 0.8vw;
       color: #f0e6d2;
-      min-width: 30px;
       text-align: right;
+      letter-spacing: 0.05vw;
       @include flex-center;
       // background-color: red;
     }
