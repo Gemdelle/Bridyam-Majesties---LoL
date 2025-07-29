@@ -47,7 +47,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     return (
         <div className={styles.achievement__card}>
             <div className={styles.achievement__icon}>
-                <div className={styles.spinning__circle}></div>
                 <div className={styles.achievement__badge}>
                     <img src={leftIconSrc} alt={name} />
                 </div>
@@ -81,6 +80,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         </div>
                     );
                 })}
+            </div>
+            <div className={styles.achievement__prize}>
+                <div className={styles.spinning__circle}></div>
+                <img src={leftIconSrc} alt={name} />
             </div>
         </div>
     );
