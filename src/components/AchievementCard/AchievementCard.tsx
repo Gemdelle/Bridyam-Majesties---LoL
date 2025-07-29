@@ -52,7 +52,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 
     // For special achievements, show current level on the left
     const leftIconSrc = isMasteryJourney
-        ? `/images/masteries/mastery/${completedSteps}.png`
+        ? `/images/achievement/achievement-1-${completedSteps}.png`
         : isRankClimber
             ? `/images/lol-elements/${tierImages[Math.min(completedSteps - 1, tierImages.length - 1)]}`
             : isTierClimber
@@ -84,7 +84,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
 
                     // For special achievements, use appropriate images
                     const circleImageSrc = isMasteryJourney
-                        ? `/images/masteries/mastery/${stepNumber}.png`
+                        ? `/images/achievement/achievement-1-${stepNumber}.png`
                         : isRankClimber
                             ? `/images/lol-elements/${tierImages[Math.min(stepNumber - 1, tierImages.length - 1)]}`
                             : isTierClimber
