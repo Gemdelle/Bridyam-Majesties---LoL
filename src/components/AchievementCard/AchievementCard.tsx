@@ -42,7 +42,14 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
         const valueMap: { [key: string]: number[] } = {
             "Skill Builder": [1, 3, 5, 10, 15, 25, 50, 100, 200, 500],
             "Battle Tested": [5, 15, 30, 75, 150, 300, 750, 1500, 3000, 7500],
-            "Victory Seeker": [1, 5, 15, 35, 75, 150, 350, 750, 1500, 3500]
+            "Victory Seeker": [1, 5, 15, 35, 75, 150, 350, 750, 1500, 3500],
+            "First Blood": [1, 2, 3, 5, 8, 12, 18, 25, 35, 50],
+            "Rank Climber": [1, 3, 5, 8, 12, 18, 25, 35, 40, 50],
+            "Tier Climber": [1, 2, 3, 5, 8, 12, 18, 22, 26, 30],
+            "Victorious Warrior": [5, 15, 35, 75, 150, 300, 500, 750, 1000, 1500],
+            "Carer": [10, 50, 150, 500, 1000, 2000, 3500, 5000, 7500, 10000],
+            "Friends": [1, 5, 15, 35, 75, 150, 250, 350, 425, 500],
+            "Missions": [5, 25, 75, 200, 500, 1000, 2000, 3500, 5500, 8000]
         };
         return valueMap[achievementName] || [];
     };
@@ -52,6 +59,11 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     // Calculate actual progress percentage based on current level
     const calculateActualProgress = (): number => {
         if (achievementValues.length > 0) {
+            // If no levels are completed, progress is 0
+            if (completedSteps === 0) {
+                return 0;
+            }
+
             // Calculate total progress from completed levels
             let totalProgress = 0;
             for (let i = 0; i < completedSteps - 1; i++) {
@@ -69,6 +81,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             let totalPossible = 0;
             for (let i = 0; i < completedSteps; i++) {
                 totalPossible += achievementValues[i];
+            }
+
+            // If we're on the first level and haven't completed it, show partial progress
+            if (completedSteps === 1) {
+                const currentLevelTotal = achievementValues[0];
+                const currentProgress = Math.floor(Math.random() * (currentLevelTotal * 0.8)) + 1;
+                return Math.round((currentProgress / currentLevelTotal) * 100);
             }
 
             return Math.min(100, Math.round((totalProgress / totalPossible) * 100));
@@ -125,9 +144,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                             const total = achievementValues[stepNumber - 1];
                                             if (isCompleted) {
                                                 if (index === completedSteps - 1) {
-                                                    // Current level (glowing) - show random progress
-                                                    const progress = Math.floor(Math.random() * (total * 0.8)) + 1;
-                                                    return `${progress}/${total}`;
+                                                    // Current level (glowing) - show cumulative progress
+                                                    let cumulativeProgress = 0;
+                                                    for (let i = 0; i < stepNumber - 1; i++) {
+                                                        cumulativeProgress += achievementValues[i];
+                                                    }
+                                                    cumulativeProgress += Math.floor(Math.random() * (total * 0.8)) + 1;
+                                                    return `${cumulativeProgress}/${total}`;
                                                 } else {
                                                     return `${total}/${total}`;
                                                 }
@@ -138,9 +161,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                         : (() => {
                                             if (isCompleted) {
                                                 if (index === completedSteps - 1) {
-                                                    // Current level (glowing) - show random progress
-                                                    const progress = Math.floor(Math.random() * (stepNumber * 0.8)) + 1;
-                                                    return `${progress}/${stepNumber}`;
+                                                    // Current level (glowing) - show cumulative progress
+                                                    let cumulativeProgress = 0;
+                                                    for (let i = 0; i < stepNumber - 1; i++) {
+                                                        cumulativeProgress += (i + 1);
+                                                    }
+                                                    cumulativeProgress += Math.floor(Math.random() * (stepNumber * 0.8)) + 1;
+                                                    return `${cumulativeProgress}/${stepNumber}`;
                                                 } else {
                                                     return `${stepNumber}/${stepNumber}`;
                                                 }
