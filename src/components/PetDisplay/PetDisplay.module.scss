@@ -111,7 +111,7 @@
       border-radius: 5px;
       overflow: hidden;
       position: relative;
-      border: 1px solid #7c7c6e;
+      // border: 1px solid #7c7c6e;
 
       &::after {
         content: '';
@@ -153,12 +153,12 @@
       }
 
       .hungerBar {
-        background: linear-gradient(90deg, #4f4848, #8b5555, #cb9b9b);
+        background: linear-gradient(90deg, #c89b3c, #d4a94a);
         width: 75%; // Example value
       }
 
       .energyBar {
-        background: linear-gradient(90deg, #686b47, #888b55, #d8ddae);
+        background: linear-gradient(90deg, #c89b3c, #d4a94a);
         width: 60%; // Example value
       }
     }
