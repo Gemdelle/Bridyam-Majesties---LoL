@@ -75,24 +75,24 @@ const achievements: Achievement[] = [
         type: 'lol'
     },
     {
-        name: "Guardian",
-        description: "Pet your pet",
-        iconSrc: "/images/achievement/achievement-10-1.png",
-        completedSteps: 10,
-        type: 'pet'
-    },
-    {
         name: "Companion",
         description: "Play games in premade",
         iconSrc: "/images/achievement/achievement-11-1.png",
         completedSteps: 3,
-        type: 'pet'
+        type: 'lol'
     },
     {
         name: "Questmaster",
         description: "Complete missions",
         iconSrc: "/images/achievement/achievement-12-1.png",
         completedSteps: 7,
+        type: 'lol'
+    },
+    {
+        name: "Guardian",
+        description: "Pet your pet",
+        iconSrc: "/images/achievement/achievement-10-1.png",
+        completedSteps: 10,
         type: 'pet'
     }
 ];
