@@ -40,7 +40,7 @@ const PetDisplay: React.FC = () => {
         <div className={styles.container} onClick={handleClick}>
 
             <div className={styles.petContainer}>
-                <img src="/images/nav-mini-frames/frame-pet-2-level-6.png" alt="Pet Profile" className={styles.petFrame} />
+                <img src="/images/nav-frames/pet-2/frame-pet-2-level-6.png" alt="Pet Profile" className={styles.petFrame} />
                 <img src="/images/pets/nav-pet-2.png" alt="Pet" className={styles.pet} />
             </div>
 
