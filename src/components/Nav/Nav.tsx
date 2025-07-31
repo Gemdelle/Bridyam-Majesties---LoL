@@ -47,6 +47,12 @@ export const Nav = () => {
                     >
                         <Link to="/achievements">Achievements</Link>
                     </li>
+                    <li
+                        className={location.pathname === '/roulette' ? styles.active : ''}
+                        data-nav="roulette"
+                    >
+                        <Link to="/roulette">Ruleta</Link>
+                    </li>
                 </ul>
                 <PetDisplay />
                 <ul className={styles.nav__container__links__right}>

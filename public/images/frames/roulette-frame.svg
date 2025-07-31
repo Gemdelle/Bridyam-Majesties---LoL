@@ -1,0 +1,40 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffed4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd700;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer frame -->
+  <circle cx="200" cy="200" r="190" fill="none" stroke="url(#frameGradient)" stroke-width="8" filter="url(#glow)"/>
+  
+  <!-- Inner frame -->
+  <circle cx="200" cy="200" r="170" fill="none" stroke="url(#frameGradient)" stroke-width="4"/>
+  
+  <!-- Decorative elements -->
+  <g fill="url(#frameGradient)">
+    <!-- Corner decorations -->
+    <circle cx="50" cy="50" r="8"/>
+    <circle cx="350" cy="50" r="8"/>
+    <circle cx="50" cy="350" r="8"/>
+    <circle cx="350" cy="350" r="8"/>
+    
+    <!-- Side decorations -->
+    <circle cx="200" cy="30" r="6"/>
+    <circle cx="200" cy="370" r="6"/>
+    <circle cx="30" cy="200" r="6"/>
+    <circle cx="370" cy="200" r="6"/>
+  </g>
+  
+  <!-- Center indicator -->
+  <polygon points="200,30 210,50 190,50" fill="#ff6b6b" stroke="#fff" stroke-width="2"/>
+</svg> 

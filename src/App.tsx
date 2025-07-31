@@ -16,6 +16,7 @@ import Redeem from './pages/Redeem/Redeem'
 import Adoption from './pages/Adoption/Adoption'
 import Login from './pages/Login/Login'
 import CursorSelection from './pages/CursorSelection/CursorSelection'
+import Roulette from './pages/Roulette/Roulette'
 
 function AppContent() {
   const { isAuthenticated } = useAuthContext();
@@ -88,6 +89,7 @@ function AppContent() {
           <Route
             path="/champions" element={<Champions />} />
           <Route path="/achievements" element={<Achievements />} />
+          <Route path="/roulette" element={<Roulette />} />
           <Route path="/redeem" element={<Redeem />} />
           <Route path="/adoption" element={<Adoption />} />
           <Route path="*"
