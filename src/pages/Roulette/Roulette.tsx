@@ -319,7 +319,7 @@ const Roulette: React.FC = () => {
             <div className={styles.prizeBarContainer}>
               <div className={styles.barContainer}>
                 <div
-                  className={styles.bar}
+                  className={`${styles.bar} ${timeLeft <= 15 ? styles.urgent : ''}`}
                   style={{ width: `${barWidth}%` }}
                 ></div>
               </div>
