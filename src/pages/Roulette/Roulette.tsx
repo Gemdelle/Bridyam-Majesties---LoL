@@ -235,20 +235,21 @@ const Roulette: React.FC = () => {
         {/* Sección de pregunta */}
         {showQuestion && currentQuestion && (
           <div className={`${styles.questionSection} ${styles[getQuestionFrameClass()]}`}>
+
             <div className={styles.questionContent}>
+              <div className={styles.categoryEmblem}>
+                <img src="/images/roulette/emblem-majesties.png" alt="Category Emblem" className={styles.categoryEmblemImage} />
+              </div>
               <div className={styles.barContainer}>
                 <div className={styles.bar}></div>
               </div>
               {selectedCategory && (
                 <div className={styles.selectedCategory}>
                   <span className={styles.selectedCategoryText}>
-                    Categoría Seleccionada: {selectedCategory}
+                    Categoría Seleccionada: {currentQuestion.category.name}
                   </span>
                 </div>
               )}
-              <div className={styles.category}>
-                <span className={styles.categoryName}>{currentQuestion.category.name}</span>
-              </div>
 
               <div className={styles.question}>
                 <h2>{currentQuestion.question}</h2>
@@ -297,6 +298,9 @@ const Roulette: React.FC = () => {
                   </button>
                 </div>
               )}
+            </div>
+            <div className={styles.prizeContainer}>
+
             </div>
           </div>
         )}

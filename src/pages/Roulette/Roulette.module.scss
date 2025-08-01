@@ -235,37 +235,20 @@
 
 // QUESTION SECTION
 .questionSection {
-  width: 45%;
+  width: 50%;
   height: 100%;
-  margin-right: 5%;
-  @include background;
-  @include flex-col;
-  background-size: 90% 100%;
   // background-color: blue;
-}
-
-.questionSectionPet1 {
-  background-image: url('../../images/frames/roulette-question-frame-pet-1.png');
-}
-
-.questionSectionPet2 {
-  background-image: url('../../images/frames/roulette-question-frame-pet-2.png');
-}
-
-.questionSectionPet3 {
-  background-image: url('../../images/frames/roulette-question-frame-pet-3.png');
-}
-
-.questionSectionPet4 {
-  background-image: url('../../images/frames/roulette-question-frame-pet-4.png');
+  @include flex-col-between;
 }
 
 .questionContent {
-  width: 60%;
-  height: 70%;
-  margin-top: 10%;
-  // background-color: red;
+  width: 100%;
+  height: 75%;
+  background-color: red;
+  background-image: url('../../images/roulette/roulette-questions-frame.png');
+  @include background;
   @include flex-col;
+  justify-content: flex-start;
 }
 
 .selectedCategory {
@@ -282,7 +265,18 @@
   box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
 }
 
-.category {
+.categoryEmblem {
+  width: 15%;
+  height: 12%;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  // background-color: blue;
+}
+
+.categoryEmblemImage {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
 }
 
 .categoryName {
@@ -307,15 +301,15 @@
 }
 
 .answers {
-  width: 100%;
-  height: 50%;
-  background-color: red;
+  width: 55%;
+  height: 40%;
+  background-color: pink;
   @include flex-col-between;
 }
 
 .answer {
   width: 100%;
-  height: 20%;
+  height: 18%;
   display: flex;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -378,6 +372,13 @@
   color: #fff;
   font-size: 1rem;
   line-height: 1.4;
+}
+
+// PRIZE CONTAINER
+.prizeContainer {
+  width: 100%;
+  height: 25%;
+  background-color: green;
 }
 
 .correctIcon {
