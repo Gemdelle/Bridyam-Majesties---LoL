@@ -249,6 +249,7 @@
   @include background;
   @include flex-col;
   justify-content: flex-start;
+  filter: drop-shadow(0 0 20px rgb(195, 159, 101));
 }
 
 .selectedCategory {
@@ -298,7 +299,8 @@
 }
 
 .question {
-  margin-bottom: 2%;
+  width: 60%;
+  margin-bottom: 3%;
 
   h2 {
     color: #cdbe91;
@@ -314,7 +316,7 @@
 
 .answers {
   width: 55%;
-  height: 40%;
+  height: 35%;
   // background-color: pink;
   @include flex-col-between;
 }
