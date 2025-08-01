@@ -9,6 +9,44 @@ export interface AuthState {
   isInitialized: boolean;
 }
 
+// Hook for making authenticated requests with automatic error handling
+export const useAuthenticatedRequest = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const makeRequest = async <T>(
+    url: string, 
+    options: RequestInit = {}
+  ): Promise<T | null> => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await authService.makeAuthenticatedRequestWithHandling(url, options);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Authentication failed') {
+        // Token expired, redirect to login
+        window.location.href = '/login';
+        return null;
+      }
+      
+      setError(error instanceof Error ? error.message : 'An error occurred');
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { makeRequest, isLoading, error };
+};
+
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
@@ -61,7 +99,7 @@ export const useAuth = () => {
     }
   };
 
-  const validateToken = async () => {
+  const validateToken = async (force: boolean = false) => {
     const token = authService.getToken();
     
     if (!token) {
@@ -70,20 +108,38 @@ export const useAuth = () => {
     }
 
     try {
-      const isValid = await authService.validateToken();
+      const isValid = force 
+        ? await authService.forceValidateToken()
+        : await authService.validateToken();
       
       if (isValid) {
         const user = authService.getCurrentUser();
         updateAuthState(user, token);
         return true;
       } else {
-        updateAuthState(null, null);
-        return false;
+        // Only clear state if token is actually invalid (not just network error)
+        // The authService will handle actual token invalidation
+        const user = authService.getCurrentUser();
+        if (user) {
+          // If we still have user data, token might be valid but validation failed due to network
+          updateAuthState(user, token);
+          return true;
+        } else {
+          updateAuthState(null, null);
+          return false;
+        }
       }
     } catch (error) {
       console.error('Token validation error:', error);
-      updateAuthState(null, null);
-      return false;
+      // On error, keep current state if we have user data
+      const user = authService.getCurrentUser();
+      if (user && token) {
+        updateAuthState(user, token);
+        return true;
+      } else {
+        updateAuthState(null, null);
+        return false;
+      }
     }
   };
 
@@ -98,15 +154,21 @@ export const useAuth = () => {
     }
   };
 
-  // Initialize auth state on mount
+  // Force token validation (bypass cache)
+  const forceValidateToken = async () => {
+    return validateToken(true);
+  };
+
+  // Initialize auth state on mount (with reduced validation frequency)
   useEffect(() => {
     const initializeAuth = async () => {
       const token = authService.getToken();
       const user = authService.getCurrentUser();
       
       if (token && user) {
-        // Validate token with backend
-        const isValid = await validateToken();
+        // Only validate if we don't have recent validation cache
+        // This reduces unnecessary API calls
+        const isValid = await validateToken(false);
         if (!isValid) {
           // Token is invalid, user needs to log in again
           updateAuthState(null, null);
@@ -124,6 +186,7 @@ export const useAuth = () => {
     login,
     logout,
     validateToken,
+    forceValidateToken,
     refreshProfile,
   };
 }; 

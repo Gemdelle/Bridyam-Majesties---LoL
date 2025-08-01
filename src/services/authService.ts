@@ -3,7 +3,7 @@ const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
 
 // Types
 export interface LoginRequest {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -34,10 +34,18 @@ export interface ApiError {
 export class AuthService {
   private static instance: AuthService;
   private token: string | null = null;
+  private lastValidationTime: number = 0;
+  private validationCacheDuration: number = 5 * 60 * 1000; // 5 minutos en ms
+  private isValidationInProgress: boolean = false;
 
   private constructor() {
     // Load token from localStorage on initialization
     this.token = localStorage.getItem('auth_token');
+    // Load last validation time from localStorage
+    const lastValidation = localStorage.getItem('last_validation_time');
+    if (lastValidation) {
+      this.lastValidationTime = parseInt(lastValidation);
+    }
   }
 
   public static getInstance(): AuthService {
@@ -69,6 +77,10 @@ export class AuthService {
         if (data.user) {
           localStorage.setItem('user_data', JSON.stringify(data.user));
         }
+
+        // Reset validation cache on successful login
+        this.lastValidationTime = Date.now();
+        localStorage.setItem('last_validation_time', this.lastValidationTime.toString());
 
         return data;
       } else {
@@ -107,6 +119,10 @@ export class AuthService {
           localStorage.setItem('user_data', JSON.stringify(data.user));
         }
 
+        // Reset validation cache on successful registration
+        this.lastValidationTime = Date.now();
+        localStorage.setItem('last_validation_time', this.lastValidationTime.toString());
+
         return data;
       } else {
         return data;
@@ -137,8 +153,10 @@ export class AuthService {
     } finally {
       // Clear token and user data regardless of API call success
       this.token = null;
+      this.lastValidationTime = 0;
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_data');
+      localStorage.removeItem('last_validation_time');
     }
     return true;
   }
@@ -159,9 +177,31 @@ export class AuthService {
     return !!this.token;
   }
 
-  // Validate token with backend
+  // Check if validation cache is still valid
+  private isValidationCacheValid(): boolean {
+    const now = Date.now();
+    return (now - this.lastValidationTime) < this.validationCacheDuration;
+  }
+
+  // Validate token with backend (with improved error handling and caching)
   async validateToken(): Promise<boolean> {
     if (!this.token) return false;
+
+    // Check if we have a recent validation cache
+    if (this.isValidationCacheValid()) {
+      return true;
+    }
+
+    // Prevent multiple simultaneous validations
+    if (this.isValidationInProgress) {
+      // Wait for the current validation to complete
+      while (this.isValidationInProgress) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      return this.isValidationCacheValid();
+    }
+
+    this.isValidationInProgress = true;
 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/validate-token`, {
@@ -172,16 +212,34 @@ export class AuthService {
       });
 
       if (response.ok) {
+        // Token is valid, update cache
+        this.lastValidationTime = Date.now();
+        localStorage.setItem('last_validation_time', this.lastValidationTime.toString());
         return true;
-      } else {
-        // Token is invalid, clear it
+      } else if (response.status === 401 || response.status === 403) {
+        // Token is actually invalid, clear it
+        console.log('Token validation failed: token is invalid');
         this.logout();
+        return false;
+      } else {
+        // Other HTTP errors (500, 502, etc.) - don't logout, just return false
+        console.warn('Token validation failed with status:', response.status);
         return false;
       }
     } catch (error) {
-      console.error('Token validation error:', error);
+      // Network errors - don't logout, just return false
+      console.error('Token validation network error:', error);
       return false;
+    } finally {
+      this.isValidationInProgress = false;
     }
+  }
+
+  // Force validate token (bypass cache)
+  async forceValidateToken(): Promise<boolean> {
+    this.lastValidationTime = 0; // Clear cache
+    localStorage.removeItem('last_validation_time');
+    return this.validateToken();
   }
 
   // Get profile from backend
@@ -248,6 +306,23 @@ export class AuthService {
         'Authorization': `Bearer ${this.token}`,
       },
     });
+  }
+
+  // Helper method to handle authenticated request responses
+  async handleAuthenticatedResponse(response: Response): Promise<Response> {
+    if (response.status === 401 || response.status === 403) {
+      // Token is invalid, clear it
+      console.log('Authentication failed, clearing token');
+      this.logout();
+      throw new Error('Authentication failed');
+    }
+    return response;
+  }
+
+  // Enhanced method for making authenticated requests with automatic error handling
+  async makeAuthenticatedRequestWithHandling(url: string, options: RequestInit = {}): Promise<Response> {
+    const response = await this.makeAuthenticatedRequest(url, options);
+    return this.handleAuthenticatedResponse(response);
   }
 }
 

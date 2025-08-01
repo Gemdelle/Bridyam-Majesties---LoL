@@ -10,7 +10,8 @@ interface AuthContextType {
   isInitialized: boolean;
   login: (username: string, password: string) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
-  validateToken: () => Promise<boolean>;
+  validateToken: (force?: boolean) => Promise<boolean>;
+  forceValidateToken: () => Promise<boolean>;
   refreshProfile: () => Promise<void>;
 }
 
