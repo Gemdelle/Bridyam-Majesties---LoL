@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { questionsService } from '../../services/questionsService';
+import { usePetContext } from '../../contexts/PetContext';
+import { tutorialService } from '../../services/tutorialService';
 import styles from './Roulette.module.scss';
 
 interface Category {
@@ -17,6 +19,7 @@ interface Question {
 }
 
 const Roulette: React.FC = () => {
+  const { selectedPet } = usePetContext();
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [nextQuestion, setNextQuestion] = useState<Question | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -130,6 +133,27 @@ const Roulette: React.FC = () => {
     }
   };
 
+  // Determine the correct frame based on the selected pet
+  const getQuestionFrameClass = () => {
+    // Try to get pet from context first, then tutorial service as fallback
+    let petNumber = selectedPet?.petNumber;
+
+    // If no pet in context, try tutorial service
+    if (!petNumber) {
+      const tutorialPet = tutorialService.getSelectedPet();
+      petNumber = tutorialPet?.petNumber;
+    }
+
+    // Default to pet 1 if still no pet number
+    petNumber = petNumber || 1;
+
+    console.log('Selected Pet from Context:', selectedPet);
+    console.log('Pet from Tutorial Service:', tutorialService.getSelectedPet());
+    console.log('Pet Number:', petNumber);
+    console.log('Frame Class:', `questionSectionPet${petNumber}`);
+    return `questionSectionPet${petNumber}`;
+  };
+
   if (loading) {
     return (
       <div className={styles.container}>
@@ -210,7 +234,7 @@ const Roulette: React.FC = () => {
 
         {/* Sección de pregunta */}
         {showQuestion && currentQuestion && (
-          <div className={styles.questionSection}>
+          <div className={`${styles.questionSection} ${styles[getQuestionFrameClass()]}`}>
             <div className={styles.questionContent}>
               <div className={styles.barContainer}>
                 <div className={styles.bar}></div>

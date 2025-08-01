@@ -44,7 +44,7 @@
   }
   50% {
     transform: translateY(-8px);
-    filter: drop-shadow(0 0 10px rgb(195, 172, 101));
+    filter: drop-shadow(0 0 10px rgb(195, 159, 101));
   }
 }
 
@@ -110,24 +110,24 @@
   .derlet7{
     width: 5vw;
     height: 6vw;
-    top: 25%;
-    right: -25%;
+    top: 30%;
+    right: -20%;
     rotate: 10deg;
   }
 
-  .derlet8{
+  .derlet8 {
     width: 3.5vw;
     height: 4vw;
-    top: 40%;
-    right: -30%;
+    top: 45%;
+    right: -25%;
     rotate: 10deg;
     animation: float 2.7s ease-in-out infinite;
   }
 
-  .derlet9{
+  .derlet9 {
     width: 3.5vw;
     height: 5vw;
-    bottom: 30%;
+    bottom: 25%;
     right: -20%;
     rotate: -15deg;
     animation: float 2.8s ease-in-out infinite;
@@ -137,7 +137,7 @@
     width: 2.5vw;
     height: 3vw;
     bottom: 20%;
-    right: -30%;
+    right: -5%;
     rotate: 10deg;
     animation: float 2.5s ease-in-out infinite;
   }
@@ -153,13 +153,13 @@
 .frameImage {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 20px rgb(195, 172, 101));
+  filter: drop-shadow(0 0 20px rgb(195, 159, 101));
   z-index: 999;
 }
 
 .wheel {
   position: absolute;
-  width: 90%;
+  width: 85%;
   height: auto;
   transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   @include flex-center;
@@ -238,11 +238,26 @@
   width: 45%;
   height: 100%;
   margin-right: 5%;
-  background-image: url('../../images/frames/roulette-question-frame-pet-1.png');
   @include background;
   @include flex-col;
   background-size: 90% 100%;
   // background-color: blue;
+}
+
+.questionSectionPet1 {
+  background-image: url('../../images/frames/roulette-question-frame-pet-1.png');
+}
+
+.questionSectionPet2 {
+  background-image: url('../../images/frames/roulette-question-frame-pet-2.png');
+}
+
+.questionSectionPet3 {
+  background-image: url('../../images/frames/roulette-question-frame-pet-3.png');
+}
+
+.questionSectionPet4 {
+  background-image: url('../../images/frames/roulette-question-frame-pet-4.png');
 }
 
 .questionContent {
