@@ -246,7 +246,7 @@ const Roulette: React.FC = () => {
               {selectedCategory && (
                 <div className={styles.selectedCategory}>
                   <span className={styles.selectedCategoryText}>
-                    Categoría Seleccionada: {currentQuestion.category.name}
+                    CATEGORY: {currentQuestion.category.name}
                   </span>
                 </div>
               )}
