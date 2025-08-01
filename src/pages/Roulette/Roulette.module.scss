@@ -21,11 +21,126 @@
 }
 
 .wheelContainer {
+  position: relative;
   height: 100%;
   width: auto;
   @include flex-col;
-  background-color: red;
+  // background-color: red;
 }
+
+.flyingDerlet {
+  position: absolute;
+  width: 4vw;
+  height: 5vw;
+  background-image: url('../../images/derlet/derlet-side-2.png');
+  @include background;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+    filter: drop-shadow(0 0 15px rgba(223, 219, 198, 0.2));
+  }
+  50% {
+    transform: translateY(-8px);
+    filter: drop-shadow(0 0 10px rgb(195, 172, 101));
+  }
+}
+
+  .derlet1 {
+    top: 5%;
+    left: -10%;
+    rotate: -5deg;
+    animation: float 2.5s ease-in-out infinite;
+  }
+
+  .derlet2 {
+    width: 3vw;
+    height: 4vw;
+    top: 30%;
+    left: -15%;
+    rotate: 3deg;
+    animation: float 2.2s ease-in-out infinite;
+  }
+
+  .derlet3 {
+    width: 2.5vw;
+    height: 3.5vw;
+    bottom: 40%;
+    left: -25%;
+    rotate: -5deg;
+    animation: float 2.3s ease-in-out infinite;
+  }
+
+  .derlet4 {
+    width: 4vw;
+    height: 5vw;
+    bottom: 30%;
+    left: -40%;
+    rotate: -10deg;
+    animation: float 2.5s ease-in-out infinite;
+  }
+
+  .derlet5 {
+    width: 5vw;
+    height: 6vw;
+    bottom: 15%;
+    left: -20%;
+    rotate: 10deg;
+  }
+
+  .derlet6,
+  .derlet7,
+  .derlet8,
+  .derlet9,
+  .derlet10 {
+    background-image: url('../../images/derlet/derlet-side.png');
+  }
+  
+  .derlet6{
+    width: 3vw;
+    height: 4vw;
+    top: 15%;
+    right: -10%;
+    rotate: -10deg;
+    animation: float 2.6s ease-in-out infinite;
+  }
+
+  .derlet7{
+    width: 5vw;
+    height: 6vw;
+    top: 25%;
+    right: -25%;
+    rotate: 10deg;
+  }
+
+  .derlet8{
+    width: 3.5vw;
+    height: 4vw;
+    top: 40%;
+    right: -30%;
+    rotate: 10deg;
+    animation: float 2.7s ease-in-out infinite;
+  }
+
+  .derlet9{
+    width: 3.5vw;
+    height: 5vw;
+    bottom: 30%;
+    right: -20%;
+    rotate: -15deg;
+    animation: float 2.8s ease-in-out infinite;
+  }
+
+  .derlet10{
+    width: 2.5vw;
+    height: 3vw;
+    bottom: 20%;
+    right: -30%;
+    rotate: 10deg;
+    animation: float 2.5s ease-in-out infinite;
+  }
 
 .wheelFrame {
   position: relative;
@@ -38,17 +153,17 @@
 .frameImage {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+  filter: drop-shadow(0 0 20px rgb(195, 172, 101));
   z-index: 999;
 }
 
 .wheel {
   position: absolute;
-  width: 30%;
+  width: 90%;
   height: auto;
   transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   @include flex-center;
-    // background-color: pink;
+  // background-color: pink;
 }
 
 .wheelImage {

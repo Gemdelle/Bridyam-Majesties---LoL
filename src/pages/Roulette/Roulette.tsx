@@ -153,6 +153,18 @@ const Roulette: React.FC = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.wheelContainer}>
+          <div className={`${styles.flyingDerlet} ${styles.derlet1}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet2}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet3}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet4}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet5}`}></div>
+
+          <div className={`${styles.flyingDerlet} ${styles.derlet6}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet7}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet8}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet9}`}></div>
+          <div className={`${styles.flyingDerlet} ${styles.derlet10}`}></div>
+
           {/* Marco de la ruleta */}
           <div className={styles.wheelFrame}>
             <img
@@ -265,7 +277,7 @@ const Roulette: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
