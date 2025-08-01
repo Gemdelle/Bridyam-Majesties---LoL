@@ -240,9 +240,6 @@ const Roulette: React.FC = () => {
               <div className={styles.categoryEmblem}>
                 <img src="/images/roulette/emblem-majesties.png" alt="Category Emblem" className={styles.categoryEmblemImage} />
               </div>
-              <div className={styles.barContainer}>
-                <div className={styles.bar}></div>
-              </div>
               {selectedCategory && (
                 <div className={styles.selectedCategory}>
                   <span className={styles.selectedCategoryText}>
@@ -299,8 +296,13 @@ const Roulette: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className={styles.prizeContainer}>
+            <div className={styles.prizeBarContainer}>
+              <div className={styles.barContainer}>
 
+              </div>
+              <div className={styles.prizesContainer}>
+
+              </div>
             </div>
           </div>
         )}

@@ -391,10 +391,26 @@
 }
 
 // PRIZE CONTAINER
-.prizeContainer {
+.prizeBarContainer {
   width: 100%;
-  height: 25%;
-  background-color: green;
+  height: 22%;
+  @include flex-col-between;
+  // background-color: green;
+}
+
+.barContainer {
+  width: 80%;
+  height: 40%;
+  background-image: url('../../images/roulette/roulette-bar.png');
+  @include background;
+  background-size: 100% auto;
+  // background-color: blue;
+}
+
+.prizesContainer {
+  width: 100%;
+  height: 60%;
+  background-color: red;
 }
 
 .correctIcon {
