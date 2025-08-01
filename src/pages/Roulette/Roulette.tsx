@@ -30,6 +30,8 @@ const Roulette: React.FC = () => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(60); // 60 seconds = 1 minute
+  const [barWidth, setBarWidth] = useState(100); // 100% width
 
   useEffect(() => {
     loadRandomQuestion();
@@ -41,6 +43,22 @@ const Roulette: React.FC = () => {
       loadNextQuestion();
     }
   }, [showQuestion, nextQuestion]);
+
+  // Timer effect for the bar
+  useEffect(() => {
+    if (showQuestion && !answered && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          const newTime = prev - 1;
+          const newWidth = (newTime / 60) * 100;
+          setBarWidth(newWidth);
+          return newTime;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [showQuestion, answered, timeLeft]);
 
   const loadRandomQuestion = async () => {
     try {
@@ -125,6 +143,8 @@ const Roulette: React.FC = () => {
     setAnswered(false);
     setSelectedAnswer(null);
     setSelectedCategory(null);
+    setTimeLeft(60); // Reset timer
+    setBarWidth(100); // Reset bar width
 
     // Mover la siguiente pregunta a la actual
     if (nextQuestion) {
@@ -298,7 +318,10 @@ const Roulette: React.FC = () => {
             </div>
             <div className={styles.prizeBarContainer}>
               <div className={styles.barContainer}>
-
+                <div
+                  className={styles.bar}
+                  style={{ width: `${barWidth}%` }}
+                ></div>
               </div>
               <div className={styles.prizesContainer}>
 

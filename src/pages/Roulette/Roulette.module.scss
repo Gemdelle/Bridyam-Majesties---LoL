@@ -403,8 +403,54 @@
   height: 40%;
   background-image: url('../../images/roulette/roulette-bar.png');
   @include background;
+  @include flex-start;
   background-size: 100% auto;
   // background-color: blue;
+}
+
+.bar {
+  height: 30%;
+  width: 50%;
+  margin-left: 4.5%;
+  background: linear-gradient(90deg, #87ceeb 0%, #4682b4 50%, #1e90ff 100%);
+  border-radius: 50px;
+  transition: width 1s linear;
+  box-shadow: 
+    0 0 15px rgba(135, 206, 235, 0.8),
+    inset 0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(30, 144, 255, 0.4);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      rgba(255, 255, 255, 0.3) 25%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      rgba(255, 255, 255, 0.3) 75%, 
+      rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 50px;
+    pointer-events: none;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    right: -22%;
+    width: 3.5vw;
+    height: 3.5vw;
+    background-image: url('../../images/derlet/derlet.png');
+    @include background;
+    filter: drop-shadow(0 0 10px rgba(135, 206, 235, 0.6));
+    pointer-events: none;
+    z-index: 10;
+  }
 }
 
 .prizesContainer {
