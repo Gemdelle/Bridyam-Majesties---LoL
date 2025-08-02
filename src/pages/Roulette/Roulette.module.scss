@@ -486,23 +486,28 @@
   
   // Progressive sizing for prize containers - higher prizes are bigger
   &:nth-child(1) {
-    height: 13%;
+    height: 25%;
+    width: 100%;
   }
   
   &:nth-child(2) {
-    height: 15%;
+    height: 20%;
+    width: 90%;
   }
   
   &:nth-child(3) {
     height: 18%;
+    width: 80%;
   }
   
   &:nth-child(4) {
-    height: 20%;
+    height: 15%;
+    width: 70%;
   }
   
   &:nth-child(5) {
-    height: 25%;
+    height: 13%;
+    width: 60%;
   }
 }
 
