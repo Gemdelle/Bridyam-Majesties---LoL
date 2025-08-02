@@ -241,11 +241,22 @@ const Roulette: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.barContainer}>
-          <div
-            className={`${styles.bar} ${timeLeft <= 15 ? styles.urgent : ''}`}
-            style={{ width: `${barWidth}%` }}
-          ></div>
+        <div className={styles.prizeContainer}>
+          <div className={styles.prize}>
+            <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
+          </div>
+          <div className={styles.prize}>
+            <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
+          </div>
+          <div className={styles.prize}>
+            <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
+          </div>
+          <div className={styles.prize}>
+            <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
+          </div>
+          <div className={styles.prize}>
+            <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
+          </div>
         </div>
 
         {/* Botón de girar */}
@@ -325,26 +336,13 @@ const Roulette: React.FC = () => {
             </div>
 
 
-
-            <div className={styles.prizeContainer}>
-
-
-              <div className={styles.prize}>
-                <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
-              </div>
-              <div className={styles.prize}>
-                <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
-              </div>
-              <div className={styles.prize}>
-                <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
-              </div>
-              <div className={styles.prize}>
-                <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
-              </div>
-              <div className={styles.prize}>
-                <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
-              </div>
+            <div className={styles.barContainer}>
+              <div
+                className={`${styles.bar} ${timeLeft <= 15 ? styles.urgent : ''}`}
+                style={{ width: `${barWidth}%` }}
+              ></div>
             </div>
+
           </div>
 
         )}
