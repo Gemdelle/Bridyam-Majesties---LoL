@@ -203,6 +203,27 @@
   // background-color: purple;
 }
 
+.derletPrize {
+  position: absolute;
+  color: #f0c884;
+  font-size: 2.2vw;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  z-index: 10;
+  filter: drop-shadow(0 0 10px rgba(222, 187, 111, 0.6));
+  animation: prizeGlow 2s ease-in-out infinite;
+}
+
+@keyframes prizeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(222, 187, 111, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(222, 187, 111, 0.9));
+  }
+}
+
 .spinButton {
   background: rgba(200, 155, 60, 0.2);
   border: 3px solid #c89b3c;
@@ -431,6 +452,11 @@
   object-fit: contain;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
   animation: lifeGlow 2s ease-in-out infinite;
+
+  &.lifeUsed {
+    animation: none;
+    filter: none;
+  }
 }
 
 @keyframes lifeGlow {

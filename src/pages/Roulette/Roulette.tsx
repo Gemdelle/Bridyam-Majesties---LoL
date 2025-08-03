@@ -264,11 +264,9 @@ const Roulette: React.FC = () => {
           <div
             className={styles.derletContainer}
           >
-            <img
-              src="/images/roulette/derlet.png"
-              alt="Derlet"
-              className={styles.derlet}
-            />
+            <span className={styles.derletPrize}>
+              {showQuestion ? prizes[0] : 0}
+            </span>
           </div>
         </div>
 
@@ -276,23 +274,23 @@ const Roulette: React.FC = () => {
         {showQuestion && (
           <div className={styles.prizeContainer}>
             <div className={styles.prize}>
-              <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
+              <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
             </div>
             <div className={styles.prize}>
-              <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
+              <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
             </div>
             <div className={styles.prize}>
-              <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
+              <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
             </div>
             <div className={styles.prize}>
-              <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
+              <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
             </div>
             <div className={styles.prize}>
-              <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
+              <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <span className={styles.prizeValue}>{prizes[0]}</span>
             </div>
           </div>
@@ -362,9 +360,14 @@ const Roulette: React.FC = () => {
               {/* Life image at the bottom */}
               <div className={styles.lifeContainer}>
                 <img
-                  src="/images/roulette/roulette-life-free.png"
+                  src={answered && selectedAnswer !== currentQuestion.correctAnswerIndex
+                    ? "/images/roulette/roulette-life-used.png"
+                    : "/images/roulette/roulette-life-free.png"}
                   alt="Life"
-                  className={styles.lifeImage}
+                  className={`${styles.lifeImage} ${answered && selectedAnswer !== currentQuestion.correctAnswerIndex
+                    ? styles.lifeUsed
+                    : ''
+                    }`}
                 />
               </div>
 
