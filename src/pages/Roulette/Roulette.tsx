@@ -158,10 +158,8 @@ const Roulette: React.FC = () => {
   };
 
   const handleContinue = () => {
-    setShowQuestion(false);
     setAnswered(false);
     setSelectedAnswer(null);
-    setSelectedCategory(null);
     setTimeLeft(60); // Reset timer
     setBarWidth(100); // Reset bar width
 
