@@ -172,6 +172,20 @@ const Roulette: React.FC = () => {
     }
   };
 
+  const handleCashOut = () => {
+    // Player decides to stop betting and take their current prize
+    console.log('Player cashed out with prize:', prizes[0]);
+    // Here you can add logic to save the prize to the player's account
+    // For now, we'll just reset the game
+    setShowQuestion(false);
+    setAnswered(false);
+    setSelectedAnswer(null);
+    setSelectedCategory(null);
+    setTimeLeft(60);
+    setBarWidth(100);
+    generatePrizes(); // Generate new prizes for next round
+  };
+
   // Determine the correct frame based on the selected pet
   const getQuestionFrameClass = () => {
     // Try to get pet from context first, then tutorial service as fallback
@@ -344,13 +358,6 @@ const Roulette: React.FC = () => {
                 })}
               </div>
 
-              {answered && (
-                <div className={styles.feedbackSection}>
-                  <button onClick={handleContinue} className={styles.continueButton}>
-                    Continuar
-                  </button>
-                </div>
-              )}
             </div>
 
 
@@ -363,6 +370,17 @@ const Roulette: React.FC = () => {
                 style={{ width: `${barWidth}%` }}
               ></div>
             </div>
+
+            {answered && (
+              <div className={styles.feedbackSection}>
+                <button onClick={handleContinue} className={styles.continueButton}>
+                  Continue
+                </button>
+                <button onClick={handleCashOut} className={styles.cashOutButton}>
+                  Cash Out
+                </button>
+              </div>
+            )}
 
           </div>
 
