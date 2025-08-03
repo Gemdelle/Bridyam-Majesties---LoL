@@ -2,34 +2,7 @@
 import styles from './Accounts.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import AccountSummary from '../../components/AccountSummary';
-
-// Definir tipos para los datos
-interface Account {
-  id: number;
-  name: string;
-  username: string;
-  bloodline: string;
-  url: string;
-  champions: number;
-  skins: number;
-  masteries: number;
-  elo: number;
-  level: number;
-  'elo-soloq': string;
-  'elo-flex': string;
-  'level-soloq': string;
-  'level-flex': string;
-  honor: string;
-  roles: {
-    top: number;
-    jungle: number;
-    mid: number;
-    adc: number;
-    support: number;
-  };
-  blueEssence: number;
-  orangeEssence: number;
-}
+import AccountsService, { type Account } from '../../services/accountsService';
 
 // --- Opciones para los filtros ---
 const rankOptions: FilterOption[] = [
@@ -52,53 +25,96 @@ const tierOptions: FilterOption[] = [
   { id: 'I', label: 'I' },
 ];
 
+// Mapeo de usernames a portraits locales
+const usernameToPortraitMap: { [key: string]: string } = {
+  'GEM Arminariknot#GEM': '/images/portraits/Arminariknot.png',
+  'GEM Dreemurdomme#GEM': '/images/portraits/Dreemurdomme.png',
+  'GEM Hestiarethe#GEM': '/images/portraits/Hestiarethe.png',
+  'GEM Orzyadhere#GEM': '/images/portraits/Orzyadhere.png',
+  'GEM Brincelleza#GEM': '/images/portraits/Bricellice.png',
+  'GEM Eunilacealle#GEM': '/images/portraits/Eunilacealle.png',
+  'GEM Lacellire#GEM': '/images/portraits/Lacellire.png',
+  'GEM Blaandel\'Valse#GEM': '/images/portraits/Blaandel\'Valse.png',
+  'GEM Bricellice#GEM': '/images/portraits/Bricellice.png',
+  'GEM Damglantine#GEM': '/images/portraits/Damglantine.png',
+  'GEM Deestellirys#GEM': '/images/portraits/Deestellirys.png',
+  'GEM Ivelism#GEM': '/images/portraits/Ivelism.png',
+  'GEM Lahallayd#GEM': '/images/portraits/Lahallayd.png',
+  'GEM Vrillyarethez#GEM': '/images/portraits/Vrillyarethez.png',
+  // Agregar más mapeos según sea necesario
+  'GEM Cordacrimory#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Purselgarmet#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Rothroyaume#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Stridellarea#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Deellycella#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM PelsNpurmips#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Primrosenrot#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Priscyumice#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Regimbudlair#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Envicingess#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Glacelynne#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Lagrimelle#GEM': '/images/portraits/Lahallayd.png', // Usa el mismo que Lahallayd
+  'GEM Plissevelary#GEM': '/images/portraits/Lahallayd.png', // Usa el mismo que Lahallayd
+  'GEM Vaelardorcel#GEM': '/images/portraits/Lahallayd.png', // Usa el mismo que Lahallayd
+  'GEM Velchelisse#GEM': '/images/portraits/Lahallayd.png', // Usa el mismo que Lahallayd
+  'GEM Asticedicair#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Dellablivien#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Gallilessya#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Greedgardell#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Irzeleriance#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Phrasimfasya#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Praireclovia#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Vespianelian#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Cierzellant#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Deliquesence#GEM': '/images/portraits/Arminariknot.png', // Fallback
+  'GEM Veldraveth#GEM': '/images/portraits/Arminariknot.png', // Fallback
+};
+
+// Función para obtener el portrait local basado en el username
+const getLocalPortrait = (username: string): string => {
+  return usernameToPortraitMap[username] || '/images/portraits/Arminariknot.png'; // Fallback por defecto
+};
+
 const Accounts: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedRank, setSelectedRank] = useState<string[]>([]);
   const [selectedTier, setSelectedTier] = useState<string[]>([]);
   const [selectedPortrait, setSelectedPortrait] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const accountsService = AccountsService.getInstance();
 
   useEffect(() => {
     const loadAccounts = async () => {
       try {
-        const response = await fetch('/data/portraits.json');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setAccounts(data);
+        setIsLoading(true);
+        setError(null);
+        const accountsData = await accountsService.getAccounts();
+        setAccounts(accountsData);
       } catch (error) {
         console.error('Error loading accounts:', error);
+        setError(error instanceof Error ? error.message : 'Failed to load accounts');
         // Set some default data to prevent blank page
         setAccounts([
           {
-            id: 1,
-            name: 'Arminariknot',
-            username: 'GEM Arminariknot#GEM',
-            bloodline: 'Porveldam',
-            url: '/images/portraits/Arminariknot.png',
-            champions: 165,
-            skins: 320,
-            masteries: 678,
-            elo: 2950,
-            level: 105,
-            'elo-soloq': 'Gold',
-            'elo-flex': 'Silver',
-            'level-soloq': 'II',
-            'level-flex': 'IV',
-            honor: 'https://placehold.co/24x24/ffa500/ffffff.png?text=💛',
+            url: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/5413.png",
+            id: 19,
+            name: "Tryppy Troppy",
+            username: "GEM Damglantine#GEM",
+            champions: 84,
+            skins: 267,
+            masteries: 84,
+            solo_q_elo: "EMERALD 4",
             roles: {
-              top: 56,
-              jungle: 34,
-              mid: 78,
-              adc: 45,
-              support: 23
+              top: 45,
+              jungle: 78,
+              mid: 34,
+              adc: 67,
+              support: 45
             },
-            blueEssence: 156780,
-            orangeEssence: 23450
+            blueEssence: 98760,
+            orangeEssence: 14560
           }
         ]);
       } finally {
@@ -129,12 +145,11 @@ const Accounts: React.FC = () => {
   };
 
   const filteredAccounts = accounts.filter((account: Account) => {
-    // Map the data structure from portraits.json to the expected format
-    const accountRank = (account['elo-soloq'] as string)?.toLowerCase() || '';
-    const accountTier = (account['level-soloq'] as string) || '';
+    // Parse the solo_q_elo to extract rank and tier
+    const { rank, tier } = accountsService.parseElo(account.solo_q_elo);
     
-    const matchesRank = selectedRank.length === 0 || selectedRank.includes(accountRank);
-    const matchesTier = selectedTier.length === 0 || selectedTier.includes(accountTier);
+    const matchesRank = selectedRank.length === 0 || selectedRank.includes(rank);
+    const matchesTier = selectedTier.length === 0 || selectedTier.includes(tier);
     const matchesPortrait = selectedPortrait.length === 0 || selectedPortrait.includes(account.name);
     
     return matchesRank && matchesTier && matchesPortrait;
@@ -142,6 +157,19 @@ const Accounts: React.FC = () => {
 
   if (isLoading) {
     return <div className={styles.loading}>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.content}>
+          <div className={styles.error}>
+            <h2>Error</h2>
+            <p>{error}</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -173,39 +201,21 @@ const Accounts: React.FC = () => {
           />
         </div>
 
-                 {filteredAccounts.length > 0 && (
-           <div className={styles.summary}>
-             <AccountSummary data={{
-               url: `/images/portraits/${filteredAccounts[0].name}.png`,
-               id: 1,
-               name: filteredAccounts[0].name,
-               username: filteredAccounts[0].name,
-               champions: filteredAccounts[0].champions || 150,
-               skins: filteredAccounts[0].skins || 200,
-               masteries: filteredAccounts[0].masteries || 50,
-               elo: filteredAccounts[0].elo || 1200,
-               roles: filteredAccounts[0].roles || {
-                 top: 10,
-                 jungle: 15,
-                 mid: 25,
-                 adc: 20,
-                 support: 5
-               },
-               blueEssence: filteredAccounts[0].blueEssence || 50000,
-               orangeEssence: 2500
-             }} />
-           </div>
-         )}
-
         <div className={styles.accounts}>
           {filteredAccounts.map((account: Account) => (
-            <div key={account.name} className={styles.account}>
-              <h3>{account.name}</h3>
-              <p>Rank: {account['elo-soloq']}</p>
-              <p>Tier: {account['level-soloq']}</p>
-              <p>ELO: {account.elo}</p>
-              <p>Level: {account.level}</p>
-              <p>Champions: {account.champions}</p>
+            <div key={account.id} className={styles.accountWrapper}>
+              <AccountSummary data={{
+                url: getLocalPortrait(account.username),
+                id: account.id,
+                name: account.name,
+                username: account.username,
+                champions: account.champions,
+                skins: account.skins,
+                masteries: account.masteries,
+                roles: account.roles,
+                blueEssence: account.blueEssence,
+                orangeEssence: account.orangeEssence
+              }} />
             </div>
           ))}
         </div>

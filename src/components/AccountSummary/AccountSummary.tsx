@@ -10,7 +10,7 @@ export interface AccountSummaryData {
     champions: number;
     skins: number;
     masteries: number;
-    elo: number;
+    elo?: number; // Made optional since it's not in the new protocol
     roles: {
         top: number;
         jungle: number;
@@ -48,7 +48,9 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                             <li><span>champions</span> <span>{data.champions}</span></li>
                             <li><span>skins</span> <span>{data.skins}</span></li>
                             <li><span>masteries</span> <span>{data.masteries}</span></li>
-                            <li><span>elo</span> <span>{data.elo}</span></li>
+                            {data.elo !== undefined && (
+                                <li><span>elo</span> <span>{data.elo}</span></li>
+                            )}
                         </ul>
                         <div className={styles.roles}>
                             <ul>
