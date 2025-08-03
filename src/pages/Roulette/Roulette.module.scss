@@ -215,7 +215,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  margin-right: 10%;
+  margin-right: 15%;
   overflow: hidden;
 
   &:hover:not(.disabled) {
@@ -232,10 +232,11 @@
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(200, 155, 60, 0.1);
-    border-color: rgba(200, 155, 60, 0.5);
+    background: transparent;
+    border: none;
     color: rgba(200, 155, 60, 0.5);
     transform: none;
+    animation: urgentPulse 1.5s ease-in-out infinite;
   }
 
   &::before {
@@ -633,7 +634,7 @@
 
 .feedbackSection {
   width: 50%;
-  margin-top: 2rem;
+  margin-top: 0.8vw;
   text-align: center;
   // background-color: red;
   @include flex-between;

@@ -272,8 +272,8 @@ const Roulette: React.FC = () => {
           </div>
         </div>
 
-        {/* Prize container - only show after spinning */}
-        {(isSpinning || showQuestion) && (
+        {/* Prize container - only show after spinning is complete */}
+        {showQuestion && (
           <div className={styles.prizeContainer}>
             <div className={styles.prize}>
               <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
