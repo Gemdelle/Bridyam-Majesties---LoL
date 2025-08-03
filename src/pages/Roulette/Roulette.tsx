@@ -334,6 +334,9 @@ const Roulette: React.FC = () => {
             </div>
 
 
+            <div className={styles.timerContainer}>
+              <span className={styles.timerText}>{timeLeft}</span>
+            </div>
             <div className={styles.barContainer}>
               <div
                 className={`${styles.bar} ${timeLeft <= 15 ? styles.urgent : ''}`}
