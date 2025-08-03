@@ -320,6 +320,7 @@
 
 .selectedCategory {
   text-align: center;
+  margin-top: 1%;
   // background-color: purple;
 }
 
@@ -366,7 +367,7 @@
 
 .question {
   width: 50%;
-  margin-bottom: 3%;
+  margin-bottom: 1%;
 
   h2 {
     color: #cdbe91;
@@ -448,7 +449,7 @@
 
 .answerText {
   color: #cdbe91;
-  font-size: 0.9vw;
+  font-size: 1.2vw;
   font-weight: 500;
   letter-spacing: 0.15vw;
   text-transform: uppercase;
