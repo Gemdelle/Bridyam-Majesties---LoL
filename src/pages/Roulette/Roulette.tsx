@@ -244,15 +244,19 @@ const Roulette: React.FC = () => {
         <div className={styles.prizeContainer}>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
+            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
           </div>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
+            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
           </div>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
+            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
           </div>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
+            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
           </div>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
@@ -312,12 +316,6 @@ const Roulette: React.FC = () => {
                         }`}
                       onClick={() => handleAnswerSelect(index)}
                     >
-                      <span className={`${styles.answerLetter} ${showCorrect || showCorrectAnswer ? styles.correctLetter :
-                        showIncorrect ? styles.incorrectLetter :
-                          isSelected ? styles.selectedLetter : ''
-                        }`}>
-                        {String.fromCharCode(65 + index)}.
-                      </span>
                       <span className={styles.answerText}>{answer}</span>
                       {(showCorrect || showCorrectAnswer) && <span className={styles.correctIcon}>✓</span>}
                       {showIncorrect && <span className={styles.incorrectIcon}>✗</span>}
