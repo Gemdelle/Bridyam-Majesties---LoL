@@ -33,6 +33,7 @@ const Roulette: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(60); // 60 seconds = 1 minute
   const [barWidth, setBarWidth] = useState(100); // 100% width
   const [prizes, setPrizes] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [currentPrizeIndex, setCurrentPrizeIndex] = useState(0);
 
   // Function to convert number to digit images
   const renderNumberAsImages = (number: number) => {
@@ -65,9 +66,19 @@ const Roulette: React.FC = () => {
       { min: 5000, max: 12000 }  // Prize 5 (top)
     ];
 
-    const newPrizes = prizeRanges.map(range =>
-      Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
-    );
+    const newPrizes = prizeRanges.map(range => {
+      const randomValue = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+      // Round to nearest 5, then ensure it ends in 0 or 5
+      const roundedToFive = Math.round(randomValue / 5) * 5;
+      // If it ends in 0 or 5, use it; otherwise, round down to nearest 0 or 5
+      const lastDigit = roundedToFive % 10;
+      if (lastDigit === 0 || lastDigit === 5) {
+        return roundedToFive;
+      } else {
+        // Round down to nearest 0 or 5
+        return Math.floor(roundedToFive / 10) * 10 + (lastDigit > 5 ? 5 : 0);
+      }
+    });
 
     console.log('Generated prizes:', newPrizes);
     setPrizes(newPrizes);
@@ -180,6 +191,11 @@ const Roulette: React.FC = () => {
     setTimeLeft(60); // Reset timer
     setBarWidth(100); // Reset bar width
 
+    // Move to next prize if user answered correctly
+    if (selectedAnswer === currentQuestion?.correctAnswerIndex) {
+      setCurrentPrizeIndex(prev => Math.min(prev + 1, 4)); // Max index is 4 (5 prizes total)
+    }
+
     // Mover la siguiente pregunta a la actual
     if (nextQuestion) {
       setCurrentQuestion(nextQuestion);
@@ -189,7 +205,7 @@ const Roulette: React.FC = () => {
 
   const handleCashOut = () => {
     // Player decides to stop betting and take their current prize
-    console.log('Player cashed out with prize:', prizes[0]);
+    console.log('Player cashed out with prize:', prizes[currentPrizeIndex]);
     // Here you can add logic to save the prize to the player's account
     // For now, we'll just reset the game
     setShowQuestion(false);
@@ -198,6 +214,7 @@ const Roulette: React.FC = () => {
     setSelectedCategory(null);
     setTimeLeft(60);
     setBarWidth(100);
+    setCurrentPrizeIndex(0); // Reset to first prize
     generatePrizes(); // Generate new prizes for next round
   };
 
@@ -287,7 +304,7 @@ const Roulette: React.FC = () => {
               className={styles.wheelDerlets}
             />
             <div className={styles.derletPrize}>
-              {renderNumberAsImages(showQuestion ? prizes[0] : 0)}
+              {renderNumberAsImages(showQuestion ? prizes[currentPrizeIndex] : 0)}
             </div>
           </div>
         </div>
@@ -295,23 +312,47 @@ const Roulette: React.FC = () => {
         {/* Prize container - only show after spinning is complete */}
         {showQuestion && (
           <div className={styles.prizeContainer}>
-            <div className={styles.prize}>
+            <div className={`${styles.prize} ${currentPrizeIndex === 4 ? styles.currentPrize : ''}`}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
-              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              {currentPrizeIndex >= 4 ? (
+                <div className={styles.prizeValue}>
+                  {renderNumberAsImages(prizes[4])}
+                </div>
+              ) : (
+                <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              )}
             </div>
-            <div className={styles.prize}>
+            <div className={`${styles.prize} ${currentPrizeIndex === 3 ? styles.currentPrize : ''}`}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
-              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              {currentPrizeIndex >= 3 ? (
+                <div className={styles.prizeValue}>
+                  {renderNumberAsImages(prizes[3])}
+                </div>
+              ) : (
+                <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              )}
             </div>
-            <div className={styles.prize}>
+            <div className={`${styles.prize} ${currentPrizeIndex === 2 ? styles.currentPrize : ''}`}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
-              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              {currentPrizeIndex >= 2 ? (
+                <div className={styles.prizeValue}>
+                  {renderNumberAsImages(prizes[2])}
+                </div>
+              ) : (
+                <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              )}
             </div>
-            <div className={styles.prize}>
+            <div className={`${styles.prize} ${currentPrizeIndex === 1 ? styles.currentPrize : ''}`}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
-              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              {currentPrizeIndex >= 1 ? (
+                <div className={styles.prizeValue}>
+                  {renderNumberAsImages(prizes[1])}
+                </div>
+              ) : (
+                <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+              )}
             </div>
-            <div className={styles.prize}>
+            <div className={`${styles.prize} ${currentPrizeIndex === 0 ? styles.currentPrize : ''}`}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
               <div className={styles.prizeValue}>
                 {renderNumberAsImages(prizes[0])}
