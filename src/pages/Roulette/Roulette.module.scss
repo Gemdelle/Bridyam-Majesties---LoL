@@ -416,10 +416,36 @@
   margin-bottom: 2%;
 }
 
+// LIFE CONTAINER
+.lifeContainer {
+  width: 20%;
+  height: 20%;
+  @include flex-center;
+  margin-top: 2%;
+  // background-color: yellow;
+}
+
+.lifeImage {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  animation: lifeGlow 2s ease-in-out infinite;
+}
+
+@keyframes lifeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(195, 159, 101, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(195, 159, 101, 0.9));
+  }
+}
+
 .timerContainer {
-  width: 80%;
+  width: auto;
   height: 4%;
-  margin-top: -1.5%;
+  margin-top: 1%;
   @include flex-center;
   // background-color: red;
 }
@@ -447,6 +473,7 @@
 .barContainer {
   width: 80%;
   height: 8%;
+  margin-top: 3%;
   background-image: url('../../images/roulette/roulette-bar.png');
   @include background;
   @include flex-start;

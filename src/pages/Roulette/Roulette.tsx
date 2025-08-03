@@ -359,17 +359,26 @@ const Roulette: React.FC = () => {
                 })}
               </div>
 
+              {/* Life image at the bottom */}
+              <div className={styles.lifeContainer}>
+                <img
+                  src="/images/roulette/roulette-life-free.png"
+                  alt="Life"
+                  className={styles.lifeImage}
+                />
+              </div>
+
             </div>
 
 
-            <div className={styles.timerContainer}>
-              <span key={timeLeft} className={styles.timerText}>{timeLeft}</span>
-            </div>
             <div className={styles.barContainer}>
               <div
                 className={`${styles.bar} ${timeLeft <= 15 ? styles.urgent : ''}`}
                 style={{ width: `${barWidth}%` }}
               ></div>
+            </div>
+            <div className={styles.timerContainer}>
+              <span key={timeLeft} className={styles.timerText}>{timeLeft}</span>
             </div>
 
             {answered && (
