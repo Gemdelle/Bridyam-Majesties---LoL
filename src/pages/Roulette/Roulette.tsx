@@ -196,11 +196,34 @@ const Roulette: React.FC = () => {
       setCurrentPrizeIndex(prev => Math.min(prev + 1, 4)); // Max index is 4 (5 prizes total)
     }
 
-    // Mover la siguiente pregunta a la actual
-    if (nextQuestion) {
-      setCurrentQuestion(nextQuestion);
-      setNextQuestion(null);
-    }
+    // Trigger spinning animation
+    setIsSpinning(true);
+    // Calculate random rotation that lands on one of the 12 sections
+    const sections = 12;
+    const sectionAngle = 360 / sections; // 30 degrees per section
+    const randomSection = Math.floor(Math.random() * sections);
+    const targetAngle = randomSection * sectionAngle + (sectionAngle / 2); // Center of the section
+
+    // 4 full rotations + target angle
+    const newRotation = rotation + 1440 + targetAngle;
+    setRotation(newRotation);
+
+    // Determine which category was selected
+    const selectedCategoryNumber = randomSection + 1; // Categories are 1-12
+    setSelectedCategory(selectedCategoryNumber);
+    console.log(`Ruleta cayó en la categoría: ${selectedCategoryNumber}`);
+
+    setTimeout(() => {
+      setIsSpinning(false);
+      setAnswered(false);
+      setSelectedAnswer(null);
+
+      // Mover la siguiente pregunta a la actual
+      if (nextQuestion) {
+        setCurrentQuestion(nextQuestion);
+        setNextQuestion(null);
+      }
+    }, 3000);
   };
 
   const handleCashOut = () => {
@@ -380,7 +403,7 @@ const Roulette: React.FC = () => {
               <div className={styles.categoryEmblem}>
                 <img src="/images/roulette/emblem-majesties.png" alt="Category Emblem" className={styles.categoryEmblemImage} />
               </div>
-              {selectedCategory && (
+              {selectedCategory && !isSpinning && (
                 <div className={styles.selectedCategory}>
                   <span className={styles.selectedCategoryText}>
                     CATEGORY: {currentQuestion.category.name}
@@ -388,53 +411,57 @@ const Roulette: React.FC = () => {
                 </div>
               )}
 
-              <div className={styles.question}>
-                <h2>{currentQuestion.question}</h2>
-              </div>
+              {!isSpinning && (
+                <>
+                  <div className={styles.question}>
+                    <h2>{currentQuestion.question}</h2>
+                  </div>
 
-              <div className={styles.answers}>
-                {currentQuestion.answers.map((answer, index) => {
-                  const isSelected = selectedAnswer === index;
-                  const isCorrectAnswer = index === currentQuestion.correctAnswerIndex;
-                  const isUserCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
+                  <div className={styles.answers}>
+                    {currentQuestion.answers.map((answer, index) => {
+                      const isSelected = selectedAnswer === index;
+                      const isCorrectAnswer = index === currentQuestion.correctAnswerIndex;
+                      const isUserCorrect = selectedAnswer === currentQuestion.correctAnswerIndex;
 
-                  // Mostrar verde si es la respuesta correcta y el usuario la seleccionó
-                  const showCorrect = answered && isSelected && isUserCorrect;
-                  // Mostrar verde si es la respuesta correcta (cuando el usuario se equivocó)
-                  const showCorrectAnswer = answered && isCorrectAnswer && !isUserCorrect;
-                  // Mostrar rojo si el usuario seleccionó esta respuesta y está mal
-                  const showIncorrect = answered && isSelected && !isUserCorrect;
+                      // Mostrar verde si es la respuesta correcta y el usuario la seleccionó
+                      const showCorrect = answered && isSelected && isUserCorrect;
+                      // Mostrar verde si es la respuesta correcta (cuando el usuario se equivocó)
+                      const showCorrectAnswer = answered && isCorrectAnswer && !isUserCorrect;
+                      // Mostrar rojo si el usuario seleccionó esta respuesta y está mal
+                      const showIncorrect = answered && isSelected && !isUserCorrect;
 
-                  return (
-                    <div
-                      key={index}
-                      className={`${styles.answer} ${showCorrect || showCorrectAnswer ? styles.correct :
-                        showIncorrect ? styles.incorrect :
-                          isSelected ? styles.selected : ''
+                      return (
+                        <div
+                          key={index}
+                          className={`${styles.answer} ${showCorrect || showCorrectAnswer ? styles.correct :
+                            showIncorrect ? styles.incorrect :
+                              isSelected ? styles.selected : ''
+                            }`}
+                          onClick={() => handleAnswerSelect(index)}
+                        >
+                          <span className={styles.answerText}>{answer}</span>
+                          {(showCorrect || showCorrectAnswer) && <span className={styles.correctIcon}>✓</span>}
+                          {showIncorrect && <span className={styles.incorrectIcon}>✗</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Life image at the bottom */}
+                  <div className={styles.lifeContainer}>
+                    <img
+                      src={answered && selectedAnswer !== currentQuestion.correctAnswerIndex
+                        ? "/images/roulette/roulette-life-used.png"
+                        : "/images/roulette/roulette-life-free.png"}
+                      alt="Life"
+                      className={`${styles.lifeImage} ${answered && selectedAnswer !== currentQuestion.correctAnswerIndex
+                        ? styles.lifeUsed
+                        : ''
                         }`}
-                      onClick={() => handleAnswerSelect(index)}
-                    >
-                      <span className={styles.answerText}>{answer}</span>
-                      {(showCorrect || showCorrectAnswer) && <span className={styles.correctIcon}>✓</span>}
-                      {showIncorrect && <span className={styles.incorrectIcon}>✗</span>}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Life image at the bottom */}
-              <div className={styles.lifeContainer}>
-                <img
-                  src={answered && selectedAnswer !== currentQuestion.correctAnswerIndex
-                    ? "/images/roulette/roulette-life-used.png"
-                    : "/images/roulette/roulette-life-free.png"}
-                  alt="Life"
-                  className={`${styles.lifeImage} ${answered && selectedAnswer !== currentQuestion.correctAnswerIndex
-                    ? styles.lifeUsed
-                    : ''
-                    }`}
-                />
-              </div>
+                    />
+                  </div>
+                </>
+              )}
 
             </div>
 
@@ -449,7 +476,7 @@ const Roulette: React.FC = () => {
               <span key={timeLeft} className={styles.timerText}>{timeLeft}</span>
             </div>
 
-            {answered && (
+            {answered && !isSpinning && (
               <div className={styles.feedbackSection}>
                 <button onClick={handleContinue} className={styles.continueButton}>
                   Continue
