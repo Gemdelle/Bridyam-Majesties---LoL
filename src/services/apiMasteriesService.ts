@@ -29,7 +29,7 @@ export interface MasteryResponse {
 // Fetch mastery data from API
 export const fetchMasteryData = async (): Promise<MasteryData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/masteries');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -76,7 +76,7 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
 // Fetch raw mastery data grouped by users (new structure)
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
+        const response = await authService.makeAuthenticatedRequest('http://localhost:8080/masteries');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
