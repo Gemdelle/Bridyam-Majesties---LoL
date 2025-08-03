@@ -22,22 +22,27 @@
   position: relative;
 }
 
-.content__filters {
-  width: 42%;
-  height: 5%;
-  // background-color: red;
+.content__top {
+  width: 100%;
+  height: 6%;
   @include flex-between;
+}
+
+.content__filters {
+  width: 40%;
+  height: 100%;
+  @include flex-between;
+  position: relative;
+  z-index: 9999;
 }
 
 .content {
     width: 100%;
     height: 92%;
-    // background-color: $primary-color;
     @include flex-col-between;
     display: flex;
     flex-direction: column;
     gap: $spacing-lg;
-    // background-color: blue;
 }
 
 .header {

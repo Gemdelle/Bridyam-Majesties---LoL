@@ -121,7 +121,7 @@ const Accounts: React.FC = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadAccounts();
   }, []);
 
@@ -147,11 +147,11 @@ const Accounts: React.FC = () => {
   const filteredAccounts = accounts.filter((account: Account) => {
     // Parse the solo_q_elo to extract rank and tier
     const { rank, tier } = accountsService.parseElo(account.solo_q_elo);
-    
+
     const matchesRank = selectedRank.length === 0 || selectedRank.includes(rank);
     const matchesTier = selectedTier.length === 0 || selectedTier.includes(tier);
     const matchesPortrait = selectedPortrait.length === 0 || selectedPortrait.includes(account.name);
-    
+
     return matchesRank && matchesTier && matchesPortrait;
   });
 
@@ -174,50 +174,53 @@ const Accounts: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <h1>Accounts</h1>
-          <p>Manage your ranked accounts</p>
+      <div className={styles.container}>
+        <div className={styles.content__top}>
+          <div className={styles.content__filters}>
+            <Filter
+              title="Rank"
+              options={rankOptions}
+              selectedOptions={selectedRank}
+              onSelectionChange={handleRankChange}
+            />
+            <Filter
+              title="Tier"
+              options={tierOptions}
+              selectedOptions={selectedTier}
+              onSelectionChange={handleTierChange}
+            />
+            <Filter
+              title="Portrait"
+              options={getPortraitOptions()}
+              selectedOptions={selectedPortrait}
+              onSelectionChange={handlePortraitChange}
+            />
+          </div>
         </div>
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <h1>Accounts</h1>
+            <p>Manage your ranked accounts</p>
+          </div>
 
-        <div className={styles.filters}>
-          <Filter
-            title="Rank"
-            options={rankOptions}
-            selectedOptions={selectedRank}
-            onSelectionChange={handleRankChange}
-          />
-          <Filter
-            title="Tier"
-            options={tierOptions}
-            selectedOptions={selectedTier}
-            onSelectionChange={handleTierChange}
-          />
-          <Filter
-            title="Portrait"
-            options={getPortraitOptions()}
-            selectedOptions={selectedPortrait}
-            onSelectionChange={handlePortraitChange}
-          />
-        </div>
-
-        <div className={styles.accounts}>
-          {filteredAccounts.map((account: Account) => (
-            <div key={account.id} className={styles.accountWrapper}>
-              <AccountSummary data={{
-                url: getLocalPortrait(account.username),
-                id: account.id,
-                name: account.name,
-                username: account.username,
-                champions: account.champions,
-                skins: account.skins,
-                masteries: account.masteries,
-                roles: account.roles,
-                blueEssence: account.blueEssence,
-                orangeEssence: account.orangeEssence
-              }} />
-            </div>
-          ))}
+          <div className={styles.accounts}>
+            {filteredAccounts.map((account: Account) => (
+              <div key={account.id} className={styles.accountWrapper}>
+                <AccountSummary data={{
+                  url: getLocalPortrait(account.username),
+                  id: account.id,
+                  name: account.name,
+                  username: account.username,
+                  champions: account.champions,
+                  skins: account.skins,
+                  masteries: account.masteries,
+                  roles: account.roles,
+                  blueEssence: account.blueEssence,
+                  orangeEssence: account.orangeEssence
+                }} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
