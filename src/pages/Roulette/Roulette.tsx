@@ -327,7 +327,8 @@ const Roulette: React.FC = () => {
               className={styles.wheelDerlets}
             />
             <div className={styles.derletPrize}>
-              {renderNumberAsImages(showQuestion ? prizes[currentPrizeIndex] : 0)}
+              {renderNumberAsImages(showQuestion && currentPrizeIndex > 0 ?
+                prizes.slice(0, currentPrizeIndex).reduce((sum, prize) => sum + prize, 0) : 0)}
             </div>
           </div>
         </div>
