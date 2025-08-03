@@ -93,7 +93,7 @@ const Roulette: React.FC = () => {
 
   // Timer effect for the bar
   useEffect(() => {
-    if (showQuestion && !answered && timeLeft > 0) {
+    if (showQuestion && !answered && timeLeft > 0 && !isSpinning) {
       const timer = setInterval(() => {
         setTimeLeft(prev => {
           const newTime = prev - 1;
@@ -105,7 +105,7 @@ const Roulette: React.FC = () => {
 
       return () => clearInterval(timer);
     }
-  }, [showQuestion, answered, timeLeft]);
+  }, [showQuestion, answered, timeLeft, isSpinning]);
 
   const loadRandomQuestion = async () => {
     try {
