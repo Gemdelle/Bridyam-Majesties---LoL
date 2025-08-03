@@ -272,37 +272,40 @@ const Roulette: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.prizeContainer}>
-          <div className={styles.prize}>
-            <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
-            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+        {/* Prize container - only show after spinning */}
+        {(isSpinning || showQuestion) && (
+          <div className={styles.prizeContainer}>
+            <div className={styles.prize}>
+              <img src="/images/roulette/prize-frame-5.png" alt="Prize Frame 5" className={styles.prizeImage} />
+              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+            </div>
+            <div className={styles.prize}>
+              <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
+              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+            </div>
+            <div className={styles.prize}>
+              <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
+              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+            </div>
+            <div className={styles.prize}>
+              <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
+              <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
+            </div>
+            <div className={styles.prize}>
+              <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
+              <span className={styles.prizeValue}>{prizes[0]}</span>
+            </div>
           </div>
-          <div className={styles.prize}>
-            <img src="/images/roulette/prize-frame-4.png" alt="Prize Frame 4" className={styles.prizeImage} />
-            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
-          </div>
-          <div className={styles.prize}>
-            <img src="/images/roulette/prize-frame-3.png" alt="Prize Frame 3" className={styles.prizeImage} />
-            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
-          </div>
-          <div className={styles.prize}>
-            <img src="/images/roulette/prize-frame-2.png" alt="Prize Frame 2" className={styles.prizeImage} />
-            <img src="/images/roulette/question-mark.png" alt="Question Mark" className={styles.questionMark} />
-          </div>
-          <div className={styles.prize}>
-            <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
-            <span className={styles.prizeValue}>{prizes[0]}</span>
-          </div>
-        </div>
+        )}
 
-        {/* Botón de girar */}
+        {/* Spin button */}
         {!showQuestion && (
           <button
             onClick={spinWheel}
             disabled={isSpinning}
             className={`${styles.spinButton} ${isSpinning ? styles.disabled : ''}`}
           >
-            {isSpinning ? 'Girando...' : 'Girar Ruleta'}
+            {isSpinning ? 'Spinning...' : 'Spin'}
           </button>
         )}
 
