@@ -34,6 +34,23 @@ const Roulette: React.FC = () => {
   const [barWidth, setBarWidth] = useState(100); // 100% width
   const [prizes, setPrizes] = useState<number[]>([0, 0, 0, 0, 0]);
 
+  // Function to convert number to digit images
+  const renderNumberAsImages = (number: number) => {
+    const digits = number.toString().split('');
+    return (
+      <div className={styles.numberContainer}>
+        {digits.map((digit, index) => (
+          <img
+            key={index}
+            src={`/images/roulette/${digit}.png`}
+            alt={digit}
+            className={styles.digitImage}
+          />
+        ))}
+      </div>
+    );
+  };
+
   useEffect(() => {
     loadRandomQuestion();
     generatePrizes();
@@ -264,9 +281,14 @@ const Roulette: React.FC = () => {
           <div
             className={styles.derletContainer}
           >
-            <span className={styles.derletPrize}>
-              {showQuestion ? prizes[0] : 0}
-            </span>
+            <img
+              src="/images/roulette/wheel-derlets.png"
+              alt="Wheel Derlets"
+              className={styles.wheelDerlets}
+            />
+            <div className={styles.derletPrize}>
+              {renderNumberAsImages(showQuestion ? prizes[0] : 0)}
+            </div>
           </div>
         </div>
 
@@ -291,7 +313,9 @@ const Roulette: React.FC = () => {
             </div>
             <div className={styles.prize}>
               <img src="/images/roulette/prize-frame.png" alt="Prize Frame" className={styles.prizeImage} />
-              <span className={styles.prizeValue}>{prizes[0]}</span>
+              <div className={styles.prizeValue}>
+                {renderNumberAsImages(prizes[0])}
+              </div>
             </div>
           </div>
         )}
