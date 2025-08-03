@@ -32,10 +32,29 @@ const Roulette: React.FC = () => {
   const [answered, setAnswered] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60); // 60 seconds = 1 minute
   const [barWidth, setBarWidth] = useState(100); // 100% width
+  const [prizes, setPrizes] = useState<number[]>([0, 0, 0, 0, 0]);
 
   useEffect(() => {
     loadRandomQuestion();
+    generatePrizes();
   }, []);
+
+  const generatePrizes = () => {
+    const prizeRanges = [
+      { min: 0, max: 100 },      // Prize 1 (bottom)
+      { min: 100, max: 500 },    // Prize 2
+      { min: 500, max: 2000 },   // Prize 3
+      { min: 2000, max: 5000 },  // Prize 4
+      { min: 5000, max: 12000 }  // Prize 5 (top)
+    ];
+
+    const newPrizes = prizeRanges.map(range =>
+      Math.floor(Math.random() * (range.max - range.min + 1)) + range.min
+    );
+
+    console.log('Generated prizes:', newPrizes);
+    setPrizes(newPrizes);
+  };
 
   // Cargar la siguiente pregunta cuando se muestra la actual
   useEffect(() => {
@@ -260,6 +279,7 @@ const Roulette: React.FC = () => {
           </div>
           <div className={styles.prize}>
             <img src="/images/roulette/prize-frame-1.png" alt="Prize Frame 1" className={styles.prizeImage} />
+            <span className={styles.prizeValue}>{prizes[0]}</span>
           </div>
         </div>
 

@@ -578,6 +578,20 @@
   filter: brightness(1.2) contrast(1.1);
 }
 
+.prizeValue {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #debb6f;
+  font-size: 1.3vw;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 3;
+  text-align: center;
+  min-width: 60px;
+}
+
 .correctIcon {
   color: #4caf50;
   font-size: 1.5rem;
