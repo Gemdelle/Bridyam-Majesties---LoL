@@ -677,7 +677,7 @@
 
 .prizeValue {
   position: absolute;
-  bottom: 6%;
+  bottom: 5.5%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
@@ -690,9 +690,9 @@
 
   .digitImage {
     width: auto;
-    height: 1.3vw;
+    height: 1.5vw;
     object-fit: contain;
-    filter: drop-shadow(0 0 3px rgba(222, 187, 111, 0.8));
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
   }
 }
 
