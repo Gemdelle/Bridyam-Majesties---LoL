@@ -2,7 +2,7 @@
 
 .card {
   height: 100%;
-  width: 23%;
+  width: 20%;
   display: flex;
   position: relative;
   backdrop-filter: blur(8px);
@@ -52,8 +52,8 @@
   width: 6vw;
   height: 6vw;
   position: absolute;
-  right: -8%;
-  top: -6%;
+  right: -15%;
+  top: 3%;
   @include flex-center;
   // background-color: red;
   z-index: 10;
