@@ -31,7 +31,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 1vw;
+  // background-color: red;
 }
 
 .filters {
@@ -124,6 +125,8 @@
   color: #cdbe91;
   overflow-y: auto;
   scrollbar-width: none;
+  padding-top: 0.5vw;
+  // background-color: blue;
 }
 
 .champions__grid {
@@ -186,15 +189,14 @@
 
 .champion__name {
   width: 100%;
-  font-size: 0.7vw;
+  font-size: 0.65vw;
   font-weight: bolder;
-  color: #141c34;
-  text-shadow: 0 0 10px rgb(18, 14, 25);
+  color: #e7c67a;
   margin-top: 0%;
   text-transform: uppercase;
-  letter-spacing: 0.05rem;
+  letter-spacing: 0.06vw;
   z-index: 9999;
-//   background-color: red;
+  // background-color: red;
 }
 
 .favorite__button {

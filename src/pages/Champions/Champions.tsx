@@ -9,7 +9,10 @@ const Champions: React.FC = () => {
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [favoriteChampions, setFavoriteChampions] = useState<number[]>([]);
+    const [favoriteChampions, setFavoriteChampions] = useState<number[]>(() => {
+        const saved = localStorage.getItem('favoriteChampions');
+        return saved ? JSON.parse(saved) : [];
+    });
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
 
@@ -23,6 +26,11 @@ const Champions: React.FC = () => {
         { id: 'top', label: 'Top' }
     ];
 
+    // Save favorites to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem('favoriteChampions', JSON.stringify(favoriteChampions));
+    }, [favoriteChampions]);
+
     // Load champions on component mount
     useEffect(() => {
         const loadChampions = async () => {
@@ -30,7 +38,8 @@ const Champions: React.FC = () => {
                 setLoading(true);
                 const championsData = await fetchChampions();
                 setChampions(championsData);
-                setFilteredChampions(championsData);
+                // Remove this line - let the useEffect handle the initial sorting
+                // setFilteredChampions(championsData);
             } catch (error) {
                 console.error('Error loading champions:', error);
             } finally {
