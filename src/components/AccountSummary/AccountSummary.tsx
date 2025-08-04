@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AccountSummary.module.scss';
+import { fetchChampions, type Champion } from '../../services/championsService';
 
 // Define todos los datos numéricos que el componente necesita
 export interface AccountSummaryData {
@@ -59,6 +60,33 @@ const renderNumberAsImages = (number: number) => {
 };
 
 const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
+    const [likedChampions, setLikedChampions] = useState<Champion[]>([]);
+
+    // Get the first 3 liked champions from localStorage
+    useEffect(() => {
+        const getLikedChampions = () => {
+            try {
+                const savedFavorites = localStorage.getItem('favoriteChampions');
+                if (savedFavorites) {
+                    const favoriteIds: number[] = JSON.parse(savedFavorites);
+                    const firstThreeIds = favoriteIds.slice(0, 3);
+
+                    // Load champions and filter to get the first 3 liked ones
+                    fetchChampions().then(champions => {
+                        const likedChamps = champions.filter(champion =>
+                            firstThreeIds.includes(champion.id)
+                        );
+                        setLikedChampions(likedChamps);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading liked champions:', error);
+            }
+        };
+
+        getLikedChampions();
+    }, []);
+
     return (
         <div className={styles.card}>
             <div className={styles.ranking__container}>
@@ -94,11 +122,30 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                                 <span className={styles.info__item__title}>skins</span> <span className={styles.info__item__value}>{data.skins}</span>
                             </div>
                         </div>
-                        <div className={styles.champions}><div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
-
-                            <div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
-
-                            <div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
+                        <div className={styles.champions}>
+                            {[0, 1, 2].map((index) => {
+                                const champion = likedChampions[index];
+                                return (
+                                    <div key={index} className={styles.champion__icon}>
+                                        <img
+                                            src={champion
+                                                ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`
+                                                : "/images/pets/nav-pet-2.png"
+                                            }
+                                            alt={champion ? champion.name : "Champion"}
+                                            className={styles.champion__icon__image}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/images/pets/nav-pet-2.png';
+                                            }}
+                                        />
+                                        <img
+                                            src="/images/frames/account-champion-frame.png"
+                                            alt="Champion Frame"
+                                            className={styles.champion__icon__frame}
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
