@@ -166,6 +166,13 @@ const Champions: React.FC = () => {
                                 key={champion.id}
                                 className={`${styles.champion__card} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
                             >
+                                <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
+                                <button
+                                    onClick={() => toggleFavorite(champion.id)}
+                                    className={`${styles.favorite__button} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
+                                >
+                                    {favoriteChampions.includes(champion.id) ? '' : ''}
+                                </button>
                                 <div className={styles.champion__image}>
                                     <img
                                         src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`}
@@ -175,16 +182,7 @@ const Champions: React.FC = () => {
                                         }}
                                     />
                                 </div>
-                                <div className={styles.champion__info}>
-                                    <h3 className={styles.champion__name}>{champion.name}</h3>
-                                    <p className={styles.champion__role}>{champion.role || 'Unknown'}</p>
-                                    <button
-                                        onClick={() => toggleFavorite(champion.id)}
-                                        className={`${styles.favorite__button} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
-                                    >
-                                        {favoriteChampions.includes(champion.id) ? '❤️' : '🤍'}
-                                    </button>
-                                </div>
+                                <h3 className={styles.champion__name}>{champion.name}</h3>
                             </div>
                         ))}
                     </div>

@@ -137,34 +137,39 @@
 }
 
 .champion__card {
-  width: 6%;
-  height: 20%;
-  background: linear-gradient(145deg, #1e2328, #0f1419);
-  border: 3px solid #978c72;
-  border-radius: 15px;
-  overflow: hidden;
+  width: 7%;
+  height: 30%;
+  position: relative;
   transition: all 0.3s ease;
   cursor: pointer;
-  position: relative;
+  @include flex-col;
+  // background-color: purple;
+}
+
+.champion__frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
 .champion__card:hover {
-  border-color: #978c72;
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(200, 155, 60, 0.3);
+  filter: drop-shadow(0 0px 15px rgba(200, 155, 60, 0.8));
 }
 
 .champion__image {
-  width: 100%;
-  height: 60%;
-  overflow: hidden;
+  width: 65%;
+  height: auto;
+  margin-bottom: 15%;
   position: relative;
-  border-bottom: 5px solid #978c72;
+  z-index: 1;
 }
 
 .champion__image img {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: saturate(0.1) brightness(0.3);
@@ -175,7 +180,6 @@
 }
 
 .champion__info {
-  padding: 1rem;
   text-align: center;
   position: relative;
 }
@@ -183,49 +187,63 @@
 .champion__name {
   width: 100%;
   font-size: 0.7vw;
-  font-weight: bold;
-  color: #e4c493;
-  margin-top: -0.5vw;
+  font-weight: bolder;
+  color: #141c34;
+  text-shadow: 0 0 10px rgb(18, 14, 25);
+  margin-top: 0%;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
+  z-index: 9999;
 //   background-color: red;
 }
 
-.champion__role {
-  font-size: 1rem;
-  color: #8b7355;
-  margin-top: -0.5vw;
-  text-transform: capitalize;
-  font-style: italic;
-}
-
 .favorite__button {
-  width: 1px;
-  height: 20px;
+  width: 2.5vw;
+  height: 2.5vw;
   position: absolute;
-  top: -85px;
-  right: 5px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #463714;
-  border-radius: 15px;
-
+  top: 0%;
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  backdrop-filter: blur(10px);
   z-index: 10;
+  background-image: url('/images/icons/champion-like.png');
+  @include background;
+  background-color: transparent;
+  filter: brightness(0.4);
 }
 
 .favorite__button:hover {
-  background: rgba(200, 155, 60, 0.3);
   transform: scale(1.1);
 }
 
 .favorite__button.favorited {
-  background: rgba(200, 155, 60, 0.7);
+  filter: brightness(1);
+  width: 2.8vw;
+  height: 2.8vw;
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.1);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.favorite__button:focus {
+  border-style: none;
+  outline: none;
 }
 
 .champion__card.favorited .champion__image img {
