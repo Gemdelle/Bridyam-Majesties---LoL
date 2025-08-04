@@ -1,51 +1,106 @@
 @use '../../styles/variables.scss' as *;
 
 .card {
-  height: auto;
-  width: 100%;
+  height: 100%;
+  width: 23%;
   display: flex;
   position: relative;
   backdrop-filter: blur(8px);
   transition: all 0.3s ease;
-  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(30, 35, 40, 0.8));
-  border: 2px solid #b69461;
-  border-radius: 10px;
-  padding: $spacing-lg;
-  @include flex-col;
-  gap: $spacing-md;
+  @include flex-col-between;
+  
+  // background-color: purple;
 }
 
 .name {
   width: 100%;
-  font-size: 1.2rem;
-  margin-bottom: $spacing-md;
+  height: auto;
+  font-size: 1vw;
   font-weight: bold;
   color: #e4c493;
-  text-align: center;
+  text-align: left;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  border-bottom: 1px solid $secondary-color;
-  padding-bottom: $spacing-sm;
+  letter-spacing: 0.2vw;
+  margin: 0;
+  // background-color: pink;
+  // background-image: url('/images/frames/lower-title-frame.png');
+  // @include background;
+  // background-size: 50% 40%;
+  // background-position: 10% bottom;
+  // background-color: pink;
+}
+
+.username {
+  width: 100%;
+  height: auto;
+  font-size: 0.9vw;
+  color: #e6dac9;
+  text-align: right;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.15vw;
+  margin: 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: -1%;
+  margin-right: 50%;
+  // background-color: lightcoral;
+}
+
+.ranking__container {
+  width: 7vw;
+  height: 7vw;
+  position: absolute;
+  right: -8%;
+  top: -6%;
+  @include flex-center;
+  // background-color: red;
+  z-index: 10;
+}
+
+.ranking__position_frame {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.ranking__position {
+  position: relative;
+  font-size: 0.9vw;
+  color: #e4c493;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.15vw;
+  margin: 0;
+  margin-top: 10%;
+  font-weight: 400;
 }
 
 .card__container {
   width: 100%;
-  height: 90%;
-  @include flex-start-between;
+  height: 88%;
+  @include flex-col-between;
+  align-items: flex-end;
+  // background-color: lightblue;
 }
 
 .profileIcon {
-  width: 60%;
-  height: 100%;
+  width: 55%;
+  height: 85%;
   z-index: 2;
-  position: relative;
+  position: absolute;
+  left: -8%;
+  bottom: 0;
+  // background-color: green;
   @include flex-center;
 
   img {
-    margin-left: 35%;
-    width: 85%;
-    height: auto;
+    // margin-left: 35%;
+    width: auto;
+    height: 100%;
     transition: all 0.5s ease-in-out;
     &:hover {
       transform: scale(1.05);
@@ -54,24 +109,42 @@
 }
 
 .info__container {
-  height: 70%;
-  width: 40%;
+  height: 50%;
+  width: 70%;
+  backdrop-filter: blur(4px);
+  background-image: url('/images/frames/account-description-frame-spadelline.png');
+  @include background;
+  @include flex-center;
+  background-size: 85% 90%;
+  background-position: 100% center;
+  // background-color: yellow;
 }
 
 .info {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(30, 35, 40, 0.8));
-  border: 2px solid #b69461;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  height: 40%;
+  width: 50%;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(4px);
-  @include flex-col;
+  // background-color: red;
+  @include flex-col-between;
 }
 
+.info__item {
+  width: 100%;
+  height: 10%;
+  @include flex-between;
+}
+
+.info__item__title,
+.info__item__value {
+  font-size: 0.8vw;
+  letter-spacing: 0.1vw;
+  font-weight: bold;
+  color: #e4c493;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+}
 
 .stats {
   width: 80%;
@@ -150,4 +223,23 @@
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     }
   }
+}
+
+.numberContainer {
+  margin-top: 10%;
+  display: flex;
+  align-items: center;
+  gap: 0.2vw;
+}
+
+.digitImage {
+  width: auto;
+  height: 1.4vw;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
+}
+
+.zeroDigit {
+  height: 1.55vw;
+  margin-bottom: 8%;
 } 

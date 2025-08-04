@@ -175,56 +175,74 @@ const Accounts: React.FC = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <div className={styles.content__top}>
-          <div className={styles.content__filters}>
-            <Filter
-              title="Rank"
-              options={rankOptions}
-              selectedOptions={selectedRank}
-              onSelectionChange={handleRankChange}
-            />
-            <Filter
-              title="Tier"
-              options={tierOptions}
-              selectedOptions={selectedTier}
-              onSelectionChange={handleTierChange}
-            />
-            <Filter
-              title="Portrait"
-              options={getPortraitOptions()}
-              selectedOptions={selectedPortrait}
-              onSelectionChange={handlePortraitChange}
-            />
-          </div>
+
+        <div className={styles.content__filters}>
+          <Filter
+            title="Rank"
+            options={rankOptions}
+            selectedOptions={selectedRank}
+            onSelectionChange={handleRankChange}
+          />
+          <Filter
+            title="Tier"
+            options={tierOptions}
+            selectedOptions={selectedTier}
+            onSelectionChange={handleTierChange}
+          />
+          <Filter
+            title="Portrait"
+            options={getPortraitOptions()}
+            selectedOptions={selectedPortrait}
+            onSelectionChange={handlePortraitChange}
+          />
         </div>
         <div className={styles.content}>
-          <div className={styles.header}>
-            <h1>Accounts</h1>
-            <p>Manage your ranked accounts</p>
+          <div className={styles.content__row}>
+            <AccountSummary data={{
+              url: getLocalPortrait("GEM Damglantine#GEM"),
+              id: 19,
+              name: "Tryppy Troppy",
+              username: "GEM Damglantine#GEM",
+              champions: 84,
+              skins: 267,
+              masteries: 84,
+              roles: {
+                top: 45,
+                jungle: 78,
+                mid: 34,
+                adc: 67,
+                support: 45
+              },
+              blueEssence: 98760,
+              orangeEssence: 14560
+            }} />
+            <div className={styles.placeholder}></div>
+            <div className={styles.placeholder}></div>
+            <div className={styles.placeholder}></div>
           </div>
 
-          <div className={styles.accounts}>
-            {filteredAccounts.map((account: Account) => (
-              <div key={account.id} className={styles.accountWrapper}>
-                <AccountSummary data={{
-                  url: getLocalPortrait(account.username),
-                  id: account.id,
-                  name: account.name,
-                  username: account.username,
-                  champions: account.champions,
-                  skins: account.skins,
-                  masteries: account.masteries,
-                  roles: account.roles,
-                  blueEssence: account.blueEssence,
-                  orangeEssence: account.orangeEssence
-                }} />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
+
     </div>
   );
 };
 
 export default Accounts;
+
+{/* <div className={styles.accountsRow}>
+              {filteredAccounts.slice(0, 5).map((account: Account) => (
+                <div key={account.id} className={styles.accountWrapper}>
+                  <AccountSummary data={{
+                    url: getLocalPortrait(account.username),
+                    id: account.id,
+                    name: account.name,
+                    username: account.username,
+                    champions: account.champions,
+                    skins: account.skins,
+                    masteries: account.masteries,
+                    roles: account.roles,
+                    blueEssence: account.blueEssence,
+                    orangeEssence: account.orangeEssence
+                  }} />
+                </div> */}

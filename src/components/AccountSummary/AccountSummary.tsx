@@ -26,10 +26,47 @@ interface AccountSummaryProps {
     data: AccountSummaryData;
 }
 
+// Function to get top 2 roles
+const getTopRoles = (roles: AccountSummaryData['roles']) => {
+    const roleEntries = [
+        { role: 'top', value: roles.top },
+        { role: 'jungle', value: roles.jungle },
+        { role: 'mid', value: roles.mid },
+        { role: 'adc', value: roles.adc },
+        { role: 'support', value: roles.support }
+    ];
+
+    return roleEntries
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 2);
+};
+
+// Function to convert number to digit images
+const renderNumberAsImages = (number: number) => {
+    const digits = number.toString().split('');
+    return (
+        <div className={styles.numberContainer}>
+            {digits.map((digit, index) => (
+                <img
+                    key={index}
+                    src={`/images/roulette/${digit}.png`}
+                    alt={digit}
+                    className={`${styles.digitImage} ${digit === '0' ? styles.zeroDigit : ''}`}
+                />
+            ))}
+        </div>
+    );
+};
+
 const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
     return (
         <div className={styles.card}>
+            <div className={styles.ranking__container}>
+                <img src="/images/frames/account-ranking-position-frame.png" alt="Ranking Frame" className={styles.ranking__position_frame} />
+                <span className={styles.ranking__position}>{renderNumberAsImages(10)}</span>
+            </div>
             <h2 className={styles.name}>{data.username}</h2>
+            <h3 className={styles.username}>{data.name}</h3>
             <div className={styles.card__container}>
                 <div className={styles.profileIcon}>
 
@@ -43,34 +80,34 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                 <div className={styles.info__container}>
 
                     <div className={styles.info}>
+                        <div className={styles.info__item}>
+                            <span className={styles.info__item__title}>champions</span> <span className={styles.info__item__value}>{data.champions}</span>
+                        </div>
+                        <div className={styles.info__item}>
+                            <span className={styles.info__item__title}>role</span> <span className={styles.info__item__value}>100</span>
+                        </div>
+                        <div className={styles.info__item}>
 
-                        <ul className={styles.stats}>
-                            <li><span>champions</span> <span>{data.champions}</span></li>
-                            <li><span>skins</span> <span>{data.skins}</span></li>
-                            <li><span>masteries</span> <span>{data.masteries}</span></li>
-                            {data.elo !== undefined && (
-                                <li><span>elo</span> <span>{data.elo}</span></li>
-                            )}
-                        </ul>
-                        <div className={styles.roles}>
-                            <ul>
-                                <li><span>top</span> <span>{data.roles.top}</span></li>
-                                <li><span>jungle</span> <span>{data.roles.jungle}</span></li>
-                                <li><span>mid</span> <span>{data.roles.mid}</span></li>
-                                <li><span>adc</span> <span>{data.roles.adc}</span></li>
-                                <li><span>support</span> <span>{data.roles.support}</span></li>
-                            </ul>
+                            <span className={styles.info__item__title}>masteries</span> <span className={styles.info__item__value}>{data.masteries}</span>
                         </div>
-                        <div className={styles.essences}>
-                            <div className={styles.essenceItem}>
-                                <img src="/images/lol-elements/blue-essence.webp" alt="Blue Essence" />
-                                <span>{data.blueEssence.toLocaleString()}</span>
-                            </div>
-                            <div className={styles.essenceItem}>
-                                <img src="/images/lol-elements/orange-essence.webp" alt="Orange Essence" />
-                                <span>{data.orangeEssence.toLocaleString()}</span>
-                            </div>
+
+                        <div className={styles.info__item}>
+                            <span className={styles.info__item__title}>skins</span> <span className={styles.info__item__value}>{data.skins}</span>
                         </div>
+
+
+                    </div>
+
+
+                </div>
+                <div className={styles.essences}>
+                    <div className={styles.essenceItem}>
+                        <img src="/images/lol-elements/blue-essence.webp" alt="Blue Essence" />
+                        <span>{data.blueEssence.toLocaleString()}</span>
+                    </div>
+                    <div className={styles.essenceItem}>
+                        <img src="/images/lol-elements/orange-essence.webp" alt="Orange Essence" />
+                        <span>{data.orangeEssence.toLocaleString()}</span>
                     </div>
                 </div>
             </div>

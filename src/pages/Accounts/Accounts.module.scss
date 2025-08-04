@@ -1,67 +1,30 @@
 ﻿@use '../../styles/variables.scss' as *;
 
 .page {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-image: url('/images/bg/bg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    @include flex-col;
+    @include background;
 }
 
 .container {
-  width: 92%;
-  height: 80%;
-  margin-top: 5%;
-  @include flex-col-start-between;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 1%;
-  border-radius: 15px;
-  position: relative;
-}
-
-.content__top {
-  width: 100%;
-  height: 6%;
-  @include flex-between;
+  width: 95%;
+  height: 83%;
+  margin: 0 auto;
+  margin-top: 6%;
+  @include flex-col-between;
+  align-items: flex-start;
+  // background-color: red;
 }
 
 .content__filters {
   width: 40%;
-  height: 100%;
-  @include flex-between;
+  height: 5;
+  margin-left: 0%;
   position: relative;
   z-index: 9999;
-}
-
-.content {
-    width: 100%;
-    height: 92%;
-    @include flex-col-between;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
-}
-
-.header {
-  text-align: center;
-  color: $text-color;
-  
-  h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-  
-  p {
-    font-size: 1.1rem;
-    color: $text-secondary-color;
-    opacity: 0.8;
-  }
+  // background-color: red;
+  @include flex-between;
 }
 
 .filters {
@@ -71,106 +34,23 @@
   flex-wrap: wrap;
 }
 
-.summary {
-  display: flex;
-  justify-content: center;
-  margin: $spacing-lg 0;
-}
-
-.accounts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $spacing-lg;
-  padding: $spacing-lg;
-  justify-content: center;
-  
-  .accountWrapper {
-    flex: 0 1 350px;
-    min-width: 320px;
-    max-width: 380px;
-  }
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: $text-color;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.error {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: $text-color;
-  text-align: center;
-  
-  h2 {
-    font-size: 2rem;
-    color: #ff6b6b;
-    margin-bottom: $spacing-md;
-  }
-  
-  p {
-    font-size: 1.1rem;
-    color: $text-secondary-color;
-    max-width: 500px;
-  }
-}
-
-.cards {
+.content {
   width: 100%;
   height: 90%;
-  display: flex;
-  justify-content: space-between;
-  align-content: space-between;
-  flex-wrap: wrap;
-  gap: $spacing-md;
-  // background-color: yellowgreen;
+  @include flex-col-between;
+  // background-color: blue;
 }
 
-.pagination {
-  width: 20%;
-  height: 7%;
-  @include flex-center;
-  gap: $spacing-md;
-
-  button {
-    @include button-base;
-    background: #181818;
-    border: 3px solid #b69461;
-    color: #e4c493;
-    font-family: inherit;
-    font-weight: bolder;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 1.1rem;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    transition: background 0.2s, color 0.2s, border 0.2s;
-    position: relative;
-    z-index: 1;
-
-    &:disabled {
-      background: #222;
-      color: #b69461;
-      opacity: 0.7;
-      cursor: not-allowed;
-      border: 2px solid #b69461;
-    }
-  }
-
-  span {
-    font-weight: bold;
-    color: $text-secondary-color;
-    font-size: 1rem;
-    letter-spacing: 1px;
-  }
+.content__row {
+  width: 95%;
+  height: 50%;
+  @include flex-between;
+  // background-color: green;
 }
+
+.placeholder {
+  width: 23%;
+  height: 100%;
+  // background-color: red;
+}
+
