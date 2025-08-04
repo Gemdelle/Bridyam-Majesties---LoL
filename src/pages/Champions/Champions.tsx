@@ -15,6 +15,7 @@ const Champions: React.FC = () => {
     });
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
+    const [showChampions, setShowChampions] = useState(false);
 
     // Role filter options
     const roleOptions: FilterOption[] = [
@@ -139,69 +140,88 @@ const Champions: React.FC = () => {
                 Achievement
             </button>
 
-            <div className={styles.container}>
-                <div className={styles.content__top}>
-                    <div className={styles.filters}>
-                        <Filter
-                            title="FILTER"
-                            options={roleOptions}
-                            selectedOptions={selectedRoles}
-                            onSelectionChange={setSelectedRoles}
-                        />
+            {!showChampions ? (
+                // Empty screen with Choose Champions button
+                <div className={styles.empty__container}>
+                    <button
+                        className={styles.choose__champions__button}
+                        onClick={() => setShowChampions(true)}
+                    >
+                        Choose Champions
+                    </button>
+                </div>
+            ) : (
+                // Champions interface
+                <div className={styles.container}>
+                    <button
+                        className={styles.back__button}
+                        onClick={() => setShowChampions(false)}
+                    >
+                        Back
+                    </button>
+                    <div className={styles.content__top}>
+                        <div className={styles.filters}>
+                            <Filter
+                                title="FILTER"
+                                options={roleOptions}
+                                selectedOptions={selectedRoles}
+                                onSelectionChange={setSelectedRoles}
+                            />
+                        </div>
+                        <div className={styles.search__container}>
+                            <input
+                                type="text"
+                                placeholder="Search champions..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className={styles.search__input}
+                            />
+                            {searchTerm && (
+                                <button
+                                    onClick={() => setSearchTerm('')}
+                                    className={styles.search__clear}
+                                    type="button"
+                                >
+                                    ×
+                                </button>
+                            )}
+                        </div>
                     </div>
-                    <div className={styles.search__container}>
-                        <input
-                            type="text"
-                            placeholder="Search champions..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className={styles.search__input}
-                        />
-                        {searchTerm && (
-                            <button
-                                onClick={() => setSearchTerm('')}
-                                className={styles.search__clear}
-                                type="button"
-                            >
-                                ×
-                            </button>
+                    <div className={styles.content}>
+                        <div className={styles.champions__grid}>
+                            {filteredChampions.map((champion) => (
+                                <div
+                                    key={champion.id}
+                                    className={`${styles.champion__card} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
+                                >
+                                    <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
+                                    <button
+                                        onClick={() => toggleFavorite(champion.id)}
+                                        className={`${styles.favorite__button} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
+                                    >
+                                        {favoriteChampions.includes(champion.id) ? '' : ''}
+                                    </button>
+                                    <div className={styles.champion__image}>
+                                        <img
+                                            src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`}
+                                            alt={champion.name}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                            }}
+                                        />
+                                    </div>
+                                    <h3 className={styles.champion__name}>{champion.name}</h3>
+                                </div>
+                            ))}
+                        </div>
+                        {filteredChampions.length === 0 && (
+                            <div className={styles.no__results}>
+                                <p>No champions found matching your criteria.</p>
+                            </div>
                         )}
                     </div>
                 </div>
-                <div className={styles.content}>
-                    <div className={styles.champions__grid}>
-                        {filteredChampions.map((champion) => (
-                            <div
-                                key={champion.id}
-                                className={`${styles.champion__card} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
-                            >
-                                <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
-                                <button
-                                    onClick={() => toggleFavorite(champion.id)}
-                                    className={`${styles.favorite__button} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
-                                >
-                                    {favoriteChampions.includes(champion.id) ? '' : ''}
-                                </button>
-                                <div className={styles.champion__image}>
-                                    <img
-                                        src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`}
-                                        alt={champion.name}
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                        }}
-                                    />
-                                </div>
-                                <h3 className={styles.champion__name}>{champion.name}</h3>
-                            </div>
-                        ))}
-                    </div>
-                    {filteredChampions.length === 0 && (
-                        <div className={styles.no__results}>
-                            <p>No champions found matching your criteria.</p>
-                        </div>
-                    )}
-                </div>
-            </div>
+            )}
 
             {/* Achievement Popup */}
             <AchievementPopup
