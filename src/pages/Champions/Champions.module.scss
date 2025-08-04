@@ -293,12 +293,102 @@
 }
 
 .empty__container {
+  width: 92%;
+  height: 80%;
+  margin-top: 5%;
+  @include flex-col-between;
+  position: relative;
+  background-color: purple;
+}
+
+.current_champions__container {
+  width: 100%;
+  height: 90%;
+  @include flex-between;
+  background-color: red;
+}
+
+.current_champion {
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  @include flex-col;
+  justify-content: flex-start;
+  background-color: blue;
+
+  .champion__frame {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+    font-size: 1vw;
+    // background-color: pink;
+  }
+}
+
+.main {
+  width: 23%;
+  height: 90%;
+
+  .champion__frame {
+    top: -10%;
+  }
+
+  .champion__name {
+    font-size: 1vw;
+  }
+}
+
+.secondary {
+  width: 18%;
+  height: 85%;
+
+  .champion__frame {
+    top: -5%;
+  }
+
+  .champion__name {
+    font-size: 0.9vw;
+  }
+}
+
+.tertiary {
+  width: 15%;
+  height: 80%;
+
+  .champion__name {
+    font-size: 0.8vw;
+  }
+}
+
+.current_champion .champion__image {
+  width: 65%;
+  height: auto;
+  aspect-ratio: 1/1;
+  margin-top: 30%;
+  margin-bottom: 15%;
+  position: relative;
+  z-index: 1;
+  // background-color: white;
+}
+
+.current_champion .champion__image img {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: saturate(0.1) brightness(0.3);
+}
+
+.current_champion .champion__name {
+  width: 100%;
+  font-weight: bolder;
+  color: #e7c67a;
+  margin-top: 5%;
+  text-transform: uppercase;
+  letter-spacing: 0.2vw;
+  z-index: 9999;
 }
 
 .choose__champions__button {

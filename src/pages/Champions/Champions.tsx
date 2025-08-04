@@ -118,6 +118,21 @@ const Champions: React.FC = () => {
         });
     };
 
+    // Get the first 5 liked champions for the empty screen
+    const getLikedChampionsForDisplay = (): (Champion | null)[] => {
+        const likedChampions: (Champion | null)[] = favoriteChampions
+            .map(id => champions.find(champion => champion.id === id))
+            .filter((champion): champion is Champion => champion !== undefined)
+            .slice(0, 5); // Take only the first 5
+
+        // Fill remaining slots with placeholder data if less than 5
+        while (likedChampions.length < 5) {
+            likedChampions.push(null);
+        }
+
+        return likedChampions;
+    };
+
     if (loading) {
         return (
             <div className={styles.page}>
@@ -143,6 +158,28 @@ const Champions: React.FC = () => {
             {!showChampions ? (
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
+                    <div className={styles.current_champions__container}>
+                        {getLikedChampionsForDisplay().map((champion, index) => {
+                            const sizeClasses = [styles.tertiary, styles.secondary, styles.main, styles.secondary, styles.tertiary];
+                            const sizeClass = sizeClasses[index];
+
+                            return (
+                                <div key={index} className={`${styles.current_champion} ${sizeClass}`}>
+                                    <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
+                                    <div className={styles.champion__image}>
+                                        <img
+                                            src={champion ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png` : "/images/bg/bg.png"}
+                                            alt={champion ? champion.name : "Champion"}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                            }}
+                                        />
+                                    </div>
+                                    <h3 className={styles.champion__name}>{champion ? champion.name : "Champion"}</h3>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <button
                         className={styles.choose__champions__button}
                         onClick={() => setShowChampions(true)}
