@@ -36,7 +36,6 @@
   height: auto;
   font-size: 0.9vw;
   color: #e6dac9;
-  text-align: right;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   letter-spacing: 0.15vw;
   margin: 0;
@@ -44,13 +43,14 @@
   font-style: italic;
   font-weight: 400;
   margin-top: -1%;
-  margin-right: 50%;
+  text-align: left;
+  // margin-right: 50%;
   // background-color: lightcoral;
 }
 
 .ranking__container {
-  width: 7vw;
-  height: 7vw;
+  width: 6vw;
+  height: 6vw;
   position: absolute;
   right: -8%;
   top: -6%;
@@ -121,29 +121,40 @@
 }
 
 .info {
-  height: 40%;
-  width: 50%;
+  height: 100%;
+  width: 75%;
+  margin-top: 28%;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  // background-color: red;
+  // background-color: purple;
   @include flex-col-between;
+}
+
+.info__stats {
+  height: 50%;
+  width: 70%;
+  // background-color: blue;
 }
 
 .info__item {
   width: 100%;
-  height: 10%;
+  height: 25%;
   @include flex-between;
 }
 
 .info__item__title,
 .info__item__value {
-  font-size: 0.8vw;
+  font-size: 0.7vw;
   letter-spacing: 0.1vw;
   font-weight: bold;
   color: #e4c493;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   text-transform: uppercase;
+}
+
+.info__item__value {
+  font-size: 0.9vw;
 }
 
 .stats {
@@ -186,6 +197,30 @@
   background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(30, 35, 40, 0.4));
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   margin-top: 0.3vw;
+}
+
+.champions {
+  width: 100%;
+  height: 40%;
+  // background-color: red;
+  margin-left: 30%;
+  margin-bottom: 5%;
+  @include flex-between;
+}
+
+.champion__icon {
+  width: 30%;
+  height: 100%;
+  // background-color: blue;
+  background-image: url('/images/frames/account-champion-frame.png');
+  @include background;
+  @include flex-center;
+}
+
+.champion__icon__image {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
 }
 
 .essences {

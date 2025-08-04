@@ -69,33 +69,37 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
             <h3 className={styles.username}>{data.name}</h3>
             <div className={styles.card__container}>
                 <div className={styles.profileIcon}>
-
                     <img
                         key={data.id}
                         src={data.url}
                         alt={`${data.username} portrait`}
                     />
-
                 </div>
                 <div className={styles.info__container}>
 
                     <div className={styles.info}>
-                        <div className={styles.info__item}>
-                            <span className={styles.info__item__title}>champions</span> <span className={styles.info__item__value}>{data.champions}</span>
-                        </div>
-                        <div className={styles.info__item}>
-                            <span className={styles.info__item__title}>role</span> <span className={styles.info__item__value}>100</span>
-                        </div>
-                        <div className={styles.info__item}>
+                        <div className={styles.info__stats}>
+                            <div className={styles.info__item}>
+                                <span className={styles.info__item__title}>champions</span> <span className={styles.info__item__value}>{data.champions}</span>
+                            </div>
+                            <div className={styles.info__item}>
+                                <span className={styles.info__item__title}>role</span> <span className={styles.info__item__value}>100</span>
+                            </div>
+                            <div className={styles.info__item}>
 
-                            <span className={styles.info__item__title}>masteries</span> <span className={styles.info__item__value}>{data.masteries}</span>
+                                <span className={styles.info__item__title}>masteries</span> <span className={styles.info__item__value}>{data.masteries}</span>
+                            </div>
+
+                            <div className={styles.info__item}>
+                                <span className={styles.info__item__title}>skins</span> <span className={styles.info__item__value}>{data.skins}</span>
+                            </div>
                         </div>
+                        <div className={styles.champions}><div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
 
-                        <div className={styles.info__item}>
-                            <span className={styles.info__item__title}>skins</span> <span className={styles.info__item__value}>{data.skins}</span>
+                            <div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
+
+                            <div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
                         </div>
-
-
                     </div>
 
 
