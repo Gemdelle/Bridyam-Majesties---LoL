@@ -101,17 +101,29 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                             <div className={styles.champion__icon}><img src="/images/pets/nav-pet-2.png" alt="Champion" className={styles.champion__icon__image} /></div>
                         </div>
                     </div>
-
-
                 </div>
-                <div className={styles.essences}>
-                    <div className={styles.essenceItem}>
-                        <img src="/images/lol-elements/blue-essence.webp" alt="Blue Essence" />
-                        <span>{data.blueEssence.toLocaleString()}</span>
+
+
+
+                <div className={styles.lower_info__container}>
+                    <div className={styles.elo__container}>
+                        <div className={styles.elo__solo}>
+                        </div>
+                        <div className={styles.elo__flex}>
+                        </div>
                     </div>
-                    <div className={styles.essenceItem}>
-                        <img src="/images/lol-elements/orange-essence.webp" alt="Orange Essence" />
-                        <span>{data.orangeEssence.toLocaleString()}</span>
+
+                    <img className={styles.info__divider} src="/images/frames/lower-title-frame.png" alt="Info Divider" />
+
+                    <div className={styles.essences__container}>
+                        <div className={styles.essenceItem}>
+                            <img src="/images/lol-elements/blue-essence.png" alt="Blue Essence" />
+                            <span>{data.blueEssence.toLocaleString()}</span>
+                        </div>
+                        <div className={styles.essenceItem}>
+                            <img src="/images/lol-elements/orange-essence.png" alt="Orange Essence" />
+                            <span>{data.orangeEssence.toLocaleString()}</span>
+                        </div>
                     </div>
                 </div>
             </div>

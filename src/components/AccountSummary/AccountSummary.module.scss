@@ -278,3 +278,94 @@
   height: 1.55vw;
   margin-bottom: 8%;
 } 
+
+// LOWER INFO
+.lower_info__container {
+  width: 53%;
+  height: 38%;
+  @include flex-col-between;
+  // background-color: red;
+}
+
+.elo__container {
+  width: 100%;
+  height: 40%;
+  @include flex-between;
+  background-color: green;
+}
+
+.info__divider {
+  width: 100%;
+  height: auto;
+}
+
+.essences__container {
+  width: 100%;
+  height: 40%;
+  // background-color: blue;
+  @include flex-between;
+}
+
+
+.essenceItem {
+  width: 45%;
+  height: 100%;
+  position: relative;
+  // background-color: yellow;
+  @include flex-center;
+  justify-content: flex-end;
+
+  img {
+    position: absolute;
+    left: 5%;
+    width: 40%;
+    height: auto;
+    object-fit: contain;
+    // background-color: red;
+    animation: essenceFloat 3s ease-in-out infinite;
+  }
+
+  span {
+    font-size: 0.7vw;
+    font-weight: bold;
+    letter-spacing: 0.1vw;
+    color: #e4c493;
+  }
+
+  // Blue essence glow with pulsing animation
+  &:first-child img {
+    animation: essenceFloat 3s ease-in-out infinite, blueGlowPulse 2s ease-in-out infinite;
+  }
+
+  // Orange essence glow with pulsing animation
+  &:last-child img {
+    animation: essenceFloat 3s ease-in-out infinite, orangeGlowPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes essenceFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes blueGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(0, 150, 255, 0)) drop-shadow(0 0 15px rgba(0, 150, 255, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(0, 150, 255, 1)) drop-shadow(0 0 15px rgba(0, 150, 255, 0.6));
+  }
+}
+
+@keyframes orangeGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0)) drop-shadow(0 0 15px rgba(255, 165, 0, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(255, 165, 0, 1)) drop-shadow(0 0 15px rgba(255, 165, 0, 0.6));
+  }
+}
