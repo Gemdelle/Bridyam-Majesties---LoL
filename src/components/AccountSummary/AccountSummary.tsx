@@ -107,9 +107,19 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
 
                 <div className={styles.lower_info__container}>
                     <div className={styles.elo__container}>
-                        <div className={styles.elo__solo}>
+                        <div className={styles.eloItem}>
+                            <span>s</span>
+                            <div className={styles.eloDescription}>
+                                <img src="/images/lol-elements/tier-gold.webp" alt="Solo Rank" />
+                                <span>I</span>
+                            </div>
                         </div>
-                        <div className={styles.elo__flex}>
+                        <div className={styles.eloItem}>
+                            <span>f</span>
+                            <div className={styles.eloDescription}>
+                                <img src="/images/lol-elements/tier-platinum.webp" alt="Flex Rank" />
+                                <span>III</span>
+                            </div>
                         </div>
                     </div>
 
@@ -127,7 +137,7 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
