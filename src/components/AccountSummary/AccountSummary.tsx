@@ -152,7 +152,8 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
 
 
                 <div className={styles.lower_info__container}>
-                    <img className={styles.info__divider} src="/images/frames/lower-title-frame.png" alt="Info Divider" />
+                    <img className={styles.flag__frame} src="/images/frames/flag-frame.png" alt="Flag Frame" />
+                    {/* <img className={styles.info__divider} src="/images/frames/lower-title-frame.png" alt="Info Divider" /> */}
 
                     <div className={styles.info__description}>
                         <div className={styles.elo__container}>
