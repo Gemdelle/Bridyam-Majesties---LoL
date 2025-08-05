@@ -111,9 +111,6 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                                 <span className={styles.info__item__title}>champions</span> <span className={styles.info__item__value}>{data.champions}</span>
                             </div>
                             <div className={styles.info__item}>
-                                <span className={styles.info__item__title}>role</span> <span className={styles.info__item__value}>100</span>
-                            </div>
-                            <div className={styles.info__item}>
 
                                 <span className={styles.info__item__title}>masteries</span> <span className={styles.info__item__value}>{data.masteries}</span>
                             </div>

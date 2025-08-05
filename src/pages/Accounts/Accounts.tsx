@@ -217,8 +217,65 @@ const Accounts: React.FC = () => {
               orangeEssence: 14560
             }} />
 
+            <AccountSummary data={{
+              url: getLocalPortrait("GEM Damglantine#GEM"),
+              id: 19,
+              name: "Tryppy Troppy",
+              username: "GEM Damglantine#GEM",
+              champions: 84,
+              skins: 267,
+              masteries: 84,
+              roles: {
+                top: 45,
+                jungle: 78,
+                mid: 34,
+                adc: 67,
+                support: 45
+              },
+              blueEssence: 98760,
+              orangeEssence: 14560
+            }} />
 
+            <AccountSummary data={{
+              url: getLocalPortrait("GEM Damglantine#GEM"),
+              id: 19,
+              name: "Tryppy Troppy",
+              username: "GEM Damglantine#GEM",
+              champions: 84,
+              skins: 267,
+              masteries: 84,
+              roles: {
+                top: 45,
+                jungle: 78,
+                mid: 34,
+                adc: 67,
+                support: 45
+              },
+              blueEssence: 98760,
+              orangeEssence: 14560
+            }} />
 
+            <AccountSummary data={{
+              url: getLocalPortrait("GEM Damglantine#GEM"),
+              id: 19,
+              name: "Tryppy Troppy",
+              username: "GEM Damglantine#GEM",
+              champions: 84,
+              skins: 267,
+              masteries: 84,
+              roles: {
+                top: 45,
+                jungle: 78,
+                mid: 34,
+                adc: 67,
+                support: 45
+              },
+              blueEssence: 98760,
+              orangeEssence: 14560
+            }} />
+          </div>
+
+          <div className={styles.content__row}>
             <AccountSummary data={{
               url: getLocalPortrait("GEM Damglantine#GEM"),
               id: 19,
@@ -276,7 +333,24 @@ const Accounts: React.FC = () => {
               orangeEssence: 14560
             }} />
 
-
+            <AccountSummary data={{
+              url: getLocalPortrait("GEM Damglantine#GEM"),
+              id: 19,
+              name: "Tryppy Troppy",
+              username: "GEM Damglantine#GEM",
+              champions: 84,
+              skins: 267,
+              masteries: 84,
+              roles: {
+                top: 45,
+                jungle: 78,
+                mid: 34,
+                adc: 67,
+                support: 45
+              },
+              blueEssence: 98760,
+              orangeEssence: 14560
+            }} />
           </div>
         </div>
       </div>
