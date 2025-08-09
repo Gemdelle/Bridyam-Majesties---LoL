@@ -29,6 +29,7 @@ const filterOptions: FilterOption[] = [
 ];
 
 const sortOptions: FilterOption[] = [
+    { id: 'essencer', label: 'essencer' },
     { id: 'tier-soloq', label: 'tier soloq' },
     { id: 'tier-flex', label: 'tier flex' },
     { id: 'wins', label: 'wins' },
@@ -41,7 +42,7 @@ const Ranked: React.FC = () => {
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('hall-missions');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    const [selectedSorts, setSelectedSorts] = useState<string[]>(['wins']);
+    const [selectedSorts, setSelectedSorts] = useState<string[]>(['essencer']);
 
     // --- Estado para los datos de ranked ---
     const [rankedData, setRankedData] = useState<RankedData[]>([]);
@@ -173,6 +174,23 @@ const Ranked: React.FC = () => {
             let primaryComparison = 0;
 
             switch (sortBy) {
+                case 'essencer': {
+                    // Count completed accounts per essencer for primary sorting
+                    const getEssencerCompletedCount = (essencerName: string) => {
+                        return dataToSort.filter(account =>
+                            account.name === essencerName &&
+                            account.level >= 30 &&
+                            account.wins.current >= account.wins.totals
+                        ).length;
+                    };
+
+                    const aCompletedCount = getEssencerCompletedCount(a.name);
+                    const bCompletedCount = getEssencerCompletedCount(b.name);
+
+                    // Primary sort: by number of completed accounts (descending)
+                    primaryComparison = bCompletedCount - aCompletedCount;
+                    break;
+                }
                 case 'tier-soloq': {
                     // Sort by tier and division (tier priority, then division)
                     const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
@@ -221,6 +239,20 @@ const Ranked: React.FC = () => {
             // If primary comparison is not 0, return it
             if (primaryComparison !== 0) {
                 return primaryComparison;
+            }
+
+            // For essencer sort, group accounts by essencer name
+            if (sortBy === 'essencer') {
+                const essencerComparison = a.name.localeCompare(b.name);
+                if (essencerComparison !== 0) {
+                    return essencerComparison;
+                }
+
+                // Within the same essencer, sort by bloodline
+                const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
+                const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
+                const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
+                return aBloodlineIndex - bBloodlineIndex;
             }
 
             // Secondary sort: by number of accounts per essencer (descending)
