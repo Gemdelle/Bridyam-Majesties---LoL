@@ -42,7 +42,7 @@ const Ranked: React.FC = () => {
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('hall-missions');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    const [selectedSorts, setSelectedSorts] = useState<string[]>(['essencer']);
+    const [selectedSorts, setSelectedSorts] = useState<string[]>(['wins']);
 
     // --- Estado para los datos de ranked ---
     const [rankedData, setRankedData] = useState<RankedData[]>([]);
@@ -163,11 +163,16 @@ const Ranked: React.FC = () => {
         const sortBy = selectedSorts[0]; // Take the first selected sort option
         const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
 
-        // Count accounts per essencer for secondary sorting
-        const essencerAccountCounts = new Map<string, number>();
+        // Count COMPLETED accounts per essencer for secondary sorting
+        const essencerCompletedCounts = new Map<string, number>();
         dataToSort.forEach(account => {
-            const essencerName = account.name;
-            essencerAccountCounts.set(essencerName, (essencerAccountCounts.get(essencerName) || 0) + 1);
+            if (account.level >= 30 && account.wins.current >= account.wins.totals) {
+                const essencerName = account.name;
+                essencerCompletedCounts.set(
+                    essencerName,
+                    (essencerCompletedCounts.get(essencerName) || 0) + 1
+                );
+            }
         });
 
         return [...dataToSort].sort((a, b) => {
@@ -256,16 +261,36 @@ const Ranked: React.FC = () => {
                 return primaryComparison;
             }
 
-            // Secondary sort: by number of accounts per essencer (descending)
-            const aAccountCount = essencerAccountCounts.get(a.name) || 0;
-            const bAccountCount = essencerAccountCounts.get(b.name) || 0;
+            // For essencer sort, group accounts by essencer name
+            if (sortBy === 'essencer') {
+                const essencerComparison = a.name.localeCompare(b.name);
+                if (essencerComparison !== 0) {
+                    return essencerComparison;
+                }
+
+                // Within the same essencer, sort by bloodline
+                const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
+                const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
+                const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
+                return aBloodlineIndex - bBloodlineIndex;
+            }
+
+            // Secondary sort: by number of COMPLETED accounts per essencer (descending)
+            const aAccountCount = essencerCompletedCounts.get(a.name) || 0;
+            const bAccountCount = essencerCompletedCounts.get(b.name) || 0;
             const accountCountComparison = bAccountCount - aAccountCount;
 
             if (accountCountComparison !== 0) {
                 return accountCountComparison;
             }
 
-            // Tertiary sort: by bloodline within the same essencer (Primogenit, Porveldam, Spadelline, Zephiroth, Gladasmy)
+            // Tertiary tie-breaker for secondary: essencer name (ascending)
+            const essencerNameComparison = a.name.localeCompare(b.name);
+            if (essencerNameComparison !== 0) {
+                return essencerNameComparison;
+            }
+
+            // Next: by bloodline within the same essencer (Primogenit, Porveldam, Spadelline, Zephiroth, Gladasmy)
             const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
             const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
             const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
@@ -275,8 +300,8 @@ const Ranked: React.FC = () => {
                 return bloodlineComparison;
             }
 
-            // Quaternary sort: by essencer name (ascending) for essencers with same account count and bloodline
-            return a.name.localeCompare(b.name);
+            // Final fallback: keep stable by name
+            return essencerNameComparison;
         });
     };
 
