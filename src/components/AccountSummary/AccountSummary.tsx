@@ -94,7 +94,7 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                 <span className={styles.ranking__position}>{renderNumberAsImages(10)}</span>
             </div>
             <h2 className={styles.name}>{data.username}</h2>
-            <h3 className={styles.username}>{data.name}</h3>
+
             <div className={styles.card__container}>
                 <div className={styles.profileIcon}>
                     <img
@@ -103,9 +103,11 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         alt={`${data.username} portrait`}
                     />
                 </div>
+                <h3 className={styles.username}>{data.name}</h3>
                 <div className={styles.info__container}>
 
                     <div className={styles.info}>
+
                         <div className={styles.info__stats}>
                             <div className={styles.info__item}>
                                 <span className={styles.info__item__title}>champions</span> <span className={styles.info__item__value}>{data.champions}</span>

@@ -371,8 +371,22 @@
 
 .mastery__image {
   width: auto;
-  height: 60%;
+  height: 70%;
   /* background-color: red; */
+}
+
+.mastery__image--small {
+  width: auto;
+  height: 50%;
+}
+
+.mastery__image--large {
+  width: auto;
+  height: 80%;
+}
+
+.mastery__image--glow {
+  filter: drop-shadow(0 0 10px #332913) drop-shadow(0 0 15px #e1d9c9);
 }
 
 .placeholder {

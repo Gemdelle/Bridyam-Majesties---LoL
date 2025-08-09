@@ -9,7 +9,7 @@
   transition: all 0.3s ease;
   @include flex-col-between;
   
-  // background-color: purple;
+  background-color: purple;
 }
 
 .name {
@@ -42,10 +42,9 @@
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-style: italic;
   font-weight: 400;
-  margin-top: -1%;
   text-align: left;
   // margin-right: 50%;
-  // background-color: lightcoral;
+  background-color: lightcoral;
 }
 
 .ranking__container {
@@ -86,7 +85,7 @@
   height: 88%;
   @include flex-col-between;
   align-items: flex-end;
-  // background-color: lightblue;
+  background-color: lightblue;
 }
 
 .profileIcon {
@@ -119,7 +118,7 @@
   @include flex-center;
   background-size: 85% 90%;
   background-position: 100% center;
-  // background-color: yellow;
+  background-color: yellow;
 }
 
 .info {
@@ -129,14 +128,14 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  // background-color: purple;
+  background-color: purple;
   @include flex-col-between;
 }
 
 .info__stats {
   height: 50%;
   width: 70%;
-  // background-color: blue;
+  background-color: blue;
 }
 
 .info__item {

@@ -46,7 +46,7 @@ const Bloodlines: React.FC = () => {
   const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
   const [masteryLoading, setMasteryLoading] = useState(true);
 
-  // --- Estado para la búsqueda ---
+  // --- Estado para la bï¿½squeda ---
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   // --- Cargar datos de ranked ---
@@ -102,7 +102,7 @@ const Bloodlines: React.FC = () => {
 
 
 
-  // --- Función para filtrar los datos ranked ---
+  // --- Funciï¿½n para filtrar los datos ranked ---
   const filterRankedData = (dataToFilter: RankedData[]) => {
     let filteredData = dataToFilter;
 
@@ -116,7 +116,7 @@ const Bloodlines: React.FC = () => {
     return filteredData;
   };
 
-  // --- Función para filtrar los champions por rol ---
+  // --- Funciï¿½n para filtrar los champions por rol ---
   const filterChampionsByRole = (championsToFilter: Champion[]) => {
     if (selectedFilters.length === 0) return championsToFilter;
 
@@ -129,7 +129,7 @@ const Bloodlines: React.FC = () => {
     });
   };
 
-  // --- Función para filtrar los champions por búsqueda ---
+  // --- Funciï¿½n para filtrar los champions por bï¿½squeda ---
   const filterChampionsBySearch = (championsToFilter: Champion[]) => {
     if (searchTerm.trim() === '') return championsToFilter;
 
@@ -138,7 +138,7 @@ const Bloodlines: React.FC = () => {
     );
   };
 
-  // --- Función para ordenar los champions ---
+  // --- Funciï¿½n para ordenar los champions ---
   const sortChampions = (championsToSort: Champion[]) => {
     if (selectedSorts.length === 0) return championsToSort;
 
@@ -162,15 +162,18 @@ const Bloodlines: React.FC = () => {
     });
   };
 
-  // --- Función para obtener el nivel de mastery ---
+  // --- Funciï¿½n para obtener el nivel de mastery ---
   const getMasteryLevel = (rankedId: number, championId: number): number => {
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
     return mastery ? mastery.champion_level : 0;
   };
 
-  // --- Función para obtener la imagen de mastery ---
+  // --- Funciï¿½n para obtener la imagen de mastery ---
   const getMasteryImage = (masteryLevel: number): string => {
+    if (masteryLevel > 10) {
+      return `/images/masteries/mastery/10+.png`;
+    }
     return `/images/masteries/mastery/${masteryLevel}.png`;
   };
 
@@ -182,7 +185,7 @@ const Bloodlines: React.FC = () => {
 
 
 
-  // --- Handler para selección única de view ---
+  // --- Handler para selecciï¿½n ï¿½nica de view ---
   const handleViewChange = (newSelection: string[]) => {
     // For single selection, we want to replace the current selection
     // If the new selection is empty, keep the current one
@@ -257,7 +260,7 @@ const Bloodlines: React.FC = () => {
                   className={styles.search__clear}
                   type="button"
                 >
-                  ×
+                  ï¿½
                 </button>
               )}
             </div>
@@ -377,12 +380,16 @@ const Bloodlines: React.FC = () => {
                     const { accounts } = getCurrentPageAccounts();
                     return accounts.map((account) => {
                       const masteryLevel = getMasteryLevel(account.id, champion.id);
+                      const isSmallMastery = masteryLevel >= 1 && masteryLevel <= 5;
+                      const isLargeMastery = masteryLevel >= 10;
+                      const hasGlow = masteryLevel >= 5;
+                      const masteryText = masteryLevel > 10 ? '10+' : masteryLevel.toString();
                       return (
                         <div key={account.id} className={styles.row__account}>
                           <img
                             src={getMasteryImage(masteryLevel)}
-                            alt={`Mastery ${masteryLevel}`}
-                            className={styles.mastery__image}
+                            alt={`Mastery ${masteryText}`}
+                            className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''}`}
                           />
                         </div>
                       );
