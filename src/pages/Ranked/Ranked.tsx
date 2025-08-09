@@ -175,7 +175,13 @@ const Ranked: React.FC = () => {
 
             switch (sortBy) {
                 case 'essencer': {
-                    // Count completed accounts per essencer for primary sorting
+                    // First: number of wins (descending)
+                    const winsComparison = b.wins.current - a.wins.current;
+                    if (winsComparison !== 0) {
+                        return winsComparison;
+                    }
+
+                    // Second: essencer with most completed accounts (descending)
                     const getEssencerCompletedCount = (essencerName: string) => {
                         return dataToSort.filter(account =>
                             account.name === essencerName &&
@@ -183,13 +189,22 @@ const Ranked: React.FC = () => {
                             account.wins.current >= account.wins.totals
                         ).length;
                     };
-
                     const aCompletedCount = getEssencerCompletedCount(a.name);
                     const bCompletedCount = getEssencerCompletedCount(b.name);
+                    if (aCompletedCount !== bCompletedCount) {
+                        return bCompletedCount - aCompletedCount;
+                    }
 
-                    // Primary sort: by number of completed accounts (descending)
-                    primaryComparison = bCompletedCount - aCompletedCount;
-                    break;
+                    // Third: bloodline order (primogenit, porveldam, spadelline, zephiroth, gladasmy)
+                    const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
+                    const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
+                    const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
+                    if (aBloodlineIndex !== bBloodlineIndex) {
+                        return aBloodlineIndex - bBloodlineIndex;
+                    }
+
+                    // Final tie-breaker: stable by essencer name
+                    return a.name.localeCompare(b.name);
                 }
                 case 'tier-soloq': {
                     // Sort by tier and division (tier priority, then division)
@@ -239,20 +254,6 @@ const Ranked: React.FC = () => {
             // If primary comparison is not 0, return it
             if (primaryComparison !== 0) {
                 return primaryComparison;
-            }
-
-            // For essencer sort, group accounts by essencer name
-            if (sortBy === 'essencer') {
-                const essencerComparison = a.name.localeCompare(b.name);
-                if (essencerComparison !== 0) {
-                    return essencerComparison;
-                }
-
-                // Within the same essencer, sort by bloodline
-                const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
-                const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
-                const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-                return aBloodlineIndex - bBloodlineIndex;
             }
 
             // Secondary sort: by number of accounts per essencer (descending)
