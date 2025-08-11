@@ -36,6 +36,10 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     const [isEditingEssencer, setIsEditingEssencer] = useState(false);
     const [tempEssencerName, setTempEssencerName] = useState(rankedData.name);
 
+    // States for level editing
+    const [isEditingLevel, setIsEditingLevel] = useState(false);
+    const [tempLevel, setTempLevel] = useState(rankedData.level.toString());
+
     // Refs for rank containers
     const soloqRef = useRef<HTMLDivElement>(null);
     const flexRef = useRef<HTMLDivElement>(null);
@@ -84,6 +88,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
         // Update essencer name
         setTempEssencerName(rankedData.name);
+
+        // Update level
+        setTempLevel(rankedData.level.toString());
     }, [rankedData]);
 
     // Close rank selectors when clicking outside
@@ -252,6 +259,38 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
     };
 
+    const handleLevelEdit = () => {
+        setIsEditingLevel(true);
+    };
+
+    const handleLevelSave = () => {
+        const levelValue = parseInt(tempLevel.trim());
+        if (!isNaN(levelValue) && levelValue >= 1 && levelValue <= 999) {
+            const updatedRankedData = {
+                ...rankedData,
+                level: levelValue
+            };
+            onUpdateRankedData(updatedRankedData);
+        } else {
+            // Reset to original value if invalid
+            setTempLevel(rankedData.level.toString());
+        }
+        setIsEditingLevel(false);
+    };
+
+    const handleLevelCancel = () => {
+        setTempLevel(rankedData.level.toString());
+        setIsEditingLevel(false);
+    };
+
+    const handleLevelKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleLevelSave();
+        } else if (e.key === 'Escape') {
+            handleLevelCancel();
+        }
+    };
+
     const getTierImage = (tier: string) => {
         switch (tier.toLowerCase()) {
             case 'diamond':
@@ -401,7 +440,19 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div className={styles.level__container}>
-                <span>{rankedData.level}</span>
+                {isEditingLevel ? (
+                    <input
+                        type="text"
+                        value={tempLevel}
+                        onChange={(e) => setTempLevel(e.target.value)}
+                        onBlur={handleLevelSave}
+                        onKeyDown={handleLevelKeyPress}
+                        className={styles.level__input}
+                        autoFocus
+                    />
+                ) : (
+                    <span onClick={handleLevelEdit}>{rankedData.level}</span>
+                )}
             </div>
 
             <div className={styles.divider}></div>
