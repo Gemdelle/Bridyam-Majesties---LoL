@@ -54,13 +54,23 @@ export interface RankedResponse {
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
         const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked');
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data: RankedResponse = await response.json();
-        return data.ranked;
+
+        // Fix incorrect wins.totals values - should always be 15, not 100
+        const correctedData = data.ranked.map(account => ({
+            ...account,
+            wins: {
+                ...account.wins,
+                totals: 15 // Always set to 15, regardless of what comes from backend
+            }
+        }));
+
+        return correctedData;
     } catch (error) {
         console.error('Error fetching ranked data:', error);
         throw new Error('Failed to fetch ranked data');
@@ -77,11 +87,11 @@ export const updateRankedData = async (rankedData: RankedData[]): Promise<Ranked
             },
             body: JSON.stringify(rankedData),
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data: RankedResponse = await response.json();
         return data.ranked;
     } catch (error) {

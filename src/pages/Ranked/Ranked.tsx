@@ -492,6 +492,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.header__id}>ID</div>
                             <div className={styles.header__portrait}></div>
                             <div className={styles.header__name}>ACCOUNT</div>
+                            <div className={styles.header__level}>LV</div>
                             <div className={styles.header__essencer}>ESSENCER</div>
                             <div className={styles.header__wins}>WINS</div>
                             <div className={styles.header__honor}>HONOR</div>

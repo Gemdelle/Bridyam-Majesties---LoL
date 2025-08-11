@@ -209,6 +209,7 @@
 .header__id,
 .header__portrait,
 .header__name,
+.header__level,
 .header__essencer,
 .header__wins,
 .header__honor,
@@ -226,19 +227,25 @@
 
 
 .header__name {
-  width: 10%;
+  width: 8%;
   height: 100%;
   margin-left: 4%;
   // background-color: red;
 }
 
+.header__level {
+  width: 3%;
+  height: 100%;
+  @include flex-center;
+}
+
 .header__essencer {
-  width: 10%;
+  width: 8%;
   height: 100%;
 }
 
 .header__wins {
-  width: 20%;
+  width: 18%;
   height: 100%;
 }
 

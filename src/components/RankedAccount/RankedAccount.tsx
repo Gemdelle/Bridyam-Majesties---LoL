@@ -400,6 +400,12 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             <div className={styles.divider}></div>
 
+            <div className={styles.level__container}>
+                <span>{rankedData.level}</span>
+            </div>
+
+            <div className={styles.divider}></div>
+
             <div className={styles.essencer__container}>
                 {isEditingEssencer ? (
                     <input

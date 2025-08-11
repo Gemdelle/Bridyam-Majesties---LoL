@@ -46,7 +46,7 @@
 }
 
 .name__container {
-    width: 11%;
+    width: 10%;
     height: 100%;
     @include flex-start;
     // background-color: blue;
@@ -58,7 +58,7 @@
 }
 
 .essencer__container {
-    width: 6.5%;
+    width: 6%;
     height: 100%;
     @include flex-start;
     // background-color: green;
@@ -95,14 +95,16 @@
 }
 
 .level__container {
-    width: 3%;
+    width: 1%;
     height: 100%;
     @include flex-center;
+    color: #e4c493;
+    font-size: 15px;
     // background-color: orange;
 }
 
 .wins__container {
-    width: 20%;
+    width: 18%;
     height: 100%;
     @include flex-center;
     // background-color: purple;
