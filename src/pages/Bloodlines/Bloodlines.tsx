@@ -238,6 +238,22 @@ const Bloodlines: React.FC = () => {
     return realMasteryLevel > 0 || isPurchased;
   };
 
+  // Clean summoner name (remove GEM prefix and #GEM/#LAS suffix)
+  const cleanSummonerName = (summonerName: string): string => {
+    // Remove "GEM " prefix if it exists
+    let cleanName = summonerName.replace(/^GEM\s+/, '');
+    // Remove " #GEM" suffix if it exists
+    cleanName = cleanName.replace(/\s+#GEM$/, '');
+    // Remove "#GEM" suffix if it exists (without space)
+    cleanName = cleanName.replace(/#GEM$/, '');
+    // Remove " #LAS" suffix if it exists
+    cleanName = cleanName.replace(/\s+#LAS$/, '');
+    // Remove "#LAS" suffix if it exists (without space)
+    cleanName = cleanName.replace(/#LAS$/, '');
+    return cleanName;
+  };
+
+
   // --- Calcular las accounts a mostrar ---
   const getCurrentPageAccounts = () => {
     const filteredData = filterRankedData(rankedData);
@@ -425,7 +441,10 @@ const Bloodlines: React.FC = () => {
                     <div className={styles.account__portrait}>
                       <img src={`/images/portraits/${account.name}.png`} alt={account.name} />
                     </div>
-                    <div className={styles.account__name}>{account.name}</div>
+                    <div className={styles.account__name}>
+                      <div>{account.name}</div>
+                      <div className={styles.majesty__name}>{cleanSummonerName(account.username)}</div>
+                    </div>
                   </div>
                 ));
               })()}

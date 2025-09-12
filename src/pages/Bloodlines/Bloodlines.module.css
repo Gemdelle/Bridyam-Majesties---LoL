@@ -297,7 +297,20 @@
   text-transform: uppercase;
   word-break: break-word;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
+
+.majesty__name {
+  font-size: 0.7rem;
+  color: #c89b3c;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+  text-transform: none;
+  font-style: italic;
+}
+
 
 .data__rows {
   width: 100%;
