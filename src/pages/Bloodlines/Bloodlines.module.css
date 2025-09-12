@@ -389,6 +389,11 @@
   filter: drop-shadow(0 0 10px #332913) drop-shadow(0 0 15px #e1d9c9);
 }
 
+.mastery__image--bought {
+  width: auto;
+  height: 60%;
+}
+
 .placeholder {
   width: 100%;
   height: 100%;

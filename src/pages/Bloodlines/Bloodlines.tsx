@@ -3,7 +3,7 @@ import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData } from '../../services/apiMasteriesService';
+import { fetchMasteryData, type MasteryData, getEffectiveMasteryLevel, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -48,6 +48,10 @@ const Bloodlines: React.FC = () => {
 
   // --- Estado para la b�squeda ---
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  // --- Estado para GEM user ---
+  const [isGem, setIsGem] = useState<boolean>(false);
+  const [refreshKey, setRefreshKey] = useState<number>(0);
 
   // --- Cargar datos de ranked ---
   useEffect(() => {
@@ -99,6 +103,14 @@ const Bloodlines: React.FC = () => {
 
     loadMasteries();
   }, []);
+
+  // --- Verificar si el usuario es GEM ---
+  useEffect(() => {
+    const checkGemStatus = () => {
+      setIsGem(isGemUser());
+    };
+    checkGemStatus();
+  }, [refreshKey]);
 
 
 
@@ -166,15 +178,55 @@ const Bloodlines: React.FC = () => {
   const getMasteryLevel = (rankedId: number, championId: number): number => {
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
-    return mastery ? mastery.champion_level : 0;
+    const realMasteryLevel = mastery ? mastery.champion_level : 0;
+
+    // If champion is marked as purchased, show mastery 0
+    if (isChampionPurchased(rankedId, championId)) {
+      return 0;
+    }
+
+    return realMasteryLevel;
   };
 
   // --- Funci�n para obtener la imagen de mastery ---
-  const getMasteryImage = (masteryLevel: number): string => {
+  const getMasteryImage = (rankedId: number, championId: number, masteryLevel: number): string => {
+    // If champion is marked as purchased, show bought.png
+    if (isChampionPurchased(rankedId, championId)) {
+      return `/images/masteries/mastery/bought.png`;
+    }
+
     if (masteryLevel > 10) {
       return `/images/masteries/mastery/10+.png`;
     }
     return `/images/masteries/mastery/${masteryLevel}.png`;
+  };
+
+  // --- Funciones para manejar champions comprados ---
+  const handleMasteryClick = (rankedId: number, championId: number) => {
+    if (!isGem) return;
+
+    const riotChampionId = getRiotIdForChampion(championId);
+    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
+    const realMasteryLevel = mastery ? mastery.champion_level : 0;
+
+    // Solo permitir marcar como comprado si no tiene maestría real
+    if (realMasteryLevel === 0) {
+      if (isChampionPurchased(rankedId, championId)) {
+        // Si ya está marcado como comprado, desmarcarlo
+        unmarkChampionAsPurchased(rankedId, championId);
+      } else {
+        // Si no está marcado, marcarlo como comprado
+        markChampionAsPurchased(rankedId, championId);
+      }
+      // Force re-render by updating refreshKey
+      setRefreshKey(prev => prev + 1);
+    }
+  };
+
+  const getRealMasteryLevel = (rankedId: number, championId: number): number => {
+    const riotChampionId = getRiotIdForChampion(championId);
+    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
+    return mastery ? mastery.champion_level : 0;
   };
 
   // --- Calcular las accounts a mostrar ---
@@ -384,12 +436,22 @@ const Bloodlines: React.FC = () => {
                       const isLargeMastery = masteryLevel >= 10;
                       const hasGlow = masteryLevel >= 5;
                       const masteryText = masteryLevel > 10 ? '10+' : masteryLevel.toString();
+                      const realMasteryLevel = getRealMasteryLevel(account.id, champion.id);
+                      const isPurchased = isChampionPurchased(account.id, champion.id);
+                      const canClick = isGem && realMasteryLevel === 0;
+
                       return (
                         <div key={account.id} className={styles.row__account}>
                           <img
-                            src={getMasteryImage(masteryLevel)}
+                            src={getMasteryImage(account.id, champion.id, masteryLevel)}
                             alt={`Mastery ${masteryText}`}
-                            className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''}`}
+                            className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''} ${isPurchased ? styles['mastery__image--bought'] : ''}`}
+                            style={{
+                              cursor: canClick ? 'pointer' : 'default',
+                              opacity: canClick ? 0.8 : 1
+                            }}
+                            onClick={() => handleMasteryClick(account.id, champion.id)}
+                            title={canClick ? (isPurchased ? 'Click to unmark as purchased' : 'Click to mark as purchased') : ''}
                           />
                         </div>
                       );

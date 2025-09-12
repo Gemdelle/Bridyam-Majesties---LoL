@@ -1,4 +1,5 @@
 import { authService } from './authService';
+import { purchasedChampionsService } from './purchasedChampionsService';
 
 // Interface for the individual mastery data structure
 export interface MasteryData {
@@ -30,11 +31,11 @@ export interface MasteryResponse {
 export const fetchMasteryData = async (): Promise<MasteryData[]> => {
     try {
         const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data: MasteryResponse = await response.json();
         // Flatten the data from the new grouped structure
         const flattenedMasteries: MasteryData[] = [];
@@ -77,11 +78,11 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
         const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data: MasteryResponse = await response.json();
         return data.masteries;
     } catch (error) {
@@ -94,4 +95,29 @@ export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
 export const getUserMasteryData = async (rankedId: number): Promise<UserMasteryData | null> => {
     const groupedData = await fetchGroupedMasteryData();
     return groupedData.find(user => user.id === rankedId) || null;
+};
+
+// Get effective mastery level (considering purchased champions for GEM user)
+export const getEffectiveMasteryLevel = (rankedId: number, championId: number, realMasteryLevel: number): number => {
+    return purchasedChampionsService.getEffectiveMasteryLevel(rankedId, championId, realMasteryLevel);
+};
+
+// Check if current user is GEM
+export const isGemUser = (): boolean => {
+    return purchasedChampionsService.isGemUser();
+};
+
+// Mark champion as purchased
+export const markChampionAsPurchased = (rankedId: number, championId: number): void => {
+    purchasedChampionsService.markAsPurchased(rankedId, championId);
+};
+
+// Unmark champion as purchased
+export const unmarkChampionAsPurchased = (rankedId: number, championId: number): void => {
+    purchasedChampionsService.unmarkAsPurchased(rankedId, championId);
+};
+
+// Check if champion is marked as purchased
+export const isChampionPurchased = (rankedId: number, championId: number): boolean => {
+    return purchasedChampionsService.isPurchased(rankedId, championId);
 }; 
