@@ -467,7 +467,9 @@ const Bloodlines: React.FC = () => {
                     style={{
                       cursor: 'pointer',
                       backgroundColor: sortByAccount === account.id ? 'rgba(200, 155, 60, 0.2)' : 'transparent',
-                      border: sortByAccount === account.id ? '2px solid #c89b3c' : 'none'
+                      borderTop: sortByAccount === account.id ? '2px solid #c89b3c' : 'none',
+                      borderLeft: sortByAccount === account.id ? '2px solid #c89b3c' : 'none',
+                      borderRight: sortByAccount === account.id ? '2px solid #c89b3c' : 'none'
                     }}
                   >
                     <div className={styles.account__portrait}>

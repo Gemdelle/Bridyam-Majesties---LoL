@@ -237,7 +237,6 @@
   color: #e4c493;
   font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 0.2%;
   min-width: max-content;
   /* background-color: red; */
 }
@@ -267,7 +266,6 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem;
   border-left: 1px solid #B69461;
 }
 
