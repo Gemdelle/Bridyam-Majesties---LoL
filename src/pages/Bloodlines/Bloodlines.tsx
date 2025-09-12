@@ -3,7 +3,7 @@ import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData, getEffectiveMasteryLevel, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
+import { fetchMasteryData, type MasteryData, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -229,6 +229,15 @@ const Bloodlines: React.FC = () => {
     return mastery ? mastery.champion_level : 0;
   };
 
+  // Check if champion is owned (has mastery > 0 OR is marked as purchased)
+  const isChampionOwned = (rankedId: number, championId: number): boolean => {
+    const realMasteryLevel = getRealMasteryLevel(rankedId, championId);
+    const isPurchased = isChampionPurchased(rankedId, championId);
+
+    // Champion is owned if it has real mastery OR is marked as purchased
+    return realMasteryLevel > 0 || isPurchased;
+  };
+
   // --- Calcular las accounts a mostrar ---
   const getCurrentPageAccounts = () => {
     const filteredData = filterRankedData(rankedData);
@@ -325,7 +334,7 @@ const Bloodlines: React.FC = () => {
                   const totalChampions = champions.length;
                   // Calculate real mastery ownership: count champions with mastery level > 0
                   const ownedChampions = porveldam.reduce((total, account) => {
-                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    return total + champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                   }, 0);
                   const totalPossible = totalChampions * porveldam.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
@@ -342,7 +351,7 @@ const Bloodlines: React.FC = () => {
                   const totalChampions = champions.length;
                   // Calculate real mastery ownership: count champions with mastery level > 0
                   const ownedChampions = spadelline.reduce((total, account) => {
-                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    return total + champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                   }, 0);
                   const totalPossible = totalChampions * spadelline.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
@@ -359,7 +368,7 @@ const Bloodlines: React.FC = () => {
                   const totalChampions = champions.length;
                   // Calculate real mastery ownership: count champions with mastery level > 0
                   const ownedChampions = zephiroth.reduce((total, account) => {
-                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    return total + champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                   }, 0);
                   const totalPossible = totalChampions * zephiroth.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
@@ -376,7 +385,7 @@ const Bloodlines: React.FC = () => {
                   const totalChampions = champions.length;
                   // Calculate real mastery ownership: count champions with mastery level > 0
                   const ownedChampions = gladasmy.reduce((total, account) => {
-                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    return total + champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                   }, 0);
                   const totalPossible = totalChampions * gladasmy.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
@@ -393,7 +402,7 @@ const Bloodlines: React.FC = () => {
                   const totalChampions = champions.length;
                   // Calculate real mastery ownership: count champions with mastery level > 0
                   const ownedChampions = primogenit.reduce((total, account) => {
-                    return total + champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    return total + champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                   }, 0);
                   const totalPossible = totalChampions * primogenit.length;
                   const percentage = totalPossible > 0 ? Math.round((ownedChampions / totalPossible) * 100) : 0;
@@ -467,7 +476,7 @@ const Bloodlines: React.FC = () => {
                 {(() => {
                   const { accounts } = getCurrentPageAccounts();
                   return accounts.map((account) => {
-                    const ownedChampions = champions.filter(champion => getMasteryLevel(account.id, champion.id) > 0).length;
+                    const ownedChampions = champions.filter(champion => isChampionOwned(account.id, champion.id)).length;
                     const totalChampions = champions.length;
                     return (
                       <div key={account.id} className={styles.row__account}>
