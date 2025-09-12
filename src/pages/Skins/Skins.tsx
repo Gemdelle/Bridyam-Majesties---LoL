@@ -1,76 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Skins.module.scss';
-import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchSkinLines, type SkinLine } from '../../services/skinLinesService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
 
 const Skins: React.FC = () => {
-    const [champions, setChampions] = useState<Champion[]>([]);
-    const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
-    const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+    const [skinLines, setSkinLines] = useState<SkinLine[]>([]);
+    const [filteredSkinLines, setFilteredSkinLines] = useState<SkinLine[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [favoriteChampions, setFavoriteChampions] = useState<number[]>(() => {
-        const saved = localStorage.getItem('favoriteChampions');
+    const [favoriteSkinLines, setFavoriteSkinLines] = useState<number[]>(() => {
+        const saved = localStorage.getItem('favoriteSkinLines');
         return saved ? JSON.parse(saved) : [];
     });
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
-    const [showSkins, setShowSkins] = useState(false);
 
-    // Role filter options
-    const roleOptions: FilterOption[] = [
-        { id: 'all', label: 'All Roles' },
-        { id: 'adc', label: 'ADC' },
-        { id: 'jungle', label: 'Jungle' },
-        { id: 'mid', label: 'Mid' },
-        { id: 'support', label: 'Support' },
-        { id: 'top', label: 'Top' }
+    // Category filter options
+    const categoryOptions: FilterOption[] = [
+        { id: 'all', label: 'All Categories' },
+        { id: 'futuristic', label: 'Futuristic' },
+        { id: 'magical', label: 'Magical' },
+        { id: 'music', label: 'Music' },
+        { id: 'cosmic', label: 'Cosmic' },
+        { id: 'folklore', label: 'Folklore' },
+        { id: 'western', label: 'Western' },
+        { id: 'gaming', label: 'Gaming' }
     ];
 
     // Save favorites to localStorage whenever they change
     useEffect(() => {
-        localStorage.setItem('favoriteChampions', JSON.stringify(favoriteChampions));
-    }, [favoriteChampions]);
+        localStorage.setItem('favoriteSkinLines', JSON.stringify(favoriteSkinLines));
+    }, [favoriteSkinLines]);
 
-    // Load champions on component mount
+    // Load skin lines on component mount
     useEffect(() => {
-        const loadChampions = async () => {
+        const loadSkinLines = async () => {
             try {
                 setLoading(true);
-                const championsData = await fetchChampions();
-                setChampions(championsData);
+                const skinLinesData = await fetchSkinLines();
+                setSkinLines(skinLinesData);
             } catch (error) {
-                console.error('Error loading champions:', error);
+                console.error('Error loading skin lines:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        loadChampions();
+        loadSkinLines();
     }, []);
 
-    // Filter champions based on role and search
+    // Filter skin lines based on category and search
     useEffect(() => {
-        let filtered = champions;
+        let filtered = skinLines;
 
-        // Filter by role
-        if (selectedRoles.length > 0 && !selectedRoles.includes('all')) {
-            filtered = filtered.filter(champion =>
-                champion.role && selectedRoles.includes(champion.role)
-            );
+        // Filter by category (simplified for now - you can add category logic later)
+        if (selectedCategories.length > 0 && !selectedCategories.includes('all')) {
+            // For now, just show all skin lines regardless of category
+            // You can implement category filtering logic here later
         }
 
         // Filter by search term
         if (searchTerm) {
-            filtered = filtered.filter(champion =>
-                champion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            filtered = filtered.filter(skinLine =>
+                skinLine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (skinLine.description && skinLine.description.toLowerCase().includes(searchTerm.toLowerCase()))
             );
         }
 
         // Sort by search relevance first, then favorites
         filtered = filtered.sort((a, b) => {
-            const aIsFavorite = favoriteChampions.includes(a.id);
-            const bIsFavorite = favoriteChampions.includes(b.id);
+            const aIsFavorite = favoriteSkinLines.includes(a.id);
+            const bIsFavorite = favoriteSkinLines.includes(b.id);
 
             // If there's a search term, prioritize exact matches
             if (searchTerm) {
@@ -94,49 +95,35 @@ const Skins: React.FC = () => {
 
             // If both are favorites, maintain the order they were favorited
             if (aIsFavorite && bIsFavorite) {
-                return favoriteChampions.indexOf(a.id) - favoriteChampions.indexOf(b.id);
+                return favoriteSkinLines.indexOf(a.id) - favoriteSkinLines.indexOf(b.id);
             }
 
             return 0;
         });
 
-        setFilteredChampions(filtered);
-    }, [champions, selectedRoles, searchTerm, favoriteChampions]);
+        setFilteredSkinLines(filtered);
+    }, [skinLines, selectedCategories, searchTerm, favoriteSkinLines]);
 
-    // Toggle favorite champion
-    const toggleFavorite = (championId: number) => {
-        setFavoriteChampions(prev => {
-            if (prev.includes(championId)) {
+    // Toggle favorite skin line
+    const toggleFavorite = (skinLineId: number) => {
+        setFavoriteSkinLines(prev => {
+            if (prev.includes(skinLineId)) {
                 // Remove from favorites
-                return prev.filter(id => id !== championId);
+                return prev.filter(id => id !== skinLineId);
             } else {
                 // Add to favorites at the beginning (most recent first)
-                return [championId, ...prev];
+                return [skinLineId, ...prev];
             }
         });
     };
 
-    // Get the first 5 liked champions for the empty screen
-    const getLikedChampionsForDisplay = (): (Champion | null)[] => {
-        const likedChampions: (Champion | null)[] = favoriteChampions
-            .map(id => champions.find(champion => champion.id === id))
-            .filter((champion): champion is Champion => champion !== undefined)
-            .slice(0, 5); // Take only the first 5
-
-        // Fill remaining slots with placeholder data if less than 5
-        while (likedChampions.length < 5) {
-            likedChampions.push(null);
-        }
-
-        return likedChampions;
-    };
 
     if (loading) {
         return (
             <div className={styles.page}>
                 <div className={styles.container}>
                     <div className={styles.content}>
-                        <p>Loading champions...</p>
+                        <p>Loading skin lines...</p>
                     </div>
                 </div>
             </div>
@@ -153,110 +140,70 @@ const Skins: React.FC = () => {
                 Achievement
             </button>
 
-            {!showSkins ? (
-                // Empty screen with Choose Skins button
-                <div className={styles.empty__container}>
-                    <div className={styles.current_champions__container}>
-                        {getLikedChampionsForDisplay().map((champion, index) => {
-                            const sizeClasses = [styles.tertiary, styles.secondary, styles.main, styles.secondary, styles.tertiary];
-                            const sizeClass = sizeClasses[index];
-
-                            return (
-                                <div key={index} className={`${styles.current_champion} ${sizeClass}`}>
-                                    <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
-                                    <div className={styles.champion__image}>
-                                        <img
-                                            src={champion ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png` : "/images/bg/bg.png"}
-                                            alt={champion ? champion.name : "Champion"}
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                            }}
-                                        />
-                                    </div>
-                                    <h3 className={styles.champion__name}>{champion ? champion.name : "Champion"}</h3>
-                                </div>
-                            );
-                        })}
+            {/* Skins interface */}
+            <div className={styles.container}>
+                <div className={styles.content__top}>
+                    <div className={styles.filters}>
+                        <Filter
+                            title="FILTER"
+                            options={categoryOptions}
+                            selectedOptions={selectedCategories}
+                            onSelectionChange={setSelectedCategories}
+                        />
                     </div>
-                    <button
-                        className={styles.choose__champions__button}
-                        onClick={() => setShowSkins(true)}
-                    >
-                        Choose Skins
-                    </button>
-                </div>
-            ) : (
-                // Skins interface
-                <div className={styles.container}>
-                    <button
-                        className={styles.back__button}
-                        onClick={() => setShowSkins(false)}
-                    >
-                        Back
-                    </button>
-                    <div className={styles.content__top}>
-                        <div className={styles.filters}>
-                            <Filter
-                                title="FILTER"
-                                options={roleOptions}
-                                selectedOptions={selectedRoles}
-                                onSelectionChange={setSelectedRoles}
-                            />
-                        </div>
-                        <div className={styles.search__container}>
-                            <input
-                                type="text"
-                                placeholder="Search champions..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className={styles.search__input}
-                            />
-                            {searchTerm && (
-                                <button
-                                    onClick={() => setSearchTerm('')}
-                                    className={styles.search__clear}
-                                    type="button"
-                                >
-                                    ×
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.champions__grid}>
-                            {filteredChampions.map((champion) => (
-                                <div
-                                    key={champion.id}
-                                    className={`${styles.champion__card} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
-                                >
-                                    <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
-                                    <button
-                                        onClick={() => toggleFavorite(champion.id)}
-                                        className={`${styles.favorite__button} ${favoriteChampions.includes(champion.id) ? styles.favorited : ''}`}
-                                    >
-                                        {favoriteChampions.includes(champion.id) ? '' : ''}
-                                    </button>
-                                    <div className={styles.champion__image}>
-                                        <img
-                                            src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`}
-                                            alt={champion.name}
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                            }}
-                                        />
-                                    </div>
-                                    <h3 className={styles.champion__name}>{champion.name}</h3>
-                                </div>
-                            ))}
-                        </div>
-                        {filteredChampions.length === 0 && (
-                            <div className={styles.no__results}>
-                                <p>No champions found matching your criteria.</p>
-                            </div>
+                    <div className={styles.search__container}>
+                        <input
+                            type="text"
+                            placeholder="Search skin lines..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className={styles.search__input}
+                        />
+                        {searchTerm && (
+                            <button
+                                onClick={() => setSearchTerm('')}
+                                className={styles.search__clear}
+                                type="button"
+                            >
+                                ×
+                            </button>
                         )}
                     </div>
                 </div>
-            )}
+                <div className={styles.content}>
+                    <div className={styles.champions__grid}>
+                        {filteredSkinLines.map((skinLine) => (
+                            <div
+                                key={skinLine.id}
+                                className={`${styles.champion__card} ${favoriteSkinLines.includes(skinLine.id) ? styles.favorited : ''}`}
+                            >
+                                <img src="/images/frames/champion-frame.png" alt="Skin Line Frame" className={styles.champion__frame} />
+                                <button
+                                    onClick={() => toggleFavorite(skinLine.id)}
+                                    className={`${styles.favorite__button} ${favoriteSkinLines.includes(skinLine.id) ? styles.favorited : ''}`}
+                                >
+                                    {favoriteSkinLines.includes(skinLine.id) ? '' : ''}
+                                </button>
+                                <div className={styles.champion__image}>
+                                    <img
+                                        src={skinLine.splashart}
+                                        alt={skinLine.name}
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                        }}
+                                    />
+                                </div>
+                                <h3 className={styles.champion__name}>{skinLine.name}</h3>
+                            </div>
+                        ))}
+                    </div>
+                    {filteredSkinLines.length === 0 && (
+                        <div className={styles.no__results}>
+                            <p>No skin lines found matching your criteria.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
 
             {/* Achievement Popup */}
             <AchievementPopup
