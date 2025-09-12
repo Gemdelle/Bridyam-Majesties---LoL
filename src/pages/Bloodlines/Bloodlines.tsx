@@ -4,7 +4,6 @@ import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { fetchMasteryData, type MasteryData, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
-import portraitsData from '../../../public/data/portraits.json';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -53,6 +52,9 @@ const Bloodlines: React.FC = () => {
   // --- Estado para GEM user ---
   const [isGem, setIsGem] = useState<boolean>(false);
   const [refreshKey, setRefreshKey] = useState<number>(0);
+
+  // --- Estado para ordenamiento por cuenta ---
+  const [sortByAccount, setSortByAccount] = useState<number | null>(null);
 
   // --- Cargar datos de ranked ---
   useEffect(() => {
@@ -153,11 +155,18 @@ const Bloodlines: React.FC = () => {
 
   // --- Funci�n para ordenar los champions ---
   const sortChampions = (championsToSort: Champion[]) => {
-    if (selectedSorts.length === 0) return championsToSort;
+    if (selectedSorts.length === 0 && !sortByAccount) return championsToSort;
 
     const sortBy = selectedSorts[0]; // Take the first selected sort option
 
     return [...championsToSort].sort((a, b) => {
+      // If sorting by specific account, use that account's mastery
+      if (sortByAccount) {
+        const masteryA = getMasteryLevel(sortByAccount, a.id);
+        const masteryB = getMasteryLevel(sortByAccount, b.id);
+        return masteryB - masteryA; // Descending order
+      }
+
       switch (sortBy) {
         case 'id':
           // Sort by ID ascending (default)
@@ -260,6 +269,11 @@ const Bloodlines: React.FC = () => {
     const img_name = majestyName.replace(/^GEM\s+/, '').replace(/\s+#GEM$/, '').replace(/#GEM$/, '').replace(/\s+#LAS$/, '').replace(/#LAS$/, '');
 
     return `/images/portraits/${img_name}.png`;
+  };
+
+  // Handle click on account header to sort by mastery
+  const handleAccountHeaderClick = (accountId: number) => {
+    setSortByAccount(accountId);
   };
 
 
@@ -446,7 +460,16 @@ const Bloodlines: React.FC = () => {
               {(() => {
                 const { accounts } = getCurrentPageAccounts();
                 return accounts.map((account) => (
-                  <div key={account.id} className={styles.header__account}>
+                  <div
+                    key={account.id}
+                    className={styles.header__account}
+                    onClick={() => handleAccountHeaderClick(account.id)}
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: sortByAccount === account.id ? 'rgba(200, 155, 60, 0.2)' : 'transparent',
+                      border: sortByAccount === account.id ? '2px solid #c89b3c' : 'none'
+                    }}
+                  >
                     <div className={styles.account__portrait}>
                       <img src={getPortraitUrl(account.username)} alt={account.username} />
                     </div>
