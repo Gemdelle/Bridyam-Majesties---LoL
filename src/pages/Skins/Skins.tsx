@@ -177,13 +177,7 @@ const Skins: React.FC = () => {
                                 key={skinLine.id}
                                 className={`${styles.champion__card} ${favoriteSkinLines.includes(skinLine.id) ? styles.favorited : ''}`}
                             >
-                                <img src="/images/frames/champion-frame.png" alt="Skin Line Frame" className={styles.champion__frame} />
-                                <button
-                                    onClick={() => toggleFavorite(skinLine.id)}
-                                    className={`${styles.favorite__button} ${favoriteSkinLines.includes(skinLine.id) ? styles.favorited : ''}`}
-                                >
-                                    {favoriteSkinLines.includes(skinLine.id) ? '' : ''}
-                                </button>
+                                <img src="/images/frames/skin-frame.png" alt="Skin Line Frame" className={styles.champion__frame} />
                                 <div className={styles.champion__image}>
                                     <img
                                         src={skinLine.splashart}
