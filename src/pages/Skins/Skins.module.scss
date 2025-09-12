@@ -160,6 +160,28 @@
   // background-color: red;
 }
 
+.account__champion__frame {
+  position: absolute;
+  bottom: 5%;
+  width: 3.5vw;
+  height: 3.5vw;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/images/frames/skin-number-frame.png");
+  @include flex-center;
+  @include background;
+}
+
+.account__champion__number {
+  position: relative;
+  color: #e7c67a;
+  font-size: 1vw;
+  font-weight: bold;
+  margin-top: 15%;
+}
+
 .champion__card:hover {
   transform: translateY(-5px);
 

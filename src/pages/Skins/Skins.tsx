@@ -9,10 +9,6 @@ const Skins: React.FC = () => {
     const [filteredSkinLines, setFilteredSkinLines] = useState<SkinLine[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [favoriteSkinLines, setFavoriteSkinLines] = useState<number[]>(() => {
-        const saved = localStorage.getItem('favoriteSkinLines');
-        return saved ? JSON.parse(saved) : [];
-    });
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
 
@@ -28,10 +24,6 @@ const Skins: React.FC = () => {
         { id: 'gaming', label: 'Gaming' }
     ];
 
-    // Save favorites to localStorage whenever they change
-    useEffect(() => {
-        localStorage.setItem('favoriteSkinLines', JSON.stringify(favoriteSkinLines));
-    }, [favoriteSkinLines]);
 
     // Load skin lines on component mount
     useEffect(() => {
@@ -68,11 +60,8 @@ const Skins: React.FC = () => {
             );
         }
 
-        // Sort by search relevance first, then favorites
+        // Sort by search relevance
         filtered = filtered.sort((a, b) => {
-            const aIsFavorite = favoriteSkinLines.includes(a.id);
-            const bIsFavorite = favoriteSkinLines.includes(b.id);
-
             // If there's a search term, prioritize exact matches
             if (searchTerm) {
                 const aExactMatch = a.name.toLowerCase() === searchTerm.toLowerCase();
@@ -89,33 +78,12 @@ const Skins: React.FC = () => {
                 if (!aStartsWith && bStartsWith) return 1;
             }
 
-            // Then sort by favorites
-            if (aIsFavorite && !bIsFavorite) return -1;
-            if (!aIsFavorite && bIsFavorite) return 1;
-
-            // If both are favorites, maintain the order they were favorited
-            if (aIsFavorite && bIsFavorite) {
-                return favoriteSkinLines.indexOf(a.id) - favoriteSkinLines.indexOf(b.id);
-            }
-
             return 0;
         });
 
         setFilteredSkinLines(filtered);
-    }, [skinLines, selectedCategories, searchTerm, favoriteSkinLines]);
+    }, [skinLines, selectedCategories, searchTerm]);
 
-    // Toggle favorite skin line
-    const toggleFavorite = (skinLineId: number) => {
-        setFavoriteSkinLines(prev => {
-            if (prev.includes(skinLineId)) {
-                // Remove from favorites
-                return prev.filter(id => id !== skinLineId);
-            } else {
-                // Add to favorites at the beginning (most recent first)
-                return [skinLineId, ...prev];
-            }
-        });
-    };
 
 
     if (loading) {
@@ -179,6 +147,9 @@ const Skins: React.FC = () => {
                             >
                                 <h3 className={styles.champion__name}>{skinLine.name}</h3>
                                 <img src="/images/frames/skin-frame.png" alt="Skin Line Frame" className={styles.champion__frame} />
+                                <div className={styles.account__champion__frame}>
+                                    <span className={styles.account__champion__number}>{skinLine.id}</span>
+                                </div>
                                 <div className={styles.champion__image}>
                                     <img
                                         src={skinLine.splashart}
