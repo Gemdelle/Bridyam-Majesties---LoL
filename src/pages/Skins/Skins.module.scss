@@ -140,45 +140,54 @@
 }
 
 .champion__card {
+  position: abs($number: 0);
   width: 12%;
-  height: 40%;
+  height: 38%;
   position: relative;
   transition: all 0.3s ease;
   cursor: pointer;
   @include flex-col;
-  background-color: purple;
+  justify-content: flex-start;
+  // background-color: purple;
 }
 
 .champion__frame {
   position: absolute;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  height: 90%;
   z-index: 2;
+  // background-color: red;
 }
 
 .champion__card:hover {
   transform: translateY(-5px);
-  filter: drop-shadow(0 0px 15px rgba(200, 155, 60, 0.8));
+
+  .champion__frame {
+    filter: drop-shadow(0 0px 10px rgba(200, 155, 60, 0.8));
+  }
 }
 
 .champion__image {
-  width: 100%;
-  height: auto;
-  margin-bottom: 15%;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  height: 65%;
+  width: 80%;
   z-index: 1;
+  margin-bottom: 18%;
 }
 
 .champion__image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.3s ease, filter 0.3s ease;
-  filter: saturate(0.1) brightness(0.3);
+  filter: saturate(0.5) brightness(0.7);
 }
 
 .champion__card:hover .champion__image img {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  filter: saturate(1);
 }
 
 .champion__info {
@@ -188,249 +197,12 @@
 
 .champion__name {
   width: 100%;
-  font-size: 0.65vw;
+  font-size: 0.9vw;
+  margin-top: 1%;
   font-weight: bolder;
   color: #e7c67a;
-  margin-top: 0%;
   text-transform: uppercase;
-  letter-spacing: 0.06vw;
+  letter-spacing: 0.15vw;
   z-index: 9999;
   // background-color: red;
-}
-
-.favorite__button {
-  width: 2.5vw;
-  height: 2.5vw;
-  position: absolute;
-  top: 0%;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  background-image: url('/images/icons/champion-like.png');
-  @include background;
-  background-color: transparent;
-  filter: brightness(0.4);
-}
-
-.favorite__button:hover {
-  transform: scale(1.1);
-}
-
-.favorite__button.favorited {
-  filter: brightness(1);
-  width: 2.8vw;
-  height: 2.8vw;
-  animation: heartBeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.1);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(1);
-  }
-}
-
-.favorite__button:focus {
-  border-style: none;
-  outline: none;
-}
-
-.champion__card.favorited .champion__image img {
-  filter: saturate(1);
-}
-
-.no__results {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: #8b7355;
-  text-align: center;
-}
-
-.no__results p {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-
-.achievement__button {
-  position: absolute;
-  top: 65px;
-  left: 20px;
-  background: linear-gradient(145deg, #c89b3c, #a07a2e);
-  border: none;
-  border-radius: 8px;
-  color: #0f1419;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.achievement__button:hover {
-  background: linear-gradient(145deg, #d4a94a, #b8842f);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(200, 155, 60, 0.3);
-}
-
-.empty__container {
-  width: 92%;
-  height: 80%;
-  margin-top: 5%;
-  @include flex-col-between;
-  position: relative;
-  background-color: purple;
-}
-
-.current_champions__container {
-  width: 100%;
-  height: 90%;
-  @include flex-between;
-  background-color: red;
-}
-
-.current_champion {
-  position: relative;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  @include flex-col;
-  justify-content: flex-start;
-  background-color: blue;
-
-  .champion__frame {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-    font-size: 1vw;
-    // background-color: pink;
-  }
-}
-
-.main {
-  width: 23%;
-  height: 90%;
-
-  .champion__frame {
-    top: -10%;
-  }
-
-  .champion__name {
-    font-size: 1vw;
-  }
-}
-
-.secondary {
-  width: 18%;
-  height: 85%;
-
-  .champion__frame {
-    top: -5%;
-  }
-
-  .champion__name {
-    font-size: 0.9vw;
-  }
-}
-
-.tertiary {
-  width: 15%;
-  height: 80%;
-
-  .champion__name {
-    font-size: 0.8vw;
-  }
-}
-
-.current_champion .champion__image {
-  width: 65%;
-  height: auto;
-  aspect-ratio: 1/1;
-  margin-top: 30%;
-  margin-bottom: 15%;
-  position: relative;
-  z-index: 1;
-  // background-color: white;
-}
-
-.current_champion .champion__image img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  filter: saturate(0.1) brightness(0.3);
-}
-
-.current_champion .champion__name {
-  width: 100%;
-  font-weight: bolder;
-  color: #e7c67a;
-  margin-top: 5%;
-  text-transform: uppercase;
-  letter-spacing: 0.2vw;
-  z-index: 9999;
-}
-
-.choose__champions__button {
-  background: linear-gradient(145deg, #c89b3c, #a07a2e);
-  border: none;
-  border-radius: 8px;
-  color: #0f1419;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  padding: 1rem 2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.choose__champions__button:hover {
-  background: linear-gradient(145deg, #d4a94a, #b8842f);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(200, 155, 60, 0.4);
-}
-
-.back__button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: linear-gradient(145deg, #c89b3c, #a07a2e);
-  border: none;
-  border-radius: 6px;
-  color: #0f1419;
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.back__button:hover {
-  background: linear-gradient(145deg, #d4a94a, #b8842f);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(200, 155, 60, 0.3);
 }

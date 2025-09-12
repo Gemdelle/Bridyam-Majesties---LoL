@@ -175,8 +175,9 @@ const Skins: React.FC = () => {
                         {filteredSkinLines.map((skinLine) => (
                             <div
                                 key={skinLine.id}
-                                className={`${styles.champion__card} ${favoriteSkinLines.includes(skinLine.id) ? styles.favorited : ''}`}
+                                className={`${styles.champion__card}`}
                             >
+                                <h3 className={styles.champion__name}>{skinLine.name}</h3>
                                 <img src="/images/frames/skin-frame.png" alt="Skin Line Frame" className={styles.champion__frame} />
                                 <div className={styles.champion__image}>
                                     <img
@@ -187,7 +188,6 @@ const Skins: React.FC = () => {
                                         }}
                                     />
                                 </div>
-                                <h3 className={styles.champion__name}>{skinLine.name}</h3>
                             </div>
                         ))}
                     </div>
