@@ -11,6 +11,7 @@ import Accounts from './pages/Accounts/Accounts'
 import Bloodlines from './pages/Bloodlines/Bloodlines'
 import Ranked from './pages/Ranked/Ranked'
 import Champions from './pages/Champions/Champions'
+import Skins from './pages/Skins/Skins'
 import Achievements from './pages/Achievements/Achievements'
 import Redeem from './pages/Redeem/Redeem'
 import Adoption from './pages/Adoption/Adoption'
@@ -88,6 +89,8 @@ function AppContent() {
           {/* Redirect unknown routes to home or login */}
           <Route
             path="/champions" element={<Champions />} />
+          <Route
+            path="/skins" element={<Skins />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/roulette" element={<Roulette />} />
           <Route path="/redeem" element={<Redeem />} />

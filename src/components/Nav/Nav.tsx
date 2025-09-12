@@ -42,6 +42,12 @@ export const Nav = () => {
                         <Link to="/champions">Champions</Link>
                     </li>
                     <li
+                        className={location.pathname === '/skins' ? styles.active : ''}
+                        data-nav="skins"
+                    >
+                        <Link to="/skins">Skins</Link>
+                    </li>
+                    <li
                         className={location.pathname === '/achievements' ? styles.active : ''}
                         data-nav="achievements"
                     >
