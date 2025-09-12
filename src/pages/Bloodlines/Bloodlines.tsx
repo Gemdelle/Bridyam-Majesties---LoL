@@ -4,6 +4,7 @@ import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { fetchMasteryData, type MasteryData, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
+import portraitsData from '../../../public/data/portraits.json';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -253,6 +254,14 @@ const Bloodlines: React.FC = () => {
     return cleanName;
   };
 
+  // Get portrait URL from portraits.json
+  const getPortraitUrl = (majestyName: string): string => {
+
+    const img_name = majestyName.replace(/^GEM\s+/, '').replace(/\s+#GEM$/, '').replace(/#GEM$/, '').replace(/\s+#LAS$/, '').replace(/#LAS$/, '');
+
+    return `/images/portraits/${img_name}.png`;
+  };
+
 
   // --- Calcular las accounts a mostrar ---
   const getCurrentPageAccounts = () => {
@@ -439,7 +448,7 @@ const Bloodlines: React.FC = () => {
                 return accounts.map((account) => (
                   <div key={account.id} className={styles.header__account}>
                     <div className={styles.account__portrait}>
-                      <img src={`/images/portraits/${account.name}.png`} alt={account.name} />
+                      <img src={getPortraitUrl(account.username)} alt={account.username} />
                     </div>
                     <div className={styles.account__name}>
                       <div>{account.name}</div>
