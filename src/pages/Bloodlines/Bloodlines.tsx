@@ -288,7 +288,12 @@ const Bloodlines: React.FC = () => {
 
   // Handle click on account header to sort by mastery
   const handleAccountHeaderClick = (accountId: number) => {
-    setSortByAccount(accountId);
+    // If clicking the same account, toggle off the sorting
+    if (sortByAccount === accountId) {
+      setSortByAccount(null);
+    } else {
+      setSortByAccount(accountId);
+    }
   };
 
 
