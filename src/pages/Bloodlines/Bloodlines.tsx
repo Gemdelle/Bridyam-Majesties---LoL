@@ -164,7 +164,22 @@ const Bloodlines: React.FC = () => {
       if (sortByAccount) {
         const masteryA = getMasteryLevel(sortByAccount, a.id);
         const masteryB = getMasteryLevel(sortByAccount, b.id);
-        return masteryB - masteryA; // Descending order
+        const isPurchasedA = isChampionPurchased(sortByAccount, a.id);
+        const isPurchasedB = isChampionPurchased(sortByAccount, b.id);
+
+        // If one is purchased (bought.png) and the other has mastery > 0, put bought after mastery 1
+        if (isPurchasedA && masteryB > 0) return 1;
+        if (isPurchasedB && masteryA > 0) return -1;
+
+        // If one is purchased (bought.png) and the other has mastery 0 (0.png), put bought before 0
+        if (isPurchasedA && masteryB === 0 && !isPurchasedB) return -1;
+        if (isPurchasedB && masteryA === 0 && !isPurchasedA) return 1;
+
+        // If both are purchased, maintain their relative order
+        if (isPurchasedA && isPurchasedB) return 0;
+
+        // Otherwise, sort by mastery level descending (10+, 20, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+        return masteryB - masteryA;
       }
 
       switch (sortBy) {
