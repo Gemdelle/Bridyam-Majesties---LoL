@@ -346,13 +346,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
         }
     };
 
-    const isAccountRanked = (): boolean => {
-        const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
-        const soloqRanked = validTiers.includes(rankedData.elo_soloq.tier.toLowerCase());
-        const flexRanked = validTiers.includes(rankedData.elo_flex.tier.toLowerCase());
-        return soloqRanked || flexRanked;
-    };
-
     const isSoloqRanked = (): boolean => {
         const validTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
         return validTiers.includes(rankedData.elo_soloq.tier.toLowerCase());
