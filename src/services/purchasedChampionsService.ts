@@ -11,6 +11,7 @@ class PurchasedChampionsService {
     private static instance: PurchasedChampionsService;
     private readonly STORAGE_KEY = 'purchased_champions';
     private readonly GEM_EMAIL = 'gemdelle@bridyam.com';
+    private readonly HUNNY_EMAIL = 'hunny@bridyam.com';
 
     private constructor() { }
 
@@ -30,7 +31,7 @@ class PurchasedChampionsService {
             const user = JSON.parse(userData);
             const email = user.email || '';
 
-            return email.toLowerCase() === this.GEM_EMAIL.toLowerCase();
+            return email.toLowerCase() === this.GEM_EMAIL.toLowerCase() || email.toLowerCase() === this.HUNNY_EMAIL.toLowerCase();
         } catch (error) {
             console.error('Error checking GEM status:', error);
             return false;
@@ -38,6 +39,7 @@ class PurchasedChampionsService {
     }
 
     // Get all purchased champions from localStorage
+    // NOTE: This method is deprecated - champion levels now come only from API
     private getPurchasedData(): PurchasedChampion[] {
         try {
             const data = localStorage.getItem(this.STORAGE_KEY);
@@ -61,7 +63,9 @@ class PurchasedChampionsService {
     }
 
     // Mark champion as purchased
+    // NOTE: This method is deprecated - champion levels now come only from API
     public markAsPurchased(rankedId: number, championId: number): void {
+        console.warn('markAsPurchased is deprecated - champion levels now come only from API');
         if (!this.isGemUser()) {
             console.warn('Only GEM user can mark champions as purchased');
             return;
@@ -85,7 +89,9 @@ class PurchasedChampionsService {
     }
 
     // Unmark champion as purchased
+    // NOTE: This method is deprecated - champion levels now come only from API
     public unmarkAsPurchased(rankedId: number, championId: number): void {
+        console.warn('unmarkAsPurchased is deprecated - champion levels now come only from API');
         if (!this.isGemUser()) {
             console.warn('Only GEM user can unmark champions as purchased');
             return;
@@ -99,7 +105,9 @@ class PurchasedChampionsService {
     }
 
     // Check if champion is marked as purchased
+    // NOTE: This method is deprecated - champion levels now come only from API
     public isPurchased(rankedId: number, championId: number): boolean {
+        console.warn('isPurchased is deprecated - champion levels now come only from API');
         if (!this.isGemUser()) {
             return false;
         }
@@ -111,7 +119,9 @@ class PurchasedChampionsService {
     }
 
     // Get effective mastery level (0 if purchased, real level otherwise)
+    // NOTE: This method is deprecated - champion levels now come only from API
     public getEffectiveMasteryLevel(rankedId: number, championId: number, realMasteryLevel: number): number {
+        console.warn('getEffectiveMasteryLevel is deprecated - champion levels now come only from API');
         if (this.isPurchased(rankedId, championId)) {
             return 0; // Show as purchased (mastery 0)
         }
