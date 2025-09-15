@@ -214,9 +214,10 @@ const Champions: React.FC = () => {
                                             <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
                                             <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
                                             <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-
                                         </div>
-                                        <div className={styles.champion__level__number}></div>
+                                        <div className={styles.champion__level__number}>
+                                            <img src="/images/masteries/mastery/10.png" alt="Level" className={styles.champion__level__number__image} />
+                                        </div>
                                     </div>
 
                                     <div className={styles.champion__bar}>
