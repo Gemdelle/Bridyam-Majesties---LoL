@@ -264,47 +264,49 @@ const Champions: React.FC = () => {
                 <div className={styles.empty__container}>
                     {/* Filters and Search for Favorites View */}
                     <div className={styles.content__top}>
-
-                        <button
-                            className={styles.choose__champions__button}
-                            onClick={() => setShowChampions(true)}
-                        >
-                            Champions
-                        </button>
-
-                        <div className={styles.filters}>
-                            <Filter
-                                title="ACCOUNT"
-                                options={accountOptions}
-                                selectedOptions={selectedAccounts}
-                                onSelectionChange={setSelectedAccounts}
-                            />
+                        <div className={styles.filters__container}>
+                            <div className={styles.filters}>
+                                <Filter
+                                    title="ACCOUNT"
+                                    options={accountOptions}
+                                    selectedOptions={selectedAccounts}
+                                    onSelectionChange={setSelectedAccounts}
+                                />
+                            </div>
+                            <div className={styles.filters}>
+                                <Filter
+                                    title="CHAMPION"
+                                    options={championOptions}
+                                    selectedOptions={selectedChampions}
+                                    onSelectionChange={setSelectedChampions}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.filters}>
-                            <Filter
-                                title="CHAMPION"
-                                options={championOptions}
-                                selectedOptions={selectedChampions}
-                                onSelectionChange={setSelectedChampions}
-                            />
-                        </div>
-                        <div className={styles.search__container}>
-                            <input
-                                type="text"
-                                placeholder="Search champions..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className={styles.search__input}
-                            />
-                            {searchTerm && (
-                                <button
-                                    onClick={() => setSearchTerm('')}
-                                    className={styles.search__clear}
-                                    type="button"
-                                >
-                                    ×
-                                </button>
-                            )}
+                        <div className={styles.actions__container}>
+                            <div className={styles.search__container}>
+                                <input
+                                    type="text"
+                                    placeholder="Search champions..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className={styles.search__input}
+                                />
+                                {searchTerm && (
+                                    <button
+                                        onClick={() => setSearchTerm('')}
+                                        className={styles.search__clear}
+                                        type="button"
+                                    >
+                                        ×
+                                    </button>
+                                )}
+                            </div>
+                            <button
+                                className={styles.choose__champions__button}
+                                onClick={() => setShowChampions(true)}
+                            >
+                                Champions
+                            </button>
                         </div>
                     </div>
                     <div className={styles.current_champions__container}>
@@ -395,39 +397,41 @@ const Champions: React.FC = () => {
                 // Champions interface
                 <div className={styles.container}>
                     <div className={styles.content__top}>
-
-                        <button
-                            className={styles.back__button}
-                            onClick={() => setShowChampions(false)}
-                        >
-                            Back
-                        </button>
-
-                        <div className={styles.filters}>
-                            <Filter
-                                title="FILTER"
-                                options={roleOptions}
-                                selectedOptions={selectedRoles}
-                                onSelectionChange={setSelectedRoles}
-                            />
+                        <div className={styles.filters__container}>
+                            <div className={styles.filters}>
+                                <Filter
+                                    title="FILTER"
+                                    options={roleOptions}
+                                    selectedOptions={selectedRoles}
+                                    onSelectionChange={setSelectedRoles}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.search__container}>
-                            <input
-                                type="text"
-                                placeholder="Search champions..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className={styles.search__input}
-                            />
-                            {searchTerm && (
-                                <button
-                                    onClick={() => setSearchTerm('')}
-                                    className={styles.search__clear}
-                                    type="button"
-                                >
-                                    ×
-                                </button>
-                            )}
+                        <div className={styles.actions__container}>
+                            <div className={styles.search__container}>
+                                <input
+                                    type="text"
+                                    placeholder="Search champions..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className={styles.search__input}
+                                />
+                                {searchTerm && (
+                                    <button
+                                        onClick={() => setSearchTerm('')}
+                                        className={styles.search__clear}
+                                        type="button"
+                                    >
+                                        ×
+                                    </button>
+                                )}
+                            </div>
+                            <button
+                                className={styles.back__button}
+                                onClick={() => setShowChampions(false)}
+                            >
+                                Back
+                            </button>
                         </div>
                     </div>
                     <div className={styles.content}>
