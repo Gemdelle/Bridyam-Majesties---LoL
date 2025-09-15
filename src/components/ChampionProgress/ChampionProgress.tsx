@@ -68,7 +68,7 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                         <img
                             src={`/images/masteries/mastery/${masteryLevel}.png`}
                             alt="Level"
-                            className={styles.champion__level__number__image}
+                            className={`${styles.champion__level__number__image} ${styles[`level__${masteryLevel}`]}`}
                         />
                     </div>
                 </div>

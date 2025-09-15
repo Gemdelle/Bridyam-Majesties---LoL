@@ -122,6 +122,43 @@
   height: 100%;
 }
 
+// Different sizes for each mastery level number
+.champion__level__number__image.level__10 {
+  width: 120%;
+  height: 120%;
+}
+
+.champion__level__number__image.level__9 {
+    width: 90%;
+    height: 90%;
+}
+
+.champion__level__number__image.level__8 {
+  width: 90%;
+  height: 90%;
+}
+
+.champion__level__number__image.level__7 {
+  width: 85%;
+  height: 85%;
+}
+
+.champion__level__number__image.level__6,
+.champion__level__number__image.level__5,
+.champion__level__number__image.level__4,
+.champion__level__number__image.level__3,
+.champion__level__number__image.level__2
+ {
+  width: 83%;
+  height: 83%;
+}
+
+.champion__level__number__image.level__1,
+.champion__level__number__image.level__0 {
+    width: 65%;
+    height: 65%;
+  }
+
 .current_champion {
   position: relative;
   transition: all 0.3s ease;
