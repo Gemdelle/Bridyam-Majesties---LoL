@@ -55,14 +55,17 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
 
                 <div className={styles.champion__stats}>
                     <div className={styles.champion__level__container}>
-                        {Array.from({ length: 12 }, (_, i) => (
-                            <img
-                                key={i}
-                                src="/images/gems/crystal.png"
-                                alt="Level"
-                                className={styles.champion__level}
-                            />
-                        ))}
+                        {Array.from({ length: 11 }, (_, i) => {
+                            const isUnlocked = i < masteryLevel;
+                            return (
+                                <img
+                                    key={i}
+                                    src="/images/gems/crystal.png"
+                                    alt="Level"
+                                    className={`${styles.champion__level} ${isUnlocked ? styles.crystal__unlocked : styles.crystal__locked}`}
+                                />
+                            );
+                        })}
                     </div>
                     <div className={styles.champion__level__number}>
                         <img

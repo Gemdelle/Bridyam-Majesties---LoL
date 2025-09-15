@@ -100,7 +100,7 @@
 }
 
 .champion__level__container {
-  width: 75%;
+  width: 70%;
   height: 70%;
   @include flex-between;
   // background-color: darkgoldenrod;
@@ -109,6 +109,17 @@
 .champion__level {
   width: auto;
   height: 100%;
+  transition: all 0.3s ease;
+}
+
+// Crystal states
+.crystal__unlocked {
+  filter: brightness(1) saturate(1);
+}
+
+.crystal__locked {
+  filter: brightness(0.4) saturate(0.3);
+  opacity: 0.6;
 }
 
 .champion__level__number {
