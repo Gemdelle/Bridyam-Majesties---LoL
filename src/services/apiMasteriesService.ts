@@ -3,21 +3,21 @@ import { purchasedChampionsService } from './purchasedChampionsService';
 
 // Interface for the individual mastery data structure
 export interface MasteryData {
-    id: number;
+    id: number | null;
     ranked_id: number;
     username: string;
     champion_id: number;
-    champion_level: number;
+    champion_level: number | null;
     champion_points: number;
     champion_points_since_last_level: number;
     champion_points_until_next_level: number;
     chest_granted: boolean;
-    last_play_time: string;
+    last_play_time: string | null;
 }
 
 // Interface for user mastery data grouped by user
 export interface UserMasteryData {
-    id: number;
+    id: number | null;
     username: string;
     masteries_by_champions: MasteryData[];
 }
@@ -62,10 +62,10 @@ export const fetchMasteryDataByChampionId = async (championId: number): Promise<
 };
 
 // Get mastery level for a specific champion and account
-export const getMasteryLevel = async (rankedId: number, championId: number): Promise<number> => {
+export const getMasteryLevel = async (rankedId: number, championId: number): Promise<number | null> => {
     const allData = await fetchMasteryData();
     const mastery = allData.find(item => item.ranked_id === rankedId && item.champion_id === championId);
-    return mastery ? mastery.champion_level : 0;
+    return mastery ? mastery.champion_level : null;
 };
 
 // Get mastery data for a specific champion and account
@@ -120,4 +120,27 @@ export const unmarkChampionAsPurchased = (rankedId: number, championId: number):
 // Check if champion is marked as purchased
 export const isChampionPurchased = (rankedId: number, championId: number): boolean => {
     return purchasedChampionsService.isPurchased(rankedId, championId);
+};
+
+// Update masteries data via PUT request
+export const updateMasteries = async (masteriesData: MasteryData[]): Promise<void> => {
+    try {
+        const response = await authService.makeAuthenticatedRequest(
+            'https://bridyam-majesties-back-production.up.railway.app/masteries',
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ masteries: masteriesData }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error updating masteries data:', error);
+        throw new Error('Failed to update masteries data');
+    }
 }; 

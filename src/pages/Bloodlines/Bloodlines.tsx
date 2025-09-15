@@ -3,7 +3,7 @@ import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData, isGemUser, markChampionAsPurchased, unmarkChampionAsPurchased, isChampionPurchased } from '../../services/apiMasteriesService';
+import { fetchMasteryData, type MasteryData, isGemUser, updateMasteries } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -51,7 +51,6 @@ const Bloodlines: React.FC = () => {
 
   // --- Estado para GEM user ---
   const [isGem, setIsGem] = useState<boolean>(false);
-  const [refreshKey, setRefreshKey] = useState<number>(0);
 
   // --- Estado para ordenamiento por cuenta ---
   const [sortByAccount, setSortByAccount] = useState<number | null>(null);
@@ -113,7 +112,7 @@ const Bloodlines: React.FC = () => {
       setIsGem(isGemUser());
     };
     checkGemStatus();
-  }, [refreshKey]);
+  }, []);
 
 
 
@@ -164,22 +163,13 @@ const Bloodlines: React.FC = () => {
       if (sortByAccount) {
         const masteryA = getMasteryLevel(sortByAccount, a.id);
         const masteryB = getMasteryLevel(sortByAccount, b.id);
-        const isPurchasedA = isChampionPurchased(sortByAccount, a.id);
-        const isPurchasedB = isChampionPurchased(sortByAccount, b.id);
 
-        // If one is purchased (bought.png) and the other has mastery > 0, put bought after mastery 1
-        if (isPurchasedA && masteryB > 0) return 1;
-        if (isPurchasedB && masteryA > 0) return -1;
+        // Convert null to 0 for comparison purposes
+        const masteryAValue = masteryA ?? 0;
+        const masteryBValue = masteryB ?? 0;
 
-        // If one is purchased (bought.png) and the other has mastery 0 (0.png), put bought before 0
-        if (isPurchasedA && masteryB === 0 && !isPurchasedB) return -1;
-        if (isPurchasedB && masteryA === 0 && !isPurchasedA) return 1;
-
-        // If both are purchased, maintain their relative order
-        if (isPurchasedA && isPurchasedB) return 0;
-
-        // Otherwise, sort by mastery level descending (10+, 20, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-        return masteryB - masteryA;
+        // Sort by mastery level descending (10+, 20, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+        return masteryBValue - masteryAValue;
       }
 
       switch (sortBy) {
@@ -189,8 +179,8 @@ const Bloodlines: React.FC = () => {
         case 'mastery': {
           // Sort by total mastery count across all accounts descending
           const { accounts } = getCurrentPageAccounts();
-          const totalMasteryA = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, a.id), 0);
-          const totalMasteryB = accounts.reduce((sum, account) => sum + getMasteryLevel(account.id, b.id), 0);
+          const totalMasteryA = accounts.reduce((sum, account) => sum + (getMasteryLevel(account.id, a.id) ?? 0), 0);
+          const totalMasteryB = accounts.reduce((sum, account) => sum + (getMasteryLevel(account.id, b.id) ?? 0), 0);
           return totalMasteryB - totalMasteryA;
         }
         default:
@@ -200,24 +190,23 @@ const Bloodlines: React.FC = () => {
   };
 
   // --- Funci�n para obtener el nivel de mastery ---
-  const getMasteryLevel = (rankedId: number, championId: number): number => {
+  const getMasteryLevel = (rankedId: number, championId: number): number | null => {
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
-    const realMasteryLevel = mastery ? mastery.champion_level : 0;
-
-    // If champion is marked as purchased, show mastery 0
-    if (isChampionPurchased(rankedId, championId)) {
-      return 0;
-    }
-
-    return realMasteryLevel;
+    // Champion levels now only come from API - no local overrides
+    return mastery ? mastery.champion_level : null;
   };
 
   // --- Funci�n para obtener la imagen de mastery ---
-  const getMasteryImage = (rankedId: number, championId: number, masteryLevel: number): string => {
-    // If champion is marked as purchased, show bought.png
-    if (isChampionPurchased(rankedId, championId)) {
+  const getMasteryImage = (masteryLevel: number | null): string => {
+    // If champion_level is 0, show bought.png
+    if (masteryLevel === 0) {
       return `/images/masteries/mastery/bought.png`;
+    }
+
+    // If masteryLevel is null (no mastery data exists), show 0.png
+    if (masteryLevel === null) {
+      return `/images/masteries/mastery/0.png`;
     }
 
     if (masteryLevel > 10) {
@@ -227,40 +216,83 @@ const Bloodlines: React.FC = () => {
   };
 
   // --- Funciones para manejar champions comprados ---
-  const handleMasteryClick = (rankedId: number, championId: number) => {
+  const handleMasteryClick = async (rankedId: number, championId: number) => {
     if (!isGem) return;
+
+    console.log('handleMasteryClick called:', { rankedId, championId, isGem });
 
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
-    const realMasteryLevel = mastery ? mastery.champion_level : 0;
+    const currentMasteryLevel = mastery ? mastery.champion_level : null;
 
-    // Solo permitir marcar como comprado si no tiene maestría real
-    if (realMasteryLevel === 0) {
-      if (isChampionPurchased(rankedId, championId)) {
-        // Si ya está marcado como comprado, desmarcarlo
-        unmarkChampionAsPurchased(rankedId, championId);
-      } else {
-        // Si no está marcado, marcarlo como comprado
-        markChampionAsPurchased(rankedId, championId);
+    console.log('Mastery data found:', { mastery, currentMasteryLevel, riotChampionId });
+
+    // Solo permitir actualizar si no tiene maestría real (null) o si ya es 0
+    if (currentMasteryLevel === 0 || currentMasteryLevel === null) {
+      console.log('Mastery level is 0 or null, proceeding with update...');
+      
+      // Make PUT request to backend to toggle between 0 and null
+      try {
+        let masteryToUpdate: MasteryData;
+        let newChampionLevel: number | null;
+        
+        if (mastery) {
+          console.log('Existing mastery found, toggling level...');
+          // Toggle between 0 and null
+          newChampionLevel = mastery.champion_level === 0 ? null : 0;
+          console.log(`Changing champion_level from ${mastery.champion_level} to ${newChampionLevel}`);
+          
+          // Update existing mastery
+          masteryToUpdate = {
+            ...mastery,
+            champion_level: newChampionLevel
+          };
+        } else {
+          console.log('No existing mastery found, creating new one with level 0...');
+          newChampionLevel = 0;
+          
+          // Create new mastery entry
+          masteryToUpdate = {
+            id: null, // Let backend assign ID
+            ranked_id: rankedId,
+            username: rankedData.find(r => r.id === rankedId)?.username || '',
+            champion_id: riotChampionId,
+            champion_level: 0,
+            champion_points: 0,
+            champion_points_since_last_level: 0,
+            champion_points_until_next_level: 0,
+            chest_granted: false,
+            last_play_time: new Date().toISOString()
+          };
+        }
+        
+        console.log('Sending PUT request with single mastery:', masteryToUpdate);
+        
+        // Send PUT request to backend with only the updated mastery
+        await updateMasteries([masteryToUpdate]);
+        
+        console.log('PUT request successful, reloading data...');
+        
+        // Reload mastery data from backend to reflect changes
+        const updatedData = await fetchMasteryData();
+        setMasteryData(updatedData);
+        
+        console.log('Data reloaded successfully');
+      } catch (error) {
+        console.error('Error updating masteries in backend:', error);
+        // Optionally, you could show an error message to the user here
       }
-      // Force re-render by updating refreshKey
-      setRefreshKey(prev => prev + 1);
+    } else {
+      console.log('Mastery level is greater than 0, skipping update');
     }
   };
 
-  const getRealMasteryLevel = (rankedId: number, championId: number): number => {
-    const riotChampionId = getRiotIdForChampion(championId);
-    const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
-    return mastery ? mastery.champion_level : 0;
-  };
 
-  // Check if champion is owned (has mastery > 0 OR is marked as purchased)
+  // Check if champion is owned (has mastery > 0)
   const isChampionOwned = (rankedId: number, championId: number): boolean => {
-    const realMasteryLevel = getRealMasteryLevel(rankedId, championId);
-    const isPurchased = isChampionPurchased(rankedId, championId);
-
-    // Champion is owned if it has real mastery OR is marked as purchased
-    return realMasteryLevel > 0 || isPurchased;
+    const masteryLevel = getMasteryLevel(rankedId, championId);
+    // Champion is owned if it has mastery > 0 (including level 0 which means purchased)
+    return masteryLevel !== null && masteryLevel >= 0;
   };
 
   // Clean summoner name (remove GEM prefix and #GEM/#LAS suffix)
@@ -514,26 +546,25 @@ const Bloodlines: React.FC = () => {
                     const { accounts } = getCurrentPageAccounts();
                     return accounts.map((account) => {
                       const masteryLevel = getMasteryLevel(account.id, champion.id);
-                      const isSmallMastery = masteryLevel >= 1 && masteryLevel <= 5;
-                      const isLargeMastery = masteryLevel >= 10;
-                      const hasGlow = masteryLevel >= 5;
-                      const masteryText = masteryLevel > 10 ? '10+' : masteryLevel.toString();
-                      const realMasteryLevel = getRealMasteryLevel(account.id, champion.id);
-                      const isPurchased = isChampionPurchased(account.id, champion.id);
-                      const canClick = isGem && realMasteryLevel === 0;
+                      const masteryValue = masteryLevel ?? 0;
+                      const isSmallMastery = masteryValue >= 1 && masteryValue <= 5;
+                      const isLargeMastery = masteryValue >= 10;
+                      const hasGlow = masteryValue >= 5;
+                      const masteryText = masteryValue > 10 ? '10+' : masteryValue.toString();
+                      const canClick = isGem && (masteryLevel === 0 || masteryLevel === null);
 
                       return (
                         <div key={account.id} className={styles.row__account}>
                           <img
-                            src={getMasteryImage(account.id, champion.id, masteryLevel)}
+                            src={getMasteryImage(masteryLevel)}
                             alt={`Mastery ${masteryText}`}
-                            className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''} ${isPurchased ? styles['mastery__image--bought'] : ''}`}
+                            className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''} ${masteryLevel === 0 ? styles['mastery__image--bought'] : ''}`}
                             style={{
                               cursor: canClick ? 'pointer' : 'default',
                               opacity: canClick ? 0.8 : 1
                             }}
                             onClick={() => handleMasteryClick(account.id, champion.id)}
-                            title={canClick ? (isPurchased ? 'Click to unmark as purchased' : 'Click to mark as purchased') : ''}
+                            title={canClick ? (masteryLevel === 0 ? 'Click to remove purchased status' : 'Click to mark as purchased') : ''}
                           />
                         </div>
                       );
