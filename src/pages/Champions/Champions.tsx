@@ -3,6 +3,7 @@ import styles from './Champions.module.scss';
 import { fetchChampions, type Champion } from '../../services/championsService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
+import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 
 const Champions: React.FC = () => {
     const [champions, setChampions] = useState<Champion[]>([]);
@@ -189,50 +190,8 @@ const Champions: React.FC = () => {
                 <div className={styles.empty__container}>
                     <div className={styles.current_champions__container}>
                         <div className={styles.current_champions__column}>
-
-                            {/* COMPONENTE */}
-                            <div className={styles.current_champion__container}>
-                                <div className={styles.champion__portrait}>
-                                    <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
-                                        className={styles.champion__frame}
-                                    />
-                                    <img src="/images/roulette/wheel.png" alt="Champion" className={styles.champion} />
-                                </div>
-                                <div className={styles.champion__info}>
-                                    <div className={styles.champion__name}>
-                                        <h3>Champion Name</h3>
-                                    </div>
-
-                                    <div className={styles.champion__stats}>
-                                        <div className={styles.champion__level__container}>
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
-                                        </div>
-                                        <div className={styles.champion__level__number}>
-                                            <img src="/images/masteries/mastery/10.png" alt="Level" className={styles.champion__level__number__image} />
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.champion__bar}>
-                                        <div className={styles.champion__bar__fill}></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={styles.current_champion__container}></div>
-                            <div className={styles.current_champion__container}></div>
-                            <div className={styles.current_champion__container}></div>
+                            <ChampionProgress />
                         </div>
-                        {/* COMPONENTE */}
 
                         <div className={styles.current_champions__column}></div>
                         <div className={styles.current_champions__column}></div>

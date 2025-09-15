@@ -308,117 +308,12 @@
   // background-color: red; 
 }
 
-.current_champion__container {
-  width: 100%;
-  height: 22%;
-  // background-color: yellow;
-  @include flex-between;
-}
-
-.champion__portrait {
-  width: 25%;
-  height: 100%;
-  position: relative;
-  // background-color: blue;
-  @include flex-center;
-}
-
-.champion__frame {
-  position: absolute;
-  width: auto;
-  height: 100%;
-}
-
-.champion {
-  width: 60%;
-  height: auto;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-top: 15%;
-}
-
-.champion__info {
-  width: 70%;
-  height: 90%;
-  // background-color: pink;
-  @include flex-col;
-  align-items: flex-start;
-  justify-content: flex-end;
-}
 
 .current_champions__column {
   width: 32%;
   height: 100%;
   // background-color: green;
   @include flex-col-between;
-}
-
-.champion__name {
-  width: 85%;
-  height: 30%;
-  // background-color: darkgreen;
-  font-size: 1vw;
-  letter-spacing: 0.2vw;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #e7c67a;
-  text-shadow: 0px 0px 10px rgba(200, 155, 60, 0.6);
-  @include flex-start;
-  align-items: flex-end;
-}
-
-.champion__name h3 {
-  margin: 0;
-}
-
-.champion__stats {
-  width: 95%;
-  height: 40%;
-  margin-left: 5%;
-  @include flex-between;
-  // align-items: flex-end;
-  // background-color: white;
-}
-
-.champion__level__container {
-  width: 75%;
-  height: 70%;
-  @include flex-between;
-  // background-color: darkgoldenrod;
-}
-
-.champion__level {
-  width: auto;
-  height: 100%;
-}
-
-.champion__level__number {
-  width: 20%;
-  height: 100%;
-  // background-color: rgb(184, 11, 11);
-}
-
-.champion__level__number__image {
-  width: 100%;
-  height: 100%;
-}
-
-.current_champion {
-  position: relative;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  @include flex-col;
-  justify-content: flex-start;
-  // background-color: blue;
-
-  .champion__frame {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-    font-size: 1vw;
-    // background-color: pink;
-  }
 }
 
 .main {
