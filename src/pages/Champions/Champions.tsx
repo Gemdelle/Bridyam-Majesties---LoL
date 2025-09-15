@@ -159,26 +159,9 @@ const Champions: React.FC = () => {
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
                     <div className={styles.current_champions__container}>
-                        {getLikedChampionsForDisplay().map((champion, index) => {
-                            const sizeClasses = [styles.tertiary, styles.secondary, styles.main, styles.secondary, styles.tertiary];
-                            const sizeClass = sizeClasses[index];
-
-                            return (
-                                <div key={index} className={`${styles.current_champion} ${sizeClass}`}>
-                                    <img src="/images/frames/champion-frame.png" alt="Champion Frame" className={styles.champion__frame} />
-                                    <div className={styles.champion__image}>
-                                        <img
-                                            src={champion ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png` : "/images/bg/bg.png"}
-                                            alt={champion ? champion.name : "Champion"}
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                            }}
-                                        />
-                                    </div>
-                                    <h3 className={styles.champion__name}>{champion ? champion.name : "Champion"}</h3>
-                                </div>
-                            );
-                        })}
+                        <div className={styles.current_champions__column}></div>
+                        <div className={styles.current_champions__column}></div>
+                        <div className={styles.current_champions__column}></div>
                     </div>
                     <button
                         className={styles.choose__champions__button}
