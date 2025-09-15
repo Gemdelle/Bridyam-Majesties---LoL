@@ -10,6 +10,8 @@ const Champions: React.FC = () => {
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
+    const [selectedChampions, setSelectedChampions] = useState<string[]>([]);
     const [favoriteChampions, setFavoriteChampions] = useState<number[]>(() => {
         const saved = localStorage.getItem('favoriteChampions');
         return saved ? JSON.parse(saved) : [];
@@ -30,6 +32,23 @@ const Champions: React.FC = () => {
         { id: 'mid', label: 'Mid' },
         { id: 'support', label: 'Support' },
         { id: 'top', label: 'Top' }
+    ];
+
+    // Account filter options (mock data - in real app this would come from API)
+    const accountOptions: FilterOption[] = [
+        { id: 'all', label: 'All Accounts' },
+        { id: 'account1', label: 'Main Account' },
+        { id: 'account2', label: 'Smurf Account' },
+        { id: 'account3', label: 'Alt Account' }
+    ];
+
+    // Champion filter options (based on favorite champions)
+    const championOptions: FilterOption[] = [
+        { id: 'all', label: 'All Champions' },
+        ...favoriteChampions.map(id => {
+            const champion = champions.find(c => c.id === id);
+            return champion ? { id: champion.id.toString(), label: champion.name } : null;
+        }).filter((option): option is FilterOption => option !== null)
     ];
 
     // Save favorites to localStorage whenever they change
@@ -129,7 +148,7 @@ const Champions: React.FC = () => {
             .map(id => champions.find(champion => champion.id === id))
             .filter((champion): champion is Champion => champion !== undefined);
 
-        // Apply filters to favorite champions
+        // Apply role filter to favorite champions
         if (selectedRoles.length > 0 && !selectedRoles.includes('all')) {
             favoriteChampionsList = favoriteChampionsList.filter(champion =>
                 champion.role && selectedRoles.includes(champion.role)
@@ -140,6 +159,23 @@ const Champions: React.FC = () => {
         if (searchTerm) {
             favoriteChampionsList = favoriteChampionsList.filter(champion =>
                 champion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Apply account filter (mock implementation - in real app this would filter by account data)
+        if (selectedAccounts.length > 0 && !selectedAccounts.includes('all')) {
+            // For now, we'll simulate account filtering by randomly showing/hiding champions
+            // In a real app, this would filter based on actual account data
+            favoriteChampionsList = favoriteChampionsList.filter((_, index) => {
+                const accountId = selectedAccounts[index % selectedAccounts.length];
+                return selectedAccounts.includes(accountId);
+            });
+        }
+
+        // Apply champion filter to favorite champions
+        if (selectedChampions.length > 0 && !selectedChampions.includes('all')) {
+            favoriteChampionsList = favoriteChampionsList.filter(champion =>
+                selectedChampions.includes(champion.id.toString())
             );
         }
 
@@ -206,10 +242,18 @@ const Champions: React.FC = () => {
                     <div className={styles.content__top}>
                         <div className={styles.filters}>
                             <Filter
-                                title="FILTER"
-                                options={roleOptions}
-                                selectedOptions={selectedRoles}
-                                onSelectionChange={setSelectedRoles}
+                                title="ACCOUNT"
+                                options={accountOptions}
+                                selectedOptions={selectedAccounts}
+                                onSelectionChange={setSelectedAccounts}
+                            />
+                        </div>
+                        <div className={styles.filters}>
+                            <Filter
+                                title="CHAMPION"
+                                options={championOptions}
+                                selectedOptions={selectedChampions}
+                                onSelectionChange={setSelectedChampions}
                             />
                         </div>
                         <div className={styles.search__container}>
