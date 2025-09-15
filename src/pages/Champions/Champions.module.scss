@@ -302,15 +302,16 @@
 }
 
 .current_champions__container {
-  width: 100%;
-  height: 93%;
+  width: 90%;
+  height: 80%;
+  margin-top: 2%;
   @include flex-between;
   // background-color: red; 
 }
 
 
 .current_champions__column {
-  width: 32%;
+  width: 31%;
   height: 100%;
   // background-color: green;
   @include flex-col-between;
