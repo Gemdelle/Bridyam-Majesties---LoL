@@ -259,18 +259,19 @@ const Champions: React.FC = () => {
                 Achievement
             </button>
 
-            <button
-                className={styles.choose__champions__button}
-                onClick={() => setShowChampions(true)}
-            >
-                Choose Champions
-            </button>
-
             {!showChampions ? (
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
                     {/* Filters and Search for Favorites View */}
                     <div className={styles.content__top}>
+                        <div className={styles.filters}>
+                            <button
+                                className={styles.choose__champions__button}
+                                onClick={() => setShowChampions(true)}
+                            >
+                                Choose Champions
+                            </button>
+                        </div>
                         <div className={styles.filters}>
                             <Filter
                                 title="ACCOUNT"
@@ -393,13 +394,15 @@ const Champions: React.FC = () => {
             ) : (
                 // Champions interface
                 <div className={styles.container}>
-                    <button
-                        className={styles.back__button}
-                        onClick={() => setShowChampions(false)}
-                    >
-                        Back
-                    </button>
                     <div className={styles.content__top}>
+                        <div className={styles.filters}>
+                            <button
+                                className={styles.back__button}
+                                onClick={() => setShowChampions(false)}
+                            >
+                                Back
+                            </button>
+                        </div>
                         <div className={styles.filters}>
                             <Filter
                                 title="FILTER"
