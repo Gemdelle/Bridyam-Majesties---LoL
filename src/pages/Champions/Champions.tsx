@@ -189,6 +189,8 @@ const Champions: React.FC = () => {
                 <div className={styles.empty__container}>
                     <div className={styles.current_champions__container}>
                         <div className={styles.current_champions__column}>
+
+                            {/* COMPONENTE */}
                             <div className={styles.current_champion__container}>
                                 <div className={styles.champion__portrait}>
                                     <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
@@ -230,6 +232,8 @@ const Champions: React.FC = () => {
                             <div className={styles.current_champion__container}></div>
                             <div className={styles.current_champion__container}></div>
                         </div>
+                        {/* COMPONENTE */}
+
                         <div className={styles.current_champions__column}></div>
                         <div className={styles.current_champions__column}></div>
                     </div>
