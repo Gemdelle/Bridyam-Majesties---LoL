@@ -400,7 +400,7 @@ const Champions: React.FC = () => {
                         <div className={styles.filters__container}>
                             <div className={styles.filters}>
                                 <Filter
-                                    title="FILTER"
+                                    title="ROLE"
                                     options={roleOptions}
                                     selectedOptions={selectedRoles}
                                     onSelectionChange={setSelectedRoles}
