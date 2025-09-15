@@ -426,9 +426,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             <div className={styles.divider}></div>
 
             <div className={styles.portrait__container}>
-                {isAccountRanked() && (
-                    <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
-                )}
+                <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
             </div>
 
             <div className={styles.divider}></div>
