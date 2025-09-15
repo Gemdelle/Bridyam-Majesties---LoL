@@ -7,6 +7,8 @@ interface ChampionProgressProps {
     championImage: string;
     masteryLevel: number;
     masteryProgress: number;
+    currentXP: number;
+    totalXP: number;
 }
 
 const ChampionProgress: React.FC<ChampionProgressProps> = ({
@@ -14,7 +16,9 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     championName,
     championImage,
     masteryLevel,
-    masteryProgress
+    masteryProgress,
+    currentXP,
+    totalXP
 }) => {
     // Function to get number image for each digit
     const getNumberImage = (digit: number): string => {
@@ -69,11 +73,16 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                     </div>
                 </div>
 
-                <div className={styles.champion__bar}>
-                    <div
-                        className={styles.champion__bar__fill}
-                        style={{ width: `${masteryProgress}%` }}
-                    ></div>
+                <div className={styles.champion__bar__container}>
+                    <div className={styles.champion__bar}>
+                        <div
+                            className={styles.champion__bar__fill}
+                            style={{ width: `${masteryProgress}%` }}
+                        ></div>
+                    </div>
+                    <div className={styles.champion__xp}>
+                        {currentXP}/{totalXP}
+                    </div>
                 </div>
             </div>
         </div>

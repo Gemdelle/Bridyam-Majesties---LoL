@@ -210,6 +210,10 @@ const Champions: React.FC = () => {
                                     const masteryLevel = Math.floor(Math.random() * 11);
                                     const masteryProgress = Math.floor(Math.random() * 101);
 
+                                    // Mock XP data
+                                    const currentXP = Math.floor(Math.random() * 1000) + 100;
+                                    const totalXP = Math.floor(Math.random() * 2000) + 1000;
+
                                     return (
                                         <ChampionProgress
                                             key={champion.id}
@@ -218,6 +222,8 @@ const Champions: React.FC = () => {
                                             championImage={championImageUrl}
                                             masteryLevel={masteryLevel}
                                             masteryProgress={masteryProgress}
+                                            currentXP={currentXP}
+                                            totalXP={totalXP}
                                         />
                                     );
                                 });

@@ -73,6 +73,7 @@
 
 .champion__number {
     margin-left: 5%;
+    margin-right: 3%;
     margin-bottom: 2%;
   display: flex;
   align-items: center;
@@ -80,7 +81,7 @@
 }
 
 .champion__number__digit {
-  height: 1.6vw;
+  height: 1.3vw;
   width: auto;
   object-fit: contain;
 }
@@ -90,12 +91,12 @@
 }
 
 .champion__stats {
-  width: 95%;
+  width: 93%;
   height: 40%;
-  margin-left: 5%;
+  margin-left: 3%;
   @include flex-between;
-  // align-items: flex-end;
-  // background-color: white;
+//   align-items: flex-end;
+//   background-color: white;
 }
 
 .champion__level__container {
@@ -139,22 +140,43 @@
   }
 }
 
+// Champion progress bar container
+.champion__bar__container {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+//   background-color: red;
+  @include flex-between;
+}
+
 // Champion progress bar (same as achievements)
 .champion__bar {
-    width: 80%;
-    height: 25%;
-    position: relative;
-    background-image: url('/images/frames/bar.png');
-    @include background;
-    @include flex-start;
-  }
-  
-  .champion__bar__fill {
-    height: 40%;
-    width: 75%; // Default progress - you can make this dynamic
-    margin-left: 4%;
-    background: linear-gradient(90deg, #ffdb4a, #6e530b);
-    border-radius: 10px;
-    transition: width 0.3s ease;
-    box-shadow: 0 0 8px rgba(255, 234, 74, 0.6);
-  } 
+  width: 73%;
+  height: 100%;
+  position: relative;
+  background-image: url('/images/frames/bar.png');
+  @include background;
+  @include flex-start;
+}
+
+.champion__bar__fill {
+  height: 40%;
+  width: 75%; // Default progress - you can make this dynamic
+  margin-left: 4%;
+  background: linear-gradient(90deg, #f2d666, #9c5a04);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 234, 74, 0.6);
+}
+
+// XP text
+.champion__xp {
+  color: #cdbe91;
+  font-size: 0.8vw;
+  font-weight: bold;
+  letter-spacing: 0.07vw;
+  text-shadow: 0px 0px 5px rgba(205, 190, 145, 0.6);
+  min-width: fit-content;
+}
