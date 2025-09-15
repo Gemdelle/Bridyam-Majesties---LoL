@@ -264,14 +264,14 @@ const Champions: React.FC = () => {
                 <div className={styles.empty__container}>
                     {/* Filters and Search for Favorites View */}
                     <div className={styles.content__top}>
-                        <div className={styles.filters}>
-                            <button
-                                className={styles.choose__champions__button}
-                                onClick={() => setShowChampions(true)}
-                            >
-                                Choose Champions
-                            </button>
-                        </div>
+
+                        <button
+                            className={styles.choose__champions__button}
+                            onClick={() => setShowChampions(true)}
+                        >
+                            Champions
+                        </button>
+
                         <div className={styles.filters}>
                             <Filter
                                 title="ACCOUNT"
@@ -395,14 +395,14 @@ const Champions: React.FC = () => {
                 // Champions interface
                 <div className={styles.container}>
                     <div className={styles.content__top}>
-                        <div className={styles.filters}>
-                            <button
-                                className={styles.back__button}
-                                onClick={() => setShowChampions(false)}
-                            >
-                                Back
-                            </button>
-                        </div>
+
+                        <button
+                            className={styles.back__button}
+                            onClick={() => setShowChampions(false)}
+                        >
+                            Back
+                        </button>
+
                         <div className={styles.filters}>
                             <Filter
                                 title="FILTER"
