@@ -121,3 +121,23 @@
     // background-color: pink;
   }
 }
+
+// Champion progress bar (same as achievements)
+.champion__bar {
+    width: 80%;
+    height: 25%;
+    position: relative;
+    background-image: url('/images/frames/bar.png');
+    @include background;
+    @include flex-start;
+  }
+  
+  .champion__bar__fill {
+    height: 40%;
+    width: 75%; // Default progress - you can make this dynamic
+    margin-left: 4%;
+    background: linear-gradient(90deg, #ffdb4a, #6e530b);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 234, 74, 0.6);
+  } 

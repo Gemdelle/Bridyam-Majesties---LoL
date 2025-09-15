@@ -191,10 +191,10 @@ const Champions: React.FC = () => {
                     <div className={styles.current_champions__container}>
                         <div className={styles.current_champions__column}>
                             <ChampionProgress />
+                            <ChampionProgress />
+                            <ChampionProgress />
+                            <ChampionProgress />
                         </div>
-
-                        <div className={styles.current_champions__column}></div>
-                        <div className={styles.current_champions__column}></div>
                     </div>
 
                     {/* Pagination */}
