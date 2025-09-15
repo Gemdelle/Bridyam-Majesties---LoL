@@ -17,6 +17,10 @@ const Champions: React.FC = () => {
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [showChampions, setShowChampions] = useState(false);
 
+    // --- Estado para la paginación ---
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
     // Role filter options
     const roleOptions: FilterOption[] = [
         { id: 'all', label: 'All Roles' },
@@ -118,19 +122,37 @@ const Champions: React.FC = () => {
         });
     };
 
-    // Get the first 5 liked champions for the empty screen
-    const getLikedChampionsForDisplay = (): (Champion | null)[] => {
-        const likedChampions: (Champion | null)[] = favoriteChampions
+    // Get champions for current page
+    const getCurrentPageChampions = () => {
+        const favoriteChampionsList = favoriteChampions
             .map(id => champions.find(champion => champion.id === id))
-            .filter((champion): champion is Champion => champion !== undefined)
-            .slice(0, 5); // Take only the first 5
+            .filter((champion): champion is Champion => champion !== undefined);
+
+        const totalPages = Math.ceil(favoriteChampionsList.length / itemsPerPage);
+
+        // Reset to page 1 if current page is out of bounds
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(1);
+        }
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentChampions = favoriteChampionsList.slice(startIndex, endIndex);
 
         // Fill remaining slots with placeholder data if less than 5
-        while (likedChampions.length < 5) {
+        const likedChampions: (Champion | null)[] = [...currentChampions];
+        while (likedChampions.length < itemsPerPage) {
             likedChampions.push(null);
         }
 
-        return likedChampions;
+        return { champions: likedChampions, totalPages };
+    };
+
+    const handlePageChange = (newPage: number) => {
+        const { totalPages } = getCurrentPageChampions();
+        if (newPage > 0 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
     };
 
     if (loading) {
@@ -155,20 +177,35 @@ const Champions: React.FC = () => {
                 Achievement
             </button>
 
+            <button
+                className={styles.choose__champions__button}
+                onClick={() => setShowChampions(true)}
+            >
+                Choose Champions
+            </button>
+
             {!showChampions ? (
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
                     <div className={styles.current_champions__container}>
-                        <div className={styles.current_champions__column}></div>
-                        <div className={styles.current_champions__column}></div>
-                        <div className={styles.current_champions__column}></div>
+
                     </div>
-                    <button
-                        className={styles.choose__champions__button}
-                        onClick={() => setShowChampions(true)}
-                    >
-                        Choose Champions
-                    </button>
+
+                    {/* Pagination */}
+                    {(() => {
+                        const { totalPages } = getCurrentPageChampions();
+                        return totalPages > 1 && (
+                            <div className={styles.pagination}>
+                                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                                    &lt; Previous
+                                </button>
+                                <span>Page {currentPage} of {totalPages}</span>
+                                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                                    Next &gt;
+                                </button>
+                            </div>
+                        );
+                    })()}
                 </div>
             ) : (
                 // Champions interface
