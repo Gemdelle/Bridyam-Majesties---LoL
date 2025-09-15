@@ -24,10 +24,101 @@
   @include flex-center;
 }
 
-.champion__frame {
+.champion__frame__container {
   position: absolute;
   width: auto;
   height: 100%;
+  z-index: 2;
+}
+
+.champion__frame {
+  position: relative;
+  width: auto;
+  height: 100%;
+  z-index: 1;
+}
+
+// Mastery glow effect for level 5+
+.mastery__glow {
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
+          drop-shadow(0 0 20px rgba(255, 165, 0, 0.6))
+          drop-shadow(0 0 42% rgba(255, 69, 0, 0.4));
+  animation: masteryPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes masteryPulse {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
+            drop-shadow(0 0 20px rgba(255, 165, 0, 0.6))
+            drop-shadow(0 0 40px rgba(255, 69, 0, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 1)) 
+            drop-shadow(0 0 30px rgba(255, 165, 0, 0.8))
+            drop-shadow(0 0 50px rgba(255, 69, 0, 0.6));
+  }
+}
+
+// Particles container
+.particles__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+// Individual particles
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: radial-gradient(circle, #f6f5f1, #ded56f);
+  border-radius: 50%;
+  animation: particleFloat 3s ease-in-out infinite;
+}
+
+// Particle positions and animations
+.particle__1 { top: 5%; left: 15%; animation-delay: 0s; }
+.particle__2 { top: 12%; right: 10%; animation-delay: 0.15s; }
+.particle__3 { top: 25%; left: 5%; animation-delay: 0.3s; }
+.particle__4 { top: 35%; right: 25%; animation-delay: 0.45s; }
+.particle__5 { top: 45%; left: 40%; animation-delay: 0.6s; }
+.particle__6 { top: 55%; right: 5%; animation-delay: 0.75s; }
+.particle__7 { top: 65%; left: 25%; animation-delay: 0.9s; }
+.particle__8 { top: 75%; right: 35%; animation-delay: 1.05s; }
+.particle__9 { top: 85%; left: 10%; animation-delay: 1.2s; }
+.particle__10 { top: 8%; left: 60%; animation-delay: 1.35s; }
+.particle__11 { top: 18%; right: 45%; animation-delay: 1.5s; }
+.particle__12 { top: 28%; left: 80%; animation-delay: 1.65s; }
+.particle__13 { top: 38%; right: 60%; animation-delay: 1.8s; }
+.particle__14 { top: 48%; left: 70%; animation-delay: 1.95s; }
+.particle__15 { top: 58%; right: 80%; animation-delay: 2.1s; }
+.particle__16 { top: 68%; left: 50%; animation-delay: 2.25s; }
+.particle__17 { top: 78%; right: 70%; animation-delay: 2.4s; }
+.particle__18 { top: 88%; left: 35%; animation-delay: 2.55s; }
+.particle__19 { top: 15%; left: 90%; animation-delay: 2.7s; }
+.particle__20 { top: 95%; right: 15%; animation-delay: 2.85s; }
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px) scale(0.8);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-15px) scale(1.1);
+    opacity: 0.9;
+  }
 }
 
 .champion {

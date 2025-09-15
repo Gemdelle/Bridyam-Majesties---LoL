@@ -40,10 +40,23 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     return (
         <div className={styles.current_champion__container}>
             <div className={styles.champion__portrait}>
-                <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
-                    className={styles.champion__frame}
+                <div className={styles.champion__frame__container}>
+                    <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
+                        className={styles.champion__frame}
+                    />
+                    {masteryLevel >= 5 && (
+                        <div className={styles.particles__container}>
+                            {Array.from({ length: 20 }, (_, i) => (
+                                <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <img
+                    src={championImage}
+                    alt="Champion"
+                    className={`${styles.champion} ${masteryLevel >= 5 ? styles.mastery__glow : ''}`}
                 />
-                <img src={championImage} alt="Champion" className={styles.champion} />
             </div>
             <div className={styles.champion__info}>
                 <div className={styles.champion__name}>
