@@ -12,6 +12,7 @@
 .current_champion__container {
   width: 100%;
   height: 21%;
+  margin-bottom: 3.5%;
   background-color: yellow;
   @include flex-between;
 }

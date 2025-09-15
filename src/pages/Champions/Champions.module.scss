@@ -314,7 +314,9 @@
   width: 31%;
   height: 100%;
   // background-color: green;
-  @include flex-col-between;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5%;
 }
 
 
