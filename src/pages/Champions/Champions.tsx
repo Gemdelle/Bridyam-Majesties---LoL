@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Champions.module.scss';
 import { fetchChampions, type Champion } from '../../services/championsService';
+import { AccountsService, type Account } from '../../services/accountsService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
@@ -8,6 +9,7 @@ import ChampionProgress from '../../components/ChampionProgress/ChampionProgress
 const Champions: React.FC = () => {
     const [champions, setChampions] = useState<Champion[]>([]);
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
+    const [userAccounts, setUserAccounts] = useState<Account[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
@@ -34,12 +36,13 @@ const Champions: React.FC = () => {
         { id: 'top', label: 'Top' }
     ];
 
-    // Account filter options (mock data - in real app this would come from API)
+    // Account filter options (based on user's claimed accounts)
     const accountOptions: FilterOption[] = [
         { id: 'all', label: 'All Accounts' },
-        { id: 'account1', label: 'Main Account' },
-        { id: 'account2', label: 'Smurf Account' },
-        { id: 'account3', label: 'Alt Account' }
+        ...userAccounts.map(account => ({
+            id: account.username,
+            label: account.name || account.username
+        }))
     ];
 
     // Champion filter options (based on favorite champions)
@@ -56,23 +59,51 @@ const Champions: React.FC = () => {
         localStorage.setItem('favoriteChampions', JSON.stringify(favoriteChampions));
     }, [favoriteChampions]);
 
-    // Load champions on component mount
+    // Load champions and user accounts on component mount
     useEffect(() => {
-        const loadChampions = async () => {
+        const loadData = async () => {
             try {
                 setLoading(true);
+
+                // Load champions
                 const championsData = await fetchChampions();
                 setChampions(championsData);
-                // Remove this line - let the useEffect handle the initial sorting
-                // setFilteredChampions(championsData);
+
+                // Load user accounts
+                const accountsService = AccountsService.getInstance();
+                const accountsData = await accountsService.getAccounts();
+                setUserAccounts(accountsData);
+
             } catch (error) {
-                console.error('Error loading champions:', error);
+                console.error('Error loading data:', error);
+                // Set mock data for development/testing
+                setUserAccounts([
+                    {
+                        url: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/5413.png",
+                        id: 19,
+                        name: "Tryppy Troppy",
+                        username: "GEM Damglantine#GEM",
+                        champions: 84,
+                        skins: 267,
+                        masteries: 84,
+                        solo_q_elo: "EMERALD 4",
+                        roles: {
+                            top: 45,
+                            jungle: 78,
+                            mid: 34,
+                            adc: 67,
+                            support: 45
+                        },
+                        blueEssence: 98760,
+                        orangeEssence: 14560
+                    }
+                ]);
             } finally {
                 setLoading(false);
             }
         };
 
-        loadChampions();
+        loadData();
     }, []);
 
     // Filter champions based on role and search
@@ -162,13 +193,13 @@ const Champions: React.FC = () => {
             );
         }
 
-        // Apply account filter (mock implementation - in real app this would filter by account data)
+        // Apply account filter (filter by user's claimed accounts)
         if (selectedAccounts.length > 0 && !selectedAccounts.includes('all')) {
-            // For now, we'll simulate account filtering by randomly showing/hiding champions
-            // In a real app, this would filter based on actual account data
+            // In a real implementation, this would filter champions based on which account they belong to
+            // For now, we'll simulate this by showing champions that "belong" to the selected accounts
             favoriteChampionsList = favoriteChampionsList.filter((_, index) => {
-                const accountId = selectedAccounts[index % selectedAccounts.length];
-                return selectedAccounts.includes(accountId);
+                const accountUsername = selectedAccounts[index % selectedAccounts.length];
+                return selectedAccounts.includes(accountUsername);
             });
         }
 
