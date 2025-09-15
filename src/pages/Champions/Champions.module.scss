@@ -303,15 +303,84 @@
 
 .current_champions__container {
   width: 100%;
-  height: 90%;
+  height: 93%;
   @include flex-between;
   background-color: red;
+}
+
+.current_champion__container {
+  width: 100%;
+  height: 20%;
+  background-color: yellow;
+  @include flex-between;
+}
+
+.champion__portrait {
+  width: 25%;
+  height: 100%;
+  position: relative;
+  background-color: blue;
+  @include flex-center;
+}
+
+.champion__frame {
+  position: absolute;
+  width: auto;
+  height: 100%;
+}
+
+.champion {
+  width: 60%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 15%;
+}
+
+.champion__info {
+  width: 70%;
+  height: 100%;
+  background-color: pink;
+  @include flex-col-between;
 }
 
 .current_champions__column {
   width: 30%;
   height: 100%;
   background-color: green;
+  @include flex-col-between;
+}
+
+.champion__name {
+  width: 100%;
+  height: 30%;
+  background-color: purple;
+  @include flex-start;
+}
+
+.champion__stats {
+  width: 100%;
+  height: 35%;
+  @include flex-between;
+  background-color: white;
+}
+
+.champion__level__container {
+  width: 80%;
+  height: 100%;
+  @include flex-between;
+  background-color: darkgoldenrod;
+}
+
+.champion__level {
+  width: auto;
+  height: 100%;
+}
+
+.champion__level__number {
+  width: 20%;
+  height: 100%;
+  background-color: rgb(184, 11, 11);
 }
 
 .current_champion {
@@ -451,7 +520,6 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  margin-top: 2%;
 }
 
 .pagination button {

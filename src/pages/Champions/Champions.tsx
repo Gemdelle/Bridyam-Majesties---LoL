@@ -188,24 +188,61 @@ const Champions: React.FC = () => {
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
                     <div className={styles.current_champions__container}>
+                        <div className={styles.current_champions__column}>
+                            <div className={styles.current_champion__container}>
+                                <div className={styles.champion__portrait}>
+                                    <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
+                                        className={styles.champion__frame}
+                                    />
+                                    <img src="/images/roulette/wheel.png" alt="Champion" className={styles.champion} />
+                                </div>
+                                <div className={styles.champion__info}>
+                                    <div className={styles.champion__name}>
+                                        <h3>Champion Name</h3>
+                                    </div>
 
+                                    <div className={styles.champion__stats}>
+                                        <div className={styles.champion__level__container}>
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+                                            <img src="/images/gems/crystal.png" alt="Level" className={styles.champion__level} />
+
+                                        </div>
+                                        <div className={styles.champion__level__number}></div>
+                                    </div>
+
+                                    <div className={styles.champion__bar}>
+                                        <div className={styles.champion__bar__fill}></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.current_champion__container}></div>
+                            <div className={styles.current_champion__container}></div>
+                            <div className={styles.current_champion__container}></div>
+                        </div>
+                        <div className={styles.current_champions__column}></div>
+                        <div className={styles.current_champions__column}></div>
                     </div>
 
                     {/* Pagination */}
-                    {(() => {
-                        const { totalPages } = getCurrentPageChampions();
-                        return totalPages > 1 && (
-                            <div className={styles.pagination}>
-                                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                                    &lt; Previous
-                                </button>
-                                <span>Page {currentPage} of {totalPages}</span>
-                                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                                    Next &gt;
-                                </button>
-                            </div>
-                        );
-                    })()}
+                    <div className={styles.pagination}>
+                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                            &lt; Previous
+                        </button>
+                        <span>Page {currentPage} of {getCurrentPageChampions().totalPages}</span>
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === getCurrentPageChampions().totalPages}>
+                            Next &gt;
+                        </button>
+                    </div>
                 </div>
             ) : (
                 // Champions interface
