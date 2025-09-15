@@ -31,7 +31,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1vw;
   // background-color: red;
 }
 
@@ -43,6 +42,7 @@
   justify-content: flex-start;
   position: relative;
   z-index: 9999;
+  // background-color: blue;
 }
 
 .search__container {
@@ -52,6 +52,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  // background-color: green;
 }
 
 .search__input {
@@ -68,6 +69,7 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  // background-color: yellow;
 }
 
 .search__input::placeholder {
@@ -304,9 +306,8 @@
 .current_champions__container {
   width: 90%;
   height: 80%;
-  margin-top: 2%;
   @include flex-between;
-  background-color: red; 
+  // background-color: red; 
 }
 
 

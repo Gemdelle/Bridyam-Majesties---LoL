@@ -125,9 +125,23 @@ const Champions: React.FC = () => {
 
     // Get champions for current page
     const getCurrentPageChampions = () => {
-        const favoriteChampionsList = favoriteChampions
+        let favoriteChampionsList = favoriteChampions
             .map(id => champions.find(champion => champion.id === id))
             .filter((champion): champion is Champion => champion !== undefined);
+
+        // Apply filters to favorite champions
+        if (selectedRoles.length > 0 && !selectedRoles.includes('all')) {
+            favoriteChampionsList = favoriteChampionsList.filter(champion =>
+                champion.role && selectedRoles.includes(champion.role)
+            );
+        }
+
+        // Apply search filter to favorite champions
+        if (searchTerm) {
+            favoriteChampionsList = favoriteChampionsList.filter(champion =>
+                champion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
 
         const totalPages = Math.ceil(favoriteChampionsList.length / itemsPerPage);
 
@@ -188,6 +202,35 @@ const Champions: React.FC = () => {
             {!showChampions ? (
                 // Empty screen with Choose Champions button
                 <div className={styles.empty__container}>
+                    {/* Filters and Search for Favorites View */}
+                    <div className={styles.content__top}>
+                        <div className={styles.filters}>
+                            <Filter
+                                title="FILTER"
+                                options={roleOptions}
+                                selectedOptions={selectedRoles}
+                                onSelectionChange={setSelectedRoles}
+                            />
+                        </div>
+                        <div className={styles.search__container}>
+                            <input
+                                type="text"
+                                placeholder="Search champions..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className={styles.search__input}
+                            />
+                            {searchTerm && (
+                                <button
+                                    onClick={() => setSearchTerm('')}
+                                    className={styles.search__clear}
+                                    type="button"
+                                >
+                                    ×
+                                </button>
+                            )}
+                        </div>
+                    </div>
                     <div className={styles.current_champions__container}>
                         {(() => {
                             const { champions: currentChampions } = getCurrentPageChampions();
@@ -244,6 +287,22 @@ const Champions: React.FC = () => {
                             );
                         })()}
                     </div>
+
+                    {/* No results message */}
+                    {(() => {
+                        const { champions: currentChampions } = getCurrentPageChampions();
+                        const hasChampions = currentChampions.some(champion => champion !== null);
+                        const { totalPages } = getCurrentPageChampions();
+
+                        if (!hasChampions && totalPages === 0) {
+                            return (
+                                <div className={styles.no__results}>
+                                    <p>No favorite champions found matching your criteria.</p>
+                                </div>
+                            );
+                        }
+                        return null;
+                    })()}
 
                     {/* Pagination */}
                     <div className={styles.pagination}>
