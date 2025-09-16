@@ -53,6 +53,15 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                     className={styles.champion__frame__background}
                 />
 
+                {/* Particles on frame */}
+                {masteryLevel >= 5 && (
+                    <div className={styles.particles__container}>
+                        {Array.from({ length: 20 }, (_, i) => (
+                            <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                        ))}
+                    </div>
+                )}
+
                 {/* Champion portrait in circular cutout */}
                 <div className={styles.champion__portrait__container}>
                     <img
@@ -60,13 +69,6 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                         alt="Champion"
                         className={`${styles.champion__portrait} ${masteryLevel >= 5 ? styles.mastery__glow : ''}`}
                     />
-                    {masteryLevel >= 5 && (
-                        <div className={styles.particles__container}>
-                            {Array.from({ length: 20 }, (_, i) => (
-                                <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 {/* Mastery badge in center */}
