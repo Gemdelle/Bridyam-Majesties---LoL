@@ -170,7 +170,13 @@ const mockChampions: Champion[] = [
     { id: 160, name: "Ziggs" },
     { id: 161, name: "Zilean" },
     { id: 162, name: "Zoe" },
-    { id: 163, name: "Zyra" }
+    { id: 163, name: "Zyra" },
+    { id: 164, name: "Naafiri" },
+    { id: 165, name: "Briar" },
+    { id: 166, name: "Hwei" },
+    { id: 167, name: "Smolder" },
+    { id: 168, name: "Aurora" },
+    { id: 169, name: "Ambessa" }
 ];
 
 // Function to fetch champions - will be replaced with API call
@@ -182,20 +188,13 @@ export const fetchChampions = async (): Promise<Champion[]> => {
     return mockChampions;
 };
 
-// Function to get champions by IDs (for specific bloodline data)
-export const getChampionsByIds = (ids: number[]): Champion[] => {
-    return mockChampions.filter(champion => ids.includes(champion.id));
-};
-
-// Mapping from sequential ID to real Riot API ID
-// Complete mapping based on League of Legends champion IDs
 const championIdMapping: { [key: number]: number } = {
     1: 266,    // Aatrox
     2: 103,    // Ahri
     3: 84,     // Akali
     4: 166,    // Akshan
     5: 12,     // Alistar
-    6: 32,     // Ammu
+    6: 32,     // Amumu
     7: 34,     // Anivia
     8: 1,      // Annie
     9: 523,    // Aphelios
@@ -352,10 +351,16 @@ const championIdMapping: { [key: number]: number } = {
     160: 115,  // Ziggs
     161: 26,   // Zilean
     162: 142,  // Zoe
-    163: 143   // Zyra
+    163: 143,  // Zyra
+    164: 950,  // Naafiri
+    165: 233,  // Briar  
+    166: 910,  // Hwei
+    167: 901,  // Smolder
+    168: 893,  // Aurora
+    169: 799   // Ambessa
 };
 
 // Function to get the real Riot API ID for a champion
 export const getRiotIdForChampion = (championId: number): number => {
     return championIdMapping[championId] || championId;
-}; 
+};
