@@ -4,12 +4,7 @@
   height: 4vh;
   width: 22vh;
   border-radius: $border-radius-sm;
-  background: linear-gradient(
-  to bottom,     /* top: rich bronze-brown */
-  rgb(105, 88, 61) 30%,   /* middle: golden brown */
-  rgb(57, 41, 20) 100%    /* bottom: darker brown base */
-);
-  border: 3px solid rgb(182, 142, 97);
+  border-bottom: 3px solid rgb(182, 142, 97);
   box-shadow: none;
   position: relative;
 }
