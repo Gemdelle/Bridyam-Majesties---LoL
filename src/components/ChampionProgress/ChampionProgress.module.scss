@@ -1,15 +1,15 @@
 @use '../../styles/variables.scss' as *;
 
 // Champion Card - New Design based on image
-.champion__card {
-  position: relative;
-  width: 20%;
-  min-width: 320px;
-  height: 100%;
-  display: flex;
-  @include flex-col-between;
-  background-color: darkblue;
-}
+  .champion__card {
+    position: relative;
+    width: 18%;
+    min-width: 280px;
+    height: 100%;
+    display: flex;
+    @include flex-col-between;
+    background-color: darkblue;
+  }
 
 // Names container (separate from background)
 .names__container {

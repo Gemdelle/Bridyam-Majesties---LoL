@@ -24,7 +24,7 @@ const Champions: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 12; // 3 columns × 4 champions each
+    const itemsPerPage = 5; // 5 champions per page
 
     // Role filter options
     const roleOptions: FilterOption[] = [
@@ -221,7 +221,7 @@ const Champions: React.FC = () => {
         const endIndex = startIndex + itemsPerPage;
         const currentChampions = favoriteChampionsList.slice(startIndex, endIndex);
 
-        // Fill remaining slots with placeholder data if less than 12
+        // Fill remaining slots with placeholder data if less than 5
         const likedChampions: (Champion | null)[] = [...currentChampions];
         while (likedChampions.length < itemsPerPage) {
             likedChampions.push(null);
