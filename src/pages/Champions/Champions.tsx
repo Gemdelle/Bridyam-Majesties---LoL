@@ -337,6 +337,8 @@ const Champions: React.FC = () => {
                                         masteryProgress={masteryProgress}
                                         currentXP={currentXP}
                                         totalXP={totalXP}
+                                        championNumber={Math.floor(Math.random() * 100) + 1}
+                                        accountName="GEM Damglantine#GEM"
                                     />
                                 );
                             });
