@@ -55,42 +55,33 @@
 }
 
 .champion__number {
-  display: flex;
-  align-items: center;
-  gap: 0.05vw;
-}
-
-.champion__number__digit {
-  width: 1.2rem;
-  height: 1.2rem;
-  object-fit: contain;
+  color: #e6bf78;
+  font-size: 1vw;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 0.1vw;
 }
 
 // Champion name
 .champion__name {
-    height: 50%;
-    top: 84%;
-    left: 50%;
     color: #e6bf78;
     font-size: 1vw;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
-    z-index: 3;
     letter-spacing: 0.3vw;
-//     background-color: red;
-  }
+}
 
 // Champion content container (with background)
 .champion__content__container {
   position: relative;
   width: 100%;
-  height: 80%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-//   background-color: darkmagenta;
+  // background-color: darkmagenta;
 }
 
 // Main frame background
@@ -117,7 +108,6 @@
   height: 35%;
   border-radius: 50%;
   z-index: 1;
-//   background-color: green;
 }
 
 .champion__portrait {
@@ -129,8 +119,8 @@
 
 // Mastery badge container (center section)
 .mastery__badge__container {
-  margin-top: 63%;
-  margin-bottom: 2%;
+  margin-top: 60%;
+  margin-bottom: 1%;
   left: 50%;
   width: 25%;
   height: 15%;
@@ -149,14 +139,13 @@
 
 // Crystals container (row of 10 crystals)
 .crystals__container {
-  top: 62%;
-  left: 50%;
   width: 45%;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 3;
+  margin-bottom: 3%;
 //   background-color: yellow;
 }
 
@@ -164,6 +153,7 @@
   width: 7%;
   height: 100%;
   object-fit: contain;
+  box-shadow: 0px 0px 15px rgba(3, 2, 0, 1);
 }
 
 .crystal__unlocked {
@@ -172,15 +162,16 @@
 }
 
 .crystal__locked {
-  filter: brightness(0.3) saturate(0.3);
-  opacity: 0.6;
+  filter: brightness(0.3) saturate(0.2);
+  opacity: 1;
 }
 
 // Progress bar container
 .progress__bar__container {
   width: 45%;
-  height: 3%;
+  height: 4%;
   z-index: 3;
+  margin-bottom: 1%;
 //   background-color: pink;
 }
 
@@ -233,17 +224,22 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  margin-top: 10%;
+  margin-right: 2%;
 //   background-color: red;
 }
 
 .mastery__level__number {
-  margin-top: 4%;
+  margin-top: 13%;
   position: relative;
   color: #cdbe91;
   font-size: 1vw;
   font-weight: bold;
   text-align: center;
+  margin-right: 2%;
+  letter-spacing: 0.1vw;
   z-index: 4;
+  // background-color: blue;
 }
 
 // Glow effect for mastery level 5+

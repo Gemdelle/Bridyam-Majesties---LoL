@@ -22,23 +22,6 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     championNumber,
     accountName
 }) => {
-    // Function to get number image for each digit
-    const getNumberImage = (digit: number): string => {
-        return `/images/numbers/${digit}.png`;
-    };
-
-    // Function to render champion number as images
-    const renderChampionNumber = (number: number) => {
-        const digits = number.toString().split('').map(Number);
-        return digits.map((digit, index) => (
-            <img
-                key={index}
-                src={getNumberImage(digit)}
-                alt={digit.toString()}
-                className={styles.champion__number__digit}
-            />
-        ));
-    };
     return (
         <div className={styles.champion__card}>
             {/* Names container (separate from background) */}
@@ -53,7 +36,7 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                 {/* Champion number and name container */}
                 <div className={styles.champion__info__container}>
                     <div className={styles.champion__number}>
-                        {renderChampionNumber(championNumber)}
+                        {championNumber}
                     </div>
                     <div className={styles.champion__name}>
                         {championName.toUpperCase()}
