@@ -322,19 +322,16 @@
 .current_champions__container {
   width: 95%;
   height: 75%;
-  @include flex-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2%;
+  overflow-x: auto;
   // background-color: red; 
 }
 
 
-.current_champions__column {
-  width: 30%;
-  height: 100%;
-  // background-color: green;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5%;
-}
 
 
 .main {

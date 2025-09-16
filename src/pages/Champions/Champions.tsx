@@ -313,56 +313,33 @@ const Champions: React.FC = () => {
                         {(() => {
                             const { champions: currentChampions } = getCurrentPageChampions();
 
-                            // Distribute champions across 3 columns
-                            const column1 = currentChampions.slice(0, 3); // First 4 champions
-                            const column2 = currentChampions.slice(3, 6); // Next 4 champions  
-                            const column3 = currentChampions.slice(6, 9); // Last 4 champions
+                            return currentChampions.map((champion) => {
+                                if (!champion) {
+                                    return null; // Empty slot
+                                }
 
-                            const renderColumn = (champions: (Champion | null)[], startIndex: number) => {
-                                return champions.map((champion, index) => {
-                                    if (!champion) {
-                                        return null; // Empty slot
-                                    }
+                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
 
-                                    const championNumber = (currentPage - 1) * itemsPerPage + startIndex + index + 1;
-                                    const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+                                // Mock mastery data
+                                const masteryLevel = Math.floor(Math.random() * 11);
+                                const masteryProgress = Math.floor(Math.random() * 101);
 
-                                    // Mock mastery data
-                                    const masteryLevel = Math.floor(Math.random() * 11);
-                                    const masteryProgress = Math.floor(Math.random() * 101);
+                                // Mock XP data
+                                const currentXP = Math.floor(Math.random() * 1000) + 100;
+                                const totalXP = Math.floor(Math.random() * 2000) + 1000;
 
-                                    // Mock XP data
-                                    const currentXP = Math.floor(Math.random() * 1000) + 100;
-                                    const totalXP = Math.floor(Math.random() * 2000) + 1000;
-
-                                    return (
-                                        <ChampionProgress
-                                            key={champion.id}
-                                            championNumber={championNumber}
-                                            championName={champion.name}
-                                            championImage={championImageUrl}
-                                            masteryLevel={masteryLevel}
-                                            masteryProgress={masteryProgress}
-                                            currentXP={currentXP}
-                                            totalXP={totalXP}
-                                        />
-                                    );
-                                });
-                            };
-
-                            return (
-                                <>
-                                    <div className={styles.current_champions__column}>
-                                        {renderColumn(column1, 0)}
-                                    </div>
-                                    <div className={styles.current_champions__column}>
-                                        {renderColumn(column2, 4)}
-                                    </div>
-                                    <div className={styles.current_champions__column}>
-                                        {renderColumn(column3, 8)}
-                                    </div>
-                                </>
-                            );
+                                return (
+                                    <ChampionProgress
+                                        key={champion.id}
+                                        championName={champion.name}
+                                        championImage={championImageUrl}
+                                        masteryLevel={masteryLevel}
+                                        masteryProgress={masteryProgress}
+                                        currentXP={currentXP}
+                                        totalXP={totalXP}
+                                    />
+                                );
+                            });
                         })()}
                     </div>
 

@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './ChampionProgress.module.scss';
 
 interface ChampionProgressProps {
-    championNumber: number;
     championName: string;
     championImage: string;
     masteryLevel: number;
@@ -12,7 +11,6 @@ interface ChampionProgressProps {
 }
 
 const ChampionProgress: React.FC<ChampionProgressProps> = ({
-    championNumber,
     championName,
     championImage,
     masteryLevel,
@@ -20,85 +18,84 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     currentXP,
     totalXP
 }) => {
-    // Function to get number image for each digit
-    const getNumberImage = (digit: number): string => {
-        return `/images/numbers/${digit}.png`;
-    };
-
-    // Function to render champion number as images
-    const renderChampionNumber = (number: number) => {
-        const digits = number.toString().split('').map(Number);
-        return digits.map((digit, index) => (
-            <img
-                key={index}
-                src={getNumberImage(digit)}
-                alt={digit.toString()}
-                className={styles.champion__number__digit}
-            />
-        ));
-    };
     return (
-        <div className={styles.current_champion__container}>
-            <div className={styles.champion__portrait}>
-                <div className={styles.champion__frame__container}>
-                    <img src="/images/frames/personal-champion.frame.png" alt="Champion Portrait"
-                        className={styles.champion__frame}
-                    />
-                    {masteryLevel >= 5 && (
-                        <div className={styles.particles__container}>
-                            {Array.from({ length: 20 }, (_, i) => (
-                                <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+        <div className={styles.champion__card}>
+            {/* Main frame background */}
+            <img
+                src="/images/frames/champion.frame-progress.png"
+                alt="Champion Frame"
+                className={styles.champion__frame__background}
+            />
+
+            {/* Champion portrait in circular cutout */}
+            <div className={styles.champion__portrait__container}>
                 <img
                     src={championImage}
                     alt="Champion"
-                    className={`${styles.champion} ${masteryLevel >= 5 ? styles.mastery__glow : ''}`}
+                    className={`${styles.champion__portrait} ${masteryLevel >= 5 ? styles.mastery__glow : ''}`}
+                />
+                {masteryLevel >= 5 && (
+                    <div className={styles.particles__container}>
+                        {Array.from({ length: 20 }, (_, i) => (
+                            <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Mastery badge in center */}
+            <div className={styles.mastery__badge__container}>
+                <img
+                    src={`/images/masteries/badges/${masteryLevel}.png`}
+                    alt="Mastery Badge"
+                    className={styles.mastery__badge}
                 />
             </div>
-            <div className={styles.champion__info}>
-                <div className={styles.champion__name}>
-                    <div className={styles.champion__number}>
-                        {renderChampionNumber(championNumber)}
-                    </div>
-                    <h3>{championName}</h3>
-                </div>
 
-                <div className={styles.champion__stats}>
-                    <div className={styles.champion__level__container}>
-                        {Array.from({ length: 11 }, (_, i) => {
-                            const isUnlocked = i < masteryLevel;
-                            return (
-                                <img
-                                    key={i}
-                                    src="/images/gems/crystal.png"
-                                    alt="Level"
-                                    className={`${styles.champion__level} ${isUnlocked ? styles.crystal__unlocked : styles.crystal__locked}`}
-                                />
-                            );
-                        })}
-                    </div>
-                    <div className={styles.champion__level__number}>
+            {/* Crystals row */}
+            <div className={styles.crystals__container}>
+                {Array.from({ length: 10 }, (_, i) => {
+                    const isUnlocked = i < masteryLevel;
+                    return (
                         <img
-                            src={`/images/masteries/mastery/${masteryLevel}.png`}
-                            alt="Level"
-                            className={`${styles.champion__level__number__image} ${styles[`level__${masteryLevel}`]}`}
+                            key={i}
+                            src="/images/gems/crystal.png"
+                            alt="Crystal"
+                            className={`${styles.crystal} ${isUnlocked ? styles.crystal__unlocked : styles.crystal__locked}`}
                         />
-                    </div>
-                </div>
+                    );
+                })}
+            </div>
 
-                <div className={styles.champion__bar__container}>
-                    <div className={styles.champion__bar}>
-                        <div
-                            className={styles.champion__bar__fill}
-                            style={{ width: `${masteryProgress}%` }}
-                        ></div>
-                    </div>
-                    <div className={styles.champion__xp}>
-                        {currentXP}/{totalXP}
-                    </div>
+            {/* Progress bar */}
+            <div className={styles.progress__bar__container}>
+                <div className={styles.progress__bar}>
+                    <div
+                        className={styles.progress__bar__fill}
+                        style={{ width: `${masteryProgress}%` }}
+                    ></div>
+                </div>
+            </div>
+
+            {/* XP text */}
+            <div className={styles.xp__text}>
+                {currentXP}/{totalXP}
+            </div>
+
+            {/* Champion name */}
+            <div className={styles.champion__name}>
+                {championName}
+            </div>
+
+            {/* Mastery level frame at bottom */}
+            <div className={styles.mastery__level__frame__container}>
+                <img
+                    src="/images/frames/mastery-level-frame.png"
+                    alt="Mastery Level Frame"
+                    className={styles.mastery__level__frame}
+                />
+                <div className={styles.mastery__level__number}>
+                    {masteryLevel}
                 </div>
             </div>
         </div>

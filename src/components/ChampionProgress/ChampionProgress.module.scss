@@ -1,42 +1,182 @@
-@use '../../styles/variables.scss' as *;
-
-
-
-.current_champion__container {
+// Champion Card - New Design based on image
+.champion__card {
+  position: relative;
   width: 100%;
-  height: 30%;
-  background-image: url('/images/frames/champion-progress-bg.png');
-  margin-bottom: 3.5%;
-  //   background-color: red; 
-  @include flex-between;
-  @include background;
-  background-size: 68% 90%;
-  background-position: right;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+//   background-color: darkblue;
 }
 
-.champion__portrait {
-  width: 25%;
-  height: 100%;
-  position: relative;
-  // background-color: blue;
-  @include flex-center;
-}
-
-.champion__frame__container {
+// Main frame background
+.champion__frame__background {
   position: absolute;
-  width: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  z-index: 2;
-}
-
-.champion__frame {
-  position: relative;
-  width: auto;
-  height: 100%;
+  object-fit: contain;
   z-index: 1;
 }
 
-// Mastery glow effect for level 5+
+// Champion portrait container (circular cutout at top)
+.champion__portrait__container {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  height: 35%;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.champion__portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+// Mastery badge container (center section)
+.mastery__badge__container {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25%;
+  height: 15%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mastery__badge {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// Crystals container (row of 10 crystals)
+.crystals__container {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+}
+
+.crystal {
+  width: 6%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.crystal__unlocked {
+  filter: brightness(1) saturate(1);
+  opacity: 1;
+}
+
+.crystal__locked {
+  filter: brightness(0.3) saturate(0.3);
+  opacity: 0.6;
+}
+
+// Progress bar container
+.progress__bar__container {
+  position: absolute;
+  top: 72%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 4%;
+  z-index: 3;
+}
+
+.progress__bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #1e2328, #0f1419);
+  border: 1px solid #463714;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress__bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c89b3c, #d4a94a);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+// XP text
+.xp__text {
+  position: absolute;
+  top: 78%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #cdbe91;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  z-index: 3;
+}
+
+// Champion name
+.champion__name {
+  position: absolute;
+  top: 84%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #cdbe91;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  z-index: 3;
+}
+
+// Mastery level frame at bottom
+.mastery__level__frame__container {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.mastery__level__frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mastery__level__number {
+  position: relative;
+  color: #cdbe91;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 4;
+}
+
+// Glow effect for mastery level 5+
 .mastery__glow {
   filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) 
           drop-shadow(0 0 20px rgba(255, 165, 0, 0.6))
@@ -57,7 +197,7 @@
   }
 }
 
-// Particles container
+// Particles container for glow effect
 .particles__container {
   position: absolute;
   top: 0;
@@ -65,7 +205,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
 }
 
 // Individual particles
@@ -105,221 +245,8 @@
     transform: translateY(0px) scale(1);
     opacity: 0.7;
   }
-  25% {
+  50% {
     transform: translateY(-10px) scale(1.2);
     opacity: 1;
   }
-  50% {
-    transform: translateY(-5px) scale(0.8);
-    opacity: 0.8;
-  }
-  75% {
-    transform: translateY(-15px) scale(1.1);
-    opacity: 0.9;
-  }
-}
-
-.champion {
-  width: 80%;
-  height: auto;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-top: 15%;
-}
-
-.champion__info {
-    position: relative;
-    margin-right: 4%;
-  width: 59%;
-  height: 60%;
-//   background-color: black;
-  @include flex-col;
-  align-items: flex-start;
-  justify-content: flex-end;
-}
-
-.current_champions__column {
-  width: 32%;
-  height: 100%;
-  // background-color: green;
-  @include flex-col-between;
-}
-
-.champion__name {
-  width: 70%;
-  height: 30%;
-  margin-bottom: 3%;
-  // background-color: darkgreen;
-  border-bottom: 3px solid rgb(168, 133, 37);
-  font-size: 0.8vw;
-  letter-spacing: 0.2vw;
-  font-weight: bolder;
-  text-transform: uppercase;
-  color: rgb(216, 183, 92);
-  text-shadow: 0px 0px 10px rgba(34, 24, 3, 0.6);
-  @include flex-start;
-  align-items: flex-end;
-  gap: 0.5rem;
-}
-
-.champion__number {
-    margin-left: 5%;
-    margin-right: 3%;
-    margin-bottom: 2%;
-  display: flex;
-  align-items: center;
-  gap: 0.1rem;
-}
-
-.champion__number__digit {
-  height: 1vw;
-  width: auto;
-  object-fit: contain;
-}
-
-.champion__name h3 {
-  margin: 0;
-}
-
-.champion__stats {
-  width: 93%;
-  height: 40%;
-  margin-left: 3%;
-  @include flex-between;
-//   align-items: flex-end;
-//   background-color: white;
-}
-
-.champion__level__container {
-  width: 70%;
-  height: 70%;
-  @include flex-between;
-  // background-color: darkgoldenrod;
-}
-
-.champion__level {
-  width: auto;
-  height: 100%;
-  transition: all 0.3s ease;
-}
-
-// Crystal states
-.crystal__unlocked {
-  filter: brightness(1) saturate(1);
-}
-
-.crystal__locked {
-  filter: brightness(0.4) saturate(0.3);
-  opacity: 0.6;
-}
-
-.champion__level__number {
-position: absolute;
-top: 15%;
-right: 0%;
-  width: 25%;
-  height: auto;
-//   background-color: rgb(184, 11, 11);
-}
-
-.champion__level__number__image {
-  width: 100%;
-  height: 100%;
-}
-
-// Different sizes for each mastery level number
-.champion__level__number__image.level__10 {
-  width: 120%;
-  height: 120%;
-}
-
-.champion__level__number__image.level__9 {
-    width: 90%;
-    height: 90%;
-}
-
-.champion__level__number__image.level__8 {
-  width: 90%;
-  height: 90%;
-}
-
-.champion__level__number__image.level__7 {
-  width: 85%;
-  height: 85%;
-}
-
-.champion__level__number__image.level__6,
-.champion__level__number__image.level__5,
-.champion__level__number__image.level__4,
-.champion__level__number__image.level__3,
-.champion__level__number__image.level__2
- {
-  width: 83%;
-  height: 83%;
-}
-
-.champion__level__number__image.level__1,
-.champion__level__number__image.level__0 {
-    width: 65%;
-    height: 65%;
-  }
-
-.current_champion {
-  position: relative;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  @include flex-col;
-  justify-content: flex-start;
-  // background-color: blue;
-
-  .champion__frame {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-    font-size: 1vw;
-    // background-color: pink;
-  }
-}
-
-// Champion progress bar container
-.champion__bar__container {
-  width: 100%;
-  height: 25%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-//   background-color: red;
-  @include flex-between;
-}
-
-// Champion progress bar (same as achievements)
-.champion__bar {
-  width: 73%;
-  height: 100%;
-  position: relative;
-  background-image: url('/images/frames/bar.png');
-  @include background;
-  @include flex-start;
-}
-
-.champion__bar__fill {
-  height: 40%;
-  width: 75%; // Default progress - you can make this dynamic
-  margin-left: 4%;
-  background: linear-gradient(90deg, #f2d666, #9c5a04);
-  border-radius: 10px;
-  transition: width 0.3s ease;
-  box-shadow: 0 0 8px rgba(255, 234, 74, 0.6);
-}
-
-// XP text
-.champion__xp {
-  color:rgb(255, 230, 161);
-  font-size: 0.7vw;
-  font-weight: bolder;
-  letter-spacing: 0.03vw;
-  text-shadow: 0px 0px 5px rgba(205, 190, 145, 0.6);
-  min-width: fit-content;
-  margin-right: 3%;
 }
