@@ -154,17 +154,17 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 1.2vw;
+  gap: 2vw;
 }
 
 .champion__card {
-  width: 7%;
+  width: 20%;
   height: 30%;
   position: relative;
   transition: all 0.3s ease;
   cursor: pointer;
   @include flex-col;
-  // background-color: purple;
+  background-color: purple;
 }
 
 .champion__frame {
@@ -326,7 +326,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 2%;
   overflow-x: auto;
   // background-color: red; 
 }
