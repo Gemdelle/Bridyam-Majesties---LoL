@@ -151,7 +151,6 @@
 .mastery__level__frame__container {
   position: absolute;
   bottom: 2%;
-  left: 50%;
   width: 100%;
   height: 15%;
   display: flex;
@@ -166,6 +165,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+//   background-color: red;
 }
 
 .mastery__level__number {
