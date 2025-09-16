@@ -313,20 +313,40 @@ const Champions: React.FC = () => {
                         {(() => {
                             const { champions: currentChampions } = getCurrentPageChampions();
 
-                            return currentChampions.map((champion) => {
-                                if (!champion) {
-                                    return null; // Empty slot
-                                }
+                            // Create array with mastery data and sort by mastery level (descending)
+                            const championsWithMastery = currentChampions
+                                .filter(champion => champion !== null)
+                                .map((champion, index) => {
+                                    // Mock mastery data
+                                    const masteryLevel = Math.floor(Math.random() * 11);
+                                    const masteryProgress = Math.floor(Math.random() * 101);
+
+                                    return {
+                                        champion,
+                                        masteryLevel,
+                                        masteryProgress,
+                                        originalIndex: index
+                                    };
+                                })
+                                .sort((a, b) => {
+                                    // Sort by mastery level descending, then by mastery progress descending
+                                    if (b.masteryLevel !== a.masteryLevel) {
+                                        return b.masteryLevel - a.masteryLevel;
+                                    }
+                                    return b.masteryProgress - a.masteryProgress;
+                                });
+
+                            return championsWithMastery.map((championData, sortedIndex) => {
+                                const { champion, masteryLevel, masteryProgress } = championData;
 
                                 const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
-
-                                // Mock mastery data
-                                const masteryLevel = Math.floor(Math.random() * 11);
-                                const masteryProgress = Math.floor(Math.random() * 101);
 
                                 // Mock XP data
                                 const currentXP = Math.floor(Math.random() * 1000) + 100;
                                 const totalXP = Math.floor(Math.random() * 2000) + 1000;
+
+                                // Calculate the actual position in the current page (1-based)
+                                const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
 
                                 return (
                                     <ChampionProgress
@@ -337,7 +357,7 @@ const Champions: React.FC = () => {
                                         masteryProgress={masteryProgress}
                                         currentXP={currentXP}
                                         totalXP={totalXP}
-                                        championNumber={Math.floor(Math.random() * 100) + 1}
+                                        championNumber={championNumber}
                                         accountName="GEM Damglantine#GEM"
                                     />
                                 );
