@@ -314,9 +314,9 @@ const Champions: React.FC = () => {
                             const { champions: currentChampions } = getCurrentPageChampions();
 
                             // Distribute champions across 3 columns
-                            const column1 = currentChampions.slice(0, 4); // First 4 champions
-                            const column2 = currentChampions.slice(4, 8); // Next 4 champions  
-                            const column3 = currentChampions.slice(8, 12); // Last 4 champions
+                            const column1 = currentChampions.slice(0, 3); // First 4 champions
+                            const column2 = currentChampions.slice(3, 6); // Next 4 champions  
+                            const column3 = currentChampions.slice(6, 9); // Last 4 champions
 
                             const renderColumn = (champions: (Champion | null)[], startIndex: number) => {
                                 return champions.map((champion, index) => {
