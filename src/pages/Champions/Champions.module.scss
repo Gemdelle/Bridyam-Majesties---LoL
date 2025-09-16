@@ -158,13 +158,13 @@
 }
 
 .champion__card {
-  width: 20%;
-  height: 30%;
+  width: 8%;
+  height: 35%;
   position: relative;
   transition: all 0.3s ease;
   cursor: pointer;
   @include flex-col;
-  background-color: purple;
+  // background-color: purple;
 }
 
 .champion__frame {

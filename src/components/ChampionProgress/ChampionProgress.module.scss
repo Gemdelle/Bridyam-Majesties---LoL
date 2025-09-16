@@ -109,6 +109,11 @@
   height: 35%;
   border-radius: 50%;
   z-index: 1;
+  filter: saturate(0.6) brightness(0.3);
+}
+
+.champion__content__container:hover {
+  filter: saturate(1) brightness(1);
 }
 
 .champion__portrait {
