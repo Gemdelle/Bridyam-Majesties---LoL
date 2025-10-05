@@ -193,7 +193,7 @@
 .flex__container,
 .honor__container {
     @include flex-col;
-    width: 4.5%;
+    width: 3.5%;
     height: 100%;
     overflow: visible;
     cursor: pointer;
@@ -201,7 +201,7 @@
 }
 
 .honor__container {
-    width: 4%;
+    width: 3%;
 }
 
 .soloq__container img {
