@@ -13,8 +13,9 @@ const tabOptions: TabOption[] = [
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
-    { id: 'missions', label: 'missions', image: 'https://placehold.co/24x24/4a90e2/ffffff.png?text=📋' },
-    { id: 'hall-missions', label: 'hall missions', image: 'https://placehold.co/24x24/ff6b6b/ffffff.png?text=🏛️' }
+    { id: 'low', label: 'low', image: 'https://placehold.co/24x24/ff6b6b/ffffff.png?text=📉' },
+    { id: 'ranking', label: 'ranking', image: 'https://placehold.co/24x24/4a90e2/ffffff.png?text=🏆' },
+    { id: 'all', label: 'all', image: 'https://placehold.co/24x24/50c878/ffffff.png?text=📊' }
 ];
 
 const filterOptions: FilterOption[] = [
@@ -40,7 +41,7 @@ const sortOptions: FilterOption[] = [
 
 const Ranked: React.FC = () => {
     // --- Estados para cada filtro ---
-    const [selectedView, setSelectedView] = useState<string>('hall-missions');
+    const [selectedView, setSelectedView] = useState<string>('all');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [selectedSorts, setSelectedSorts] = useState<string[]>(['wins']);
 
@@ -111,7 +112,15 @@ const Ranked: React.FC = () => {
     const filterRankedData = (dataToFilter: RankedData[]) => {
         let filteredData = dataToFilter;
 
-        // Apply search filter first
+        // Apply view filter first (level-based filtering)
+        if (selectedView === 'low') {
+            filteredData = filteredData.filter(data => data.level < 30);
+        } else if (selectedView === 'ranking') {
+            filteredData = filteredData.filter(data => data.level >= 30);
+        }
+        // 'all' shows everything, so no filtering needed
+
+        // Apply search filter
         if (searchTerm.trim() !== '') {
             filteredData = filteredData.filter(data =>
                 data.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -168,11 +177,17 @@ const Ranked: React.FC = () => {
                 let comparison = 0;
                 
                 switch (sortColumn) {
+                    case 'id':
+                        comparison = a.id - b.id;
+                        break;
                     case 'level':
                         comparison = a.level - b.level;
                         break;
                     case 'essencer':
                         comparison = a.name.localeCompare(b.name);
+                        break;
+                    case 'wins':
+                        comparison = a.wins.current - b.wins.current;
                         break;
                     case 'honor':
                         comparison = a.honor - b.honor;
@@ -377,9 +392,12 @@ const Ranked: React.FC = () => {
         }
     };
 
+    // --- Estado para las tabs de missions ---
+    const [selectedMissionView, setSelectedMissionView] = useState<string>('hall-missions');
+
     // --- Handler para selección de tab ---
     const handleTabChange = (selectedId: string) => {
-        setSelectedView(selectedId);
+        setSelectedMissionView(selectedId);
     };
 
     // --- Handler para selección única de view ---
@@ -549,7 +567,12 @@ const Ranked: React.FC = () => {
                 <div className={styles.content}>
                     <div className={styles.accounts}>
                         <div className={styles.accounts__header}>
-                            <div className={styles.header__id}>ID</div>
+                            <div 
+                                className={`${styles.header__id} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('id')}
+                            >
+                                ID{sortColumn === 'id' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
                             <div className={styles.header__portrait}></div>
                             <div className={styles.header__name}>ACCOUNT</div>
                             <div 
@@ -564,7 +587,12 @@ const Ranked: React.FC = () => {
                             >
                                 ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div className={styles.header__wins}>WINS</div>
+                            <div 
+                                className={`${styles.header__wins} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('wins')}
+                            >
+                                WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
                             <div 
                                 className={`${styles.header__honor} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('honor')}
@@ -586,7 +614,7 @@ const Ranked: React.FC = () => {
                             <div className={styles.header__missions}>
                                 <Tab
                                     options={tabOptions}
-                                    selectedOption={selectedView}
+                                    selectedOption={selectedMissionView}
                                     onSelectionChange={handleTabChange}
                                 />
                             </div>
@@ -599,7 +627,7 @@ const Ranked: React.FC = () => {
                                         <RankedAccount
                                             key={rankedAccount.id}
                                             rankedData={rankedAccount}
-                                            selectedView={selectedView}
+                                            selectedView={selectedMissionView}
                                             onUpdateRankedData={handleUpdateRankedData}
                                         />
                                     ))}
