@@ -197,8 +197,8 @@
   height: 5%;
   border-bottom: 2px solid #B69461;
   @include flex-top;
-  font-size: 1.1rem;
-  letter-spacing: 0.3rem;
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
   color: #e4c493;
   font-weight: bold;
   text-transform: uppercase;
@@ -255,12 +255,7 @@
   width: 4.1%; // 4% + 0.1% divider (3% + 1%)
 }
 
-.header__soloq,
-.header__flex,
-.header__honor {
-  font-size: 1rem;
-  letter-spacing: 0.1rem;
-}
+// Removed specific font-size rules - all headers now inherit from .accounts__header
 
 .header__soloq {
   width: 4.6%; // 4.5% + 0.1% divider (3.5% + 1%)
@@ -285,7 +280,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.9rem;
   
   &:hover {
     color: #c89b3c;
