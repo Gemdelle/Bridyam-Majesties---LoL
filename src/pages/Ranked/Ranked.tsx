@@ -56,6 +56,10 @@ const Ranked: React.FC = () => {
     // --- Estado para la búsqueda ---
     const [searchTerm, setSearchTerm] = useState<string>('');
 
+    // --- Estado para el ordenamiento por columnas ---
+    const [sortColumn, setSortColumn] = useState<string | null>(null);
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
     // --- Cargar datos de ranked ---
     useEffect(() => {
         const loadRankedData = async () => {
@@ -158,6 +162,51 @@ const Ranked: React.FC = () => {
 
     // --- Función para ordenar los datos ranked ---
     const sortRankedData = (dataToSort: RankedData[]) => {
+        // Si hay un ordenamiento por columna activo, usarlo en lugar del filtro de sort
+        if (sortColumn) {
+            return [...dataToSort].sort((a, b) => {
+                let comparison = 0;
+                
+                switch (sortColumn) {
+                    case 'level':
+                        comparison = a.level - b.level;
+                        break;
+                    case 'essencer':
+                        comparison = a.name.localeCompare(b.name);
+                        break;
+                    case 'honor':
+                        comparison = a.honor - b.honor;
+                        break;
+                    case 'soloq': {
+                        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+                        const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
+                        const bTierIndex = tierOrder.indexOf(b.elo_soloq.tier.toLowerCase());
+                        if (aTierIndex !== bTierIndex) {
+                            comparison = aTierIndex - bTierIndex;
+                        } else {
+                            comparison = a.elo_soloq.division - b.elo_soloq.division;
+                        }
+                        break;
+                    }
+                    case 'flex': {
+                        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+                        const aTierIndexFlex = tierOrder.indexOf(a.elo_flex.tier.toLowerCase());
+                        const bTierIndexFlex = tierOrder.indexOf(b.elo_flex.tier.toLowerCase());
+                        if (aTierIndexFlex !== bTierIndexFlex) {
+                            comparison = aTierIndexFlex - bTierIndexFlex;
+                        } else {
+                            comparison = a.elo_flex.division - b.elo_flex.division;
+                        }
+                        break;
+                    }
+                    default:
+                        return 0;
+                }
+                
+                return sortDirection === 'asc' ? comparison : -comparison;
+            });
+        }
+
         if (selectedSorts.length === 0) return dataToSort;
 
         const sortBy = selectedSorts[0]; // Take the first selected sort option
@@ -343,6 +392,18 @@ const Ranked: React.FC = () => {
         }
     };
 
+    // --- Handler para ordenamiento por columnas ---
+    const handleColumnSort = (column: string) => {
+        if (sortColumn === column) {
+            // Si ya está ordenado por esta columna, cambiar dirección
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            // Nueva columna, empezar con ascendente
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    };
+
 
 
     if (loading) {
@@ -491,12 +552,37 @@ const Ranked: React.FC = () => {
                             <div className={styles.header__id}>ID</div>
                             <div className={styles.header__portrait}></div>
                             <div className={styles.header__name}>ACCOUNT</div>
-                            <div className={styles.header__level}>LV</div>
-                            <div className={styles.header__essencer}>ESSENCER</div>
+                            <div 
+                                className={`${styles.header__level} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('level')}
+                            >
+                                LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div 
+                                className={`${styles.header__essencer} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('essencer')}
+                            >
+                                ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
                             <div className={styles.header__wins}>WINS</div>
-                            <div className={styles.header__honor}>HONOR</div>
-                            <div className={styles.header__soloq}>SOLO</div>
-                            <div className={styles.header__flex}>FLEX</div>
+                            <div 
+                                className={`${styles.header__honor} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('honor')}
+                            >
+                                HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div 
+                                className={`${styles.header__soloq} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('soloq')}
+                            >
+                                SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div 
+                                className={`${styles.header__flex} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('flex')}
+                            >
+                                FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
                             <div className={styles.header__missions}>
                                 <Tab
                                     options={tabOptions}

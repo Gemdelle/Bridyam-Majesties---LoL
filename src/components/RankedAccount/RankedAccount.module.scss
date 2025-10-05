@@ -16,7 +16,7 @@
 }
 
 .number__container {
-    width: 1.2%;
+    width: 2.2%;
     height: 100%;
     @include flex-center;
     // background-color: red;
@@ -29,7 +29,7 @@
 }
 
 .portrait__container {
-    width: 2%;
+    width: 3%;
     height: 100%;
     @include flex-center;
     // background-color: yellow;
@@ -46,7 +46,7 @@
 }
 
 .name__container {
-    width: 11%;
+    width: 12%;
     height: 100%;
     @include flex-start;
     // background-color: blue;
@@ -58,7 +58,7 @@
 }
 
 .essencer__container {
-    width: 6%;
+    width: 7%;
     height: 100%;
     @include flex-start;
     // background-color: green;
@@ -95,7 +95,7 @@
 }
 
 .level__container {
-    width: 1%;
+    width: 3%;
     height: 100%;
     @include flex-center;
     color: #e4c493;
@@ -132,7 +132,7 @@
 }
 
 .wins__container {
-    width: 18%;
+    width: 19%;
     height: 100%;
     @include flex-center;
     // background-color: purple;
@@ -193,7 +193,7 @@
 .flex__container,
 .honor__container {
     @include flex-col;
-    width: 2.5%;
+    width: 4.5%;
     height: 100%;
     overflow: visible;
     cursor: pointer;
@@ -201,7 +201,7 @@
 }
 
 .honor__container {
-    width: 2%;
+    width: 4%;
 }
 
 .soloq__container img {

@@ -203,6 +203,7 @@
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 0.2%;
+  @include flex-between;
   // background-color: red;
 }
 
@@ -216,43 +217,42 @@
 .header__soloq,
 .header__flex,
 .header__missions {
-  margin-left: 0.1vw;
+  @include flex-center;
+  height: 100%;
 }
 
+// Incluir los divisores en el cálculo de anchos
+// Estructura: ID + divider + portrait + divider + name + divider + level + divider + essencer + divider + wins + divider + honor + divider + soloq + divider + flex + divider + missions
+// Divisores: 9 × 0.1% = 0.9%
+
 .header__id {
-  width: 1%;
-  height: 100%;
+  width: 2.3%; // 2.2% + 0.1% divider (1.2% + 1%)
   // background-color: red;
 }
 
+.header__portrait {
+  width: 3.1%; // 3% + 0.1% divider (2% + 1%)
+}
 
 .header__name {
-  width: 8%;
-  height: 100%;
-  margin-left: 4%;
+  width: 12.1%; // 12% + 0.1% divider (11% + 1%)
   // background-color: red;
 }
 
 .header__level {
-  width: 3%;
-  height: 100%;
-  @include flex-center;
+  width: 3.1%; // 3% + 0.1% divider (2% + 1%)
 }
 
 .header__essencer {
-  width: 8%;
-  height: 100%;
+  width: 7.1%; // 7% + 0.1% divider (6% + 1%)
 }
 
 .header__wins {
-  width: 18%;
-  height: 100%;
+  width: 19.1%; // 19% + 0.1% divider (18% + 1%)
 }
 
 .header__honor {
-  width: 2.5%;
-  height: 100%;
-  margin-right: 1%;
+  width: 4.1%; // 4% + 0.1% divider (3% + 1%)
 }
 
 .header__soloq,
@@ -263,20 +263,38 @@
 }
 
 .header__soloq {
-  width: 3%;
-  height: 100%;
+  width: 4.6%; // 4.5% + 0.1% divider (3.5% + 1%)
 }
 
 .header__flex {
-  width: 3%;
-  height: 100%;
+  width: 4.6%; // 4.5% + 0.1% divider (3.5% + 1%)
 }
 
 .header__missions {
-  width: 46%;
-  height: 100%;
+  width: 44.5%;
   @include flex-evenly;
   // background-color: red;
+}
+
+// Sortable header styles
+.sortable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+  
+  &:hover {
+    color: #c89b3c;
+    text-shadow: 0 0 5px rgba(200, 155, 60, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
 .placeholder {
