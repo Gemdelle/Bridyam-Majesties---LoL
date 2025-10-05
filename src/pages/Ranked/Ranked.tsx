@@ -24,26 +24,15 @@ const filterOptions: FilterOption[] = [
     { id: 'zephiroth', label: 'Zephiroth', image: '/images/ranked-btn/zephiroth.png' },
     { id: 'gladasmy', label: 'Gladasmy', image: '/images/ranked-btn/gladasmy.png' },
     { id: 'primogenit', label: 'Primogenit', image: '/images/ranked-btn/primogenit.png' },
-    { id: 'wins', label: 'wins' },
-    { id: 'missions', label: 'missions' },
-    { id: 'hall missions', label: 'hall missions' },
 ];
 
-const sortOptions: FilterOption[] = [
-    { id: 'essencer', label: 'essencer' },
-    { id: 'tier-soloq', label: 'tier soloq' },
-    { id: 'tier-flex', label: 'tier flex' },
-    { id: 'wins', label: 'wins' },
-    { id: 'missions', label: 'missions' },
-    { id: 'hall missions', label: 'hall missions' },
-    { id: 'bloodline', label: 'bloodline' },
-];
+// Las opciones de essencers se generarán dinámicamente basándose en los datos
 
 const Ranked: React.FC = () => {
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('all');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    const [selectedSorts, setSelectedSorts] = useState<string[]>(['wins']);
+    const [selectedEssencers, setSelectedEssencers] = useState<string[]>([]);
 
     // --- Estado para los datos de ranked ---
     const [rankedData, setRankedData] = useState<RankedData[]>([]);
@@ -60,6 +49,17 @@ const Ranked: React.FC = () => {
     // --- Estado para el ordenamiento por columnas ---
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+    // --- Generar opciones de essencers dinámicamente ---
+    const getEssencerOptions = (): FilterOption[] => {
+        const uniqueEssencers = [...new Set(rankedData.map(account => account.name))];
+        return uniqueEssencers
+            .sort((a, b) => a.localeCompare(b)) // Ordenar alfabéticamente
+            .map(essencer => ({
+                id: essencer.toLowerCase(),
+                label: essencer
+            }));
+    };
 
     // --- Cargar datos de ranked ---
     useEffect(() => {
@@ -128,45 +128,35 @@ const Ranked: React.FC = () => {
             );
         }
 
-        if (selectedFilters.length === 0) return filteredData;
-
-        return filteredData.filter(data => {
-            // Check bloodline filters
-            const bloodlineFilters = selectedFilters.filter(filter =>
-                ['porveldam', 'spadelline', 'zephiroth', 'gladasmy', 'primogenit'].includes(filter)
-            );
-
-            if (bloodlineFilters.length > 0) {
-                const hasMatchingBloodline = bloodlineFilters.some(filter =>
-                    data.bloodline.toLowerCase() === filter
+        // Apply bloodline filters
+        if (selectedFilters.length > 0) {
+            filteredData = filteredData.filter(data => {
+                // Check bloodline filters
+                const bloodlineFilters = selectedFilters.filter(filter =>
+                    ['porveldam', 'spadelline', 'zephiroth', 'gladasmy', 'primogenit'].includes(filter)
                 );
-                if (!hasMatchingBloodline) return false;
-            }
 
-            // Check missing filters using actual progress data
-            if (selectedFilters.includes('wins')) {
-                // Only count missing wins for accounts above level 30
-                if (data.level >= 30) {
-                    // Show accounts that haven't completed all wins
-                    if (data.wins.current >= data.wins.totals) return false;
-                } else {
-                    // For accounts below level 30, don't count missing wins - exclude them from this filter
-                    return false;
+                if (bloodlineFilters.length > 0) {
+                    const hasMatchingBloodline = bloodlineFilters.some(filter =>
+                        data.bloodline.toLowerCase() === filter
+                    );
+                    if (!hasMatchingBloodline) return false;
                 }
-            }
 
-            if (selectedFilters.includes('missions')) {
-                // Show accounts that haven't completed all missions
-                if (data.missions.current_act.current >= data.missions.current_act.totals) return false;
-            }
+                return true;
+            });
+        }
 
-            if (selectedFilters.includes('hall missions')) {
-                // Show accounts that haven't completed all hall missions
-                if (data.missions.current_hall_of_legends.current >= data.missions.current_hall_of_legends.totals) return false;
-            }
+        // Apply essencer filters
+        if (selectedEssencers.length > 0) {
+            filteredData = filteredData.filter(data => {
+                return selectedEssencers.some(essencer =>
+                    data.name.toLowerCase() === essencer
+                );
+            });
+        }
 
-            return true;
-        });
+        return filteredData;
     };
 
     // --- Función para ordenar los datos ranked ---
@@ -222,151 +212,12 @@ const Ranked: React.FC = () => {
             });
         }
 
-        if (selectedSorts.length === 0) return dataToSort;
+        // Si no hay ordenamiento por columna, usar ordenamiento por defecto (por ID)
+        if (!sortColumn) {
+            return [...dataToSort].sort((a, b) => a.id - b.id);
+        }
 
-        const sortBy = selectedSorts[0]; // Take the first selected sort option
-        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
-
-        // Count COMPLETED accounts per essencer for secondary sorting
-        const essencerCompletedCounts = new Map<string, number>();
-        dataToSort.forEach(account => {
-            if (account.level >= 30 && account.wins.current >= account.wins.totals) {
-                const essencerName = account.name;
-                essencerCompletedCounts.set(
-                    essencerName,
-                    (essencerCompletedCounts.get(essencerName) || 0) + 1
-                );
-            }
-        });
-
-        return [...dataToSort].sort((a, b) => {
-            let primaryComparison = 0;
-
-            switch (sortBy) {
-                case 'essencer': {
-                    // First: number of wins (descending)
-                    const winsComparison = b.wins.current - a.wins.current;
-                    if (winsComparison !== 0) {
-                        return winsComparison;
-                    }
-
-                    // Second: essencer with most completed accounts (descending)
-                    const getEssencerCompletedCount = (essencerName: string) => {
-                        return dataToSort.filter(account =>
-                            account.name === essencerName &&
-                            account.level >= 30 &&
-                            account.wins.current >= account.wins.totals
-                        ).length;
-                    };
-                    const aCompletedCount = getEssencerCompletedCount(a.name);
-                    const bCompletedCount = getEssencerCompletedCount(b.name);
-                    if (aCompletedCount !== bCompletedCount) {
-                        return bCompletedCount - aCompletedCount;
-                    }
-
-                    // Third: bloodline order (primogenit, porveldam, spadelline, zephiroth, gladasmy)
-                    const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
-                    const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
-                    const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-                    if (aBloodlineIndex !== bBloodlineIndex) {
-                        return aBloodlineIndex - bBloodlineIndex;
-                    }
-
-                    // Final tie-breaker: stable by essencer name
-                    return a.name.localeCompare(b.name);
-                }
-                case 'tier-soloq': {
-                    // Sort by tier and division (tier priority, then division)
-                    const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
-                    const bTierIndex = tierOrder.indexOf(b.elo_soloq.tier.toLowerCase());
-                    if (aTierIndex !== bTierIndex) {
-                        primaryComparison = bTierIndex - aTierIndex; // Higher tier first
-                    } else {
-                        primaryComparison = b.elo_soloq.division - a.elo_soloq.division; // Higher division first
-                    }
-                    break;
-                }
-                case 'tier-flex': {
-                    const aTierIndexFlex = tierOrder.indexOf(a.elo_flex.tier.toLowerCase());
-                    const bTierIndexFlex = tierOrder.indexOf(b.elo_flex.tier.toLowerCase());
-                    if (aTierIndexFlex !== bTierIndexFlex) {
-                        primaryComparison = bTierIndexFlex - aTierIndexFlex; // Higher tier first
-                    } else {
-                        primaryComparison = b.elo_flex.division - a.elo_flex.division; // Higher division first
-                    }
-                    break;
-                }
-                case 'wins':
-                    // Sort by wins current (descending)
-                    primaryComparison = b.wins.current - a.wins.current;
-                    break;
-                case 'missions':
-                    // Sort by missions current (descending)
-                    primaryComparison = b.missions.current_act.current - a.missions.current_act.current;
-                    break;
-                case 'hall missions':
-                    // Sort by hall missions current (descending)
-                    primaryComparison = b.missions.current_hall_of_legends.current - a.missions.current_hall_of_legends.current;
-                    break;
-                case 'bloodline': {
-                    // Sort by bloodline in the order: Porveldam, Spadelline, Zephiroth, Gladasmy
-                    const bloodlineOrder = ['porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
-                    const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
-                    const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-                    primaryComparison = aBloodlineIndex - bBloodlineIndex;
-                    break;
-                }
-                default:
-                    return 0;
-            }
-
-            // If primary comparison is not 0, return it
-            if (primaryComparison !== 0) {
-                return primaryComparison;
-            }
-
-            // For essencer sort, group accounts by essencer name
-            if (sortBy === 'essencer') {
-                const essencerComparison = a.name.localeCompare(b.name);
-                if (essencerComparison !== 0) {
-                    return essencerComparison;
-                }
-
-                // Within the same essencer, sort by bloodline
-                const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
-                const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
-                const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-                return aBloodlineIndex - bBloodlineIndex;
-            }
-
-            // Secondary sort: by number of COMPLETED accounts per essencer (descending)
-            const aAccountCount = essencerCompletedCounts.get(a.name) || 0;
-            const bAccountCount = essencerCompletedCounts.get(b.name) || 0;
-            const accountCountComparison = bAccountCount - aAccountCount;
-
-            if (accountCountComparison !== 0) {
-                return accountCountComparison;
-            }
-
-            // Tertiary tie-breaker for secondary: essencer name (ascending)
-            const essencerNameComparison = a.name.localeCompare(b.name);
-            if (essencerNameComparison !== 0) {
-                return essencerNameComparison;
-            }
-
-            // Next: by bloodline within the same essencer (Primogenit, Porveldam, Spadelline, Zephiroth, Gladasmy)
-            const bloodlineOrder = ['primogenit', 'porveldam', 'spadelline', 'zephiroth', 'gladasmy'];
-            const aBloodlineIndex = bloodlineOrder.indexOf(a.bloodline.toLowerCase());
-            const bBloodlineIndex = bloodlineOrder.indexOf(b.bloodline.toLowerCase());
-            const bloodlineComparison = aBloodlineIndex - bBloodlineIndex;
-
-            if (bloodlineComparison !== 0) {
-                return bloodlineComparison;
-            }
-
-            // Final fallback: keep stable by name
-            return essencerNameComparison;
-        });
+        return dataToSort;
     };
 
     // --- Calcular las accounts a mostrar en la página actual ---
@@ -466,10 +317,10 @@ const Ranked: React.FC = () => {
                             onSelectionChange={setSelectedFilters}
                         />
                         <Filter
-                            title="SORT BY"
-                            options={sortOptions}
-                            selectedOptions={selectedSorts}
-                            onSelectionChange={setSelectedSorts}
+                            title="ESSENCERS"
+                            options={getEssencerOptions()}
+                            selectedOptions={selectedEssencers}
+                            onSelectionChange={setSelectedEssencers}
                         />
                     </div>
                     <div className={styles.content__search_stats}>
