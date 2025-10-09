@@ -212,9 +212,17 @@ const Ranked: React.FC = () => {
             });
         }
 
-        // Si no hay ordenamiento por columna, usar ordenamiento por defecto (por ID)
+        // Si no hay ordenamiento por columna, usar ordenamiento por defecto (por wins descendente, luego por name)
         if (!sortColumn) {
-            return [...dataToSort].sort((a, b) => a.id - b.id);
+            return [...dataToSort].sort((a, b) => {
+                // Primero ordenar por wins (descendente - mayor a menor)
+                const winsComparison = b.wins.current - a.wins.current;
+                if (winsComparison !== 0) {
+                    return winsComparison;
+                }
+                // Si tienen la misma cantidad de wins, ordenar por name (ascendente)
+                return a.name.localeCompare(b.name);
+            });
         }
 
         return dataToSort;
