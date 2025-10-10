@@ -143,4 +143,27 @@ export const updateMasteries = async (masteriesData: MasteryData[]): Promise<voi
         console.error('Error updating masteries data:', error);
         throw new Error('Failed to update masteries data');
     }
+};
+
+// Update masteries data for a specific ranked account via PUT request with ranked_id
+export const updateMasteriesByRankedId = async (rankedId: number, masteriesData: MasteryData[]): Promise<void> => {
+    try {
+        const response = await authService.makeAuthenticatedRequest(
+            `https://bridyam-majesties-back-production.up.railway.app/masteries/${rankedId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ masteries: masteriesData }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error updating masteries data by ranked_id:', error);
+        throw new Error('Failed to update masteries data by ranked_id');
+    }
 }; 
