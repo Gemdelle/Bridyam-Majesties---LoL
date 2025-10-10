@@ -450,8 +450,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                 )}
             </div>
 
-            <div className={styles.divider}></div>
-
             <div ref={flexRef} className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
                 {isFlexRanked() && (
                     <>
@@ -493,12 +491,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                         </div>
                     </div>
                 )}
-            </div>
-
-            <div className={styles.divider}></div>
-
-            <div className={styles.ranking__container}>
-                {/* Ranking content will be added here */}
             </div>
         </div>
     );

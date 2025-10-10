@@ -34,7 +34,7 @@ const Ranked: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15;
+    const itemsPerPage = 16;
 
     // --- Estado para la búsqueda ---
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -409,80 +409,86 @@ const Ranked: React.FC = () => {
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <div className={styles.accounts}>
-                        <div className={styles.accounts__header}>
-                            <div
-                                className={`${styles.header__id} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('id')}
-                            >
-                                ID{sortColumn === 'id' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div className={styles.header__portrait}></div>
-                            <div className={styles.header__name}>ACCOUNT</div>
-                            <div
-                                className={`${styles.header__level} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('level')}
-                            >
-                                LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div
-                                className={`${styles.header__essencer} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('essencer')}
-                            >
-                                ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div
-                                className={`${styles.header__wins} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('wins')}
-                            >
-                                WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div
-                                className={`${styles.header__honor} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('honor')}
-                            >
-                                HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div
-                                className={`${styles.header__soloq} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('soloq')}
-                            >
-                                SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div
-                                className={`${styles.header__flex} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('flex')}
-                            >
-                                FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                            </div>
-                            <div className={styles.header__missions}>
-                                RANKING
-                            </div>
+                    <div className={styles.accounts__header}>
+                        <div
+                            className={`${styles.header__id} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('id')}
+                        >
+                            ID{sortColumn === 'id' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                         </div>
-                        {(() => {
-                            const { accounts, totalPages } = getCurrentPageAccounts();
-                            return (
-                                <>
-                                    {accounts.map((rankedAccount) => (
-                                        <RankedAccount
-                                            key={rankedAccount.id}
-                                            rankedData={rankedAccount}
-                                            onUpdateRankedData={handleUpdateRankedData}
-                                        />
-                                    ))}
-                                    <div className={styles.pagination}>
-                                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                                            &lt; Previous
-                                        </button>
-                                        <span>Page {currentPage} of {totalPages}</span>
-                                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                                            Next &gt;
-                                        </button>
-                                    </div>
-                                </>
-                            );
-                        })()}
+                        <div className={styles.header__portrait}></div>
+                        <div className={styles.header__name}>ACCOUNT</div>
+                        <div
+                            className={`${styles.header__level} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('level')}
+                        >
+                            LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div
+                            className={`${styles.header__essencer} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('essencer')}
+                        >
+                            ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div
+                            className={`${styles.header__wins} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('wins')}
+                        >
+                            WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div
+                            className={`${styles.header__honor} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('honor')}
+                        >
+                            HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div
+                            className={`${styles.header__soloq} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('soloq')}
+                        >
+                            SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div
+                            className={`${styles.header__flex} ${styles.sortable}`}
+                            onClick={() => handleColumnSort('flex')}
+                        >
+                            FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                        </div>
+                        <div className={styles.header__missions}>
+                            RANKING
+                        </div>
                     </div>
+                    <div className={styles.accounts__container}>
+                        <div className={styles.accounts}>
+
+                            {(() => {
+                                const { accounts, totalPages } = getCurrentPageAccounts();
+                                return (
+                                    <>
+                                        {accounts.map((rankedAccount) => (
+                                            <RankedAccount
+                                                key={rankedAccount.id}
+                                                rankedData={rankedAccount}
+                                                onUpdateRankedData={handleUpdateRankedData}
+                                            />
+                                        ))}
+                                        <div className={styles.pagination}>
+                                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                                                &lt; Previous
+                                            </button>
+                                            <span>Page {currentPage} of {totalPages}</span>
+                                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                                                Next &gt;
+                                            </button>
+                                        </div>
+                                    </>
+                                );
+                            })()}
+                        </div>
+                        <div className={styles.ranking__container}>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
