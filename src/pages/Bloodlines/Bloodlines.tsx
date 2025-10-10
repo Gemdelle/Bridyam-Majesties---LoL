@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData, isGemUser, updateMasteries } from '../../services/apiMasteriesService';
+import { fetchMasteryData, type MasteryData, isGemUser, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -54,6 +54,10 @@ const Bloodlines: React.FC = () => {
 
   // --- Estado para ordenamiento por cuenta ---
   const [sortByAccount, setSortByAccount] = useState<number | null>(null);
+
+  // --- Estado para el dropdown de mastery ---
+  const [activeMasteryDropdown, setActiveMasteryDropdown] = useState<string | null>(null);
+  const masteryDropdownRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   // --- Cargar datos de ranked ---
   useEffect(() => {
@@ -113,6 +117,26 @@ const Bloodlines: React.FC = () => {
     };
     checkGemStatus();
   }, []);
+
+  // --- Cerrar dropdown cuando se hace clic fuera ---
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      
+      // Check if click is outside the active dropdown
+      if (activeMasteryDropdown) {
+        const activeRef = masteryDropdownRefs.current.get(activeMasteryDropdown);
+        if (activeRef && !activeRef.contains(target)) {
+          setActiveMasteryDropdown(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeMasteryDropdown]);
 
 
 
@@ -199,91 +223,109 @@ const Bloodlines: React.FC = () => {
 
   // --- Funci�n para obtener la imagen de mastery ---
   const getMasteryImage = (masteryLevel: number | null): string => {
-    // If champion_level is 0, show bought.png
-    if (masteryLevel === 0) {
-      return `/images/masteries/mastery/bought.png`;
-    }
-
-    // If masteryLevel is null (no mastery data exists), show 0.png
+    // If masteryLevel is null (no mastery data exists / not owned), show 0.png from mastery
     if (masteryLevel === null) {
       return `/images/masteries/mastery/0.png`;
     }
 
-    if (masteryLevel > 10) {
-      return `/images/masteries/mastery/10+.png`;
+    // If champion_level is 0 (purchased), show 1.png from badges
+    if (masteryLevel === 0) {
+      return `/images/masteries/badges/1.png`;
     }
-    return `/images/masteries/mastery/${masteryLevel}.png`;
+
+    // If masteryLevel is greater than 10, show 10.png from badges
+    if (masteryLevel > 10) {
+      return `/images/masteries/badges/10.png`;
+    }
+    
+    // For levels 1-10, show the corresponding badge
+    return `/images/masteries/badges/${masteryLevel}.png`;
   };
 
   // --- Funciones para manejar champions comprados ---
-  const handleMasteryClick = async (rankedId: number, championId: number) => {
+  const handleMasteryClick = (rankedId: number, championId: number) => {
     if (!isGem) return;
 
-    console.log('handleMasteryClick called:', { rankedId, championId, isGem });
+    const dropdownKey = `${rankedId}-${championId}`;
+    
+    // Toggle dropdown visibility
+    if (activeMasteryDropdown === dropdownKey) {
+      setActiveMasteryDropdown(null);
+    } else {
+      setActiveMasteryDropdown(dropdownKey);
+    }
+  };
+
+  // Available mastery levels (null = not owned, 0 = purchased but no mastery, 1-10+ = mastery levels)
+  const availableMasteryLevels = [
+    { value: null, label: 'Not Owned', image: '/images/masteries/mastery/0.png' },
+    { value: 0, label: 'Purchased', image: '/images/masteries/badges/1.png' },
+    { value: 1, label: 'Level 1', image: '/images/masteries/badges/1.png' },
+    { value: 2, label: 'Level 2', image: '/images/masteries/badges/2.png' },
+    { value: 3, label: 'Level 3', image: '/images/masteries/badges/3.png' },
+    { value: 4, label: 'Level 4', image: '/images/masteries/badges/4.png' },
+    { value: 5, label: 'Level 5', image: '/images/masteries/badges/5.png' },
+    { value: 6, label: 'Level 6', image: '/images/masteries/badges/6.png' },
+    { value: 7, label: 'Level 7', image: '/images/masteries/badges/7.png' },
+    { value: 8, label: 'Level 8', image: '/images/masteries/badges/8.png' },
+    { value: 9, label: 'Level 9', image: '/images/masteries/badges/9.png' },
+    { value: 10, label: 'Level 10', image: '/images/masteries/badges/10.png' },
+    { value: 11, label: 'Level 10+', image: '/images/masteries/badges/10.png' }
+  ];
+
+  const handleMasteryLevelChange = async (rankedId: number, championId: number, newLevel: number | null) => {
+    console.log('handleMasteryLevelChange called:', { rankedId, championId, newLevel });
 
     const riotChampionId = getRiotIdForChampion(championId);
     const mastery = masteryData.find(m => m.ranked_id === rankedId && m.champion_id === riotChampionId);
-    const currentMasteryLevel = mastery ? mastery.champion_level : null;
 
-    console.log('Mastery data found:', { mastery, currentMasteryLevel, riotChampionId });
-
-    // Solo permitir actualizar si no tiene maestría real (null) o si ya es 0
-    if (currentMasteryLevel === 0 || currentMasteryLevel === null) {
-      console.log('Mastery level is 0 or null, proceeding with update...');
+    try {
+      let masteryToUpdate: MasteryData;
       
-      // Make PUT request to backend to toggle between 0 and null
-      try {
-        let masteryToUpdate: MasteryData;
-        let newChampionLevel: number | null;
+      if (mastery) {
+        console.log('Existing mastery found, updating level...');
         
-        if (mastery) {
-          console.log('Existing mastery found, toggling level...');
-          // Toggle between 0 and null
-          newChampionLevel = mastery.champion_level === 0 ? null : 0;
-          console.log(`Changing champion_level from ${mastery.champion_level} to ${newChampionLevel}`);
-          
-          // Update existing mastery
-          masteryToUpdate = {
-            ...mastery,
-            champion_level: newChampionLevel
-          };
-        } else {
-          console.log('No existing mastery found, creating new one with level 0...');
-          newChampionLevel = 0;
-          
-          // Create new mastery entry
-          masteryToUpdate = {
-            id: null, // Let backend assign ID
-            ranked_id: rankedId,
-            username: rankedData.find(r => r.id === rankedId)?.username || '',
-            champion_id: riotChampionId,
-            champion_level: 0,
-            champion_points: 0,
-            champion_points_since_last_level: 0,
-            champion_points_until_next_level: 0,
-            chest_granted: false,
-            last_play_time: new Date().toISOString()
-          };
-        }
+        // Update existing mastery
+        masteryToUpdate = {
+          ...mastery,
+          champion_level: newLevel
+        };
+      } else {
+        console.log('No existing mastery found, creating new one...');
         
-        console.log('Sending PUT request with single mastery:', masteryToUpdate);
-        
-        // Send PUT request to backend with only the updated mastery
-        await updateMasteries([masteryToUpdate]);
-        
-        console.log('PUT request successful, reloading data...');
-        
-        // Reload mastery data from backend to reflect changes
-        const updatedData = await fetchMasteryData();
-        setMasteryData(updatedData);
-        
-        console.log('Data reloaded successfully');
-      } catch (error) {
-        console.error('Error updating masteries in backend:', error);
-        // Optionally, you could show an error message to the user here
+        // Create new mastery entry
+        masteryToUpdate = {
+          id: null, // Let backend assign ID
+          ranked_id: rankedId,
+          username: rankedData.find(r => r.id === rankedId)?.username || '',
+          champion_id: riotChampionId,
+          champion_level: newLevel,
+          champion_points: 0,
+          champion_points_since_last_level: 0,
+          champion_points_until_next_level: 0,
+          chest_granted: false,
+          last_play_time: new Date().toISOString()
+        };
       }
-    } else {
-      console.log('Mastery level is greater than 0, skipping update');
+      
+      console.log('Sending PUT request with mastery:', masteryToUpdate);
+      
+      // Send PUT request to backend with the ranked_id
+      await updateMasteriesByRankedId(rankedId, [masteryToUpdate]);
+      
+      console.log('PUT request successful, reloading data...');
+      
+      // Reload mastery data from backend to reflect changes
+      const updatedData = await fetchMasteryData();
+      setMasteryData(updatedData);
+      
+      // Close dropdown
+      setActiveMasteryDropdown(null);
+      
+      console.log('Data reloaded successfully');
+    } catch (error) {
+      console.error('Error updating masteries in backend:', error);
+      // Optionally, you could show an error message to the user here
     }
   };
 
@@ -551,10 +593,23 @@ const Bloodlines: React.FC = () => {
                       const isLargeMastery = masteryValue >= 10;
                       const hasGlow = masteryValue >= 5;
                       const masteryText = masteryValue > 10 ? '10+' : masteryValue.toString();
-                      const canClick = isGem && (masteryLevel === 0 || masteryLevel === null);
+                      const canClick = isGem;
+                      const dropdownKey = `${account.id}-${champion.id}`;
+                      const isDropdownOpen = activeMasteryDropdown === dropdownKey;
 
                       return (
-                        <div key={account.id} className={styles.row__account}>
+                        <div 
+                          key={account.id} 
+                          className={styles.row__account}
+                          ref={(el) => {
+                            if (el) {
+                              masteryDropdownRefs.current.set(dropdownKey, el);
+                            } else {
+                              masteryDropdownRefs.current.delete(dropdownKey);
+                            }
+                          }}
+                          style={{ position: 'relative' }}
+                        >
                           <img
                             src={getMasteryImage(masteryLevel)}
                             alt={`Mastery ${masteryText}`}
@@ -564,8 +619,27 @@ const Bloodlines: React.FC = () => {
                               opacity: canClick ? 0.8 : 1
                             }}
                             onClick={() => handleMasteryClick(account.id, champion.id)}
-                            title={canClick ? (masteryLevel === 0 ? 'Click to remove purchased status' : 'Click to mark as purchased') : ''}
+                            title={canClick ? 'Click to change mastery level' : ''}
                           />
+                          {isDropdownOpen && (
+                            <div className={styles.mastery__selector}>
+                              <div className={styles.mastery__options}>
+                                {availableMasteryLevels.map((level) => (
+                                  <div
+                                    key={level.value ?? 'null'}
+                                    className={`${styles.mastery__option} ${masteryLevel === level.value ? styles.mastery__selected : ''}`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMasteryLevelChange(account.id, champion.id, level.value);
+                                    }}
+                                    title={level.label}
+                                  >
+                                    <img src={level.image} alt={level.label} />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       );
                     });
@@ -601,3 +675,4 @@ const Bloodlines: React.FC = () => {
 };
 
 export default Bloodlines;
+
