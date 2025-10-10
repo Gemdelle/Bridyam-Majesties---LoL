@@ -204,7 +204,7 @@
 }
 
 .accounts__header {
-  width: 100%;
+  width: 60%;
   height: 5%;
   // border-bottom: 2px solid #B69461;
   @include flex-top;
@@ -236,33 +236,38 @@
 // Divisores: 9 × 0.1% = 0.9%
 
 .header__id {
-  width: 2.3%; // 2.2% + 0.1% divider (1.2% + 1%)
+  width: 3%; // 2.2% + 0.1% divider (1.2% + 1%)
   // background-color: red;
 }
 
 .header__portrait {
-  width: 3.1%; // 3% + 0.1% divider (2% + 1%)
+  width: 7%; // 3% + 0.1% divider (2% + 1%)
+  // background-color: red;
 }
 
 .header__name {
-  width: 12.1%; // 12% + 0.1% divider (11% + 1%)
+  width: 16.5%; // 12% + 0.1% divider (11% + 1%)
   // background-color: red;
 }
 
 .header__level {
-  width: 3.1%; // 3% + 0.1% divider (2% + 1%)
+  width: 5%; // 3% + 0.1% divider (2% + 1%)
+  // background-color: red;
 }
 
 .header__essencer {
-  width: 7.1%; // 7% + 0.1% divider (6% + 1%)
+  width: 8%; // 7% + 0.1% divider (6% + 1%)
+  // background-color: red;
 }
 
 .header__wins {
-  width: 19.1%; // 19% + 0.1% divider (18% + 1%)
+  width: 40%; // 19% + 0.1% divider (18% + 1%)
+  // background-color: red;
 }
 
 .header__honor {
-  width: 3.1%; // 3% + 0.1% divider (2% + 1%)
+  width: 6%; // 3% + 0.1% divider (2% + 1%)
+  // background-color: red;
 }
 
 // Specific font-size for smaller headers
@@ -270,18 +275,22 @@
 .header__soloq,
 .header__flex {
   font-size: 0.8rem;
+  // background-color: red;
 }
 
 .header__soloq {
-  width: 3.6%; // 3.5% + 0.1% divider (2.5% + 1%)
+  width: 6%; // 3.5% + 0.1% divider (2.5% + 1%)
+  // background-color: red;
 }
 
-.header__flex {
-  width: 3.6%; // 3.5% + 0.1% divider (2.5% + 1%)
+.header__flex  {
+  width: 6%; // 3.5% + 0.1% divider (2.5% + 1%)
+  // background-color: red;
 }
 
 .header__missions {
   width: 44.5%;
+  // background-color: red;
   @include flex-evenly;
   // background-color: red;
 }

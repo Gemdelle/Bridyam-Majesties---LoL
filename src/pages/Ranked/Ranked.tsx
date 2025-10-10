@@ -454,9 +454,6 @@ const Ranked: React.FC = () => {
                         >
                             FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                         </div>
-                        <div className={styles.header__missions}>
-                            RANKING
-                        </div>
                     </div>
                     <div className={styles.accounts__container}>
                         <div className={styles.accounts}>
