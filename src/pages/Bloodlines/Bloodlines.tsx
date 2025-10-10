@@ -3,7 +3,8 @@ import styles from './Bloodlines.module.css';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData, isGemUser, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
+import { fetchMasteryData, type MasteryData, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
+import { usePermissions } from '../../hooks/usePermissions';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -49,8 +50,8 @@ const Bloodlines: React.FC = () => {
   // --- Estado para la b�squeda ---
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // --- Estado para GEM user ---
-  const [isGem, setIsGem] = useState<boolean>(false);
+  // --- Hook para permisos ---
+  const { canEditRankedUsername } = usePermissions();
 
   // --- Estado para ordenamiento por cuenta ---
   const [sortByAccount, setSortByAccount] = useState<number | null>(null);
@@ -110,13 +111,6 @@ const Bloodlines: React.FC = () => {
     loadMasteries();
   }, []);
 
-  // --- Verificar si el usuario es GEM ---
-  useEffect(() => {
-    const checkGemStatus = () => {
-      setIsGem(isGemUser());
-    };
-    checkGemStatus();
-  }, []);
 
   // --- Cerrar dropdown cuando se hace clic fuera ---
   useEffect(() => {
@@ -243,8 +237,9 @@ const Bloodlines: React.FC = () => {
   };
 
   // --- Funciones para manejar champions comprados ---
-  const handleMasteryClick = (rankedId: number, championId: number) => {
-    if (!isGem) return;
+  const handleMasteryClick = (rankedId: number, championId: number, username: string) => {
+    // Check if user can edit this specific username
+    if (!canEditRankedUsername(username)) return;
 
     const dropdownKey = `${rankedId}-${championId}`;
     
@@ -593,7 +588,7 @@ const Bloodlines: React.FC = () => {
                       const isLargeMastery = masteryValue >= 10;
                       const hasGlow = masteryValue >= 5;
                       const masteryText = masteryValue > 10 ? '10+' : masteryValue.toString();
-                      const canClick = isGem;
+                      const canClick = canEditRankedUsername(account.username);
                       const dropdownKey = `${account.id}-${champion.id}`;
                       const isDropdownOpen = activeMasteryDropdown === dropdownKey;
 
@@ -618,7 +613,7 @@ const Bloodlines: React.FC = () => {
                               cursor: canClick ? 'pointer' : 'default',
                               opacity: canClick ? 0.8 : 1
                             }}
-                            onClick={() => handleMasteryClick(account.id, champion.id)}
+                            onClick={() => handleMasteryClick(account.id, champion.id, account.username)}
                             title={canClick ? 'Click to change mastery level' : ''}
                           />
                           {isDropdownOpen && (
