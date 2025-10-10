@@ -177,7 +177,7 @@
     @include flex-col-between;
     align-items: flex-start;
     backdrop-filter: blur(10px);
-    background-color: red;
+    // background-color: red;
 }
 
 .accounts__container {
@@ -185,7 +185,7 @@
   height: 95%;
   @include flex-between;
   align-items: flex-start;
-  background-color: yellow;
+  // background-color: yellow;
 }
 
 .accounts {
@@ -194,13 +194,13 @@
   @include flex-col;
   justify-content: flex-start;
   position: relative;
-  background-color: blue;
+  // background-color: blue;
 }
 
 .ranking__container {
   width: 40%;
   height: 93%;
-  background-color: green;
+  // background-color: green;
 }
 
 .accounts__header {
@@ -214,7 +214,7 @@
   font-weight: bold;
   text-transform: uppercase;
   @include flex-between;
-  background-color: blueviolet;
+  // background-color: blueviolet;
 }
 
 .header__id,
@@ -335,7 +335,7 @@
   bottom: -8%;
   width: 30%;
   height: 5%;
-  background-color: pink;
+  // background-color: pink;
   @include flex-between;
 
   button {

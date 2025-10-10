@@ -5,11 +5,18 @@
     height: 6.25%;
     // border-top: 1px solid #B69461;
     @include flex-between;
-    background-color: violet;
+    // background-color: violet;
 }
 
+// id: width: 3%;
+// img: width: 4%;
+// acc name: width: 18%;
+// essencer: width: 6%;
+// level: width: 3%;
+// wins: width: 40%;
+
 .number__container {
-    width: 2.2%;
+    width: 3%;
     height: 100%;
     @include flex-center;
     // background-color: red;
@@ -18,54 +25,41 @@
 }
 
 .number__container span {
-    margin-right: 30%;
+    // margin-right: 30%;
 }
 
 .portrait__container {
-    width: 3%;
+    width: 4%;
     height: 100%;
     @include flex-center;
     // background-color: yellow;
 }
 
 .portrait {
+    border: 2px solid #B69461;
     height: 90%;
+    border-radius: 50%;
     width: auto;
+}
+
+.name__container {
+    width: 18%;
+    height: 100%;
+    // background-color: blue;
+    color: #e4c493;
+}
+
+.essencer__container {
+    width: 6%;
+    height: 100%;
+    color: #e4c493;
+    @include flex-start;
+    // background-color: green;
 }
 
 .name__container span,
 .essencer__container span {
     font-size: 0.8vw;
-}
-
-.name__container {
-    width: 12%;
-    height: 100%;
-    @include flex-start;
-    // background-color: blue;
-    color: #e4c493;
-}
-
-.name__container span {
-    margin-left: 5%;
-}
-
-.essencer__container {
-    width: 7%;
-    height: 100%;
-    @include flex-start;
-    // background-color: green;
-}
-
-.essencer__container span {
-    margin-left: 5%;
-    color: #e4c493;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.essencer__container span:hover {
-    color: #f0e6d2;
 }
 
 .essencer__input {
@@ -125,7 +119,7 @@
 }
 
 .wins__container {
-    width: 19%;
+    width: 40%;
     height: 100%;
     @include flex-center;
     // background-color: purple;
@@ -178,7 +172,8 @@
     width: 15%;
     height: 100%;
     @include flex-center;
-    color: #e4c493
+    color: #e4c493;
+    font-size: 16px;
     // background-color: yellow;
 }
 
@@ -186,15 +181,16 @@
 .flex__container,
 .honor__container {
     @include flex-col;
-    width: 3.5%;
+    width: 6%;
     height: 100%;
     overflow: visible;
     cursor: pointer;
     position: relative;
+    // background-color: pink;
 }
 
 .honor__container {
-    width: 3%;
+    width: 4%;
 }
 
 .soloq__container img {
