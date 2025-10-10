@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
-import Tab, { type TabOption } from '../../components/Tab';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
-
-// --- Opciones para las tabs ---
-const tabOptions: TabOption[] = [
-    { id: 'missions', label: 'missions', image: '/images/ranked-btn/mission.png' },
-    { id: 'hall-missions', label: 'hall', image: '/images/ranked-btn/hall-mission.png' }
-];
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -165,7 +158,7 @@ const Ranked: React.FC = () => {
         if (sortColumn) {
             return [...dataToSort].sort((a, b) => {
                 let comparison = 0;
-                
+
                 switch (sortColumn) {
                     case 'id':
                         comparison = a.id - b.id;
@@ -207,7 +200,7 @@ const Ranked: React.FC = () => {
                     default:
                         return 0;
                 }
-                
+
                 return sortDirection === 'asc' ? comparison : -comparison;
             });
         }
@@ -249,14 +242,6 @@ const Ranked: React.FC = () => {
         if (newPage > 0 && newPage <= totalPages) {
             setCurrentPage(newPage);
         }
-    };
-
-    // --- Estado para las tabs de missions ---
-    const [selectedMissionView, setSelectedMissionView] = useState<string>('hall-missions');
-
-    // --- Handler para selección de tab ---
-    const handleTabChange = (selectedId: string) => {
-        setSelectedMissionView(selectedId);
     };
 
     // --- Handler para selección única de view ---
@@ -426,7 +411,7 @@ const Ranked: React.FC = () => {
                 <div className={styles.content}>
                     <div className={styles.accounts}>
                         <div className={styles.accounts__header}>
-                            <div 
+                            <div
                                 className={`${styles.header__id} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('id')}
                             >
@@ -434,48 +419,44 @@ const Ranked: React.FC = () => {
                             </div>
                             <div className={styles.header__portrait}></div>
                             <div className={styles.header__name}>ACCOUNT</div>
-                            <div 
+                            <div
                                 className={`${styles.header__level} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('level')}
                             >
                                 LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div 
+                            <div
                                 className={`${styles.header__essencer} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('essencer')}
                             >
                                 ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div 
+                            <div
                                 className={`${styles.header__wins} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('wins')}
                             >
                                 WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div 
+                            <div
                                 className={`${styles.header__honor} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('honor')}
                             >
                                 HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div 
+                            <div
                                 className={`${styles.header__soloq} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('soloq')}
                             >
                                 SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div 
+                            <div
                                 className={`${styles.header__flex} ${styles.sortable}`}
                                 onClick={() => handleColumnSort('flex')}
                             >
                                 FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
                             <div className={styles.header__missions}>
-                                <Tab
-                                    options={tabOptions}
-                                    selectedOption={selectedMissionView}
-                                    onSelectionChange={handleTabChange}
-                                />
+                                RANKING
                             </div>
                         </div>
                         {(() => {
@@ -486,7 +467,6 @@ const Ranked: React.FC = () => {
                                         <RankedAccount
                                             key={rankedAccount.id}
                                             rankedData={rankedAccount}
-                                            selectedView={selectedMissionView}
                                             onUpdateRankedData={handleUpdateRankedData}
                                         />
                                     ))}

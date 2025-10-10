@@ -12,21 +12,10 @@ const tierIron = '/images/lol-elements/tier-iron.webp';
 
 interface RankedAccountProps {
     rankedData: RankedData;
-    selectedView: string;
     onUpdateRankedData: (updatedData: RankedData) => void;
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView, onUpdateRankedData }) => {
-    // Initialize states based on current values from RankedData
-    const [selectedMissions, setSelectedMissions] = useState<boolean[]>(() => {
-        const initialMissions = Array(23).fill(false);
-        // Set true for missions up to current value
-        for (let i = 0; i < rankedData.missions.current_act.current && i < 23; i++) {
-            initialMissions[i] = true;
-        }
-        return initialMissions;
-    });
-
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData }) => {
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
@@ -45,15 +34,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
     const flexRef = useRef<HTMLDivElement>(null);
     const honorRef = useRef<HTMLDivElement>(null);
 
-    const [selectedHallMissions, setSelectedHallMissions] = useState<boolean[]>(() => {
-        const initialHallMissions = Array(38).fill(false);
-        // Set true for hall missions up to current value
-        for (let i = 0; i < rankedData.missions.current_hall_of_legends.current && i < 38; i++) {
-            initialHallMissions[i] = true;
-        }
-        return initialHallMissions;
-    });
-
     const [selectedWins, setSelectedWins] = useState<boolean[]>(() => {
         const initialWins = Array(15).fill(false);
         // Set true for wins up to current value
@@ -65,20 +45,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
     // Update states when rankedData changes
     useEffect(() => {
-        // Update missions
-        const newMissions = Array(23).fill(false);
-        for (let i = 0; i < rankedData.missions.current_act.current && i < 23; i++) {
-            newMissions[i] = true;
-        }
-        setSelectedMissions(newMissions);
-
-        // Update hall missions
-        const newHallMissions = Array(38).fill(false);
-        for (let i = 0; i < rankedData.missions.current_hall_of_legends.current && i < 38; i++) {
-            newHallMissions[i] = true;
-        }
-        setSelectedHallMissions(newHallMissions);
-
         // Update wins
         const newWins = Array(15).fill(false);
         for (let i = 0; i < rankedData.wins.current && i < 15; i++) {
@@ -115,88 +81,6 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    // Mission numbers
-    const missionNumbers = [2, 3, 6, 7, 8, 12, 14, 16, 17, 20, 22, 26, 27, 29, 31, 33, 36, 38, 42, 45, 48, 51, 52, 53, 54];
-
-    // Hall mission numbers
-    const hallMissionNumbers = [2, 4, 6, 7, 8, 12, 18, 20, 22, 23, 26, 28, 32, 36, 40, 41, 43, 47, 51, 52, 53, 56, 60, 61, 62, 63, 66, 67, 71, 73, 76, 77, 81, 83, 85, 86, 91, 98];
-
-    const handleMissionClick = (index: number) => {
-        setSelectedMissions(prev => {
-            const newState = [...prev];
-
-            // If clicking on a mission that's already selected, unselect it and all subsequent missions
-            if (newState[index]) {
-                for (let i = index; i < newState.length; i++) {
-                    newState[i] = false;
-                }
-            }
-            // If clicking on a mission that's not selected, select it and all previous missions
-            else {
-                // Select all missions from 0 to index (autocomplete previous levels)
-                for (let i = 0; i <= index; i++) {
-                    newState[i] = true;
-                }
-            }
-
-            // Update rankedData with new mission count
-            const newCurrent = newState.filter(Boolean).length;
-            const updatedRankedData = {
-                ...rankedData,
-                missions: {
-                    ...rankedData.missions,
-                    current_act: {
-                        ...rankedData.missions.current_act,
-                        current: newCurrent
-                    }
-                }
-            };
-
-            // Call callback to update data
-            onUpdateRankedData(updatedRankedData);
-
-            return newState;
-        });
-    };
-
-    const handleHallMissionClick = (index: number) => {
-        setSelectedHallMissions(prev => {
-            const newState = [...prev];
-
-            // If clicking on a hall mission that's already selected, unselect it and all subsequent missions
-            if (newState[index]) {
-                for (let i = index; i < newState.length; i++) {
-                    newState[i] = false;
-                }
-            }
-            // If clicking on a hall mission that's not selected, select it and all previous missions
-            else {
-                // Select all hall missions from 0 to index (autocomplete previous levels)
-                for (let i = 0; i <= index; i++) {
-                    newState[i] = true;
-                }
-            }
-
-            // Update rankedData with new hall mission count
-            const newCurrent = newState.filter(Boolean).length;
-            const updatedRankedData = {
-                ...rankedData,
-                missions: {
-                    ...rankedData.missions,
-                    current_hall_of_legends: {
-                        ...rankedData.missions.current_hall_of_legends,
-                        current: newCurrent
-                    }
-                }
-            };
-
-            // Call callback to update data
-            onUpdateRankedData(updatedRankedData);
-
-            return newState;
-        });
-    };
 
     const handleWinClick = (index: number) => {
         setSelectedWins(prev => {
@@ -613,75 +497,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, selectedView,
 
             <div className={styles.divider}></div>
 
-            <div className={styles.missions__container}>
-                {selectedView === 'missions' && (
-                    <div className={styles.missions__list}>
-                        <div className={styles.mission__timeline}></div>
-                        {selectedMissions.map((isSelected, index) => {
-                            // Find the last selected mission index
-                            const lastSelectedIndex = selectedMissions.lastIndexOf(true);
-                            const showNumber = isSelected && index === lastSelectedIndex;
-                            const isCurrentLevel = isSelected && index === lastSelectedIndex;
-
-                            // Find the next available mission
-                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
-                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
-
-                            return (
-                                <div
-                                    key={index}
-                                    className={`${styles.mission} ${isCurrentLevel
-                                        ? styles.mission__current
-                                        : isSelected
-                                            ? styles.mission__selected
-                                            : isNextAvailable
-                                                ? styles.mission__next
-                                                : ''
-                                        }`}
-                                    onClick={() => handleMissionClick(index)}
-                                >
-                                    {showNumber && (
-                                        <span className={styles.mission__number}>{missionNumbers[index]}</span>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
-                {selectedView === 'hall-missions' && (
-                    <div className={styles.hall__list}>
-                        <div className={styles.hall__mission__timeline}></div>
-                        {selectedHallMissions.map((isSelected, index) => {
-                            // Find the last selected hall mission index
-                            const lastSelectedIndex = selectedHallMissions.lastIndexOf(true);
-                            const showNumber = isSelected && index === lastSelectedIndex;
-                            const isCurrentLevel = isSelected && index === lastSelectedIndex;
-
-                            // Find the next available mission
-                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
-                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
-
-                            return (
-                                <div
-                                    key={index}
-                                    className={`${styles.hall__mission} ${isCurrentLevel
-                                        ? styles.hall__mission__current
-                                        : isSelected
-                                            ? styles.hall__mission__selected
-                                            : isNextAvailable
-                                                ? styles.hall__mission__next
-                                                : ''
-                                        }`}
-                                    onClick={() => handleHallMissionClick(index)}
-                                >
-                                    {showNumber && (
-                                        <span className={styles.hall__mission__number}>{hallMissionNumbers[index]}</span>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
+            <div className={styles.ranking__container}>
+                {/* Ranking content will be added here */}
             </div>
         </div>
     );
