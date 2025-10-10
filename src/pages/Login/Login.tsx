@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => {
@@ -169,7 +169,7 @@ const Login: React.FC = () => {
                         </button>
 
                         <div className={styles.signUpLink}>
-                            Don't have an account? <a href="/signup">Sign up here</a>
+                            Don't have an account? <Link to="/signup">Sign up here</Link>
                         </div>
                     </form>
                 </div>

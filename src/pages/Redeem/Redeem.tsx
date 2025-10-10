@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styles from './Redeem.module.scss';
 import { claimService } from '../../services/claimService';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const Redeem: React.FC = () => {
+    const { refreshProfile } = useAuthContext();
     const [redeemCode, setRedeemCode] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [loading, setLoading] = useState(false);
@@ -29,7 +31,14 @@ const Redeem: React.FC = () => {
             });
 
             if (result.success) {
-                setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente!`);
+                console.log('Claim successful, refreshing profile...');
+                
+                // Refresh user profile to update rankedUsernames permissions
+                await refreshProfile();
+                
+                console.log('Profile refreshed, permissions updated');
+                
+                setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente! Permisos actualizados.`);
                 setRedeemCode('');
                 setSelectedAccount('');
             } else {

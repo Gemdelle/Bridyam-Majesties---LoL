@@ -147,7 +147,19 @@ export const useAuth = () => {
     try {
       const user = await authService.getProfile();
       if (user) {
-        setAuthState(prev => ({ ...prev, user }));
+        // Create a new user object to ensure React detects the change
+        const updatedUser = { ...user };
+        
+        // Update state
+        setAuthState(prev => ({ 
+          ...prev, 
+          user: updatedUser 
+        }));
+        
+        // Update localStorage to keep it in sync
+        localStorage.setItem('user_data', JSON.stringify(updatedUser));
+        
+        console.log('Profile refreshed successfully:', updatedUser);
       }
     } catch (error) {
       console.error('Profile refresh error:', error);

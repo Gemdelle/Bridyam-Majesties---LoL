@@ -3,6 +3,7 @@ import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
+import { usePermissions } from '../../hooks/usePermissions';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -22,6 +23,10 @@ const filterOptions: FilterOption[] = [
 // Las opciones de essencers se generarán dinámicamente basándose en los datos
 
 const Ranked: React.FC = () => {
+    // --- Hook para permisos ---
+    const permissions = usePermissions();
+    const { canEditRankedUsername } = permissions;
+
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('all');
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -53,6 +58,15 @@ const Ranked: React.FC = () => {
                 label: essencer
             }));
     };
+
+    // --- Log permissions for debugging ---
+    useEffect(() => {
+        console.log('Ranked page - Current permissions:', {
+            isAdmin: permissions.isAdmin,
+            editableUsernames: permissions.editableUsernames,
+            canSeeAllNavigation: permissions.canSeeAllNavigation
+        });
+    }, [permissions]);
 
     // --- Cargar datos de ranked ---
     useEffect(() => {
@@ -462,13 +476,18 @@ const Ranked: React.FC = () => {
                                 const { accounts, totalPages } = getCurrentPageAccounts();
                                 return (
                                     <>
-                                        {accounts.map((rankedAccount) => (
+                                        {accounts.map((rankedAccount) => {
+                                            const canEdit = canEditRankedUsername(rankedAccount.username);
+                                        console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
+                                        return (
                                             <RankedAccount
                                                 key={rankedAccount.id}
                                                 rankedData={rankedAccount}
                                                 onUpdateRankedData={handleUpdateRankedData}
+                                                canEdit={canEdit}
                                             />
-                                        ))}
+                                            );
+                                        })}
                                         <div className={styles.pagination}>
                                             <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                                                 &lt; Previous

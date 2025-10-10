@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
+import { usePermissions } from '../../hooks/usePermissions'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 
 export const Nav = () => {
     const location = useLocation()
     const { logout } = useAuthContext()
+    const { canSeeAllNavigation } = usePermissions()
 
     const handleLogout = async () => {
         if (confirm('Are you sure you want to logout?')) {
@@ -41,24 +43,28 @@ export const Nav = () => {
                     >
                         <Link to="/champions">Champions</Link>
                     </li>
-                    <li
-                        className={location.pathname === '/skins' ? styles.active : ''}
-                        data-nav="skins"
-                    >
-                        <Link to="/skins">Skins</Link>
-                    </li>
-                    <li
-                        className={location.pathname === '/achievements' ? styles.active : ''}
-                        data-nav="achievements"
-                    >
-                        <Link to="/achievements">Achievements</Link>
-                    </li>
-                    <li
-                        className={location.pathname === '/roulette' ? styles.active : ''}
-                        data-nav="roulette"
-                    >
-                        <Link to="/roulette">Ruleta</Link>
-                    </li>
+                    {canSeeAllNavigation && (
+                        <>
+                            <li
+                                className={location.pathname === '/skins' ? styles.active : ''}
+                                data-nav="skins"
+                            >
+                                <Link to="/skins">Skins</Link>
+                            </li>
+                            <li
+                                className={location.pathname === '/achievements' ? styles.active : ''}
+                                data-nav="achievements"
+                            >
+                                <Link to="/achievements">Achievements</Link>
+                            </li>
+                            <li
+                                className={location.pathname === '/roulette' ? styles.active : ''}
+                                data-nav="roulette"
+                            >
+                                <Link to="/roulette">Ruleta</Link>
+                            </li>
+                        </>
+                    )}
                 </ul>
                 <PetDisplay />
                 <ul className={styles.nav__container__links__right}>
@@ -68,12 +74,16 @@ export const Nav = () => {
                     >
                         <Link to="/redeem">Redeem</Link>
                     </li>
-                    <li>
-                        PAGE
-                    </li>
-                    <li>
-                        PAGE
-                    </li>
+                    {canSeeAllNavigation && (
+                        <>
+                            <li>
+                                PAGE
+                            </li>
+                            <li>
+                                PAGE
+                            </li>
+                        </>
+                    )}
                     <li>
                         <button
                             className={styles.logoutButton}

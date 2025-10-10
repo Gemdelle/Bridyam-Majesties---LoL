@@ -10,12 +10,13 @@ const tierSilver = '/images/lol-elements/tier-silver.webp';
 const tierBronze = '/images/lol-elements/tier-bronze.webp';
 const tierIron = '/images/lol-elements/tier-iron.webp';
 
-interface RankedAccountProps {
+export interface RankedAccountProps {
     rankedData: RankedData;
-    onUpdateRankedData: (updatedData: RankedData) => void;
+    onUpdateRankedData: (updatedData: RankedData) => void | Promise<void>;
+    canEdit: boolean;
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData }) => {
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit }) => {
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
@@ -83,6 +84,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
     }, []);
 
     const handleWinClick = (index: number) => {
+        if (!canEdit) return; // Prevent editing if user doesn't have permission
+
         setSelectedWins(prev => {
             const newState = [...prev];
 
@@ -118,6 +121,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
     };
 
     const handleEssencerEdit = () => {
+        if (!canEdit) return; // Prevent editing if user doesn't have permission
         setIsEditingEssencer(true);
     };
 
@@ -144,6 +148,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
     };
 
     const handleLevelEdit = () => {
+        if (!canEdit) return; // Prevent editing if user doesn't have permission
         setIsEditingLevel(true);
     };
 
@@ -326,7 +331,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                         autoFocus
                     />
                 ) : (
-                    <span onClick={handleLevelEdit}>{rankedData.level}</span>
+                    <span onClick={handleLevelEdit} style={{ cursor: canEdit ? 'pointer' : 'default' }}>{rankedData.level}</span>
                 )}
             </div>
 
@@ -344,7 +349,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                         autoFocus
                     />
                 ) : (
-                    <span onClick={handleEssencerEdit}>{rankedData.name}</span>
+                    <span onClick={handleEssencerEdit} style={{ cursor: canEdit ? 'pointer' : 'default' }}>{rankedData.name}</span>
                 )}
             </div>
 
@@ -369,7 +374,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                                         ? styles.win__next
                                         : ''
                                     }`}
-                                style={isSelected ? { backgroundImage: getBloodlineImage() } : {}}
+                                style={isSelected ? { backgroundImage: getBloodlineImage(), cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
                                 onClick={() => handleWinClick(index)}
                             ></div>
                         );
@@ -382,7 +387,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
             <div className={styles.divider}></div>
 
-            <div ref={honorRef} className={styles.honor__container} onClick={() => setShowHonorSelector(!showHonorSelector)}>
+            <div ref={honorRef} className={styles.honor__container} onClick={() => canEdit && setShowHonorSelector(!showHonorSelector)} style={{ cursor: canEdit ? 'pointer' : 'default' }}>
                 <span>{convertToRomanNumeral(rankedData.honor)}</span>
                 <img src={getHonorImage(rankedData.honor)} alt={`Honor ${rankedData.honor}`} />
                 {showHonorSelector && (
@@ -407,7 +412,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
             <div className={styles.divider}></div>
 
-            <div ref={soloqRef} className={styles.soloq__container} onClick={() => setShowSoloqSelector(!showSoloqSelector)}>
+            <div ref={soloqRef} className={styles.soloq__container} onClick={() => canEdit && setShowSoloqSelector(!showSoloqSelector)} style={{ cursor: canEdit ? 'pointer' : 'default' }}>
                 {isSoloqRanked() && (
                     <>
                         <span>{convertToRomanNumeral(rankedData.elo_soloq.division)}</span>
@@ -450,7 +455,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                 )}
             </div>
 
-            <div ref={flexRef} className={styles.flex__container} onClick={() => setShowFlexSelector(!showFlexSelector)}>
+            <div ref={flexRef} className={styles.flex__container} onClick={() => canEdit && setShowFlexSelector(!showFlexSelector)} style={{ cursor: canEdit ? 'pointer' : 'default' }}>
                 {isFlexRanked() && (
                     <>
                         <span>{convertToRomanNumeral(rankedData.elo_flex.division)}</span>
