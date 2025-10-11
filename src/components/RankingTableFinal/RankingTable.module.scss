@@ -215,8 +215,9 @@
         span {
             height: 20%;
             color: #c89b3c;
-            font-size: 1.2vw;
+            font-size: 0.9vw;
             font-weight: bold;
+            letter-spacing: 0.1vw;
             margin-bottom: 0;
             // background-color: red;
             @include flex-center;
@@ -336,7 +337,7 @@
 
     // Estilo individual para cada dígito del score
     .score__digit {
-        height: 35%;  // Tamaño ajustable - puedes modificar este valor
+        height: 25%;  // Tamaño ajustable - puedes modificar este valor
         width: auto;
         object-fit: contain;
     }
