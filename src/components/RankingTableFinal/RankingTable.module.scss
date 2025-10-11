@@ -270,6 +270,22 @@
         font-weight: bold;
         color: #f0e6d2;
     }
+
+    // Contenedor de números del score como imágenes
+    .score__numbers {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        height: 100%;
+    }
+
+    // Estilo individual para cada dígito del score
+    .score__digit {
+        height: 35%;  // Tamaño ajustable - puedes modificar este valor
+        width: auto;
+        object-fit: contain;
+    }
 }
 
 @keyframes breathe {

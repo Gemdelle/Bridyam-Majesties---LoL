@@ -33,10 +33,6 @@ const RankingTableFinal: React.FC = () => {
         return 'bronze';
     };
 
-    const formatScore = (score: number) => {
-        return score.toLocaleString();
-    };
-
     const getPetImage = (petType: string | null, petStage: number | null) => {
         if (!petType || !petStage) return '/images/pets/nav-pet-1.png';
         return `/images/pets/pet-${petType}-${petStage}.png`;
@@ -73,6 +69,19 @@ const RankingTableFinal: React.FC = () => {
                 ))}
             </div>
         );
+    };
+
+    // Helper function to render score as images
+    const renderScoreAsImages = (score: number) => {
+        const scoreString = score.toString();
+        return scoreString.split('').map((digit, index) => (
+            <img
+                key={index}
+                src={`/images/numbers/${digit}.png`}
+                alt={digit}
+                className={styles.score__digit}
+            />
+        ));
     };
 
     const renderRankingRow = (entry: RankingEntry, rowClass: string) => {
@@ -132,7 +141,9 @@ const RankingTableFinal: React.FC = () => {
 
                 {/* TOTAL */}
                 <div className={styles.total__container}>
-                    <span>{formatScore(entry.totalProgressScore)}</span>
+                    <div className={styles.score__numbers}>
+                        {renderScoreAsImages(entry.totalProgressScore)}
+                    </div>
                 </div>
             </div>
         );
@@ -164,7 +175,7 @@ const RankingTableFinal: React.FC = () => {
         <div className={styles.ranking__container}>
 
             {/* DATA ROWS */}
-            {ranking.map((entry, index) => {
+            {ranking.map((entry) => {
                 let rowClass = styles.essencer__default;
 
                 if (entry.rank === 1) {
