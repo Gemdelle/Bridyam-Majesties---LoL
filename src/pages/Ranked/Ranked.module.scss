@@ -22,31 +22,34 @@
 .content__top {
   width: 100%;
   height: 6%;
-  @include flex-between;
-  gap: 2rem;
+  @include flex-start;
+ align-items: flex-end;
   // background-color: violet;
 }
 
 .content__filters {
-  width: 43%;
+  width: 30%;
   height: 100%;
+  // background-color: red;
+  margin-right: 2%;
   @include flex-between;
   position: relative;
   z-index: 9999;
 }
 
 .content__search_stats {
-  width: 55%;
+  width: 30%;
   height: 100%;
   @include flex-between;
-  gap: 1rem;
+  // background-color: lightblue;
 }
 
 .search__container {
-  width: 25%;
-  height: 70%;
+  width: 70%;
+  height: 60%;
   @include flex-center;
   position: relative;
+  // background-color: lightcoral;
 }
 
 .search__input {
@@ -111,35 +114,12 @@
 }
 
 .stats__container {
-  width: 78%;
+  width: 25%;
   height: 100%;
   display: flex;
-  gap: 6px;
   flex-wrap: wrap;
   // background-color: red;
   @include flex-between;
-}
-
-.stats__divider {
-  width: 0.1%;
-  height: 100%;
-  border-left: 1px solid #B69461;
-  opacity: 0.6;
-  align-self: center;
-}
-
-.stats__total_games,
-.stats__porveldam,
-.stats__spadelline,
-.stats__zephiroth,
-.stats__gladasmy,
-.stats__primogenit {
-  width: 14%;
-  height: 100%;
-  @include flex-between;
-  gap: 6px;
-  transition: all 0.3s ease;
-  // background-color: blue;
 
   img {
     width: 30%;
@@ -148,6 +128,7 @@
   }
   
   span {
+    width: 60%;
     color: #cdbe91;
     font-size: 0.8vw;
     font-weight: bolder;
@@ -168,7 +149,13 @@
   }
 }
 
-
+.ranking__rules__container {
+  width: 38%;
+  margin-left: 2%;
+  height: 170%;
+  @include flex-center;
+  background-color: lightcoral;
+}
 
 .content {
     width: 100%;

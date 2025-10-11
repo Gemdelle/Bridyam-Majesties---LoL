@@ -351,15 +351,17 @@ const Ranked: React.FC = () => {
                             )}
                         </div>
                         <div className={styles.stats__container}>
-                            <div className={styles.stats__total_games}>
-                                <img src="/images/ranked-btn/wins.png" alt="Total Games" />
-                                <span>{(() => {
-                                    const totalWins = rankedData.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = rankedData.length * 15; // All accounts * 15 games each
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
+                            <img src="/images/ranked-btn/wins.png" alt="Total Games" />
+                            <span>{(() => {
+                                const totalWins = rankedData.reduce((sum, account) => sum + account.wins.current, 0);
+                                const totalPossible = rankedData.length * 15; // All accounts * 15 games each
+                                return `${totalWins} / ${totalPossible}`;
+                            })()}</span>
                         </div>
+
+
+                    </div>
+                    <div className={styles.ranking__rules__container}>
                     </div>
                 </div>
                 <div className={styles.content}>
