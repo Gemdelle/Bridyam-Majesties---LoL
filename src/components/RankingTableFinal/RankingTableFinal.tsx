@@ -99,32 +99,32 @@ const RankingTableFinal: React.FC = () => {
                 {/* PROGRESS */}
                 <div className={styles.achievements__container}>
                     {/* WIN */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${winTier}`]}`}>
                         <img src={`/images/ranking/${winTier}/${winTier}-win.png`} alt="Win" />
                         <span>{entry.winsGained}</span>
                     </div>
                     {/* MASTERY */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${masteryTier}`]}`}>
                         <img src={`/images/ranking/${masteryTier}/${masteryTier}-mastery.png`} alt="Mastery" />
                         <span>{entry.masteryLevelsGained}</span>
                     </div>
                     {/* HONOR */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${honorTier}`]}`}>
                         <img src={`/images/ranking/${honorTier}/${honorTier}-honor.png`} alt="Honor" />
                         <span>{entry.honorGained}</span>
                     </div>
                     {/* LEVEL */}
-                    <div className={`${styles.achievement__container} ${styles.achievement__level}`}>
+                    <div className={`${styles.achievement__container} ${styles.achievement__level} ${styles[`achievement__${levelTier}`]}`}>
                         <img src={`/images/ranking/${levelTier}/${levelTier}-level.png`} alt="Level" />
                         <span>{entry.levelGained}</span>
                     </div>
                     {/* MEMBER */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${memberTier}`]}`}>
                         <img src={`/images/ranking/${memberTier}/${memberTier}-member.png`} alt="Member" />
                         <span>{entry.level30BonusCount}</span>
                     </div>
                     {/* ELO */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${eloTier}`]}`}>
                         <img src={`/images/ranking/${eloTier}/${eloTier}-elo.png`} alt="Elo" />
                         <span>{entry.eloDivisionsGained}</span>
                     </div>
