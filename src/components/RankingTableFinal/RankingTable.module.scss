@@ -107,6 +107,8 @@
         width: 50%;
         left: -10%;
         bottom: 0%;
+        animation: breathe 2s infinite linear;
+        transform-origin: center bottom;
     }
 
     .essencer__info {
@@ -219,5 +221,17 @@
         font-size: 1.2vw;
         font-weight: bold;
         color: #f0e6d2;
+    }
+}
+
+@keyframes breathe {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(1.03);
+    }
+    100% {
+        transform: scaleY(1);
     }
 }
