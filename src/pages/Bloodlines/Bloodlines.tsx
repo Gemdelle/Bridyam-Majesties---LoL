@@ -182,12 +182,26 @@ const Bloodlines: React.FC = () => {
         const masteryA = getMasteryLevel(sortByAccount, a.id);
         const masteryB = getMasteryLevel(sortByAccount, b.id);
 
-        // Convert null to 0 for comparison purposes
-        const masteryAValue = masteryA ?? 0;
-        const masteryBValue = masteryB ?? 0;
+        // Handle null (not acquired), 0 (purchased), and >0 (mastery levels)
+        // Sort order: mastery levels > 0, then purchased (0), then not acquired (null)
 
-        // Sort by mastery level descending (10+, 20, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-        return masteryBValue - masteryAValue;
+        // If both are null, sort by ID
+        if (masteryA === null && masteryB === null) {
+          return a.id - b.id;
+        }
+
+        // If A is null and B is not, B comes first
+        if (masteryA === null && masteryB !== null) {
+          return 1;
+        }
+
+        // If B is null and A is not, A comes first
+        if (masteryB === null && masteryA !== null) {
+          return -1;
+        }
+
+        // Both are not null, sort by mastery level descending
+        return masteryB - masteryA;
       }
 
       switch (sortBy) {
@@ -197,9 +211,28 @@ const Bloodlines: React.FC = () => {
         case 'mastery': {
           // Sort by total mastery count across all accounts descending
           const { accounts } = getCurrentPageAccounts();
-          const totalMasteryA = accounts.reduce((sum, account) => sum + (getMasteryLevel(account.id, a.id) ?? 0), 0);
-          const totalMasteryB = accounts.reduce((sum, account) => sum + (getMasteryLevel(account.id, b.id) ?? 0), 0);
-          return totalMasteryB - totalMasteryA;
+
+          // Count how many accounts have mastery levels > 0, then purchased (0), then not acquired (null)
+          const getMasteryScore = (championId: number) => {
+            let masteryLevels = 0;
+            let purchased = 0;
+            let notAcquired = 0;
+
+            accounts.forEach(account => {
+              const mastery = getMasteryLevel(account.id, championId);
+              if (mastery === null) notAcquired++;
+              else if (mastery === 0) purchased++;
+              else masteryLevels++;
+            });
+
+            // Return a score where mastery levels have highest priority, then purchased, then not acquired
+            return masteryLevels * 1000 + purchased * 100 + notAcquired;
+          };
+
+          const scoreA = getMasteryScore(a.id);
+          const scoreB = getMasteryScore(b.id);
+
+          return scoreB - scoreA;
         }
         default:
           return a.id - b.id;
