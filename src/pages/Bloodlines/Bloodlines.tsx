@@ -116,7 +116,7 @@ const Bloodlines: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      
+
       // Check if click is outside the active dropdown
       if (activeMasteryDropdown) {
         const activeRef = masteryDropdownRefs.current.get(activeMasteryDropdown);
@@ -222,16 +222,16 @@ const Bloodlines: React.FC = () => {
       return `/images/masteries/mastery/0.png`;
     }
 
-    // If champion_level is 0 (purchased), show 1.png from badges
+    // If champion_level is 0 (purchased), show missing.png
     if (masteryLevel === 0) {
-      return `/images/masteries/badges/1.png`;
+      return `/images/ranked-btn/missing.png`;
     }
 
     // If masteryLevel is greater than 10, show 10.png from badges
     if (masteryLevel > 10) {
       return `/images/masteries/badges/10.png`;
     }
-    
+
     // For levels 1-10, show the corresponding badge
     return `/images/masteries/badges/${masteryLevel}.png`;
   };
@@ -242,7 +242,7 @@ const Bloodlines: React.FC = () => {
     if (!canEditRankedUsername(username)) return;
 
     const dropdownKey = `${rankedId}-${championId}`;
-    
+
     // Toggle dropdown visibility
     if (activeMasteryDropdown === dropdownKey) {
       setActiveMasteryDropdown(null);
@@ -254,7 +254,7 @@ const Bloodlines: React.FC = () => {
   // Available mastery levels (null = not owned, 0 = purchased but no mastery, 1-10+ = mastery levels)
   const availableMasteryLevels = [
     { value: null, label: 'Not Owned', image: '/images/masteries/mastery/0.png' },
-    { value: 0, label: 'Purchased', image: '/images/masteries/badges/1.png' },
+    { value: 0, label: 'Purchased', image: '/images/ranked-btn/missing.png' },
     { value: 1, label: 'Level 1', image: '/images/masteries/badges/1.png' },
     { value: 2, label: 'Level 2', image: '/images/masteries/badges/2.png' },
     { value: 3, label: 'Level 3', image: '/images/masteries/badges/3.png' },
@@ -276,10 +276,10 @@ const Bloodlines: React.FC = () => {
 
     try {
       let masteryToUpdate: MasteryData;
-      
+
       if (mastery) {
         console.log('Existing mastery found, updating level...');
-        
+
         // Update existing mastery
         masteryToUpdate = {
           ...mastery,
@@ -287,7 +287,7 @@ const Bloodlines: React.FC = () => {
         };
       } else {
         console.log('No existing mastery found, creating new one...');
-        
+
         // Create new mastery entry
         masteryToUpdate = {
           id: null, // Let backend assign ID
@@ -302,21 +302,21 @@ const Bloodlines: React.FC = () => {
           last_play_time: new Date().toISOString()
         };
       }
-      
+
       console.log('Sending PUT request with mastery:', masteryToUpdate);
-      
+
       // Send PUT request to backend with the ranked_id
       await updateMasteriesByRankedId(rankedId, [masteryToUpdate]);
-      
+
       console.log('PUT request successful, reloading data...');
-      
+
       // Reload mastery data from backend to reflect changes
       const updatedData = await fetchMasteryData();
       setMasteryData(updatedData);
-      
+
       // Close dropdown
       setActiveMasteryDropdown(null);
-      
+
       console.log('Data reloaded successfully');
     } catch (error) {
       console.error('Error updating masteries in backend:', error);
@@ -593,8 +593,8 @@ const Bloodlines: React.FC = () => {
                       const isDropdownOpen = activeMasteryDropdown === dropdownKey;
 
                       return (
-                        <div 
-                          key={account.id} 
+                        <div
+                          key={account.id}
                           className={styles.row__account}
                           ref={(el) => {
                             if (el) {
