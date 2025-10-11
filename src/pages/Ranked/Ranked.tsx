@@ -359,67 +359,6 @@ const Ranked: React.FC = () => {
                                     return `${totalWins} / ${totalPossible}`;
                                 })()}</span>
                             </div>
-
-                            <div className={styles.stats__divider}></div>
-
-                            <div className={styles.stats__porveldam}>
-                                <img src="/images/ranked-btn/porveldam.png" alt="Porveldam" />
-                                <span>{(() => {
-                                    const porveldam = rankedData.filter(account => account.bloodline.toLowerCase() === 'porveldam' && account.level >= 30);
-                                    const totalWins = porveldam.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = porveldam.reduce((sum, account) => sum + account.wins.totals, 0);
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
-
-                            <div className={styles.stats__divider}></div>
-
-                            <div className={styles.stats__spadelline}>
-                                <img src="/images/ranked-btn/spadelline.png" alt="Spadelline" />
-                                <span>{(() => {
-                                    const spadelline = rankedData.filter(account => account.bloodline.toLowerCase() === 'spadelline' && account.level >= 30);
-                                    const totalWins = spadelline.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = spadelline.reduce((sum, account) => sum + account.wins.totals, 0);
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
-
-                            <div className={styles.stats__divider}></div>
-
-                            <div className={styles.stats__zephiroth}>
-                                <img src="/images/ranked-btn/zephiroth.png" alt="Zephiroth" />
-                                <span>{(() => {
-                                    const zephiroth = rankedData.filter(account => account.bloodline.toLowerCase() === 'zephiroth' && account.level >= 30);
-                                    const totalWins = zephiroth.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = zephiroth.reduce((sum, account) => sum + account.wins.totals, 0);
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
-
-                            <div className={styles.stats__divider}></div>
-
-                            <div className={styles.stats__gladasmy}>
-                                <img src="/images/ranked-btn/gladasmy.png" alt="Gladasmy" />
-                                <span>{(() => {
-                                    const gladasmy = rankedData.filter(account => account.bloodline.toLowerCase() === 'gladasmy' && account.level >= 30);
-                                    const totalWins = gladasmy.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = gladasmy.reduce((sum, account) => sum + account.wins.totals, 0);
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
-
-                            <div className={styles.stats__divider}></div>
-
-                            <div className={styles.stats__primogenit}>
-                                <img src="/images/ranked-btn/primogenit.png" alt="Primogenit" />
-                                <span>{(() => {
-                                    const primogenit = rankedData.filter(account => account.bloodline.toLowerCase() === 'primogenit' && account.level >= 30);
-                                    const totalWins = primogenit.reduce((sum, account) => sum + account.wins.current, 0);
-                                    const totalPossible = primogenit.reduce((sum, account) => sum + account.wins.totals, 0);
-                                    return `${totalWins} / ${totalPossible}`;
-                                })()}</span>
-                            </div>
-
                         </div>
                     </div>
                 </div>
