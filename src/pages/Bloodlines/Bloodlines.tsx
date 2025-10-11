@@ -365,6 +365,34 @@ const Bloodlines: React.FC = () => {
     return masteryLevel !== null && masteryLevel >= 0;
   };
 
+  // Convert number to Roman numeral
+  const convertToRomanNumeral = (num: number): string => {
+    switch (num) {
+      case 1:
+        return 'I';
+      case 2:
+        return 'II';
+      case 3:
+        return 'III';
+      case 4:
+        return 'IV';
+      case 5:
+        return 'V';
+      case 6:
+        return 'VI';
+      case 7:
+        return 'VII';
+      case 8:
+        return 'VIII';
+      case 9:
+        return 'IX';
+      case 10:
+        return 'X';
+      default:
+        return num.toString();
+    }
+  };
+
   // Clean summoner name (remove GEM prefix and #GEM/#LAS suffix)
   const cleanSummonerName = (summonerName: string): string => {
     // Remove "GEM " prefix if it exists
@@ -638,6 +666,11 @@ const Bloodlines: React.FC = () => {
                           }}
                           style={{ position: 'relative' }}
                         >
+                          {masteryValue >= 1 && (
+                            <span className={styles.mastery__roman}>
+                              {convertToRomanNumeral(masteryValue > 10 ? 10 : masteryValue)}
+                            </span>
+                          )}
                           <img
                             src={getMasteryImage(masteryLevel)}
                             alt={`Mastery ${masteryText}`}

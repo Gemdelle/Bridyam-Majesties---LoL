@@ -378,6 +378,30 @@
   color: #8b7355;
   font-size: 0.9rem;
   min-width: 120px;
+  position: relative;
+}
+
+.mastery__roman {
+  font-size: 18px;
+  color: white;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 100;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.row__account:hover .mastery__image {
+  filter: brightness(0.3);
+}
+
+.row__account:hover .mastery__image--glow {
+  filter: brightness(0.3) drop-shadow(0 0 10px #332913) drop-shadow(0 0 15px #e1d9c9);
+}
+
+.row__account:hover .mastery__roman {
+  opacity: 1;
 }
 
 .mastery__image {
