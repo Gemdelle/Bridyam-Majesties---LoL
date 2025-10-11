@@ -49,7 +49,7 @@ const RankingTableFinal: React.FC = () => {
             const bValue = b[category] as number;
             return bValue - aValue; // Orden descendente
         });
-        
+
         return sortedByCategory.findIndex(e => e.userId === entry.userId) + 1;
     };
 
@@ -65,9 +65,9 @@ const RankingTableFinal: React.FC = () => {
         return (
             <div className={styles.rank__number}>
                 {digits.map((digit, index) => (
-                    <img 
-                        key={index} 
-                        src={`/images/numbers/${digit}.png`} 
+                    <img
+                        key={index}
+                        src={`/images/numbers/${digit}.png`}
                         alt={digit}
                     />
                 ))}
@@ -82,7 +82,7 @@ const RankingTableFinal: React.FC = () => {
         const levelTier = getCategoryTier(entry, 'levelGained');
         const memberTier = getCategoryTier(entry, 'level30BonusCount');
         const eloTier = getCategoryTier(entry, 'eloDivisionsGained');
-        
+
         return (
             <div className={rowClass} key={entry.userId}>
                 {/* DESCRIPTION */}
@@ -114,7 +114,7 @@ const RankingTableFinal: React.FC = () => {
                         <span>{entry.honorGained}</span>
                     </div>
                     {/* LEVEL */}
-                    <div className={styles.achievement__container}>
+                    <div className={`${styles.achievement__container} ${styles.achievement__level}`}>
                         <img src={`/images/ranking/${levelTier}/${levelTier}-level.png`} alt="Level" />
                         <span>{entry.levelGained}</span>
                     </div>
@@ -195,7 +195,7 @@ const RankingTableFinal: React.FC = () => {
             {/* DATA ROWS */}
             {ranking.map((entry, index) => {
                 let rowClass = styles.essencer__default;
-                
+
                 if (entry.rank === 1) {
                     rowClass = styles.essencer__first;
                 } else if (entry.rank === 2) {
@@ -203,7 +203,7 @@ const RankingTableFinal: React.FC = () => {
                 } else if (entry.rank === 3) {
                     rowClass = styles.essencer__third;
                 }
-                
+
                 return renderRankingRow(entry, rowClass);
             })}
         </div>

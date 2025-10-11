@@ -181,8 +181,7 @@
         img {
             height: auto;
             max-height: 70%;
-            width: 90%;
-
+            width: 85%;
         }
 
         span {
@@ -193,6 +192,15 @@
             margin-bottom: 0;
             // background-color: red;
             @include flex-center;
+        }
+
+        // Specific styles for level achievement
+        &.achievement__level {
+            img {
+                height: auto;
+                max-height: 70%;
+                width: 65%;
+            }
         }
     }
 
