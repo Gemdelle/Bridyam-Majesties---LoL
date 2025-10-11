@@ -7,6 +7,63 @@
     @include flex-col-between;
 }
 
+// HEADER ROW
+.ranking__header__row {
+    width: 100%;
+    height: 8%;
+    @include flex-between;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid #c89b3c;
+    
+    .header__description {
+        width: 25%;
+        height: 100%;
+        @include flex-center;
+        
+        span {
+            font-size: 1.2vw;
+            font-weight: bold;
+            color: #c89b3c;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+        }
+    }
+    
+    .header__achievements {
+        width: 60%;
+        height: 100%;
+        @include flex-between;
+        
+        .header__achievement {
+            width: 15%;
+            height: 100%;
+            @include flex-center;
+            
+            span {
+                font-size: 0.9vw;
+                font-weight: bold;
+                color: #c89b3c;
+                text-transform: uppercase;
+                letter-spacing: 0.1rem;
+            }
+        }
+    }
+    
+    .header__total {
+        width: 10%;
+        height: 100%;
+        @include flex-center;
+        
+        span {
+            font-size: 1vw;
+            font-weight: bold;
+            color: #c89b3c;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+    }
+}
+
 .essencer__first,
 .essencer__second,
 .essencer__third,
@@ -105,16 +162,6 @@
         background-color: black;
         @include flex-col;
 
-        h2 {
-            margin: 0;
-            padding: 0;
-            font-size: 0.8vw;
-            font-weight: bold;
-            color: #c89b3c;
-            text-transform: uppercase;
-            letter-spacing: 0.1rem;
-        }
-
         img {
             height: 70%;
             width: auto;
@@ -122,6 +169,8 @@
 
         span {
             color: #c89b3c;
+            font-size: 1.1vw;
+            font-weight: bold;
         }
     }
 
@@ -132,4 +181,13 @@
     width: 10%;
     height: 100%;
     background-color: lightgreen;
+    @include flex-center;
+    
+    span {
+        margin: 0;
+        padding: 0;
+        font-size: 1.2vw;
+        font-weight: bold;
+        color: #f0e6d2;
+    }
 }
