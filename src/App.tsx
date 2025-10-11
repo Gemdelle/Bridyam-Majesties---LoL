@@ -19,6 +19,7 @@ import Login from './pages/Login/Login'
 import SignUp from './pages/SignUp/SignUp'
 import CursorSelection from './pages/CursorSelection/CursorSelection'
 import Roulette from './pages/Roulette/Roulette'
+import Feed from './pages/Feed/Feed'
 
 function AppContent() {
   const { isAuthenticated } = useAuthContext();
@@ -95,6 +96,7 @@ function AppContent() {
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/roulette" element={<Roulette />} />
           <Route path="/redeem" element={<Redeem />} />
+          <Route path="/feed" element={<Feed />} />
           <Route path="/adoption" element={<Adoption />} />
           <Route path="*"
             element={

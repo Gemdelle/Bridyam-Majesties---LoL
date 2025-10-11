@@ -76,8 +76,11 @@ export const Nav = () => {
                     </li>
                     {canSeeAllNavigation && (
                         <>
-                            <li>
-                                PAGE
+                            <li
+                                className={location.pathname === '/feed' ? styles.active : ''}
+                                data-nav="feed"
+                            >
+                                <Link to="/feed">Feed</Link>
                             </li>
                             <li>
                                 PAGE
