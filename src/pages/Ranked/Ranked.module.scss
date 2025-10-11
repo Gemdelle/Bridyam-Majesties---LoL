@@ -11,10 +11,9 @@
 }
 
 .container {
-  width: 92%;
+  width: 95%;
   height: 80%;
   margin-top: 5%;
-  padding: 2%;
   position: relative;
   @include flex-col-start-between;
   // background-color: red;
@@ -202,6 +201,7 @@
   height: 93%;
   // background-color: lightblue;
   @include flex-center;
+  justify-content: flex-end;
 }
 
 .accounts__header {
