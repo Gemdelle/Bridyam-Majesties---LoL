@@ -112,6 +112,7 @@
         bottom: 0%;
         animation: breathe 2s infinite linear;
         transform-origin: center bottom;
+        z-index: 10;
     }
 
     .essencer__info {
@@ -168,7 +169,28 @@
     }
 }
 
+// Glows específicos por posición en el ranking
+.essencer__first {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6)) 
+                drop-shadow(0 0 12px rgba(180, 148, 97, 0.5))
+                drop-shadow(0 0 16px rgba(200, 155, 60, 0.3));
+    }
+}
 
+.essencer__second {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 6px rgba(200, 155, 60, 0.5)) 
+                drop-shadow(0 0 9px rgba(180, 148, 97, 0.4));
+    }
+}
+
+.essencer__third {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 4px rgba(200, 155, 60, 0.4)) 
+                drop-shadow(0 0 6px rgba(180, 148, 97, 0.3));
+    }
+}
 
 // PROGRESS
 .achievements__container {
