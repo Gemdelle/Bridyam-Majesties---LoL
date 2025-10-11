@@ -201,7 +201,8 @@ const Bloodlines: React.FC = () => {
         }
 
         // Both are not null, sort by mastery level descending
-        return masteryB - masteryA;
+        // At this point, both masteryA and masteryB are guaranteed to be numbers (not null)
+        return (masteryB ?? 0) - (masteryA ?? 0);
       }
 
       switch (sortBy) {
@@ -666,11 +667,13 @@ const Bloodlines: React.FC = () => {
                           }}
                           style={{ position: 'relative' }}
                         >
-                          {masteryValue >= 1 && (
-                            <span className={styles.mastery__roman}>
-                              {convertToRomanNumeral(masteryValue > 10 ? 10 : masteryValue)}
-                            </span>
-                          )}
+                          <span className={styles.mastery__roman}>
+                            {masteryLevel === null 
+                              ? '-' 
+                              : masteryLevel === 0 
+                                ? '0' 
+                                : convertToRomanNumeral(masteryValue > 10 ? 10 : masteryValue)}
+                          </span>
                           <img
                             src={getMasteryImage(masteryLevel)}
                             alt={`Mastery ${masteryText}`}
