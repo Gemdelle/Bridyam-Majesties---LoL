@@ -260,8 +260,24 @@
 .total__container {
     width: 10%;
     height: 100%;
+    position: relative;
     // background-color: lightgreen;
     @include flex-center;
+    
+    // Glow sutil de fondo
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        height: 85%;
+        background: radial-gradient(circle, rgba(200, 155, 60, 0.12) 0%, rgba(180, 148, 97, 0.08) 40%, transparent 70%);
+        border-radius: 50%;
+        z-index: 1;
+        animation: scoreGlowPulse 3s ease-in-out infinite;
+    }
     
     span {
         margin: 0;
@@ -271,13 +287,51 @@
         color: #f0e6d2;
     }
 
+    // Contenedor de partículas flotantes
+    .score__particles__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    // Partículas individuales
+    .score__particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: radial-gradient(circle, rgba(246, 245, 241, 0.9), rgba(222, 213, 111, 0.7));
+        border-radius: 50%;
+        animation: scoreParticleFloat 5s ease-in-out infinite;
+        box-shadow: 0 0 4px rgba(222, 213, 111, 0.6), 0 0 8px rgba(200, 155, 60, 0.3);
+    }
+
+    // Posiciones de las partículas - distribuidas sutilmente
+    .score__particle__1 { top: 20%; left: 15%; animation-delay: 0s; }
+    .score__particle__2 { top: 30%; right: 20%; animation-delay: 0.4s; }
+    .score__particle__3 { top: 40%; left: 25%; animation-delay: 0.8s; }
+    .score__particle__4 { top: 50%; right: 15%; animation-delay: 1.2s; }
+    .score__particle__5 { top: 60%; left: 30%; animation-delay: 1.6s; }
+    .score__particle__6 { top: 70%; right: 25%; animation-delay: 2s; }
+    .score__particle__7 { top: 25%; left: 50%; animation-delay: 2.4s; }
+    .score__particle__8 { top: 45%; right: 50%; animation-delay: 2.8s; }
+    .score__particle__9 { top: 65%; left: 45%; animation-delay: 3.2s; }
+    .score__particle__10 { top: 35%; right: 35%; animation-delay: 3.6s; }
+    .score__particle__11 { top: 55%; left: 60%; animation-delay: 4s; }
+    .score__particle__12 { top: 75%; right: 60%; animation-delay: 4.4s; }
+
     // Contenedor de números del score como imágenes
     .score__numbers {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 2px;
         height: 100%;
+        z-index: 3;
     }
 
     // Estilo individual para cada dígito del score
@@ -285,6 +339,28 @@
         height: 35%;  // Tamaño ajustable - puedes modificar este valor
         width: auto;
         object-fit: contain;
+    }
+}
+
+// Animación de partículas del score
+@keyframes scoreParticleFloat {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.2);
+        opacity: 0.9;
+    }
+}
+
+// Animación del glow de fondo
+@keyframes scoreGlowPulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.85;
     }
 }
 

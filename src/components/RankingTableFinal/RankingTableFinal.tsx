@@ -141,6 +141,13 @@ const RankingTableFinal: React.FC = () => {
 
                 {/* TOTAL */}
                 <div className={styles.total__container}>
+                    {/* Partículas flotantes */}
+                    <div className={styles.score__particles__container}>
+                        {Array.from({ length: 12 }, (_, i) => (
+                            <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
+                        ))}
+                    </div>
+
                     <div className={styles.score__numbers}>
                         {renderScoreAsImages(entry.totalProgressScore)}
                     </div>
