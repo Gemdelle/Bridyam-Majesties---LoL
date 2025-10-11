@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
+import RankingTable from '../../components/RankingTable/RankingTable';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
 
@@ -502,6 +503,7 @@ const Ranked: React.FC = () => {
                             })()}
                         </div>
                         <div className={styles.ranking__container}>
+                            <RankingTable />
                         </div>
                     </div>
 

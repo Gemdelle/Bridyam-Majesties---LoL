@@ -14,6 +14,7 @@ export interface User {
   isActive: boolean;
   createdAt: string;
   authProvider: string;
+  rankedUsernames?: string[];
 }
 
 export interface LoginResponse {
@@ -215,6 +216,17 @@ export class AuthService {
         // Token is valid, update cache
         this.lastValidationTime = Date.now();
         localStorage.setItem('last_validation_time', this.lastValidationTime.toString());
+        
+        // Try to get updated user data from response if available
+        try {
+          const data = await response.json();
+          if (data.user) {
+            localStorage.setItem('user_data', JSON.stringify(data.user));
+          }
+        } catch (e) {
+          // Response might not have JSON body, that's okay
+        }
+        
         return true;
       } else if (response.status === 401 || response.status === 403) {
         // Token is actually invalid, clear it
