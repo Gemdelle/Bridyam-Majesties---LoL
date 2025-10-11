@@ -59,6 +59,22 @@ const RankingTableFinal: React.FC = () => {
         return getRankTier(categoryRank);
     };
 
+    // Helper function to render rank number as images
+    const renderRankNumber = (rank: number) => {
+        const digits = rank.toString().split('');
+        return (
+            <div className={styles.rank__number}>
+                {digits.map((digit, index) => (
+                    <img 
+                        key={index} 
+                        src={`/images/numbers/${digit}.png`} 
+                        alt={digit}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     const renderRankingRow = (entry: RankingEntry, rowClass: string) => {
         const winTier = getCategoryTier(entry, 'winsGained');
         const masteryTier = getCategoryTier(entry, 'masteryLevelsGained');
@@ -74,7 +90,7 @@ const RankingTableFinal: React.FC = () => {
                     <img src={getPetImage(entry.petType, entry.petStage)} alt="Pet" />
                     <div className={styles.essencer__info}>
                         <div className={styles.essencer__info__rank}>
-                            <h2>{entry.rank}</h2>
+                            {renderRankNumber(entry.rank)}
                             <span>{entry.rankedName}</span>
                         </div>
                     </div>

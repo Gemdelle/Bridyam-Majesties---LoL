@@ -138,6 +138,20 @@
                 line-height: 30px;
             }
 
+            .rank__number {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                margin-top: -5%;
+                
+                img {
+                    height: 25px;
+                    width: auto;
+                    position: relative;
+                }
+            }
+
             span {
                 color: #e6d0a1;
                 font-size: 15px;
