@@ -162,35 +162,6 @@ const RankingTableFinal: React.FC = () => {
 
     return (
         <div className={styles.ranking__container}>
-            {/* HEADER */}
-            <div className={styles.ranking__header__row}>
-                <div className={styles.header__description}>
-                    <span>RANK</span>
-                </div>
-                <div className={styles.header__achievements}>
-                    <div className={styles.header__achievement}>
-                        <span>WIN</span>
-                    </div>
-                    <div className={styles.header__achievement}>
-                        <span>MASTERY</span>
-                    </div>
-                    <div className={styles.header__achievement}>
-                        <span>HONOR</span>
-                    </div>
-                    <div className={styles.header__achievement}>
-                        <span>LEVEL</span>
-                    </div>
-                    <div className={styles.header__achievement}>
-                        <span>MEMBER</span>
-                    </div>
-                    <div className={styles.header__achievement}>
-                        <span>ELO</span>
-                    </div>
-                </div>
-                <div className={styles.header__total}>
-                    <span>SCORE</span>
-                </div>
-            </div>
 
             {/* DATA ROWS */}
             {ranking.map((entry, index) => {

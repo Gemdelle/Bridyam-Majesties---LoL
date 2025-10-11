@@ -182,7 +182,7 @@
 .accounts__container {
   width: 100%;
   height: 95%;
-  @include flex-between;
+  @include flex-end;
   align-items: flex-start;
   // background-color: yellow;
 }
@@ -204,9 +204,69 @@
   justify-content: flex-end;
 }
 
+.header__container {
+  width: 100%;
+  height: 5%;
+  @include flex-between;
+  // background-color: lightblue;
+}
+
+.ranking__header {
+  width: 38%;
+  height: 100%;
+  border-bottom: 3px solid #B69461;
+  // background-color: lightcoral;
+  @include flex-between;
+
+  .rank,
+  .win,
+  .mastery,
+  .honor,
+  .level,
+  .member,
+  .elo,
+  .score {
+    color: #e4c493;
+    // background-color: lightblue;
+    @include flex-center;
+  }
+
+  .rank {
+    width: 22%;
+  }
+
+  .win {
+    width: 8%;
+  }
+
+  .mastery {
+    width: 10%;
+  }
+
+  .honor {
+    width: 10%;
+  }
+
+  .level {
+    width: 10%;
+  }
+
+  .member {
+    width: 10%;
+  }
+
+  .elo {
+    width: 10%;
+  }
+
+  .score {
+    width: 10%;
+  }
+}
+
 .accounts__header {
   width: 60%;
-  height: 5%;
+  height: 100%;
   // border-bottom: 2px solid #B69461;
   @include flex-top;
   font-size: 1rem;
@@ -231,10 +291,6 @@
   @include flex-center;
   height: 100%;
 }
-
-// Incluir los divisores en el cálculo de anchos
-// Estructura: ID + divider + portrait + divider + name + divider + level + divider + essencer + divider + wins + divider + honor + divider + soloq + divider + flex + divider + missions
-// Divisores: 9 × 0.1% = 0.9%
 
 .header__id {
   width: 3%; // 2.2% + 0.1% divider (1.2% + 1%)

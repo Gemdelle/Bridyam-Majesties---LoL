@@ -424,50 +424,63 @@ const Ranked: React.FC = () => {
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <div className={styles.accounts__header}>
-                        <div
-                            className={`${styles.header__id} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('id')}
-                        >
-                            ID{sortColumn === 'id' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                    <div className={styles.header__container}>
+                        <div className={styles.accounts__header}>
+                            <div
+                                className={`${styles.header__id} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('id')}
+                            >
+                                ID{sortColumn === 'id' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div className={styles.header__portrait}></div>
+                            <div className={styles.header__name}>ACCOUNT</div>
+                            <div
+                                className={`${styles.header__level} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('level')}
+                            >
+                                LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div
+                                className={`${styles.header__essencer} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('essencer')}
+                            >
+                                ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div
+                                className={`${styles.header__wins} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('wins')}
+                            >
+                                WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div
+                                className={`${styles.header__honor} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('honor')}
+                            >
+                                HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div
+                                className={`${styles.header__soloq} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('soloq')}
+                            >
+                                SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
+                            <div
+                                className={`${styles.header__flex} ${styles.sortable}`}
+                                onClick={() => handleColumnSort('flex')}
+                            >
+                                FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            </div>
                         </div>
-                        <div className={styles.header__portrait}></div>
-                        <div className={styles.header__name}>ACCOUNT</div>
-                        <div
-                            className={`${styles.header__level} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('level')}
+                        <div className={styles.ranking__header}
                         >
-                            LV{sortColumn === 'level' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                        </div>
-                        <div
-                            className={`${styles.header__essencer} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('essencer')}
-                        >
-                            ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                        </div>
-                        <div
-                            className={`${styles.header__wins} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('wins')}
-                        >
-                            WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                        </div>
-                        <div
-                            className={`${styles.header__honor} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('honor')}
-                        >
-                            HONOR{sortColumn === 'honor' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                        </div>
-                        <div
-                            className={`${styles.header__soloq} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('soloq')}
-                        >
-                            SOLO{sortColumn === 'soloq' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
-                        </div>
-                        <div
-                            className={`${styles.header__flex} ${styles.sortable}`}
-                            onClick={() => handleColumnSort('flex')}
-                        >
-                            FLEX{sortColumn === 'flex' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            <span className={styles.rank}>RANK</span>
+                            <span className={styles.win}>WIN</span>
+                            <span className={styles.mastery}>MASTERY</span>
+                            <span className={styles.honor}>HONOR</span>
+                            <span className={styles.level}>LEVEL</span>
+                            <span className={styles.member}>MEMBER</span>
+                            <span className={styles.elo}>ELO</span>
+                            <span className={styles.score}>SCORE</span>
                         </div>
                     </div>
                     <div className={styles.accounts__container}>
@@ -508,8 +521,8 @@ const Ranked: React.FC = () => {
                     </div>
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

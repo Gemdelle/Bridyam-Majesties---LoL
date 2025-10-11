@@ -2,9 +2,12 @@
 
 .ranking__container {
     width: 95%;
-    height: 100%;
+    height: 98%;
+    margin-top: 2%;
     // background-color: red;
-    @include flex-col-between;
+    @include flex-col;
+    justify-content: flex-start;
+    gap: 5%;
 }
 
 // HEADER ROW
