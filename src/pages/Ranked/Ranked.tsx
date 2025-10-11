@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
-import RankingTable from '../../components/RankingTable/RankingTable';
+import RankingTableFinal from '../../components/RankingTableFinal/RankingTableFinal';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
 
@@ -479,14 +479,14 @@ const Ranked: React.FC = () => {
                                     <>
                                         {accounts.map((rankedAccount) => {
                                             const canEdit = canEditRankedUsername(rankedAccount.username);
-                                        console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
-                                        return (
-                                            <RankedAccount
-                                                key={rankedAccount.id}
-                                                rankedData={rankedAccount}
-                                                onUpdateRankedData={handleUpdateRankedData}
-                                                canEdit={canEdit}
-                                            />
+                                            console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
+                                            return (
+                                                <RankedAccount
+                                                    key={rankedAccount.id}
+                                                    rankedData={rankedAccount}
+                                                    onUpdateRankedData={handleUpdateRankedData}
+                                                    canEdit={canEdit}
+                                                />
                                             );
                                         })}
                                         <div className={styles.pagination}>
@@ -503,7 +503,7 @@ const Ranked: React.FC = () => {
                             })()}
                         </div>
                         <div className={styles.ranking__container}>
-                            <RankingTable />
+                            <RankingTableFinal />
                         </div>
                     </div>
 
