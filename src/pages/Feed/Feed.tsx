@@ -1,52 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Feed.module.scss';
 import Notification, { type NotificationProps } from '../../components/Notification/Notification';
+import { fetchAllNotifications, NotificationAction } from '../../services/feedNotificationService';
+import type { FeedNotification } from '../../services/feedNotificationService';
 
 const Feed: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [showFeed, setShowFeed] = useState(false);
     const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    // Simulate loading and load mock notifications
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            // Mock notifications data
-            const mockNotifications: NotificationProps[] = [
-                {
-                    id: 1,
-                    type: 'achievement',
-                    title: 'Achievement Unlocked!',
-                    message: 'You have unlocked the "Master of Champions" achievement by reaching mastery level 7 with 10 champions.',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-                    isRead: false,
-                    imageUrl: '/images/achievement/achievement-1.png'
-                },
-                {
-                    id: 2,
-                    type: 'level',
-                    title: 'Level Up!',
-                    message: 'Congratulations! Your account has reached level 150.',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-                    isRead: false,
-                    imageUrl: '/images/icons/level-icon.png'
-                },
-                {
-                    id: 3,
-                    type: 'ranked',
-                    title: 'Rank Promotion',
-                    message: 'You have been promoted to Diamond IV in Solo Queue. Keep up the great work!',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
-                    isRead: false,
-                    imageUrl: '/images/ranked-btn/fire.png'
-                }
-            ];
+    // Función para mapear FeedNotification a NotificationProps
+    const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps => {
+        // Mapear el tipo de acción a tipo de notificación
+        let notifType: NotificationProps['type'] = 'general';
+        let imageUrl = '';
 
-            setNotifications(mockNotifications);
+        switch (feedNotif.action) {
+            case NotificationAction.LEVEL_UP:
+                notifType = 'level';
+                imageUrl = '/images/icons/level-icon.png';
+                break;
+            case NotificationAction.HONOR_UP:
+                notifType = 'achievement';
+                imageUrl = '/images/achievement/achievement-1.png';
+                break;
+            case NotificationAction.WIN:
+                notifType = 'achievement';
+                imageUrl = '/images/achievement/achievement-1.png';
+                break;
+            case NotificationAction.RANK_UP:
+                notifType = 'ranked';
+                imageUrl = '/images/ranked-btn/fire.png';
+                break;
+            case NotificationAction.MASTERY_LEVEL_UP:
+                notifType = 'achievement';
+                imageUrl = '/images/achievement/achievement-1.png';
+                break;
+            case NotificationAction.LEVEL_30_ACHIEVED:
+                notifType = 'achievement';
+                imageUrl = '/images/achievement/achievement-1.png';
+                break;
+            case NotificationAction.ELO_DIVISION_UP:
+                notifType = 'ranked';
+                imageUrl = '/images/ranked-btn/fire.png';
+                break;
+            case NotificationAction.MEMBER:
+                notifType = 'mission';
+                imageUrl = '/images/achievement/achievement-1.png';
+                break;
+            default:
+                notifType = 'general';
+        }
+
+        return {
+            id: feedNotif.id,
+            type: notifType,
+            title: feedNotif.title,
+            message: feedNotif.description,
+            timestamp: new Date(feedNotif.createdAt),
+            isRead: false,
+            imageUrl: imageUrl
+        };
+    };
+
+    // Cargar notificaciones del endpoint
+    const loadNotifications = async () => {
+        try {
+            setError(null);
+            const feedNotifications = await fetchAllNotifications(100);
+            const mappedNotifications = feedNotifications.map(mapFeedNotificationToProps);
+            setNotifications(mappedNotifications);
             setLoading(false);
-        }, 500);
+        } catch (err) {
+            console.error('Error loading notifications:', err);
+            setError('No se pudieron cargar las notificaciones');
+            setNotifications([]);
+            setLoading(false);
+        }
+    };
 
-        return () => clearTimeout(timer);
+    // Cargar notificaciones al montar y establecer auto-refresh
+    useEffect(() => {
+        loadNotifications();
+
+        // Auto-refresh cada 30 segundos
+        const interval = setInterval(() => {
+            loadNotifications();
+        }, 30000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleNotificationRead = (id: number) => {
@@ -61,12 +105,33 @@ const Feed: React.FC = () => {
         console.log('Notification clicked:', id);
     };
 
+    // Filtrar notificaciones por término de búsqueda
+    const filteredNotifications = notifications.filter(notif => 
+        notif.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        notif.message.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     if (loading) {
         return (
             <div className={styles.page}>
                 <div className={styles.container}>
                     <div className={styles.content}>
                         <p>Loading feed...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.container}>
+                    <div className={styles.content}>
+                        <p style={{ color: '#e74c3c' }}>{error}</p>
+                        <button onClick={loadNotifications} style={{ marginTop: '1rem' }}>
+                            Reintentar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -148,8 +213,8 @@ const Feed: React.FC = () => {
                     {/* Feed content */}
                     <div className={styles.content}>
                         <div className={styles.feed__items}>
-                            {notifications.length > 0 ? (
-                                notifications.map(notification => (
+                            {filteredNotifications.length > 0 ? (
+                                filteredNotifications.map(notification => (
                                     <Notification
                                         key={notification.id}
                                         {...notification}
@@ -157,8 +222,10 @@ const Feed: React.FC = () => {
                                         onClick={handleNotificationClick}
                                     />
                                 ))
+                            ) : searchTerm ? (
+                                <p className={styles.no__notifications}>No se encontraron notificaciones que coincidan con "{searchTerm}"</p>
                             ) : (
-                                <p className={styles.no__notifications}>No notifications yet</p>
+                                <p className={styles.no__notifications}>No hay notificaciones aún</p>
                             )}
                         </div>
                     </div>
