@@ -44,7 +44,8 @@ const PetDisplay: React.FC = () => {
                 <img src="/images/pets/nav-pet-2.png" alt="Pet" className={styles.pet} />
             </div>
 
-            <div className={styles.emotionsPanel}>
+            {/* Panel de emociones temporalmente oculto */}
+            {/* <div className={styles.emotionsPanel}>
                 <div className={styles.emotionsContainer}>
                     <span className={styles.petName}>{displayName}</span>
                     <div className={styles.barsContainer}>
@@ -64,7 +65,7 @@ const PetDisplay: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
         </div>
 
