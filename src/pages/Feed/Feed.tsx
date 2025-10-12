@@ -32,12 +32,56 @@ const Feed: React.FC = () => {
     const [filterType, setFilterType] = useState<NotificationFilterType>('all');
     const [viewedNotifications, setViewedNotifications] = useState<Set<number>>(new Set());
 
+    // Función helper para obtener imagen de tier
+    const getTierImage = (tier: string): string => {
+        const tierLower = tier.toLowerCase();
+        const tierMap: Record<string, string> = {
+            'iron': 'tier-iron-helm.webp',
+            'bronze': 'tier-bronze-helm.webp',
+            'silver': 'tier-silver-helm.webp',
+            'gold': 'tier-gold-helm.webp',
+            'platinum': 'tier-platinum-helm.webp',
+            'emerald': 'tier-emerald-helm.webp',
+            'diamond': 'tier-diamond-helm.webp',
+            'master': 'tier-master-helm.webp',
+            'grandmaster': 'tier-grandmaster-helm.webp',
+            'challenger': 'tier-challenger-heml.webp' // Nota: el archivo tiene typo 'heml'
+        };
+        return `/images/lol-elements/${tierMap[tierLower] || 'tier-bronze-helm.webp'}`;
+    };
+
+    // Función helper para obtener imagen de honor
+    const getHonorImage = (honorLevel: string | number): string => {
+        const level = typeof honorLevel === 'string' ? parseInt(honorLevel) : honorLevel;
+        if (level >= 1 && level <= 5) {
+            return `/images/honor/honor-${level}.png`;
+        }
+        return '/images/honor/honor-1.png';
+    };
+
+    // Función helper para obtener imagen de mastery
+    const getMasteryImage = (masteryLevel: string | number): string => {
+        const level = typeof masteryLevel === 'string' ? parseInt(masteryLevel) : masteryLevel;
+        if (level >= 1 && level <= 10) {
+            return `/images/masteries/badges/${level}.png`;
+        }
+        return '/images/masteries/badges/1.png';
+    };
+
     // Función para mapear FeedNotification a NotificationProps con filterType
     const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps & { filterType: NotificationFilterType; action: NotificationAction } => {
         // Mapear el tipo de acción a tipo de notificación
         let notifType: NotificationProps['type'] = 'general';
         let imageUrl = '';
         let notifFilterType: NotificationFilterType = 'all';
+
+        // Debug log para ver metadata
+        if (feedNotif.action === NotificationAction.HONOR_UP ||
+            feedNotif.action === NotificationAction.RANK_UP ||
+            feedNotif.action === NotificationAction.ELO_DIVISION_UP ||
+            feedNotif.action === NotificationAction.MASTERY_LEVEL_UP) {
+            console.log(`Notification ${feedNotif.action} metadata:`, feedNotif.metadata);
+        }
 
         switch (feedNotif.action) {
             case NotificationAction.LEVEL_UP:
@@ -47,7 +91,9 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.HONOR_UP:
                 notifType = 'achievement';
-                imageUrl = '/images/achievement/achievement-1.png';
+                // Usar imagen de honor según el nivel en metadata
+                const honorLevel = feedNotif.metadata.to || '1'; // 'to' contiene el honor level alcanzado
+                imageUrl = getHonorImage(honorLevel);
                 notifFilterType = 'honor';
                 break;
             case NotificationAction.WIN:
@@ -57,12 +103,16 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.RANK_UP:
                 notifType = 'ranked';
-                imageUrl = '/images/ranked-btn/fire.png';
+                // Usar imagen de tier según el metadata
+                const rankTier = feedNotif.metadata.toTier || 'bronze'; // 'toTier' contiene el tier alcanzado
+                imageUrl = getTierImage(rankTier);
                 notifFilterType = 'elo';
                 break;
             case NotificationAction.MASTERY_LEVEL_UP:
                 notifType = 'achievement';
-                imageUrl = '/images/achievement/achievement-1.png';
+                // Usar imagen de mastery según el nivel en metadata
+                const masteryLvl = feedNotif.metadata.to || '1'; // 'to' contiene el mastery level alcanzado
+                imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
                 break;
             case NotificationAction.LEVEL_30_ACHIEVED:
@@ -72,7 +122,9 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.ELO_DIVISION_UP:
                 notifType = 'ranked';
-                imageUrl = '/images/ranked-btn/fire.png';
+                // Usar imagen de tier según el metadata
+                const eloTier = feedNotif.metadata.toTier || 'bronze'; // 'toTier' contiene el tier alcanzado
+                imageUrl = getTierImage(eloTier);
                 notifFilterType = 'elo';
                 break;
             case NotificationAction.MEMBER:
