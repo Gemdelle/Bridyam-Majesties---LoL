@@ -12,7 +12,8 @@ export enum NotificationAction {
     MASTERY_LEVEL_UP = 'MASTERY_LEVEL_UP',
     LEVEL_30_ACHIEVED = 'LEVEL_30_ACHIEVED',
     ELO_DIVISION_UP = 'ELO_DIVISION_UP',
-    MEMBER = 'MEMBER'
+    MEMBER = 'MEMBER',
+    USER_REGISTERED = 'USER_REGISTERED'
 }
 
 /**
@@ -163,6 +164,8 @@ export const getNotificationIcon = (action: NotificationAction): string => {
             return '📈';
         case NotificationAction.MEMBER:
             return '🎊';
+        case NotificationAction.USER_REGISTERED:
+            return '👋';
         default:
             return '📢';
     }
@@ -189,6 +192,8 @@ export const getNotificationColor = (action: NotificationAction): string => {
             return '#00BCD4'; // Cian
         case NotificationAction.MEMBER:
             return '#E91E63'; // Rosa
+        case NotificationAction.USER_REGISTERED:
+            return '#8BC34A'; // Verde claro
         default:
             return '#757575'; // Gris
     }
