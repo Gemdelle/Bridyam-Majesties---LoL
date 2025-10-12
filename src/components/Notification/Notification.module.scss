@@ -1,15 +1,14 @@
 @use '../../styles/variables.scss' as *;
 
 .notification {
-  width: 100%;
+  width: 75%;
   height: 6vw;
   margin-bottom: 1.2vw;
-  display: flex;
-  align-items: center;
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
   background-image: url('/images/frames/achievement-bg-frame.png');
+  @include flex-start;
   @include background;
   background-size: 93% 100%;
   background-position: right;
@@ -104,18 +103,42 @@
 
 // Content area
 .notification__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  overflow: hidden;
-  // background-color: black;
+  width: 83%;
+  height: 90%;
+  margin-left: 2%;
+  background-color: black;
+  @include flex-between;
 }
+
+.notification__info {
+  width: 80%;
+  height: 60%;
+  @include flex-col-between;
+  align-items: flex-start;
+  background-color: blue;
+}
+
+.notification__reward {
+  width: 15%;
+  height: 90%;
+  @include flex-center;
+  background-color: green;
+}
+
+
+.pet__image {
+  position: absolute;
+  right: -10%;
+  width: auto;
+  height: 6vw;
+  @include flex-center;
+  background-color: yellow;
+}
+
 
 // Header with title and timestamp
 .notification__header {
-  margin-left: 3%;
-  width: 30%;
+  width: auto;
   @include flex-start;
   // background-color: red;
 }
@@ -135,7 +158,7 @@
   color: #8b7355;
   font-size: 0.8vw;
   font-weight: 400;
-  margin-left: 2%;
+  margin-left: 3%;
   white-space: nowrap;
   min-width: fit-content;
 }

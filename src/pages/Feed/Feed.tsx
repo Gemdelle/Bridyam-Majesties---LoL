@@ -94,7 +94,25 @@ const Feed: React.FC = () => {
 
     // Función helper para obtener gem-pet según bloodline
     const getBloodlineGem = (bloodline: string | number): string => {
-        const bloodlineNum = typeof bloodline === 'string' ? parseInt(bloodline) : bloodline;
+        // Si es string, intentar convertir o mapear por nombre
+        if (typeof bloodline === 'string') {
+            const bloodlineLower = bloodline.toLowerCase();
+
+            // Mapeo por nombre
+            if (bloodlineLower.includes('porveldam')) return '/images/achievement/gem-pet-1.png';
+            if (bloodlineLower.includes('spadelline')) return '/images/achievement/gem-pet-2.png';
+            if (bloodlineLower.includes('zephir')) return '/images/achievement/gem-pet-3.png';
+            if (bloodlineLower.includes('gladasmy')) return '/images/achievement/gem-pet-4.png';
+
+            // Intentar parsear como número
+            const bloodlineNum = parseInt(bloodline);
+            if (!isNaN(bloodlineNum)) {
+                bloodline = bloodlineNum;
+            }
+        }
+
+        // Si ya es número o se convirtió a número
+        const bloodlineNum = typeof bloodline === 'number' ? bloodline : 1;
 
         switch (bloodlineNum) {
             case 1: // Porveldam
@@ -133,46 +151,51 @@ const Feed: React.FC = () => {
                 imageUrl = '/images/icons/level-up-icon.png';
                 notifFilterType = 'level';
                 break;
-            case NotificationAction.HONOR_UP:
+            case NotificationAction.HONOR_UP: {
                 notifType = 'achievement';
                 // Usar imagen de honor según el nivel en metadata
                 const honorLevel = feedNotif.metadata.to || '1'; // 'to' contiene el honor level alcanzado
                 imageUrl = getHonorImage(honorLevel);
                 notifFilterType = 'honor';
                 break;
+            }
             case NotificationAction.WIN:
                 notifType = 'achievement';
                 // Usar gem-pet según la bloodline de la cuenta
+                console.log('WIN - bloodline:', feedNotif.bloodline, 'imageUrl:', getBloodlineGem(feedNotif.bloodline));
                 imageUrl = getBloodlineGem(feedNotif.bloodline);
                 notifFilterType = 'ranked';
                 break;
-            case NotificationAction.RANK_UP:
+            case NotificationAction.RANK_UP: {
                 notifType = 'ranked';
                 // Usar imagen de tier según el metadata
                 const rankTier = feedNotif.metadata.toTier || 'bronze'; // 'toTier' contiene el tier alcanzado
                 imageUrl = getTierImage(rankTier);
                 notifFilterType = 'elo';
                 break;
-            case NotificationAction.MASTERY_LEVEL_UP:
+            }
+            case NotificationAction.MASTERY_LEVEL_UP: {
                 notifType = 'achievement';
                 // Usar imagen de mastery según el nivel en metadata
                 const masteryLvl = feedNotif.metadata.to || '1'; // 'to' contiene el mastery level alcanzado
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
                 break;
+            }
             case NotificationAction.LEVEL_30_ACHIEVED:
                 notifType = 'achievement';
                 imageUrl = '/images/achievement/achievement-1.png';
                 notifFilterType = 'member'; // Usuario llega a level 30 habiendo canjeado cuenta de level 10 o menor
                 break;
-            case NotificationAction.ELO_DIVISION_UP:
+            case NotificationAction.ELO_DIVISION_UP: {
                 notifType = 'ranked';
                 // Usar imagen de tier según el metadata
                 const eloTier = feedNotif.metadata.toTier || 'bronze'; // 'toTier' contiene el tier alcanzado
                 imageUrl = getTierImage(eloTier);
                 notifFilterType = 'elo';
                 break;
-            case NotificationAction.MEMBER:
+            }
+            case NotificationAction.MEMBER: {
                 notifType = 'mission';
                 // Extraer nombre de majesty desde username (formato: "GEM MajestyName#GEM")
                 let majestyName = '';
@@ -193,6 +216,7 @@ const Feed: React.FC = () => {
                 imageUrl = getMajestyPortrait(majestyName);
                 notifFilterType = 'redeem'; // Cuando canjean una cuenta
                 break;
+            }
             // TODO: Agregar caso para ESSENCER cuando el backend lo implemente
             // (cuando alguien se REGISTRA en la página por primera vez)
             // case NotificationAction.ESSENCER_REGISTERED:

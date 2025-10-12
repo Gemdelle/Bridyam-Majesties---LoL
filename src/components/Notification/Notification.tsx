@@ -83,15 +83,20 @@ const Notification: React.FC<NotificationProps> = ({
 
             {/* Content */}
             <div className={styles.notification__content}>
-                <div className={styles.notification__header}>
-                    <h3 className={styles.notification__title}>{title}</h3>
-                    <span className={styles.notification__timestamp}>
-                        {formatTimestamp(timestamp)}
-                    </span>
+                <div className={styles.notification__info}>
+                    <div className={styles.notification__header}>
+                        <h3 className={styles.notification__title}>{title}</h3>
+                        <span className={styles.notification__timestamp}>
+                            {formatTimestamp(timestamp)}
+                        </span>
+                    </div>
+                    <p className={styles.notification__message}>{message}</p>
                 </div>
-                <p className={styles.notification__message}>{message}</p>
-            </div>
+                <div className={styles.notification__reward}>
+                </div>
 
+            </div>
+            <img src={imageUrl} alt={type} className={styles.pet__image} />
             {/* Unread indicator */}
             {!isRead && (
                 <div className={styles.notification__unread__indicator}></div>
