@@ -176,7 +176,9 @@ const mockChampions: Champion[] = [
     { id: 166, name: "Hwei" },
     { id: 167, name: "Smolder" },
     { id: 168, name: "Aurora" },
-    { id: 169, name: "Ambessa" }
+    { id: 169, name: "Ambessa" },
+    { id: 170, name: "Mel" },
+    { id: 171, name: "Yunara" }
 ];
 
 // Function to fetch champions - will be replaced with API call
@@ -357,7 +359,9 @@ const championIdMapping: { [key: number]: number } = {
     166: 910,  // Hwei
     167: 901,  // Smolder
     168: 893,  // Aurora
-    169: 799   // Ambessa
+    169: 799,  // Ambessa
+    170: 913,  // Mel
+    171: 914   // Yunara
 };
 
 // Function to get the real Riot API ID for a champion
