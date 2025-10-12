@@ -1,7 +1,7 @@
 @use '../../styles/variables.scss' as *;
 
 .notification {
-  width: 95%;
+  width: 100%;
   min-height: 80px;
   background: linear-gradient(145deg, #1e2328, #0f1419);
   border: 1px solid #463714;
@@ -13,7 +13,6 @@
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 1rem;
 
   &:hover {
     border-color: #c89b3c;

@@ -27,10 +27,10 @@ type ExtendedNotification = NotificationProps & { filterType: NotificationFilter
 const Feed: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
-    const [showFeed, setShowFeed] = useState(false);
     const [notifications, setNotifications] = useState<ExtendedNotification[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [filterType, setFilterType] = useState<NotificationFilterType>('all');
+    const [viewedNotifications, setViewedNotifications] = useState<Set<number>>(new Set());
 
     // Función para mapear FeedNotification a NotificationProps con filterType
     const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps & { filterType: NotificationFilterType; action: NotificationAction } => {
@@ -154,6 +154,14 @@ const Feed: React.FC = () => {
         console.log('Notification clicked:', id);
     };
 
+    const handleNotificationHover = (id: number) => {
+        setViewedNotifications(prev => new Set(prev).add(id));
+    };
+
+    const isNotificationNew = (notif: ExtendedNotification): boolean => {
+        return !viewedNotifications.has(notif.id);
+    };
+
     // Filtrar notificaciones por término de búsqueda y tipo
     const filteredNotifications = notifications.filter(notif => {
         // Filtrar por tipo
@@ -196,137 +204,74 @@ const Feed: React.FC = () => {
 
     return (
         <div className={styles.page}>
-            {!showFeed ? (
-                // Empty screen with button
-                <div className={styles.empty__container}>
-                    {/* Search Bar */}
-                    <div className={styles.content__top}>
-                        {/* Filter Dropdown */}
-                        <div className={styles.filter__container}>
-                            <select
-                                value={filterType}
-                                onChange={(e) => setFilterType(e.target.value as NotificationFilterType)}
-                                className={styles.filter__select}
-                            >
-                                <option value="all">All</option>
-                                <option value="level">Level</option>
-                                <option value="ranked">Ranked</option>
-                                <option value="mastery">Mastery</option>
-                                <option value="elo">Elo</option>
-                                <option value="member">Member</option>
-                                <option value="redeem">Redeem</option>
-                                <option value="essencer">Essencer</option>
-                                <option value="honor">Honor</option>
-                                <option value="ranking">Ranking</option>
-                            </select>
-                        </div>
-
-                        <div className={styles.search__container}>
-                            <input
-                                type="text"
-                                placeholder="Search feed..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className={styles.search__input}
-                            />
-                            {searchTerm && (
-                                <button
-                                    onClick={() => setSearchTerm('')}
-                                    className={styles.search__clear}
-                                    type="button"
-                                >
-                                    ✕
-                                </button>
-                            )}
-                        </div>
-                        <button
-                            className={styles.show__feed__button}
-                            onClick={() => setShowFeed(true)}
+            <div className={styles.container}>
+                {/* Search Bar */}
+                <div className={styles.content__top}>
+                    {/* Filter Dropdown */}
+                    <div className={styles.filter__container}>
+                        <select
+                            value={filterType}
+                            onChange={(e) => setFilterType(e.target.value as NotificationFilterType)}
+                            className={styles.filter__select}
                         >
-                            Show Feed
-                        </button>
+                            <option value="all">All</option>
+                            <option value="level">Level</option>
+                            <option value="ranked">Ranked</option>
+                            <option value="mastery">Mastery</option>
+                            <option value="elo">Elo</option>
+                            <option value="member">Member</option>
+                            <option value="redeem">Redeem</option>
+                            <option value="essencer">Essencer</option>
+                            <option value="honor">Honor</option>
+                            <option value="ranking">Ranking</option>
+                        </select>
                     </div>
 
-                    {/* Main empty content */}
-                    <div className={styles.content}>
-                        <div className={styles.empty__message}>
-                            <h2>Your feed is empty</h2>
-                            <p>Click "Show Feed" to start viewing content</p>
-                        </div>
+                    <div className={styles.search__container}>
+                        <input
+                            type="text"
+                            placeholder="Search feed..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className={styles.search__input}
+                        />
+                        {searchTerm && (
+                            <button
+                                onClick={() => setSearchTerm('')}
+                                className={styles.search__clear}
+                                type="button"
+                            >
+                                ✕
+                            </button>
+                        )}
                     </div>
                 </div>
-            ) : (
-                // Feed content view
-                <div className={styles.container}>
-                    {/* Search Bar */}
-                    <div className={styles.content__top}>
-                        {/* Filter Dropdown */}
-                        <div className={styles.filter__container}>
-                            <select
-                                value={filterType}
-                                onChange={(e) => setFilterType(e.target.value as NotificationFilterType)}
-                                className={styles.filter__select}
-                            >
-                                <option value="all">All</option>
-                                <option value="level">Level</option>
-                                <option value="ranked">Ranked</option>
-                                <option value="mastery">Mastery</option>
-                                <option value="elo">Elo</option>
-                                <option value="member">Member</option>
-                                <option value="redeem">Redeem</option>
-                                <option value="essencer">Essencer</option>
-                                <option value="honor">Honor</option>
-                                <option value="ranking">Ranking</option>
-                            </select>
-                        </div>
 
-                        <div className={styles.search__container}>
-                            <input
-                                type="text"
-                                placeholder="Search feed..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className={styles.search__input}
-                            />
-                            {searchTerm && (
-                                <button
-                                    onClick={() => setSearchTerm('')}
-                                    className={styles.search__clear}
-                                    type="button"
+                {/* Feed content */}
+                <div className={styles.content}>
+                    <div className={styles.feed__items}>
+                        {filteredNotifications.length > 0 ? (
+                            filteredNotifications.map(notification => (
+                                <div
+                                    key={notification.id}
+                                    className={`${styles.notification__wrapper} ${isNotificationNew(notification) ? styles.new__notification : ''}`}
+                                    onMouseEnter={() => handleNotificationHover(notification.id)}
                                 >
-                                    ✕
-                                </button>
-                            )}
-                        </div>
-                        <button
-                            className={styles.hide__feed__button}
-                            onClick={() => setShowFeed(false)}
-                        >
-                            Hide Feed
-                        </button>
-                    </div>
-
-                    {/* Feed content */}
-                    <div className={styles.content}>
-                        <div className={styles.feed__items}>
-                            {filteredNotifications.length > 0 ? (
-                                filteredNotifications.map(notification => (
                                     <Notification
-                                        key={notification.id}
                                         {...notification}
                                         onRead={handleNotificationRead}
                                         onClick={handleNotificationClick}
                                     />
-                                ))
-                            ) : searchTerm ? (
-                                <p className={styles.no__notifications}>No se encontraron notificaciones que coincidan con "{searchTerm}"</p>
-                            ) : (
-                                <p className={styles.no__notifications}>No hay notificaciones aún</p>
-                            )}
-                        </div>
+                                </div>
+                            ))
+                        ) : searchTerm ? (
+                            <p className={styles.no__notifications}>No se encontraron notificaciones que coincidan con "{searchTerm}"</p>
+                        ) : (
+                            <p className={styles.no__notifications}>No hay notificaciones aún</p>
+                        )}
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
