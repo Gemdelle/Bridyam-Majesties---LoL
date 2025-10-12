@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { usePermissions } from '../../hooks/usePermissions'
+import { useState, useEffect } from 'react'
+import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 
@@ -8,12 +10,47 @@ export const Nav = () => {
     const location = useLocation()
     const { logout } = useAuthContext()
     const { canSeeAllNavigation } = usePermissions()
+    const [hasNewNotifications, setHasNewNotifications] = useState(false)
+    const [lastNotificationCount, setLastNotificationCount] = useState(0)
 
     const handleLogout = async () => {
         if (confirm('Are you sure you want to logout?')) {
             await logout()
         }
     }
+
+    // Verificar notificaciones nuevas cada 30 segundos
+    useEffect(() => {
+        const checkNotifications = async () => {
+            try {
+                const notifications = await fetchAllNotifications(100)
+                const currentCount = notifications.length
+
+                // Si hay más notificaciones que antes, mostrar efecto
+                if (lastNotificationCount > 0 && currentCount > lastNotificationCount) {
+                    setHasNewNotifications(true)
+                } else if (currentCount === 0) {
+                    setHasNewNotifications(false)
+                }
+
+                setLastNotificationCount(currentCount)
+            } catch (error) {
+                console.error('Error checking notifications:', error)
+            }
+        }
+
+        checkNotifications()
+        const interval = setInterval(checkNotifications, 30000)
+
+        return () => clearInterval(interval)
+    }, [lastNotificationCount])
+
+    // Limpiar el efecto cuando se visita la página de Feed
+    useEffect(() => {
+        if (location.pathname === '/feed') {
+            setHasNewNotifications(false)
+        }
+    }, [location.pathname])
 
     return (
         <div className={styles.nav}>
@@ -77,10 +114,17 @@ export const Nav = () => {
                     {canSeeAllNavigation && (
                         <>
                             <li
-                                className={location.pathname === '/feed' ? styles.active : ''}
+                                className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
                                 data-nav="feed"
                             >
                                 <Link to="/feed">Feed</Link>
+                                {hasNewNotifications && (
+                                    <div className={styles.particles__container}>
+                                        {Array.from({ length: 8 }, (_, i) => (
+                                            <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                                        ))}
+                                    </div>
+                                )}
                             </li>
                             <li>
                                 PAGE
