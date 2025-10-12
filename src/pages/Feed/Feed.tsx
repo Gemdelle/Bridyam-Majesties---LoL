@@ -4,54 +4,92 @@ import Notification, { type NotificationProps } from '../../components/Notificat
 import { fetchAllNotifications, NotificationAction } from '../../services/feedNotificationService';
 import type { FeedNotification } from '../../services/feedNotificationService';
 
+// Tipo de filtro para las notificaciones
+type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'essencer' | 'redeem' | 'honor' | 'mastery';
+
+/**
+ * Filtros de notificaciones:
+ * - all: Todas las notificaciones
+ * - level: Cuando sube de nivel (LEVEL_UP)
+ * - ranked: Cuando gana una ranked (WIN)
+ * - mastery: Cuando gana una maestría (MASTERY_LEVEL_UP)
+ * - elo: Cuando sube de liga/división (RANK_UP, ELO_DIVISION_UP)
+ * - member: Cuando un usuario llega a level 30 habiendo canjeado cuenta de level 10 o menor (LEVEL_30_ACHIEVED)
+ * - redeem: Cuando canjean una cuenta (MEMBER)
+ * - essencer: Cuando un usuario se REGISTRA en la página (pendiente implementación backend)
+ * - honor: Cuando sube de honor (HONOR_UP)
+ */
+
+// Tipo extendido para las notificaciones con filtro
+type ExtendedNotification = NotificationProps & { filterType: NotificationFilterType; action: NotificationAction };
+
 const Feed: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [showFeed, setShowFeed] = useState(false);
-    const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+    const [notifications, setNotifications] = useState<ExtendedNotification[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [filterType, setFilterType] = useState<NotificationFilterType>('all');
 
-    // Función para mapear FeedNotification a NotificationProps
-    const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps => {
+    // Función para mapear FeedNotification a NotificationProps con filterType
+    const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps & { filterType: NotificationFilterType; action: NotificationAction } => {
         // Mapear el tipo de acción a tipo de notificación
         let notifType: NotificationProps['type'] = 'general';
         let imageUrl = '';
+        let notifFilterType: NotificationFilterType = 'all';
 
         switch (feedNotif.action) {
             case NotificationAction.LEVEL_UP:
                 notifType = 'level';
                 imageUrl = '/images/icons/level-icon.png';
+                notifFilterType = 'level';
                 break;
             case NotificationAction.HONOR_UP:
                 notifType = 'achievement';
                 imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'honor';
                 break;
             case NotificationAction.WIN:
                 notifType = 'achievement';
                 imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'ranked';
                 break;
             case NotificationAction.RANK_UP:
                 notifType = 'ranked';
                 imageUrl = '/images/ranked-btn/fire.png';
+                notifFilterType = 'elo';
                 break;
             case NotificationAction.MASTERY_LEVEL_UP:
                 notifType = 'achievement';
                 imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'mastery';
                 break;
             case NotificationAction.LEVEL_30_ACHIEVED:
                 notifType = 'achievement';
                 imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'member'; // Usuario llega a level 30 habiendo canjeado cuenta de level 10 o menor
                 break;
             case NotificationAction.ELO_DIVISION_UP:
                 notifType = 'ranked';
                 imageUrl = '/images/ranked-btn/fire.png';
+                notifFilterType = 'elo';
                 break;
             case NotificationAction.MEMBER:
                 notifType = 'mission';
                 imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'redeem'; // Cuando canjean una cuenta
                 break;
+            // TODO: Agregar caso para ESSENCER cuando el backend lo implemente
+            // (cuando alguien se REGISTRA en la página por primera vez)
+            // case NotificationAction.ESSENCER_REGISTERED:
+            //     notifType = 'mission';
+            //     imageUrl = '/images/achievement/achievement-1.png';
+            //     notifFilterType = 'essencer';
+            //     break;
             default:
                 notifType = 'general';
+                notifFilterType = 'all';
+                console.warn('Unknown notification action:', feedNotif.action);
         }
 
         return {
@@ -61,7 +99,9 @@ const Feed: React.FC = () => {
             message: feedNotif.description,
             timestamp: new Date(feedNotif.createdAt),
             isRead: false,
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            filterType: notifFilterType,
+            action: feedNotif.action
         };
     };
 
@@ -105,11 +145,18 @@ const Feed: React.FC = () => {
         console.log('Notification clicked:', id);
     };
 
-    // Filtrar notificaciones por término de búsqueda
-    const filteredNotifications = notifications.filter(notif => 
-        notif.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        notif.message.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filtrar notificaciones por término de búsqueda y tipo
+    const filteredNotifications = notifications.filter(notif => {
+        // Filtrar por tipo
+        const matchesFilter = filterType === 'all' || notif.filterType === filterType;
+
+        // Filtrar por búsqueda (si no hay término de búsqueda, mostrar todos)
+        const matchesSearch = searchTerm === '' ||
+            notif.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            notif.message.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchesFilter && matchesSearch;
+    });
 
     if (loading) {
         return (
@@ -145,6 +192,25 @@ const Feed: React.FC = () => {
                 <div className={styles.empty__container}>
                     {/* Search Bar */}
                     <div className={styles.content__top}>
+                        {/* Filter Dropdown */}
+                        <div className={styles.filter__container}>
+                            <select
+                                value={filterType}
+                                onChange={(e) => setFilterType(e.target.value as NotificationFilterType)}
+                                className={styles.filter__select}
+                            >
+                                <option value="all">All</option>
+                                <option value="level">Level</option>
+                                <option value="ranked">Ranked</option>
+                                <option value="mastery">Mastery</option>
+                                <option value="elo">Elo</option>
+                                <option value="member">Member</option>
+                                <option value="redeem">Redeem</option>
+                                <option value="essencer">Essencer</option>
+                                <option value="honor">Honor</option>
+                            </select>
+                        </div>
+
                         <div className={styles.search__container}>
                             <input
                                 type="text"
@@ -184,6 +250,25 @@ const Feed: React.FC = () => {
                 <div className={styles.container}>
                     {/* Search Bar */}
                     <div className={styles.content__top}>
+                        {/* Filter Dropdown */}
+                        <div className={styles.filter__container}>
+                            <select
+                                value={filterType}
+                                onChange={(e) => setFilterType(e.target.value as NotificationFilterType)}
+                                className={styles.filter__select}
+                            >
+                                <option value="all">All</option>
+                                <option value="level">Level</option>
+                                <option value="ranked">Ranked</option>
+                                <option value="mastery">Mastery</option>
+                                <option value="elo">Elo</option>
+                                <option value="member">Member</option>
+                                <option value="redeem">Redeem</option>
+                                <option value="essencer">Essencer</option>
+                                <option value="honor">Honor</option>
+                            </select>
+                        </div>
+
                         <div className={styles.search__container}>
                             <input
                                 type="text"
