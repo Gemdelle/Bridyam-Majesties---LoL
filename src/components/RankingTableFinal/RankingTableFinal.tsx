@@ -51,6 +51,13 @@ const RankingTableFinal: React.FC = () => {
 
     // Obtiene el tier de icono basado en la posición en la categoría específica
     const getCategoryTier = (entry: RankingEntry, category: keyof RankingEntry): string => {
+        const categoryValue = entry[category] as number;
+
+        // Si el valor de la categoría es 0, siempre retornar bronze
+        if (categoryValue === 0) {
+            return 'bronze';
+        }
+
         const categoryRank = getCategoryRank(entry, category);
         return getRankTier(categoryRank);
     };
