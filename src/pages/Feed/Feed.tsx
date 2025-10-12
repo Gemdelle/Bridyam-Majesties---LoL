@@ -174,11 +174,22 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.MEMBER:
                 notifType = 'mission';
-                // Usar portrait de majesty según el metadata
-                const majestyName = feedNotif.metadata.majestyName ||
-                    feedNotif.metadata.majesty ||
-                    feedNotif.metadata.name ||
-                    '';
+                // Extraer nombre de majesty desde username (formato: "GEM MajestyName#GEM")
+                let majestyName = '';
+                if (feedNotif.metadata.username) {
+                    // Eliminar "GEM " del inicio y "#GEM" del final
+                    majestyName = feedNotif.metadata.username
+                        .replace(/^GEM\s+/, '')  // Elimina "GEM " al inicio
+                        .replace(/#GEM$/, '');    // Elimina "#GEM" al final
+                }
+                // Fallback a otras posibles fuentes
+                if (!majestyName) {
+                    majestyName = feedNotif.metadata.majestyName ||
+                        feedNotif.metadata.majesty ||
+                        feedNotif.metadata.name ||
+                        feedNotif.rankedName ||
+                        '';
+                }
                 imageUrl = getMajestyPortrait(majestyName);
                 notifFilterType = 'redeem'; // Cuando canjean una cuenta
                 break;

@@ -70,6 +70,7 @@ const Notification: React.FC<NotificationProps> = ({
             {/* Icon/Image */}
             {imageUrl && (
                 <div className={`${styles.notification__icon} ${type === 'mission' ? styles['notification__icon--redeem'] : ''}`}>
+                    <div className={styles.spinning__circle}></div>
                     <img src={imageUrl} alt={type} />
                 </div>
             )}

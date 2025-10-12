@@ -23,6 +23,7 @@
 .notification__icon {
   width: 6.5vw;
   height: 6.5vw;
+  position: relative;
   // margin-left: -5%;
   background-image: url('/images/frames/notification-icon-frame.png');
   @include flex-center;
@@ -33,6 +34,8 @@
     width: auto;
     max-width: 80%;
     height: 70%;
+    position: relative;
+    z-index: 2;
   }
 
   // Clase especial para redeem (mission type)
@@ -47,6 +50,31 @@
       margin-top: 50%;
       max-width: 100%;
     }
+  }
+}
+
+// Círculo giratorio detrás de la imagen
+.spinning__circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background-image: url('/images/achievement/circle.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: spin 100s linear infinite;
+  z-index: 1;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
