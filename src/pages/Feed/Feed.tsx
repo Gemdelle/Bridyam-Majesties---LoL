@@ -68,6 +68,48 @@ const Feed: React.FC = () => {
         return '/images/masteries/badges/1.png';
     };
 
+    // Función helper para obtener portrait de majesty
+    const getMajestyPortrait = (majestyName: string): string => {
+        if (!majestyName) return '/images/portraits/Lacellire.png'; // Default
+
+        // Lista de majesties disponibles
+        const majesties = [
+            'Arminariknot', 'Blaandel\'Valse', 'Bricellice', 'Damglantine',
+            'Deestellirys', 'Dreemurdomme', 'Eunilacealle', 'Hestiarethe',
+            'Ivelism', 'Lacellire', 'Lahallayd', 'Orzyadhere', 'Vrillyarethez'
+        ];
+
+        // Buscar si el nombre coincide (case insensitive)
+        const foundMajesty = majesties.find(majesty =>
+            majesty.toLowerCase() === majestyName.toLowerCase()
+        );
+
+        if (foundMajesty) {
+            return `/images/portraits/${foundMajesty}.png`;
+        }
+
+        // Si no encuentra, usar default
+        return '/images/portraits/Lacellire.png';
+    };
+
+    // Función helper para obtener gem-pet según bloodline
+    const getBloodlineGem = (bloodline: string | number): string => {
+        const bloodlineNum = typeof bloodline === 'string' ? parseInt(bloodline) : bloodline;
+
+        switch (bloodlineNum) {
+            case 1: // Porveldam
+                return '/images/achievement/gem-pet-1.png';
+            case 2: // Spadelline
+                return '/images/achievement/gem-pet-2.png';
+            case 3: // Zephiroth
+                return '/images/achievement/gem-pet-3.png';
+            case 4: // Gladasmy
+                return '/images/achievement/gem-pet-4.png';
+            default:
+                return '/images/achievement/gem-pet-1.png'; // Default: Porveldam
+        }
+    };
+
     // Función para mapear FeedNotification a NotificationProps con filterType
     const mapFeedNotificationToProps = (feedNotif: FeedNotification): NotificationProps & { filterType: NotificationFilterType; action: NotificationAction } => {
         // Mapear el tipo de acción a tipo de notificación
@@ -79,14 +121,16 @@ const Feed: React.FC = () => {
         if (feedNotif.action === NotificationAction.HONOR_UP ||
             feedNotif.action === NotificationAction.RANK_UP ||
             feedNotif.action === NotificationAction.ELO_DIVISION_UP ||
-            feedNotif.action === NotificationAction.MASTERY_LEVEL_UP) {
-            console.log(`Notification ${feedNotif.action} metadata:`, feedNotif.metadata);
+            feedNotif.action === NotificationAction.MASTERY_LEVEL_UP ||
+            feedNotif.action === NotificationAction.MEMBER ||
+            feedNotif.action === NotificationAction.LEVEL_UP) {
+            console.log(`Notification ${feedNotif.action} metadata:`, feedNotif.metadata, 'bloodline:', feedNotif.bloodline);
         }
 
         switch (feedNotif.action) {
             case NotificationAction.LEVEL_UP:
                 notifType = 'level';
-                imageUrl = '/images/icons/level-icon.png';
+                imageUrl = '/images/icons/level-up-icon.png';
                 notifFilterType = 'level';
                 break;
             case NotificationAction.HONOR_UP:
@@ -98,7 +142,8 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.WIN:
                 notifType = 'achievement';
-                imageUrl = '/images/achievement/achievement-1.png';
+                // Usar gem-pet según la bloodline de la cuenta
+                imageUrl = getBloodlineGem(feedNotif.bloodline);
                 notifFilterType = 'ranked';
                 break;
             case NotificationAction.RANK_UP:
@@ -129,7 +174,12 @@ const Feed: React.FC = () => {
                 break;
             case NotificationAction.MEMBER:
                 notifType = 'mission';
-                imageUrl = '/images/achievement/achievement-1.png';
+                // Usar portrait de majesty según el metadata
+                const majestyName = feedNotif.metadata.majestyName ||
+                    feedNotif.metadata.majesty ||
+                    feedNotif.metadata.name ||
+                    '';
+                imageUrl = getMajestyPortrait(majestyName);
                 notifFilterType = 'redeem'; // Cuando canjean una cuenta
                 break;
             // TODO: Agregar caso para ESSENCER cuando el backend lo implemente
