@@ -153,8 +153,8 @@
   width: 38%;
   margin-left: 2%;
   height: 170%;
-  @include flex-center;
   background-color: lightcoral;
+  @include flex-center;
 }
 
 .content {
