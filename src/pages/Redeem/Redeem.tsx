@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Redeem.module.scss';
 import { claimService } from '../../services/claimService';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { fetchAvailableRankedAccounts, type RankedData } from '../../services/apiRankedsService';
 
 const Redeem: React.FC = () => {
     const { refreshProfile } = useAuthContext();
@@ -10,6 +11,25 @@ const Redeem: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const [availableAccounts, setAvailableAccounts] = useState<RankedData[]>([]);
+    const [loadingAccounts, setLoadingAccounts] = useState(true);
+
+    useEffect(() => {
+        const loadAvailableAccounts = async () => {
+            try {
+                setLoadingAccounts(true);
+                const accounts = await fetchAvailableRankedAccounts();
+                setAvailableAccounts(accounts);
+            } catch (error) {
+                console.error('Error loading available accounts:', error);
+                setError('Error al cargar las cuentas disponibles');
+            } finally {
+                setLoadingAccounts(false);
+            }
+        };
+
+        loadAvailableAccounts();
+    }, []);
 
     const handleRedeem = async () => {
         setError(null);
@@ -41,6 +61,10 @@ const Redeem: React.FC = () => {
                 setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente! Permisos actualizados.`);
                 setRedeemCode('');
                 setSelectedAccount('');
+                
+                // Reload available accounts
+                const accounts = await fetchAvailableRankedAccounts();
+                setAvailableAccounts(accounts);
             } else {
                 setError(result.message);
             }
@@ -97,64 +121,24 @@ const Redeem: React.FC = () => {
                                 className={styles.input__select}
                                 value={selectedAccount}
                                 onChange={(e) => setSelectedAccount(e.target.value)}
-                                disabled={loading}
+                                disabled={loading || loadingAccounts}
                             >
-                                <option value="" disabled>Elige una cuenta...</option>
-                                <option value="GEM Dreemurdomme#GEM">GEM Dreemurdomme#GEM</option>
-                                <option value="GEM Stridellarea#GEM">GEM Stridellarea#GEM</option>
-                                <option value="GEM Cordacrimory#GEM">GEM Cordacrimory#GEM</option>
-                                <option value="GEM Hestiarethe#GEM">GEM Hestiarethe#GEM</option>
-                                <option value="GEM Arminariknot#GEM">GEM Arminariknot#GEM</option>
-                                <option value="GEM Orzyadhere#LAS">GEM Orzyadhere#LAS</option>
-                                <option value="GEM Purselgarmet#LAS">GEM Purselgarmet#LAS</option>
-                                <option value="GEM Rothroyaume#GEM">GEM Rothroyaume#GEM</option>
-                                <option value="GEM Furninscorce#GEM">GEM Furninscorce#GEM</option>
-                                <option value="GEM Arklyndarce#GEM">GEM Arklyndarce#GEM</option>
-                                <option value="GEM Brincellezha#GEM">GEM Brincellezha#GEM</option>
-                                <option value="GEM Primrosenrot#GEM">GEM Primrosenrot#GEM</option>
-                                <option value="GEM Deellycella#GEM">GEM Deellycella#GEM</option>
-                                <option value="GEM Eunilacealle#LAS">GEM Eunilacealle#LAS</option>
-                                <option value="GEM Regimbudlair#GEM">GEM Regimbudlair#GEM</option>
-                                <option value="GEM Lacellire#LAS">GEM Lacellire#LAS</option>
-                                <option value="GEM PelsNpurmips#GEM">GEM PelsNpurmips#GEM</option>
-                                <option value="GEM Priscyumice#GEM">GEM Priscyumice#GEM</option>
-                                <option value="GEM Buddelizeth#GEM">GEM Buddelizeth#GEM</option>
-                                <option value="GEM Depurallire#GEM">GEM Depurallire#GEM</option>
-                                <option value="GEM Lagrimelle#GEM">GEM Lagrimelle#GEM</option>
-                                <option value="GEM Damglantine#GEM">GEM Damglantine#GEM</option>
-                                <option value="GEM Glacelynne#GEM">GEM Glacelynne#GEM</option>
-                                <option value="GEM Bricellice#GEM">GEM Bricellice#GEM</option>
-                                <option value="GEM Deestellirys#GEM">GEM Deestellirys#GEM</option>
-                                <option value="GEM Lahallayd#GEM">GEM Lahallayd#GEM</option>
-                                <option value="GEM Ivelism#GEM">GEM Ivelism#GEM</option>
-                                <option value="GEM Blaandelvals#GEM">GEM Blaandelvals#GEM</option>
-                                <option value="GEM Vaelardorcel#GEM">GEM Vaelardorcel#GEM</option>
-                                <option value="GEM Envicingess#GEM">GEM Envicingess#GEM</option>
-                                <option value="GEM Velchelisse#GEM">GEM Velchelisse#GEM</option>
-                                <option value="GEM Plissevelary#GEM">GEM Plissevelary#GEM</option>
-                                <option value="GEM Lageldrynne#GEM">GEM Lageldrynne#GEM</option>
-                                <option value="GEM Auzglades#GEM">GEM Auzglades#GEM</option>
-                                <option value="GEM Vespianelian#GEM">GEM Vespianelian#GEM</option>
-                                <option value="GEM Greedgardell#GEM">GEM Greedgardell#GEM</option>
-                                <option value="GEM Praireclovia#GEM">GEM Praireclovia#GEM</option>
-                                <option value="GEM Asticedicair#GEM">GEM Asticedicair#GEM</option>
-                                <option value="GEM Dellablivien#GEM">GEM Dellablivien#GEM</option>
-                                <option value="GEM Vrilyarethez#GEM">GEM Vrilyarethez#GEM</option>
-                                <option value="GEM Irzeleriance#LAS">GEM Irzeleriance#LAS</option>
-                                <option value="GEM Phrasimfasya#GEM">GEM Phrasimfasya#GEM</option>
-                                <option value="GEM Gallilessya#GEM">GEM Gallilessya#GEM</option>
-                                <option value="GEM Debranice#GEM">GEM Debranice#GEM</option>
-                                <option value="GEM Gliecernice#GEM">GEM Gliecernice#GEM</option>
-                                <option value="GEM Cierzellant#GEM">GEM Cierzellant#GEM</option>
-                                <option value="GEM Golzendants#GEM">GEM Golzendants#GEM</option>
-                                <option value="GEM Argyndorness#GEM">GEM Argyndorness#GEM</option>
-                                <option value="GEM Ornetchreans#GEM">GEM Ornetchreans#GEM</option>
-                                <option value="GEM Veldraveth#GEM">GEM Veldraveth#GEM</option>
-                                <option value="GEM Deliquesence#LAS">GEM Deliquesence#LAS</option>
-                                <option value="GEM Religerness#GEM">GEM Religerness#GEM</option>
+                                <option value="" disabled>
+                                    {loadingAccounts ? 'Cargando cuentas...' : 'Elige una cuenta...'}
+                                </option>
+                                {availableAccounts.map((account) => (
+                                    <option key={account.id} value={account.username}>
+                                        {account.username}
+                                    </option>
+                                ))}
                             </select>
                             <small className={styles.input__hint}>
-                                Selecciona la cuenta ranked que deseas reclamar
+                                {loadingAccounts 
+                                    ? 'Cargando cuentas disponibles...' 
+                                    : availableAccounts.length > 0 
+                                        ? 'Selecciona la cuenta ranked que deseas reclamar'
+                                        : 'No hay cuentas disponibles en este momento'
+                                }
                             </small>
                         </div>
 
