@@ -16,6 +16,12 @@ export interface RankingEntry {
     masteryLevelsGained: number;
     level30BonusCount: number;
     eloDivisionsGained: number;
+    winsScore: number;
+    masteryScore: number;
+    honorScore: number;
+    levelScore: number;
+    memberScore: number;
+    eloScore: number;
 }
 
 export interface ProgressRankingResponse {

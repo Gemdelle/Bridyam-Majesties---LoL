@@ -117,32 +117,50 @@ const RankingTableFinal: React.FC = () => {
                     {/* WIN */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${winTier}`]}`}>
                         <img src={`/images/ranking/${winTier}/${winTier}-win.png`} alt="Win" />
-                        <span>{entry.winsGained}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.winsGained}</span>
+                            <span className={styles.achievement__score}>{entry.winsScore > 0 ? entry.winsScore : ''}</span>
+                        </div>
                     </div>
                     {/* MASTERY */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${masteryTier}`]}`}>
                         <img src={`/images/ranking/${masteryTier}/${masteryTier}-mastery.png`} alt="Mastery" />
-                        <span>{entry.masteryLevelsGained}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.masteryLevelsGained}</span>
+                            <span className={styles.achievement__score}>{entry.masteryScore > 0 ? entry.masteryScore : ''}</span>
+                        </div>
                     </div>
                     {/* HONOR */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${honorTier}`]}`}>
                         <img src={`/images/ranking/${honorTier}/${honorTier}-honor.png`} alt="Honor" />
-                        <span>{entry.honorGained}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.honorGained}</span>
+                            <span className={styles.achievement__score}>{entry.honorScore > 0 ? entry.honorScore : ''}</span>
+                        </div>
                     </div>
                     {/* LEVEL */}
                     <div className={`${styles.achievement__container} ${styles.achievement__level} ${styles[`achievement__${levelTier}`]}`}>
                         <img src={`/images/ranking/${levelTier}/${levelTier}-level.png`} alt="Level" />
-                        <span>{entry.levelGained}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.levelGained}</span>
+                            <span className={styles.achievement__score}>{entry.levelScore > 0 ? entry.levelScore : ''}</span>
+                        </div>
                     </div>
                     {/* MEMBER */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${memberTier}`]}`}>
                         <img src={`/images/ranking/${memberTier}/${memberTier}-member.png`} alt="Member" />
-                        <span>{entry.level30BonusCount}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.level30BonusCount}</span>
+                            <span className={styles.achievement__score}>{entry.memberScore > 0 ? entry.memberScore : ''}</span>
+                        </div>
                     </div>
                     {/* ELO */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${eloTier}`]}`}>
                         <img src={`/images/ranking/${eloTier}/${eloTier}-elo.png`} alt="Elo" />
-                        <span>{entry.eloDivisionsGained}</span>
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.eloDivisionsGained}</span>
+                            <span className={styles.achievement__score}>{entry.eloScore > 0 ? entry.eloScore : ''}</span>
+                        </div>
                     </div>
                 </div>
 
