@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Feed.module.scss';
 import Notification, { type NotificationProps } from '../../components/Notification/Notification';
 import { fetchAllNotifications, NotificationAction } from '../../services/feedNotificationService';
 import type { FeedNotification } from '../../services/feedNotificationService';
 
 // Tipo de filtro para las notificaciones
-type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'essencer' | 'redeem' | 'honor' | 'mastery';
+type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'essencer' | 'redeem' | 'honor' | 'mastery' | 'ranking';
 
 /**
  * Filtros de notificaciones:
@@ -18,6 +18,7 @@ type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'e
  * - redeem: Cuando canjean una cuenta (MEMBER)
  * - essencer: Cuando un usuario se REGISTRA en la página (pendiente implementación backend)
  * - honor: Cuando sube de honor (HONOR_UP)
+ * - ranking: Cuando alguien sube de posición en el ranking (bronze, silver, diamond, tourmaline) en cualquier categoría (pendiente implementación backend)
  */
 
 // Tipo extendido para las notificaciones con filtro
@@ -86,6 +87,14 @@ const Feed: React.FC = () => {
             //     imageUrl = '/images/achievement/achievement-1.png';
             //     notifFilterType = 'essencer';
             //     break;
+            // TODO: Agregar caso para RANKING cuando el backend lo implemente
+            // (cuando alguien sube de posición: bronze, silver, diamond, tourmaline)
+            // Ej: "user ascendió a silver en mastery y desplazó a user2"
+            // case NotificationAction.RANKING_POSITION_UP:
+            //     notifType = 'achievement';
+            //     imageUrl = '/images/achievement/achievement-1.png';
+            //     notifFilterType = 'ranking';
+            //     break;
             default:
                 notifType = 'general';
                 notifFilterType = 'all';
@@ -106,7 +115,7 @@ const Feed: React.FC = () => {
     };
 
     // Cargar notificaciones del endpoint
-    const loadNotifications = async () => {
+    const loadNotifications = useCallback(async () => {
         try {
             setError(null);
             const feedNotifications = await fetchAllNotifications(100);
@@ -119,7 +128,7 @@ const Feed: React.FC = () => {
             setNotifications([]);
             setLoading(false);
         }
-    };
+    }, []);
 
     // Cargar notificaciones al montar y establecer auto-refresh
     useEffect(() => {
@@ -131,7 +140,7 @@ const Feed: React.FC = () => {
         }, 30000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [loadNotifications]);
 
     const handleNotificationRead = (id: number) => {
         setNotifications(prev =>
@@ -208,6 +217,7 @@ const Feed: React.FC = () => {
                                 <option value="redeem">Redeem</option>
                                 <option value="essencer">Essencer</option>
                                 <option value="honor">Honor</option>
+                                <option value="ranking">Ranking</option>
                             </select>
                         </div>
 
@@ -266,6 +276,7 @@ const Feed: React.FC = () => {
                                 <option value="redeem">Redeem</option>
                                 <option value="essencer">Essencer</option>
                                 <option value="honor">Honor</option>
+                                <option value="ranking">Ranking</option>
                             </select>
                         </div>
 
