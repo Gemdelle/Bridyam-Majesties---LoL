@@ -40,15 +40,23 @@
 
   // Clase especial para redeem (mission type)
   &.notification__icon--redeem {
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid #bda267;
+    overflow: visible; // Permitir que el círculo giratorio se vea completo
     
-    img {
-      height: 200%;
+    .portrait__wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #bda267;
+      z-index: 2;
+      
+      img {
+        bottom: 35%;
+        height: 250%;
       object-fit: cover;
-      margin-top: 50%;
       max-width: 100%;
+      }
     }
   }
 }
