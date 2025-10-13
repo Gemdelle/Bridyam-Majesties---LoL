@@ -98,6 +98,10 @@
         animation: breathe 2s infinite linear;
         transform-origin: center bottom;
         z-index: 10;
+
+        &.pet__mirrored {
+            animation: breatheMirrored 2s infinite linear;
+        }
     }
 
     .essencer__info {
@@ -383,5 +387,17 @@
     }
     100% {
         transform: scaleY(1);
+    }
+}
+
+@keyframes breatheMirrored {
+    0% {
+        transform: scaleX(-1) scaleY(1);
+    }
+    50% {
+        transform: scaleX(-1) scaleY(1.03);
+    }
+    100% {
+        transform: scaleX(-1) scaleY(1);
     }
 }

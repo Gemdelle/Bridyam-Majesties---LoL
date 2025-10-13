@@ -101,6 +101,14 @@
             transform: scale(1.1);
             border-color: $secondary-color;
         }
+
+        &.pet__mirrored {
+            transform: scaleX(-1);
+
+            &:hover {
+                transform: scale(1.1) scaleX(-1);
+            }
+        }
     }
 }
 

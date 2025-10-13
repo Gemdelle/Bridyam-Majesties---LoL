@@ -103,7 +103,11 @@ const RankingTableFinal: React.FC = () => {
             <div className={rowClass} key={entry.userId}>
                 {/* DESCRIPTION */}
                 <div className={styles.essencer__description}>
-                    <img src={getPetImage(entry.petType, entry.petStage)} alt="Pet" />
+                    <img 
+                        src={getPetImage(entry.petType, entry.petStage)} 
+                        alt="Pet" 
+                        className={entry.petType === '1' ? styles.pet__mirrored : ''}
+                    />
                     <div className={styles.essencer__info}>
                         <div className={styles.essencer__info__rank}>
                             {renderRankNumber(entry.rank)}
