@@ -277,6 +277,7 @@
     position: relative;
     // background-color: lightgreen;
     @include flex-center;
+    overflow: visible;
     
     // Glow sutil de fondo
     &::before {
@@ -291,6 +292,29 @@
         border-radius: 50%;
         z-index: 1;
         animation: scoreGlowPulse 3s ease-in-out infinite;
+    }
+    
+    // Derlets flotantes
+    .derlet {
+        position: absolute;
+        height: auto;
+        z-index: 0;
+        opacity: 0.7;
+        pointer-events: none;
+        
+        &.derlet__right__top {
+            width: 1.7vw;
+            top: -5px;
+            right: -10px;
+            animation: floatingSlow 6s ease-in-out infinite;
+        }
+        
+        &.derlet__left__bottom {
+            width: 1.4vw;
+            bottom: 0;
+            left: -5px;
+            animation: floatingFast 8s ease-in-out infinite;
+        }
     }
     
     span {
@@ -399,5 +423,24 @@
     }
     100% {
         transform: scaleX(-1) scaleY(1);
+    }
+}
+
+// Animaciones de floating para los derlets
+@keyframes floatingSlow {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+@keyframes floatingFast {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
     }
 }

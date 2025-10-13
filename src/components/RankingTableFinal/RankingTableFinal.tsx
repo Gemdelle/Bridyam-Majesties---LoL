@@ -170,6 +170,18 @@ const RankingTableFinal: React.FC = () => {
 
                 {/* TOTAL */}
                 <div className={styles.total__container}>
+                    {/* Derlets flotantes */}
+                    <img 
+                        src="/images/derlet/derlet-side.png" 
+                        alt="derlet" 
+                        className={`${styles.derlet} ${styles.derlet__right__top}`}
+                    />
+                    <img 
+                        src="/images/derlet/derlet-side-2.png" 
+                        alt="derlet" 
+                        className={`${styles.derlet} ${styles.derlet__left__bottom}`}
+                    />
+
                     {/* Partículas flotantes */}
                     <div className={styles.score__particles__container}>
                         {Array.from({ length: 12 }, (_, i) => (
