@@ -30,7 +30,11 @@ const Feed: React.FC = () => {
     const [notifications, setNotifications] = useState<ExtendedNotification[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [filterType, setFilterType] = useState<NotificationFilterType>('all');
-    const [viewedNotifications, setViewedNotifications] = useState<Set<number>>(new Set());
+    // Cargar notificaciones vistas desde localStorage al inicializar
+    const [viewedNotifications, setViewedNotifications] = useState<Set<number>>(() => {
+        const stored = localStorage.getItem('viewedNotifications');
+        return stored ? new Set(JSON.parse(stored)) : new Set();
+    });
 
     // Función helper para obtener imagen de tier
     const getTierImage = (tier: string): string => {
@@ -293,7 +297,12 @@ const Feed: React.FC = () => {
     };
 
     const handleNotificationHover = (id: number) => {
-        setViewedNotifications(prev => new Set(prev).add(id));
+        setViewedNotifications(prev => {
+            const updated = new Set(prev).add(id);
+            // Guardar en localStorage
+            localStorage.setItem('viewedNotifications', JSON.stringify([...updated]));
+            return updated;
+        });
     };
 
     const isNotificationNew = (notif: ExtendedNotification): boolean => {
@@ -392,11 +401,12 @@ const Feed: React.FC = () => {
                             filteredNotifications.map(notification => (
                                 <div
                                     key={notification.id}
-                                    className={`${styles.notification__wrapper} ${isNotificationNew(notification) ? styles.new__notification : ''}`}
+                                    className={styles.notification__wrapper}
                                     onMouseEnter={() => handleNotificationHover(notification.id)}
                                 >
                                     <Notification
                                         {...notification}
+                                        isNew={isNotificationNew(notification)}
                                         onRead={handleNotificationRead}
                                         onClick={handleNotificationClick}
                                     />

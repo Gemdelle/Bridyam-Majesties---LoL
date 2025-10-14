@@ -10,6 +10,7 @@ export interface NotificationProps {
     isRead?: boolean;
     imageUrl?: string;
     bloodline?: string | number;
+    isNew?: boolean;
     onRead?: (id: number) => void;
     onClick?: (id: number) => void;
 }
@@ -23,6 +24,7 @@ const Notification: React.FC<NotificationProps> = ({
     isRead = false,
     imageUrl,
     bloodline,
+    isNew = false,
     onRead,
     onClick
 }) => {
@@ -102,6 +104,11 @@ const Notification: React.FC<NotificationProps> = ({
             className={`${styles.notification} ${getTypeColor()} ${isRead ? styles.notification__read : ''}`}
             onClick={handleClick}
         >
+            <img
+                src={'/images/frames/achievement-bg-frame.png'}
+                alt="background"
+                className={`${styles.notificacion__background} ${isNew ? styles.notificacion__background__glow : ''}`}
+            />
             {/* Icon/Image */}
             {imageUrl && (
                 <div className={`${styles.notification__icon} ${type === 'mission' ? styles['notification__icon--redeem'] : ''}`}>

@@ -177,59 +177,6 @@
   justify-content: center;
 }
 
-.new__notification {
-  position: relative;
-  animation: newNotificationGlow 2s ease-in-out infinite;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, 
-      rgba(255, 215, 0, 0.4),
-      rgba(200, 155, 60, 0.4),
-      rgba(255, 215, 0, 0.4)
-    );
-    border-radius: 8px;
-    z-index: -1;
-    filter: blur(8px);
-    opacity: 0.8;
-    animation: glowPulse 2s ease-in-out infinite;
-  }
-  
-  &:hover {
-    animation: none;
-    
-    &::before {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-  }
-}
-
-@keyframes newNotificationGlow {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3),
-                0 0 20px rgba(200, 155, 60, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
-                0 0 30px rgba(200, 155, 60, 0.3),
-                0 0 40px rgba(255, 215, 0, 0.1);
-  }
-}
-
-@keyframes glowPulse {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
 
 .no__notifications {
   color: #8b7355;
