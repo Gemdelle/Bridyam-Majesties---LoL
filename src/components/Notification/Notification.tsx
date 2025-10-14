@@ -10,6 +10,8 @@ export interface NotificationProps {
     isRead?: boolean;
     imageUrl?: string;
     bloodline?: string | number;
+    petType?: string | null;
+    petStage?: number | null;
     isNew?: boolean;
     onRead?: (id: number) => void;
     onClick?: (id: number) => void;
@@ -24,6 +26,8 @@ const Notification: React.FC<NotificationProps> = ({
     isRead = false,
     imageUrl,
     bloodline,
+    petType,
+    petStage,
     isNew = false,
     onRead,
     onClick
@@ -37,37 +41,33 @@ const Notification: React.FC<NotificationProps> = ({
         }
     };
 
-    // Función para obtener imagen de mascota según bloodline
-    const getPetImage = (bloodline: string | number | undefined): string => {
-        if (!bloodline) return '/images/pets/pet-1-1.png';
+    // Función para obtener imagen de pet
+    const getPetImage = (petType: string | null | undefined, petStage: number | null | undefined, bloodline?: string | number): string => {
+        // Si tenemos petType y petStage, usarlos
+        if (petType && petStage) {
+            return `/images/pets/pet-${petType}-${petStage}.png`;
+        }
 
-        // Si es string, intentar convertir o mapear por nombre
-        let bloodlineNum = 1;
-        if (typeof bloodline === 'string') {
-            const bloodlineLower = bloodline.toLowerCase();
-
-            // Mapeo por nombre
-            if (bloodlineLower.includes('porveldam')) bloodlineNum = 1;
-            else if (bloodlineLower.includes('spadelline')) bloodlineNum = 2;
-            else if (bloodlineLower.includes('zephir')) bloodlineNum = 3;
-            else if (bloodlineLower.includes('gladasmy')) bloodlineNum = 4;
-            else {
-                // Intentar parsear como número
-                const parsed = parseInt(bloodline);
-                if (!isNaN(parsed)) bloodlineNum = parsed;
+        // Fallback: usar bloodline para determinar el pet (etapa 1 por defecto)
+        if (bloodline) {
+            let bloodlineNum = 1;
+            if (typeof bloodline === 'string') {
+                const bloodlineLower = bloodline.toLowerCase();
+                if (bloodlineLower.includes('porveldam')) bloodlineNum = 1;
+                else if (bloodlineLower.includes('spadelline')) bloodlineNum = 2;
+                else if (bloodlineLower.includes('zephir')) bloodlineNum = 3;
+                else if (bloodlineLower.includes('gladasmy')) bloodlineNum = 4;
+                else {
+                    const parsed = parseInt(bloodline);
+                    if (!isNaN(parsed)) bloodlineNum = parsed;
+                }
+            } else {
+                bloodlineNum = bloodline;
             }
-        } else {
-            bloodlineNum = bloodline;
+            return `/images/pets/pet-${bloodlineNum}-1.png`;
         }
 
-        // Retornar la imagen de pet correspondiente (usando variante 1)
-        switch (bloodlineNum) {
-            case 1: return '/images/pets/pet-1-1.png'; // Porveldam
-            case 2: return '/images/pets/pet-2-1.png'; // Spadelline
-            case 3: return '/images/pets/pet-3-1.png'; // Zephiroth
-            case 4: return '/images/pets/pet-4-1.png'; // Gladasmy
-            default: return '/images/pets/pet-1-1.png';
-        }
+        return '/images/pets/nav-pet-1.png';
     };
 
     const getTypeColor = () => {
@@ -138,7 +138,7 @@ const Notification: React.FC<NotificationProps> = ({
                 </div>
 
             </div>
-            <img src={getPetImage(bloodline)} alt="pet" className={styles.pet__image} />
+            <img src={getPetImage(petType, petStage, bloodline)} alt="pet" className={styles.pet__image} />
             {/* Unread indicator */}
             {!isRead && (
                 <div className={styles.notification__unread__indicator}></div>

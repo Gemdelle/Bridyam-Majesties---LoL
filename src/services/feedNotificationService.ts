@@ -26,6 +26,8 @@ export interface FeedNotification {
     rankedName: string;
     rankedUsername: string;
     bloodline: string;
+    petType: string | null;
+    petStage: number | null;
     action: NotificationAction;
     title: string;
     description: string;
@@ -44,11 +46,11 @@ export type FeedNotificationType = FeedNotification;
 export const fetchAllNotifications = async (limit: number = 100): Promise<FeedNotification[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/feed/notifications?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch notifications: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Error fetching all notifications:', error);
@@ -62,11 +64,11 @@ export const fetchAllNotifications = async (limit: number = 100): Promise<FeedNo
 export const fetchNotificationsByUser = async (userId: string, limit: number = 50): Promise<FeedNotification[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/feed/notifications/user/${userId}?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch user notifications: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error(`Error fetching notifications for user ${userId}:`, error);
@@ -80,11 +82,11 @@ export const fetchNotificationsByUser = async (userId: string, limit: number = 5
 export const fetchNotificationsByBloodline = async (bloodline: string, limit: number = 100): Promise<FeedNotification[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/feed/notifications/bloodline/${bloodline}?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch bloodline notifications: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error(`Error fetching notifications for bloodline ${bloodline}:`, error);
@@ -98,11 +100,11 @@ export const fetchNotificationsByBloodline = async (bloodline: string, limit: nu
 export const fetchNotificationsByRanked = async (rankedId: number, limit: number = 50): Promise<FeedNotification[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/feed/notifications/ranked/${rankedId}?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch ranked notifications: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error(`Error fetching notifications for ranked ${rankedId}:`, error);
