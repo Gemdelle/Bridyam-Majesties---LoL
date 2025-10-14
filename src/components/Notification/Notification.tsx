@@ -11,6 +11,7 @@ export interface NotificationProps {
     imageUrl?: string;
     petType?: string | null;
     petStage?: number | null;
+    score?: number;
     isNew?: boolean;
     onRead?: (id: number) => void;
     onClick?: (id: number) => void;
@@ -26,6 +27,7 @@ const Notification: React.FC<NotificationProps> = ({
     imageUrl,
     petType,
     petStage,
+    score,
     isNew = false,
     onRead,
     onClick
@@ -37,6 +39,19 @@ const Notification: React.FC<NotificationProps> = ({
         if (onClick) {
             onClick(id);
         }
+    };
+
+    // Helper function to render score as images
+    const renderScoreAsImages = (score: number) => {
+        const scoreString = score.toString();
+        return scoreString.split('').map((digit, index) => (
+            <img
+                key={index}
+                src={`/images/numbers/${digit}.png`}
+                alt={digit}
+                className={styles.score__digit}
+            />
+        ));
     };
 
     // Función para obtener imagen de pet
@@ -125,6 +140,29 @@ const Notification: React.FC<NotificationProps> = ({
                     <p className={styles.notification__message}>{message}</p>
                 </div>
                 <div className={styles.notification__reward}>
+                    {/* Derlets flotantes */}
+                    <img
+                        src="/images/derlet/derlet-side.png"
+                        alt="derlet"
+                        className={`${styles.derlet} ${styles.derlet__right__top}`}
+                    />
+                    <img
+                        src="/images/derlet/derlet-side-2.png"
+                        alt="derlet"
+                        className={`${styles.derlet} ${styles.derlet__left__bottom}`}
+                    />
+
+                    {/* Partículas flotantes */}
+                    <div className={styles.score__particles__container}>
+                        {Array.from({ length: 12 }, (_, i) => (
+                            <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
+                        ))}
+                    </div>
+
+                    {/* Números del score */}
+                    <div className={styles.score__numbers}>
+                        {renderScoreAsImages(score || 0)}
+                    </div>
                 </div>
 
             </div>

@@ -242,6 +242,18 @@ const Feed: React.FC = () => {
                 console.warn('Unknown notification action:', feedNotif.action);
         }
 
+        // Extraer score del metadata
+        const score = feedNotif.metadata.score ||
+            feedNotif.metadata.points ||
+            feedNotif.metadata.gained ||
+            undefined;
+
+        console.log('Score extraction:', {
+            action: feedNotif.action,
+            metadata: feedNotif.metadata,
+            extractedScore: score
+        });
+
         return {
             id: feedNotif.id,
             type: notifType,
@@ -252,6 +264,7 @@ const Feed: React.FC = () => {
             imageUrl: imageUrl,
             petType: feedNotif.petType,
             petStage: feedNotif.petStage,
+            score: score ? parseInt(score) : undefined,
             filterType: notifFilterType,
             action: feedNotif.action
         };
