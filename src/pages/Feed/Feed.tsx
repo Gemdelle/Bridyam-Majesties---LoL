@@ -246,6 +246,7 @@ const Feed: React.FC = () => {
             timestamp: new Date(feedNotif.createdAt),
             isRead: false,
             imageUrl: imageUrl,
+            bloodline: feedNotif.bloodline,
             filterType: notifFilterType,
             action: feedNotif.action
         };
