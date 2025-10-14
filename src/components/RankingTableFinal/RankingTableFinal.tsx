@@ -103,9 +103,9 @@ const RankingTableFinal: React.FC = () => {
             <div className={rowClass} key={entry.userId}>
                 {/* DESCRIPTION */}
                 <div className={styles.essencer__description}>
-                    <img 
-                        src={getPetImage(entry.petType, entry.petStage)} 
-                        alt="Pet" 
+                    <img
+                        src={getPetImage(entry.petType, entry.petStage)}
+                        alt="Pet"
                         className={entry.petType === '1' ? styles.pet__mirrored : ''}
                     />
                     <div className={styles.essencer__info}>
@@ -171,14 +171,14 @@ const RankingTableFinal: React.FC = () => {
                 {/* TOTAL */}
                 <div className={styles.total__container}>
                     {/* Derlets flotantes */}
-                    <img 
-                        src="/images/derlet/derlet-side.png" 
-                        alt="derlet" 
+                    <img
+                        src="/images/derlet/derlet-side.png"
+                        alt="derlet"
                         className={`${styles.derlet} ${styles.derlet__right__top}`}
                     />
-                    <img 
-                        src="/images/derlet/derlet-side-2.png" 
-                        alt="derlet" 
+                    <img
+                        src="/images/derlet/derlet-side-2.png"
+                        alt="derlet"
                         className={`${styles.derlet} ${styles.derlet__left__bottom}`}
                     />
 
@@ -221,7 +221,6 @@ const RankingTableFinal: React.FC = () => {
 
     return (
         <div className={styles.ranking__container}>
-
             {/* DATA ROWS */}
             {ranking.map((entry) => {
                 let rowClass = styles.essencer__default;

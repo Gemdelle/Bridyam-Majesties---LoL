@@ -8,6 +8,27 @@
     @include flex-col;
     justify-content: flex-start;
     gap: 7%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Scrollbar personalizado */
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba(200, 155, 60, 0.1);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(200, 155, 60, 0.5);
+        border-radius: 10px;
+        
+        &:hover {
+            background: rgba(200, 155, 60, 0.7);
+        }
+    }
 }
 
 // HEADER ROW
