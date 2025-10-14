@@ -9,7 +9,6 @@ export interface NotificationProps {
     timestamp: Date;
     isRead?: boolean;
     imageUrl?: string;
-    bloodline?: string | number;
     petType?: string | null;
     petStage?: number | null;
     isNew?: boolean;
@@ -25,7 +24,6 @@ const Notification: React.FC<NotificationProps> = ({
     timestamp,
     isRead = false,
     imageUrl,
-    bloodline,
     petType,
     petStage,
     isNew = false,
@@ -42,32 +40,24 @@ const Notification: React.FC<NotificationProps> = ({
     };
 
     // Función para obtener imagen de pet
-    const getPetImage = (petType: string | null | undefined, petStage: number | null | undefined, bloodline?: string | number): string => {
-        // Si tenemos petType y petStage, usarlos
-        if (petType && petStage) {
-            return `/images/pets/pet-${petType}-${petStage}.png`;
+    const getPetImage = (petType: string | null | undefined, petStage: number | null | undefined): string | null => {
+        console.log('getPetImage called with:', { petType, petStage });
+
+        // Validar petType (debe ser "1", "2", "3", "4", no "0")
+        if (!petType || petType === '0' || !['1', '2', '3', '4'].includes(petType)) {
+            console.log('Invalid petType, returning null');
+            return null; // No mostrar pet si no es válido
         }
 
-        // Fallback: usar bloodline para determinar el pet (etapa 1 por defecto)
-        if (bloodline) {
-            let bloodlineNum = 1;
-            if (typeof bloodline === 'string') {
-                const bloodlineLower = bloodline.toLowerCase();
-                if (bloodlineLower.includes('porveldam')) bloodlineNum = 1;
-                else if (bloodlineLower.includes('spadelline')) bloodlineNum = 2;
-                else if (bloodlineLower.includes('zephir')) bloodlineNum = 3;
-                else if (bloodlineLower.includes('gladasmy')) bloodlineNum = 4;
-                else {
-                    const parsed = parseInt(bloodline);
-                    if (!isNaN(parsed)) bloodlineNum = parsed;
-                }
-            } else {
-                bloodlineNum = bloodline;
-            }
-            return `/images/pets/pet-${bloodlineNum}-1.png`;
+        // Validar petStage (debe ser 1, 2, o 3)
+        if (!petStage || petStage < 1 || petStage > 3) {
+            console.log('Invalid petStage, returning null');
+            return null; // No mostrar pet si la etapa no es válida
         }
 
-        return '/images/pets/nav-pet-1.png';
+        const imagePath = `/images/pets/pet-${petType}-${petStage}.png`;
+        console.log('Using pet image:', imagePath);
+        return imagePath;
     };
 
     const getTypeColor = () => {
@@ -138,7 +128,9 @@ const Notification: React.FC<NotificationProps> = ({
                 </div>
 
             </div>
-            <img src={getPetImage(petType, petStage, bloodline)} alt="pet" className={styles.pet__image} />
+            {getPetImage(petType, petStage) && (
+                <img src={getPetImage(petType, petStage)!} alt="pet" className={styles.pet__image} />
+            )}
             {/* Unread indicator */}
             {!isRead && (
                 <div className={styles.notification__unread__indicator}></div>

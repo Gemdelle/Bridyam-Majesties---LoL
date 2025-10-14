@@ -33,8 +33,17 @@ const RankingTableFinal: React.FC = () => {
         return 'bronze';
     };
 
-    const getPetImage = (petType: string | null, petStage: number | null) => {
-        if (!petType || !petStage) return '/images/pets/nav-pet-1.png';
+    const getPetImage = (petType: string | null, petStage: number | null): string | null => {
+        // Validar petType (debe ser "1", "2", "3", "4", no "0")
+        if (!petType || petType === '0' || !['1', '2', '3', '4'].includes(petType)) {
+            return null; // No mostrar pet si no es válido
+        }
+
+        // Validar petStage (debe ser 1, 2, o 3)
+        if (!petStage || petStage < 1 || petStage > 3) {
+            return null; // No mostrar pet si la etapa no es válida
+        }
+
         return `/images/pets/pet-${petType}-${petStage}.png`;
     };
 
@@ -103,11 +112,13 @@ const RankingTableFinal: React.FC = () => {
             <div className={rowClass} key={entry.userId}>
                 {/* DESCRIPTION */}
                 <div className={styles.essencer__description}>
-                    <img
-                        src={getPetImage(entry.petType, entry.petStage)}
-                        alt="Pet"
-                        className={styles.pet__mirrored}
-                    />
+                    {getPetImage(entry.petType, entry.petStage) && (
+                        <img
+                            src={getPetImage(entry.petType, entry.petStage)!}
+                            alt="Pet"
+                            className={styles.pet__mirrored}
+                        />
+                    )}
                     <div className={styles.essencer__info}>
                         <div className={styles.essencer__info__rank}>
                             {renderRankNumber(entry.rank)}

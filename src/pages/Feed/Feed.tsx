@@ -242,23 +242,6 @@ const Feed: React.FC = () => {
                 console.warn('Unknown notification action:', feedNotif.action);
         }
 
-        // Usar petType y petStage del backend (del usuario, no de la cuenta)
-        // Si no vienen, derivar temporalmente desde bloodline
-        let finalPetType: string | null = feedNotif.petType;
-        let finalPetStage: number | null = feedNotif.petStage;
-
-        if (!finalPetType && feedNotif.bloodline) {
-            const bloodlineLower = feedNotif.bloodline.toLowerCase();
-            if (bloodlineLower.includes('porveldam')) finalPetType = '1';
-            else if (bloodlineLower.includes('spadelline')) finalPetType = '2';
-            else if (bloodlineLower.includes('zephir')) finalPetType = '3';
-            else if (bloodlineLower.includes('gladasmy')) finalPetType = '4';
-        }
-
-        if (!finalPetStage) {
-            finalPetStage = 1; // Fallback
-        }
-
         return {
             id: feedNotif.id,
             type: notifType,
@@ -267,9 +250,8 @@ const Feed: React.FC = () => {
             timestamp: new Date(feedNotif.createdAt),
             isRead: false,
             imageUrl: imageUrl,
-            bloodline: feedNotif.bloodline,
-            petType: finalPetType,
-            petStage: finalPetStage,
+            petType: feedNotif.petType,
+            petStage: feedNotif.petStage,
             filterType: notifFilterType,
             action: feedNotif.action
         };
@@ -280,6 +262,10 @@ const Feed: React.FC = () => {
         try {
             setError(null);
             const feedNotifications = await fetchAllNotifications(100);
+
+            // Debug: ver los primeros 3 registros crudos del backend
+            console.log('RAW BACKEND DATA (first 3):', feedNotifications.slice(0, 3));
+
             const mappedNotifications = feedNotifications.map(mapFeedNotificationToProps);
             setNotifications(mappedNotifications);
             setLoading(false);
