@@ -242,17 +242,11 @@ const Feed: React.FC = () => {
                 console.warn('Unknown notification action:', feedNotif.action);
         }
 
-        // Extraer score del metadata
+        // Extraer score del metadata (el backend debe enviarlo)
         const score = feedNotif.metadata.score ||
             feedNotif.metadata.points ||
             feedNotif.metadata.gained ||
             undefined;
-
-        console.log('Score extraction:', {
-            action: feedNotif.action,
-            metadata: feedNotif.metadata,
-            extractedScore: score
-        });
 
         return {
             id: feedNotif.id,
