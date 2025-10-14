@@ -139,15 +139,6 @@ const Feed: React.FC = () => {
         let imageUrl = '';
         let notifFilterType: NotificationFilterType = 'all';
 
-        // Debug log para ver metadata
-        if (feedNotif.action === NotificationAction.HONOR_UP ||
-            feedNotif.action === NotificationAction.RANK_UP ||
-            feedNotif.action === NotificationAction.ELO_DIVISION_UP ||
-            feedNotif.action === NotificationAction.MASTERY_LEVEL_UP ||
-            feedNotif.action === NotificationAction.MEMBER ||
-            feedNotif.action === NotificationAction.LEVEL_UP) {
-            console.log(`Notification ${feedNotif.action} metadata:`, feedNotif.metadata, 'bloodline:', feedNotif.bloodline);
-        }
 
         switch (feedNotif.action) {
             case NotificationAction.LEVEL_UP:
@@ -242,11 +233,24 @@ const Feed: React.FC = () => {
                 console.warn('Unknown notification action:', feedNotif.action);
         }
 
-        // Extraer score del metadata (el backend debe enviarlo)
-        const score = feedNotif.metadata.score ||
-            feedNotif.metadata.points ||
-            feedNotif.metadata.gained ||
-            undefined;
+        // Extraer score del metadata según el tipo de acción
+        let score: number | undefined = undefined;
+
+        // Cada acción puede tener diferentes nombres de campo para el score
+        if (feedNotif.action === NotificationAction.MASTERY_LEVEL_UP) {
+            score = feedNotif.metadata.levelsGained ? parseInt(feedNotif.metadata.levelsGained) : undefined;
+        } else if (feedNotif.action === NotificationAction.HONOR_UP) {
+            score = feedNotif.metadata.gained ? parseInt(feedNotif.metadata.gained) : undefined;
+        } else if (feedNotif.action === NotificationAction.WIN) {
+            score = feedNotif.metadata.wins || feedNotif.metadata.winsGained ? parseInt(feedNotif.metadata.wins || feedNotif.metadata.winsGained) : undefined;
+        } else if (feedNotif.action === NotificationAction.LEVEL_UP) {
+            score = feedNotif.metadata.levelsGained || feedNotif.metadata.gained ? parseInt(feedNotif.metadata.levelsGained || feedNotif.metadata.gained) : undefined;
+        } else {
+            // Fallback general
+            score = feedNotif.metadata.score || feedNotif.metadata.points || feedNotif.metadata.gained
+                ? parseInt(feedNotif.metadata.score || feedNotif.metadata.points || feedNotif.metadata.gained)
+                : undefined;
+        }
 
         return {
             id: feedNotif.id,
@@ -258,7 +262,7 @@ const Feed: React.FC = () => {
             imageUrl: imageUrl,
             petType: feedNotif.petType,
             petStage: feedNotif.petStage,
-            score: score ? parseInt(score) : undefined,
+            score: score,
             filterType: notifFilterType,
             action: feedNotif.action
         };
