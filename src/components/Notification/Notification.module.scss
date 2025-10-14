@@ -150,12 +150,25 @@
 
 .pet__image {
   position: absolute;
-  right: -10%;
+  right: -9%;
   width: auto;
-  height: 6vw;
+  height: 7vw;
   z-index: 2;
-  @include flex-center;
-  background-color: yellow;
+  transform: scaleX(1);
+  transform-origin: center bottom;
+  animation: breathe 2s infinite linear;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: scaleX(1) scaleY(1.03);
+  }
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
 }
 
 
