@@ -33,6 +33,7 @@ export interface FeedNotification {
     description: string;
     metadata: Record<string, string>;
     createdAt: string;
+    points: number | null;
 }
 
 /**

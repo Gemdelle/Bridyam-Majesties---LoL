@@ -233,24 +233,9 @@ const Feed: React.FC = () => {
                 console.warn('Unknown notification action:', feedNotif.action);
         }
 
-        // Extraer score del metadata según el tipo de acción
-        let score: number | undefined = undefined;
-
-        // Cada acción puede tener diferentes nombres de campo para el score
-        if (feedNotif.action === NotificationAction.MASTERY_LEVEL_UP) {
-            score = feedNotif.metadata.levelsGained ? parseInt(feedNotif.metadata.levelsGained) : undefined;
-        } else if (feedNotif.action === NotificationAction.HONOR_UP) {
-            score = feedNotif.metadata.gained ? parseInt(feedNotif.metadata.gained) : undefined;
-        } else if (feedNotif.action === NotificationAction.WIN) {
-            score = feedNotif.metadata.wins || feedNotif.metadata.winsGained ? parseInt(feedNotif.metadata.wins || feedNotif.metadata.winsGained) : undefined;
-        } else if (feedNotif.action === NotificationAction.LEVEL_UP) {
-            score = feedNotif.metadata.levelsGained || feedNotif.metadata.gained ? parseInt(feedNotif.metadata.levelsGained || feedNotif.metadata.gained) : undefined;
-        } else {
-            // Fallback general
-            score = feedNotif.metadata.score || feedNotif.metadata.points || feedNotif.metadata.gained
-                ? parseInt(feedNotif.metadata.score || feedNotif.metadata.points || feedNotif.metadata.gained)
-                : undefined;
-        }
+        // Usar los puntos calculados por el backend que vienen directamente en el campo points
+        // Estos puntos representan el score de ranking que se suma por esa acción
+        const score = feedNotif.points ?? undefined;
 
         return {
             id: feedNotif.id,
