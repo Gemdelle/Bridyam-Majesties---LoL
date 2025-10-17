@@ -540,6 +540,12 @@ const Ranked: React.FC = () => {
             {showRulesPopup && (
                 <div className={styles.popup__overlay} onClick={() => setShowRulesPopup(false)}>
                     <div className={styles.popup__content} onClick={(e) => e.stopPropagation()}>
+                        <button
+                            className={styles.popup__close}
+                            onClick={() => setShowRulesPopup(false)}
+                        >
+                            ×
+                        </button>
                         <div className={styles.title__container}>
                             <h2 className={styles.title}>How to Earn Points</h2>
                         </div>
