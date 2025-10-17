@@ -223,7 +223,7 @@
         img {
             height: auto;
             max-height: 60%;
-            width: 85%;
+            width: 75%;
             transition: filter 0.3s ease;
         }
 
@@ -298,10 +298,10 @@
 }
 
 .total__container {
-    width: 10%;
+    width: 15%;
     height: 100%;
     position: relative;
-    // background-color: lightgreen;
+    background-color: lightgreen;
     @include flex-center;
     overflow: visible;
     

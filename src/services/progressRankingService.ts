@@ -22,6 +22,8 @@ export interface RankingEntry {
     levelScore: number;
     memberScore: number;
     eloScore: number;
+    redeemCount: number;
+    redeemScore: number;
 }
 
 export interface ProgressRankingResponse {
@@ -64,11 +66,11 @@ export interface UserProgressStats {
 export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
         const response = await fetch(`${API_BASE_URL}/progress/ranking?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch ranking: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Error fetching global ranking:', error);
@@ -82,11 +84,11 @@ export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressR
 export const fetchRankingByBloodline = async (bloodline: string, limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
         const response = await fetch(`${API_BASE_URL}/progress/ranking/bloodline/${bloodline}?limit=${limit}`);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch ranking for bloodline: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error(`Error fetching ranking for bloodline ${bloodline}:`, error);
@@ -104,11 +106,11 @@ export const fetchUserProgress = async (userId: string, rankedId: number, token:
                 'Authorization': `Bearer ${token}`
             }
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch user progress: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Error fetching user progress:', error);
@@ -128,11 +130,11 @@ export const updateAccountProgress = async (userId: string, rankedId: number, to
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to update account progress: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Error updating account progress:', error);
@@ -152,11 +154,11 @@ export const updateUserProgress = async (userId: string, token: string): Promise
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to update user progress: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Error updating user progress:', error);

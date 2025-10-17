@@ -107,6 +107,7 @@ const RankingTable: React.FC = () => {
         const levelTier = getCategoryTier(entry, 'levelGained');
         const memberTier = getCategoryTier(entry, 'level30BonusCount');
         const eloTier = getCategoryTier(entry, 'eloDivisionsGained');
+        const redeemTier = getCategoryTier(entry, 'redeemCount');
 
         return (
             <div className={rowClass} key={entry.userId}>
@@ -175,6 +176,14 @@ const RankingTable: React.FC = () => {
                         <div className={styles.achievement__stats}>
                             <span className={styles.achievement__gained}>{entry.eloDivisionsGained}</span>
                             <span className={styles.achievement__score}>{entry.eloScore > 0 ? entry.eloScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* REDEEM */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${redeemTier}`]}`}>
+                        <img src={`/images/ranking/${redeemTier}/${redeemTier}-redeem.png`} alt="Redeem" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.redeemCount}</span>
+                            <span className={styles.achievement__score}>{entry.redeemScore > 0 ? entry.redeemScore : ''}</span>
                         </div>
                     </div>
                 </div>
