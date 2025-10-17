@@ -6,6 +6,7 @@ import RankingTable from '../../components/RankingTable/RankingTable';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
 import AchievementCard from '../../components/AchievementCard/AchievementCard';
+import RankingAchievement from '../../components/RankingAchievement/RankingAchievement';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -543,7 +544,41 @@ const Ranked: React.FC = () => {
                             <h2 className={styles.title}>How to Earn Points</h2>
                         </div>
                         <div className={styles.achievements__container}>
-                            {/* <RankingAchievement name="Achievement 1" description="Earn points for ..." iconSrc="/images/ranking/diamond/diamond-redeem.png" /> */}
+                            <RankingAchievement
+                                name="Redeem"
+                                description="Earn points when you successfully redeem new accounts"
+                                iconSrc="/images/ranking/diamond/diamond-redeem.png"
+                            />
+                            <RankingAchievement
+                                name="Wins"
+                                description="Earn points for every game won on your ranked accounts"
+                                iconSrc="/images/ranking/diamond/diamond-win.png"
+                            />
+                            <RankingAchievement
+                                name="Mastery"
+                                description="Gain points by leveling up champion masteries"
+                                iconSrc="/images/ranking/diamond/diamond-mastery.png"
+                            />
+                            <RankingAchievement
+                                name="Honor"
+                                description="Increase your honor level to earn more points"
+                                iconSrc="/images/ranking/diamond/diamond-honor.png"
+                            />
+                            <RankingAchievement
+                                name="Level"
+                                description="Level up your account to gain progression points"
+                                iconSrc="/images/ranking/diamond/diamond-level.png"
+                            />
+                            <RankingAchievement
+                                name="Member"
+                                description="Bonus points for reaching level 30 on accounts"
+                                iconSrc="/images/ranking/diamond/diamond-member.png"
+                            />
+                            <RankingAchievement
+                                name="Elo"
+                                description="Climb ranked divisions to earn elo points"
+                                iconSrc="/images/ranking/diamond/diamond-elo.png"
+                            />
                         </div>
                         <div className={styles.elo__container}>
                             <div className={styles.elo__items}>
