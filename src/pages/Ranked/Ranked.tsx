@@ -49,6 +49,9 @@ const Ranked: React.FC = () => {
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
+    // --- Estado para el popup de reglas ---
+    const [showRulesPopup, setShowRulesPopup] = useState(false);
+
     // --- Generar opciones de essencers dinámicamente ---
     const getEssencerOptions = (): FilterOption[] => {
         const uniqueEssencers = [...new Set(rankedData.map(account => account.name))];
@@ -365,6 +368,21 @@ const Ranked: React.FC = () => {
 
                     </div>
                     <div className={styles.ranking__rules__container}>
+                        <div className={styles.rules__title__wrapper}>
+                            {/* Partículas flotantes */}
+                            <div className={styles.rules__particles__container}>
+                                {Array.from({ length: 8 }, (_, i) => (
+                                    <div key={i} className={`${styles.rules__particle} ${styles[`rules__particle__${i + 1}`]}`}></div>
+                                ))}
+                            </div>
+                            <h2 className={styles.rules__title}>How can I earn points?</h2>
+                        </div>
+                        <button
+                            className={styles.rules__button}
+                            onClick={() => setShowRulesPopup(true)}
+                        >
+                            See how it works
+                        </button>
                     </div>
                 </div>
                 <div className={styles.content}>
@@ -459,6 +477,51 @@ const Ranked: React.FC = () => {
                     </div>
                 </div>
             </div >
+
+            {/* Popup de reglas */}
+            {showRulesPopup && (
+                <div className={styles.popup__overlay} onClick={() => setShowRulesPopup(false)}>
+                    <div className={styles.popup__content} onClick={(e) => e.stopPropagation()}>
+                        <button
+                            className={styles.popup__close}
+                            onClick={() => setShowRulesPopup(false)}
+                        >
+                            ×
+                        </button>
+                        <h2 className={styles.popup__title}>How to Earn Points</h2>
+                        <div className={styles.popup__body}>
+                            <div className={styles.rule__item}>
+                                <h3>🏆 Wins</h3>
+                                <p>Earn points for every game won on your ranked accounts.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>⭐ Mastery</h3>
+                                <p>Gain points by leveling up champion masteries.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>🎖️ Honor</h3>
+                                <p>Increase your honor level to earn more points.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>📈 Level</h3>
+                                <p>Level up your account to gain progression points.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>👥 Member</h3>
+                                <p>Bonus points for reaching level 30 on accounts.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>💎 Elo</h3>
+                                <p>Climb ranked divisions to earn elo points.</p>
+                            </div>
+                            <div className={styles.rule__item}>
+                                <h3>🎁 Redeem</h3>
+                                <p>Earn points when you successfully redeem new accounts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div >
     );
 };
