@@ -552,38 +552,45 @@ const Ranked: React.FC = () => {
                         <div className={styles.achievements__container}>
                             <RankingAchievement
                                 name="Redeem"
-                                description="Earn points when you successfully redeem new accounts"
+                                description="Redeem an account"
                                 iconSrc="/images/ranking/diamond/diamond-redeem.png"
+                                value="+100 pts"
                             />
                             <RankingAchievement
                                 name="Wins"
-                                description="Earn points for every game won on your ranked accounts"
+                                description="Win a ranked game (soloq/flex)"
                                 iconSrc="/images/ranking/diamond/diamond-win.png"
+                                value="+10 pts"
                             />
                             <RankingAchievement
                                 name="Mastery"
-                                description="Gain points by leveling up champion masteries"
+                                description="Level up champion masteries"
                                 iconSrc="/images/ranking/diamond/diamond-mastery.png"
+                                value="+25 pts"
                             />
                             <RankingAchievement
                                 name="Honor"
-                                description="Increase your honor level to earn more points"
+                                description="Increase your honor level"
                                 iconSrc="/images/ranking/diamond/diamond-honor.png"
+                                value="+50 pts"
                             />
                             <RankingAchievement
                                 name="Level"
-                                description="Level up your account to gain progression points"
+                                description="Level up your account"
                                 iconSrc="/images/ranking/diamond/diamond-level.png"
+                                value="+15 pts"
                             />
                             <RankingAchievement
                                 name="Member"
-                                description="Bonus points for reaching level 30 on accounts"
+                                description="Level up to 30 (ONLY reedeming account in level 10 or lower)"
                                 iconSrc="/images/ranking/diamond/diamond-member.png"
+                                value="+200 pts"
                             />
                             <RankingAchievement
                                 name="Elo"
-                                description="Climb ranked divisions to earn elo points"
+                                description="Climb ranked divisions"
                                 iconSrc="/images/ranking/diamond/diamond-elo.png"
+                                value="+75 pts"
                             />
                         </div>
                         <div className={styles.elo__container}>

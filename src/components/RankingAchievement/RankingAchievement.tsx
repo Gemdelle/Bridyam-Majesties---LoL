@@ -5,12 +5,14 @@ interface RankingAchievementProps {
     name: string;
     description: string;
     iconSrc: string;
+    value: string;
 }
 
 const RankingAchievement: React.FC<RankingAchievementProps> = ({
     name,
     description,
-    iconSrc
+    iconSrc,
+    value
 }) => {
     return (
         <div className={styles.ranking__achievement}>
@@ -19,6 +21,9 @@ const RankingAchievement: React.FC<RankingAchievementProps> = ({
             </div>
             <div className={styles.achievement__icon}>
                 <img src={iconSrc} alt={name} />
+            </div>
+            <div className={styles.achievement__value}>
+                {value}
             </div>
             <div className={styles.achievement__description}>
                 {description}
