@@ -3,9 +3,10 @@ import styles from './Redeem.module.scss';
 import { claimService } from '../../services/claimService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { fetchAvailableRankedAccounts, type RankedData } from '../../services/apiRankedsService';
+import ClaimAccountRulesModal from '../../components/ClaimAccountRulesModal/ClaimAccountRulesModal';
 
 const Redeem: React.FC = () => {
-    const { refreshProfile } = useAuthContext();
+    const { refreshProfile, user } = useAuthContext();
     const [redeemCode, setRedeemCode] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [loading, setLoading] = useState(false);
@@ -13,6 +14,7 @@ const Redeem: React.FC = () => {
     const [success, setSuccess] = useState<string | null>(null);
     const [availableAccounts, setAvailableAccounts] = useState<RankedData[]>([]);
     const [loadingAccounts, setLoadingAccounts] = useState(true);
+    const [showRulesModal, setShowRulesModal] = useState(false);
 
     useEffect(() => {
         const loadAvailableAccounts = async () => {
@@ -42,6 +44,12 @@ const Redeem: React.FC = () => {
             return;
         }
 
+        // Show rules modal instead of directly claiming
+        setShowRulesModal(true);
+    };
+
+    const handleConfirmClaim = async () => {
+        setShowRulesModal(false);
         setLoading(true);
 
         try {
@@ -76,6 +84,10 @@ const Redeem: React.FC = () => {
         }
     };
 
+    const handleCloseModal = () => {
+        setShowRulesModal(false);
+    };
+
     const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
         if (value.length <= 8) {
@@ -85,6 +97,12 @@ const Redeem: React.FC = () => {
 
     return (
         <div className={styles.redeem}>
+            <ClaimAccountRulesModal
+                isOpen={showRulesModal}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirmClaim}
+                username={user?.name || user?.email || 'Player'}
+            />
             <div className={styles.redeem__container}>
                 <header className={styles.redeem__header}>
                     <h1 className={styles.redeem__title}>Redeem</h1>
