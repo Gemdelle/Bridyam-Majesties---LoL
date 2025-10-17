@@ -111,21 +111,21 @@ export const Nav = () => {
                     >
                         <Link to="/redeem">Redeem</Link>
                     </li>
+                    <li
+                        className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
+                        data-nav="feed"
+                    >
+                        <Link to="/feed">Feed</Link>
+                        {hasNewNotifications && (
+                            <div className={styles.particles__container}>
+                                {Array.from({ length: 8 }, (_, i) => (
+                                    <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                                ))}
+                            </div>
+                        )}
+                    </li>
                     {canSeeAllNavigation && (
                         <>
-                            <li
-                                className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
-                                data-nav="feed"
-                            >
-                                <Link to="/feed">Feed</Link>
-                                {hasNewNotifications && (
-                                    <div className={styles.particles__container}>
-                                        {Array.from({ length: 8 }, (_, i) => (
-                                            <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
-                                        ))}
-                                    </div>
-                                )}
-                            </li>
                             <li>
                                 PAGE
                             </li>

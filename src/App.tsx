@@ -90,14 +90,61 @@ function AppContent() {
 
           {/* Redirect unknown routes to home or login */}
           <Route
-            path="/champions" element={<Champions />} />
+            path="/champions"
+            element={
+              <ProtectedRoute>
+                <Champions />
+              </ProtectedRoute>
+            }
+          />
           <Route
-            path="/skins" element={<Skins />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/roulette" element={<Roulette />} />
-          <Route path="/redeem" element={<Redeem />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/adoption" element={<Adoption />} />
+            path="/skins"
+            element={
+              <ProtectedRoute>
+                <Skins />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <ProtectedRoute>
+                <Achievements />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/roulette"
+            element={
+              <ProtectedRoute>
+                <Roulette />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/redeem"
+            element={
+              <ProtectedRoute>
+                <Redeem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRoute>
+                <Feed />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/adoption"
+            element={
+              <ProtectedRoute>
+                <Adoption />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*"
             element={
               <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
