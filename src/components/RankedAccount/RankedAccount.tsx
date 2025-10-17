@@ -14,13 +14,17 @@ export interface RankedAccountProps {
     rankedData: RankedData;
     onUpdateRankedData: (updatedData: RankedData) => void | Promise<void>;
     canEdit: boolean;
+    canEditEssencer?: boolean; // Optional, defaults to canEdit if not provided
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit }) => {
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit, canEditEssencer }) => {
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
     const [showHonorSelector, setShowHonorSelector] = useState(false);
+    
+    // Use canEditEssencer if provided, otherwise fallback to canEdit
+    const essencerEditable = canEditEssencer !== undefined ? canEditEssencer : canEdit;
 
     // States for essencer editing
     const [isEditingEssencer, setIsEditingEssencer] = useState(false);
@@ -121,7 +125,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
     };
 
     const handleEssencerEdit = () => {
-        if (!canEdit) return; // Prevent editing if user doesn't have permission
+        if (!essencerEditable) return; // Prevent editing if user doesn't have permission
         setIsEditingEssencer(true);
     };
 
@@ -349,7 +353,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                         autoFocus
                     />
                 ) : (
-                    <span onClick={handleEssencerEdit} style={{ cursor: canEdit ? 'pointer' : 'default' }}>{rankedData.name}</span>
+                    <span onClick={handleEssencerEdit} style={{ cursor: essencerEditable ? 'pointer' : 'default' }}>{rankedData.name}</span>
                 )}
             </div>
 

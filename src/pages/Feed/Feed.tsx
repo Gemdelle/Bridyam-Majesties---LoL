@@ -16,13 +16,18 @@ type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'e
  * - elo: Cuando sube de liga/división (RANK_UP, ELO_DIVISION_UP)
  * - member: Cuando un usuario llega a level 30 habiendo canjeado cuenta de level 10 o menor (LEVEL_30_ACHIEVED)
  * - redeem: Cuando canjean una cuenta (MEMBER)
- * - essencer: Cuando un usuario se REGISTRA en la página (pendiente implementación backend)
+ * - essencer: Cuando un usuario se REGISTRA en la página (USER_REGISTERED) - Filtra por username
  * - honor: Cuando sube de honor (HONOR_UP)
  * - ranking: Cuando alguien sube de posición en el ranking (bronze, silver, diamond, tourmaline) en cualquier categoría (pendiente implementación backend)
  */
 
 // Tipo extendido para las notificaciones con filtro
-type ExtendedNotification = NotificationProps & { filterType: NotificationFilterType; action: NotificationAction };
+type ExtendedNotification = NotificationProps & { 
+    filterType: NotificationFilterType; 
+    action: NotificationAction;
+    rankedName: string;
+    username: string;
+};
 
 const Feed: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -212,13 +217,11 @@ const Feed: React.FC = () => {
                 notifFilterType = 'redeem'; // Cuando canjean una cuenta
                 break;
             }
-            // TODO: Agregar caso para ESSENCER cuando el backend lo implemente
-            // (cuando alguien se REGISTRA en la página por primera vez)
-            // case NotificationAction.ESSENCER_REGISTERED:
-            //     notifType = 'mission';
-            //     imageUrl = '/images/achievement/achievement-1.png';
-            //     notifFilterType = 'essencer';
-            //     break;
+            case NotificationAction.USER_REGISTERED:
+                notifType = 'mission';
+                imageUrl = '/images/achievement/achievement-1.png';
+                notifFilterType = 'essencer';
+                break;
             // TODO: Agregar caso para RANKING cuando el backend lo implemente
             // (cuando alguien sube de posición: bronze, silver, diamond, tourmaline)
             // Ej: "user ascendió a silver en mastery y desplazó a user2"
@@ -249,7 +252,9 @@ const Feed: React.FC = () => {
             petStage: feedNotif.petStage,
             score: score,
             filterType: notifFilterType,
-            action: feedNotif.action
+            action: feedNotif.action,
+            rankedName: feedNotif.rankedName,
+            username: feedNotif.metadata.username || ''
         };
     };
 
@@ -316,9 +321,12 @@ const Feed: React.FC = () => {
         const matchesFilter = filterType === 'all' || notif.filterType === filterType;
 
         // Filtrar por búsqueda (si no hay término de búsqueda, mostrar todos)
+        // Buscar en: título, mensaje, rankedName (nombre del usuario) y username
         const matchesSearch = searchTerm === '' ||
             notif.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            notif.message.toLowerCase().includes(searchTerm.toLowerCase());
+            notif.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            notif.rankedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (notif.username && notif.username.toLowerCase().includes(searchTerm.toLowerCase()));
 
         return matchesFilter && matchesSearch;
     });
