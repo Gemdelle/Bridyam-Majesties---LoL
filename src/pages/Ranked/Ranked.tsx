@@ -49,9 +49,46 @@ const Ranked: React.FC = () => {
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-    // --- Generar opciones de essencers dinámicamente ---
+    // --- Generar opciones de essencers dinámicamente basándose en los filtros aplicados ---
     const getEssencerOptions = (): FilterOption[] => {
-        const uniqueEssencers = [...new Set(rankedData.map(account => account.name))];
+        // Apply filters except essencer filter to get visible accounts
+        let filteredData = rankedData;
+
+        // Apply view filter (level-based filtering)
+        if (selectedView === 'low') {
+            filteredData = filteredData.filter(data => data.level < 30);
+        } else if (selectedView === 'ranking') {
+            filteredData = filteredData.filter(data => data.level >= 30);
+        }
+
+        // Apply search filter
+        if (searchTerm.trim() !== '') {
+            filteredData = filteredData.filter(data =>
+                data.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                data.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Apply bloodline filters
+        if (selectedFilters.length > 0) {
+            filteredData = filteredData.filter(data => {
+                const bloodlineFilters = selectedFilters.filter(filter =>
+                    ['porveldam', 'spadelline', 'zephiroth', 'gladasmy', 'primogenit'].includes(filter)
+                );
+
+                if (bloodlineFilters.length > 0) {
+                    const hasMatchingBloodline = bloodlineFilters.some(filter =>
+                        data.bloodline.toLowerCase() === filter
+                    );
+                    if (!hasMatchingBloodline) return false;
+                }
+
+                return true;
+            });
+        }
+
+        // Extract unique essencers from filtered data
+        const uniqueEssencers = [...new Set(filteredData.map(account => account.name))];
         return uniqueEssencers
             .sort((a, b) => a.localeCompare(b)) // Ordenar alfabéticamente
             .map(essencer => ({
@@ -59,6 +96,24 @@ const Ranked: React.FC = () => {
                 label: essencer
             }));
     };
+
+    // --- Limpiar selecciones de essencers que ya no están disponibles ---
+    useEffect(() => {
+        const availableEssencerIds = getEssencerOptions().map(option => option.id);
+        
+        setSelectedEssencers(prevSelected => {
+            const validSelectedEssencers = prevSelected.filter(essencer => 
+                availableEssencerIds.includes(essencer)
+            );
+            
+            // Only update if there's a difference
+            if (validSelectedEssencers.length !== prevSelected.length) {
+                return validSelectedEssencers;
+            }
+            return prevSelected;
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedView, selectedFilters, searchTerm, rankedData]);
 
     // --- Log permissions for debugging ---
     useEffect(() => {

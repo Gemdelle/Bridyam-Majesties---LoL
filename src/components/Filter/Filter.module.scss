@@ -111,8 +111,9 @@
     font-size: 1.1rem;
     color: #e4c493;
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .checkboxCustom {
