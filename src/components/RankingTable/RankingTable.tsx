@@ -116,7 +116,7 @@ const RankingTable: React.FC = () => {
                         <img
                             src={getPetImage(entry.petType, entry.petStage)!}
                             alt="Pet"
-                            className={styles.pet__mirrored}
+                            className={`${styles.pet__mirrored} ${entry.petType === '2' ? styles.pet__type2 : ''}`}
                         />
                     )}
                     <div className={styles.essencer__info}>
