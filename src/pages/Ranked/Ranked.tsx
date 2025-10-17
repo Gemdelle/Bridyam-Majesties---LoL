@@ -551,16 +551,16 @@ const Ranked: React.FC = () => {
                         </div>
                         <div className={styles.achievements__container}>
                             <RankingAchievement
-                                name="Redeem"
-                                description="Redeem an account"
-                                iconSrc="/images/ranking/diamond/diamond-redeem.png"
-                                value="+100 pts"
-                            />
-                            <RankingAchievement
                                 name="Wins"
                                 description="Win a ranked game (soloq/flex)"
                                 iconSrc="/images/ranking/diamond/diamond-win.png"
                                 value="+10 pts"
+                            />
+                            <RankingAchievement
+                                name="Level"
+                                description="Level up your account"
+                                iconSrc="/images/ranking/diamond/diamond-level.png"
+                                value="+15 pts"
                             />
                             <RankingAchievement
                                 name="Mastery"
@@ -575,22 +575,24 @@ const Ranked: React.FC = () => {
                                 value="+50 pts"
                             />
                             <RankingAchievement
-                                name="Level"
-                                description="Level up your account"
-                                iconSrc="/images/ranking/diamond/diamond-level.png"
-                                value="+15 pts"
-                            />
-                            <RankingAchievement
-                                name="Member"
-                                description="Level up to 30 (ONLY reedeming account in level 10 or lower)"
-                                iconSrc="/images/ranking/diamond/diamond-member.png"
-                                value="+200 pts"
-                            />
-                            <RankingAchievement
                                 name="Elo"
                                 description="Climb ranked divisions"
                                 iconSrc="/images/ranking/diamond/diamond-elo.png"
                                 value="+75 pts"
+                                clarification="Same points for any rank"
+                            />
+                            <RankingAchievement
+                                name="Redeem"
+                                description="Redeem an account"
+                                iconSrc="/images/ranking/diamond/diamond-redeem.png"
+                                value="+100 pts"
+                            />
+                            <RankingAchievement
+                                name="Member"
+                                description="Level up to 30"
+                                iconSrc="/images/ranking/diamond/diamond-member.png"
+                                value="+200 pts"
+                                clarification="ONLY reedeming account in level 10 or lower"
                             />
                         </div>
                         <div className={styles.elo__container}>
@@ -613,7 +615,7 @@ const Ranked: React.FC = () => {
                                 </div>
                             </div>
                             <div className={styles.elo__explanation}>
-                                <p>Earn points for every game won on your ranked accounts.</p>
+                                <p>Earn points and climb your Elo for every achievement so you hit Diamond in all of them!</p>
                             </div>
 
                         </div>

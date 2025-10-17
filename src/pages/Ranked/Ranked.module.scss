@@ -535,8 +535,7 @@
 }
 
 .popup__content {
-  background: linear-gradient(145deg, #1a1f26, #0f1419);
-  // border: 8px ridge #1d1d1f;
+  border: 5px ridge #1d1d1f;
   border-radius: 10px;
   width: 80%;
   height: 90%;
@@ -546,6 +545,8 @@
   background-image: url('/images/bg/ranking-table-bg.png');
   @include background;
   @include flex-col;
+  justify-content: flex-start;
+  background-size: 100% 100%;
 
 .title__container {
   width: 40%;
@@ -585,7 +586,7 @@
   // background-color: blue;
 
   .elo__items {
-    width: 80%;
+    width: 70%;
     height: 100%;
     background-image: url('/images/frames/ranking-table-elo-frame.png');
     // background-color: green;
@@ -618,7 +619,7 @@
   }
 
   .elo__explanation {
-    width: 20%;
+    width: 30%;
     height: 100%;
     color: #e4c493;
     font-size: 0.7vw;

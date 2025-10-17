@@ -3,7 +3,6 @@
 .ranking__achievement {
     width: 13%;
     height: 100%;
-    display: flex;
     background: linear-gradient(145deg, #1a1f26, #0f1419);
     transition: all 0.3s ease;
     position: relative;
@@ -12,7 +11,8 @@
     @include flex-col;
     @include background-center;
     background-size: 100% 100%;
-
+    justify-content: flex-start;
+    
     &:hover {
         scale: 1.05;
         filter: saturate(1) brightness(1);
@@ -20,7 +20,7 @@
 }
 
 .achievement__name {
-    margin-top: 10%;
+    margin-top: 70%;
     height: auto;
     font-size: 0.8vw;
     color: #e4c493;
@@ -63,10 +63,21 @@
 
 .achievement__description {
     margin-top: 2%;
-    height: 20%;
+    height: auto;
     width: 50%;
     font-size: 0.8vw;
     color: #cdbe91;
     text-align: center;
     letter-spacing: 0.08vw;
+    margin-bottom: 5%;
+}
+
+.achievement__clarification {
+    height: 10%;
+    width: 50%;
+    font-size: 0.7vw;
+    margin: 0;
+    color: #b69461;
+    text-align: center;
+    font-style: italic;
 }
