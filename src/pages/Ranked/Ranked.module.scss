@@ -163,7 +163,7 @@
     @include flex-col-between;
     align-items: flex-start;
     backdrop-filter: blur(10px);
-    // background-color: red;
+    background-color: red;
 }
 
 .accounts__container {
@@ -171,22 +171,29 @@
   height: 95%;
   @include flex-end;
   align-items: flex-start;
-  // background-color: yellow;
+  background-color: yellow;
+}
+
+.progress__container {
+  width: 100%;
+  height: 93%;
+  @include flex-between;
+  background-color: green;
 }
 
 .accounts {
-  width: 60%;
-  height: 93%;
+  width: 55%;
+  height: 100%;
   @include flex-col;
   justify-content: flex-start;
   position: relative;
-  // background-color: blue;
+  background-color: blue;
 }
 
 .ranking__container {
   width: 40%;
-  height: 93%;
-  // background-color: lightblue;
+  height: 100%;
+  background-color: lightblue;
   @include flex-center;
   justify-content: flex-end;
 }
@@ -384,11 +391,12 @@
 
 .pagination {
   position: absolute;
-  left: 65%;
-  bottom: -8%;
-  width: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0%;
+  width: 20%;
   height: 5%;
-  // background-color: pink;
+  background-color: pink;
   @include flex-between;
 
   button {

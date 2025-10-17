@@ -307,6 +307,9 @@ const Ranked: React.FC = () => {
         );
     }
 
+    // Calcular accounts y totalPages antes del render
+    const { accounts, totalPages } = getCurrentPageAccounts();
+
     return (
         <div className={styles.page}>
             <div className={styles.container}>
@@ -425,42 +428,35 @@ const Ranked: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.accounts__container}>
-                        <div className={styles.accounts}>
-
-                            {(() => {
-                                const { accounts, totalPages } = getCurrentPageAccounts();
-                                return (
-                                    <>
-                                        {accounts.map((rankedAccount) => {
-                                            const canEdit = canEditRankedUsername(rankedAccount.username);
-                                            console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
-                                            return (
-                                                <RankedAccount
-                                                    key={rankedAccount.id}
-                                                    rankedData={rankedAccount}
-                                                    onUpdateRankedData={handleUpdateRankedData}
-                                                    canEdit={canEdit}
-                                                />
-                                            );
-                                        })}
-                                        <div className={styles.pagination}>
-                                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                                                &lt; Previous
-                                            </button>
-                                            <span>Page {currentPage} of {totalPages}</span>
-                                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                                                Next &gt;
-                                            </button>
-                                        </div>
-                                    </>
-                                );
-                            })()}
-                        </div>
-                        <div className={styles.ranking__container}>
-                            <RankingTableFinal />
+                        <div className={styles.progress__container}>
+                            <div className={styles.accounts}>
+                                {accounts.map((rankedAccount) => {
+                                    const canEdit = canEditRankedUsername(rankedAccount.username);
+                                    console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
+                                    return (
+                                        <RankedAccount
+                                            key={rankedAccount.id}
+                                            rankedData={rankedAccount}
+                                            onUpdateRankedData={handleUpdateRankedData}
+                                            canEdit={canEdit}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className={styles.ranking__container}>
+                                <RankingTableFinal />
+                            </div>
                         </div>
                     </div>
-
+                    <div className={styles.pagination}>
+                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                            &lt; Previous
+                        </button>
+                        <span>Page {currentPage} of {totalPages}</span>
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                            Next &gt;
+                        </button>
+                    </div>
                 </div>
             </div >
         </div >
