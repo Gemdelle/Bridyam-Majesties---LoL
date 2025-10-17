@@ -4,7 +4,7 @@
     width: 100%;
     height: 98%;
     margin-top: 3%;
-    background-color: blue;
+    // background-color: blue;
     @include flex-col;
     justify-content: flex-start;
     gap: 3%;
@@ -83,7 +83,7 @@
 .essencer__first {
     width: 100%;
     height: 19%;
-    background-color: black;
+    // background-color: black;
 }
 
 .essencer__second {
@@ -106,10 +106,10 @@
 
 // DESCRIPTION
 .essencer__description {
-    width: 20%;
+    width: 18%;
     height: 100%;
     position: relative;
-    background-color: red;
+    // background-color: red;
     overflow: visible;
 
     img {
@@ -130,6 +130,7 @@
             // Estilos específicos para pet tipo 2
             width: 57%; // Ajusta el ancho
             height: auto; // Ajusta la altura
+            bottom: 10%;
             // transform: scale(1.2); // Ejemplo: escalar el pet
         }
     }
@@ -209,9 +210,9 @@
 
 // PROGRESS
 .achievements__container {
-    width: 65%;
+    width: 63%;
     height: 100%;
-    background-color: lightblue;
+    // background-color: lightblue;
     @include flex-between;
 
     .achievement__container {
@@ -301,7 +302,7 @@
     width: 15%;
     height: 100%;
     position: relative;
-    background-color: lightgreen;
+    // background-color: lightgreen;
     @include flex-center;
     overflow: visible;
     

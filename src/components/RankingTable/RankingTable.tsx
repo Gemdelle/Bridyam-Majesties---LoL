@@ -27,9 +27,9 @@ const RankingTable: React.FC = () => {
     }, []);
 
     const getRankTier = (rank: number): string => {
-        if (rank === 1) return 'tourmaline';
-        if (rank === 2) return 'diamond';
-        if (rank === 3) return 'silver';
+        if (rank === 1) return 'diamond';
+        if (rank === 2) return 'silver';
+        if (rank === 3) return 'vesuvianite';
         return 'bronze';
     };
 
@@ -130,6 +130,20 @@ const RankingTable: React.FC = () => {
 
                 {/* PROGRESS */}
                 <div className={styles.achievements__container}>
+                    {/* REDEEM */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${redeemTier}`]}`}>
+                        <img
+                            src={`/images/ranking/${redeemTier}/${redeemTier}-redeem.png`}
+                            alt="Redeem"
+                            onError={(e) => {
+                                e.currentTarget.src = 'https://placehold.co/100x100/c89b3c/1a1a1a?text=REDEEM';
+                            }}
+                        />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.redeemCount || 0}</span>
+                            <span className={styles.achievement__score}>{entry.redeemScore > 0 ? entry.redeemScore : ''}</span>
+                        </div>
+                    </div>
                     {/* WIN */}
                     <div className={`${styles.achievement__container} ${styles[`achievement__${winTier}`]}`}>
                         <img src={`/images/ranking/${winTier}/${winTier}-win.png`} alt="Win" />
@@ -176,14 +190,6 @@ const RankingTable: React.FC = () => {
                         <div className={styles.achievement__stats}>
                             <span className={styles.achievement__gained}>{entry.eloDivisionsGained}</span>
                             <span className={styles.achievement__score}>{entry.eloScore > 0 ? entry.eloScore : ''}</span>
-                        </div>
-                    </div>
-                    {/* REDEEM */}
-                    <div className={`${styles.achievement__container} ${styles[`achievement__${redeemTier}`]}`}>
-                        <img src={`/images/ranking/${redeemTier}/${redeemTier}-redeem.png`} alt="Redeem" />
-                        <div className={styles.achievement__stats}>
-                            <span className={styles.achievement__gained}>{entry.redeemCount}</span>
-                            <span className={styles.achievement__score}>{entry.redeemScore > 0 ? entry.redeemScore : ''}</span>
                         </div>
                     </div>
                 </div>
