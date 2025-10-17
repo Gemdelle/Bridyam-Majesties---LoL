@@ -139,31 +139,34 @@ const Notification: React.FC<NotificationProps> = ({
                     </div>
                     <p className={styles.notification__message}>{message}</p>
                 </div>
-                <div className={styles.notification__reward}>
-                    {/* Derlets flotantes */}
-                    <img
-                        src="/images/derlet/derlet-side.png"
-                        alt="derlet"
-                        className={`${styles.derlet} ${styles.derlet__right__top}`}
-                    />
-                    <img
-                        src="/images/derlet/derlet-side-2.png"
-                        alt="derlet"
-                        className={`${styles.derlet} ${styles.derlet__left__bottom}`}
-                    />
+                {/* Solo mostrar recompensa si hay puntos (score > 0) */}
+                {score !== undefined && score !== null && score > 0 && (
+                    <div className={styles.notification__reward}>
+                        {/* Derlets flotantes */}
+                        <img
+                            src="/images/derlet/derlet-side.png"
+                            alt="derlet"
+                            className={`${styles.derlet} ${styles.derlet__right__top}`}
+                        />
+                        <img
+                            src="/images/derlet/derlet-side-2.png"
+                            alt="derlet"
+                            className={`${styles.derlet} ${styles.derlet__left__bottom}`}
+                        />
 
-                    {/* Partículas flotantes */}
-                    <div className={styles.score__particles__container}>
-                        {Array.from({ length: 12 }, (_, i) => (
-                            <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
-                        ))}
-                    </div>
+                        {/* Partículas flotantes */}
+                        <div className={styles.score__particles__container}>
+                            {Array.from({ length: 12 }, (_, i) => (
+                                <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
+                            ))}
+                        </div>
 
-                    {/* Números del score */}
-                    <div className={styles.score__numbers}>
-                        {renderScoreAsImages(score || 0)}
+                        {/* Números del score */}
+                        <div className={styles.score__numbers}>
+                            {renderScoreAsImages(score)}
+                        </div>
                     </div>
-                </div>
+                )}
 
             </div>
             {getPetImage(petType, petStage) && (
