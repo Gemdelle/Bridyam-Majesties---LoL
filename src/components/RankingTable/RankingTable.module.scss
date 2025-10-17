@@ -1,232 +1,486 @@
 @import '../../styles/variables.scss';
 
 .ranking__container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-    max-width: 1200px;
-    min-width: 800px;
-}
-
-.ranking__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
-    h2 {
-        font-family: inherit;
-        font-size: 1.5rem;
-        color: $secondary-color;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin: 0;
-        font-weight: 700;
-    }
-}
-
-.ranking__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    max-height: 700px;
+    width: 95%;
+    height: 98%;
+    margin-top: 5%;
+    // background-color: red;
+    @include flex-col;
+    justify-content: flex-start;
+    gap: 7%;
     overflow-y: auto;
-    padding-right: 0.5rem;
+    overflow-x: hidden;
 
-    /* Custom scrollbar */
+    /* Scrollbar personalizado */
     &::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
     }
 
     &::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
+        background: rgba(200, 155, 60, 0.1);
+        border-radius: 10px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 5px;
-
+        background: rgba(200, 155, 60, 0.5);
+        border-radius: 10px;
+        
         &:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(200, 155, 60, 0.7);
         }
     }
 }
 
-.ranking__entry {
-    display: grid;
-    grid-template-columns: 60px 180px repeat(6, 90px) 120px;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-
-    &:hover {
-        background: rgba(0, 0, 0, 0.35);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    &.top3 {
-        border-color: $secondary-color;
-        background: rgba(182, 148, 97, 0.15);
-        box-shadow: 0 2px 8px rgba(182, 148, 97, 0.2);
-    }
-}
-
-/* Pet Container */
-.pet__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .pet__image {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        object-fit: cover;
-        transition: transform 0.2s ease;
-
-        &:hover {
-            transform: scale(1.1);
-            border-color: $secondary-color;
-        }
-
-        &.pet__mirrored {
-            transform: scaleX(-1);
-
-            &:hover {
-                transform: scale(1.1) scaleX(-1);
+// HEADER ROW
+.ranking__header__row {
+    width: 100%;
+    height: 8%;
+    @include flex-between;
+    border-bottom: 2px solid #c89b3c;
+    
+    .header__achievements {
+        width: 60%;
+        height: 100%;
+        @include flex-between;
+        
+        .header__achievement {
+            width: 15%;
+            height: 100%;
+            @include flex-center;
+            
+            span {
+                font-size: 0.9vw;
+                font-weight: bold;
+                color: #c89b3c;
+                text-transform: uppercase;
+                letter-spacing: 0.1rem;
             }
         }
     }
-}
-
-/* Player Info */
-.player__info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 0;
-
-    .rank {
-        font-family: inherit;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.6);
-
-        &.rank1 {
-            color: #FFD700;
-            font-size: 1.3rem;
-        }
-
-        &.rank2 {
-            color: #C0C0C0;
-            font-size: 1.25rem;
-        }
-
-        &.rank3 {
-            color: #CD7F32;
-            font-size: 1.2rem;
+    
+    .header__total {
+        width: 10%;
+        height: 100%;
+        @include flex-center;
+        
+        span {
+            font-size: 1vw;
+            font-weight: bold;
+            color: #c89b3c;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
         }
     }
+}
 
-    .player__name {
-        font-family: inherit;
-        font-size: 0.95rem;
-        color: $text-color;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+.essencer__first,
+.essencer__second,
+.essencer__third,
+.essencer__default {
+ @include flex-between;
+}
+
+.essencer__first {
+    width: 100%;
+    height: 17%;
+    // background-color: blue;
+}
+
+.essencer__second {
+    width: 100%;
+    height: 15%;
+    // background-color: green;
+}
+
+.essencer__third {
+    width: 100%;
+    height: 15%;
+    // background-color: yellow;
+}
+
+.essencer__default {
+    width: 100%;
+    height: 13%;
+    // background-color: brown;
+}
+
+// DESCRIPTION
+.essencer__description {
+    width: 18%;
+    height: 100%;
+    position: relative;
+    background-color: red;
+
+    img {
+        position: absolute;
+        width: 50%;
+        left: 0%;
+        bottom: 0%;
+        animation: breathe 2s infinite linear;
+        transform-origin: center bottom;
+        z-index: 15;
+
+        &.pet__mirrored {
+            animation: breatheMirrored 2s infinite linear;
+        }
+    }
+
+    .essencer__info {
+        width: 100%;
+        height: 100%;
+        // background-color: pink;
+        @include flex-center;
+        justify-content: flex-end;
+
+        .essencer__info__rank {
+            width: 50%;
+            height: 100%;   
+            // background-color: white;
+            @include flex-col;
+            
+
+            h2,
+            span {
+                margin: 0;
+                padding: 0;
+                // background-color: brown;
+            }
+            
+            h2 {
+                color: #c89b3c;
+                line-height: 40px;
+            }
+
+            .rank__number {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 8%;
+                
+                img {
+                    height: 22px;
+                    width: auto;
+                    position: relative;
+                }
+            }
+
+            span {
+                color: #e6d0a1;
+                font-size: 12px;
+                letter-spacing: 0.15vw;
+                text-transform: uppercase;
+            }
+
+        }
     }
 }
 
-/* Stat Box */
-.stat__box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-
-    .stat__label {
-        font-family: inherit;
-        font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.5);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 600;
-    }
-
-    .stat__value {
-        font-family: inherit;
-        font-size: 1.1rem;
-        color: $text-color;
-        font-weight: 700;
-    }
-
-    .bonus__count {
-        color: #FFD700;
-        text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+// Glows específicos por posición en el ranking
+.essencer__first {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6)) 
+                drop-shadow(0 0 12px rgba(180, 148, 97, 0.5))
+                drop-shadow(0 0 16px rgba(200, 155, 60, 0.3));
     }
 }
 
-/* Score Container */
-.score__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.75rem;
-    background: linear-gradient(135deg, rgba(182, 148, 97, 0.2), rgba(182, 148, 97, 0.1));
-    border-radius: 8px;
-    border: 1px solid $secondary-color;
-
-    .score__value {
-        font-family: inherit;
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: $secondary-color;
-        text-shadow: 0 0 10px rgba(182, 148, 97, 0.5);
-    }
-
-    .score__label {
-        font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 600;
+.essencer__second {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 6px rgba(200, 155, 60, 0.5)) 
+                drop-shadow(0 0 9px rgba(180, 148, 97, 0.4));
     }
 }
 
-/* Loading, Error, Empty States */
-.loading, .error, .empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: inherit;
-    font-size: 1rem;
-    text-align: center;
+.essencer__third {
+    .essencer__info__rank {
+        filter: drop-shadow(0 0 4px rgba(200, 155, 60, 0.4)) 
+                drop-shadow(0 0 6px rgba(180, 148, 97, 0.3));
+    }
 }
 
-.error {
-    color: $danger-color;
+// PROGRESS
+.achievements__container {
+    width: 65%;
+    height: 115%;
+    // background-color: lightblue;
+    @include flex-between;
+
+    .achievement__container {
+        width: 15%;
+        height: 100%;
+        // background-color: black;
+        @include flex-col-between;
+
+        img {
+            height: auto;
+            max-height: 60%;
+            width: 85%;
+            transition: filter 0.3s ease;
+        }
+
+        .achievement__stats {
+            height: 30%;
+            width: 100%;
+            @include flex-col;
+            justify-content: center;
+            gap: 2px;
+            
+            .achievement__gained {
+                margin-top: 10%;
+                color: #c89b3c;
+                font-size: 0.9vw;
+                font-weight: bold;
+                letter-spacing: 0.1vw;
+            }
+            
+            .achievement__score {
+                color: #a3885a;
+                font-size: 0.65vw;
+                font-weight: 500;
+                letter-spacing: 0.05vw;
+                margin-top: 4%;
+            }
+        }
+
+        span {
+            height: 20%;
+            color: #c89b3c;
+            font-size: 0.9vw;
+            font-weight: bold;
+            letter-spacing: 0.1vw;
+            margin-bottom: 0.4vw;
+            // background-color: red;
+            @include flex-center;
+        }
+
+        // Specific styles for level achievement
+        &.achievement__level {
+            img {
+                height: auto;
+                max-height: 60%;
+                width: 65%;
+            }
+        }
+
+        // Tier-specific glows (permanentes y sutiles)
+        &.achievement__tourmaline img {
+            filter: drop-shadow(0 0 3px rgba(255, 105, 180, 0.3)) 
+                    drop-shadow(0 0 3px rgba(0, 255, 127, 0.3)) 
+                    drop-shadow(0 0 3px rgba(255, 69, 0, 0.3));
+        }
+
+        &.achievement__diamond img {
+            filter: drop-shadow(0 0 3px rgba(135, 206, 235, 0.4)) 
+                    drop-shadow(0 0 2px rgba(176, 224, 230, 0.3));
+        }
+
+        &.achievement__silver img {
+            filter: drop-shadow(0 0 3px rgba(192, 192, 192, 0.4)) 
+                    drop-shadow(0 0 2px rgba(230, 230, 230, 0.3));
+        }
+
+        &.achievement__bronze img {
+            filter: drop-shadow(0 0 3px rgba(205, 127, 50, 0.4)) 
+                    drop-shadow(0 0 2px rgba(139, 69, 19, 0.3));
+        }
+    }
+
+
+}
+
+.total__container {
+    width: 10%;
+    height: 100%;
+    position: relative;
+    // background-color: lightgreen;
+    @include flex-center;
+    overflow: visible;
+    
+    // Glow sutil de fondo
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        height: 85%;
+        background: radial-gradient(circle, rgba(200, 155, 60, 0.12) 0%, rgba(180, 148, 97, 0.08) 40%, transparent 70%);
+        border-radius: 50%;
+        z-index: 1;
+        animation: scoreGlowPulse 3s ease-in-out infinite;
+    }
+    
+    // Derlets flotantes
+    .derlet {
+        position: absolute;
+        height: auto;
+        z-index: 0;
+        opacity: 0.7;
+        pointer-events: none;
+        
+        &.derlet__right__top {
+            width: 1.7vw;
+            top: -5px;
+            right: -10px;
+            animation: floatingSlow 6s ease-in-out infinite;
+        }
+        
+        &.derlet__left__bottom {
+            width: 1.4vw;
+            bottom: 0;
+            left: -5px;
+            animation: floatingFast 8s ease-in-out infinite;
+        }
+    }
+    
+    span {
+        margin: 0;
+        padding: 0;
+        font-size: 1.2vw;
+        font-weight: bold;
+        color: #f0e6d2;
+    }
+
+    // Contenedor de partículas flotantes
+    .score__particles__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+        background-image: url('public/images/frames/essencer-ranking-frame.png');
+            @include flex-col;
+            @include background;
+            background-size: 100% 90%;
+    }
+
+    // Partículas individuales
+    .score__particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: radial-gradient(circle, rgba(246, 245, 241, 0.9), rgba(222, 213, 111, 0.7));
+        border-radius: 50%;
+        animation: scoreParticleFloat 5s ease-in-out infinite;
+        box-shadow: 0 0 4px rgba(222, 213, 111, 0.6), 0 0 8px rgba(200, 155, 60, 0.3);
+    }
+
+    // Posiciones de las partículas - distribuidas sutilmente
+    .score__particle__1 { top: 20%; left: 15%; animation-delay: 0s; }
+    .score__particle__2 { top: 30%; right: 20%; animation-delay: 0.4s; }
+    .score__particle__3 { top: 40%; left: 25%; animation-delay: 0.8s; }
+    .score__particle__4 { top: 50%; right: 15%; animation-delay: 1.2s; }
+    .score__particle__5 { top: 60%; left: 30%; animation-delay: 1.6s; }
+    .score__particle__6 { top: 70%; right: 25%; animation-delay: 2s; }
+    .score__particle__7 { top: 25%; left: 50%; animation-delay: 2.4s; }
+    .score__particle__8 { top: 45%; right: 50%; animation-delay: 2.8s; }
+    .score__particle__9 { top: 65%; left: 45%; animation-delay: 3.2s; }
+    .score__particle__10 { top: 35%; right: 35%; animation-delay: 3.6s; }
+    .score__particle__11 { top: 55%; left: 60%; animation-delay: 4s; }
+    .score__particle__12 { top: 75%; right: 60%; animation-delay: 4.4s; }
+
+    // Contenedor de números del score como imágenes
+    .score__numbers {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        height: 100%;
+        z-index: 3;
+    }
+
+    // Estilo individual para cada dígito del score
+    .score__digit {
+        height: 25%;  // Tamaño ajustable - puedes modificar este valor
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 8px rgba(70, 130, 180, 0.9))
+                drop-shadow(0 0 12px rgba(50, 100, 150, 0.7))
+                drop-shadow(0 0 16px rgba(30, 70, 120, 0.5));
+        animation: scoreGlow 2s ease-in-out infinite;
+    }
+}
+
+// Animación de partículas del score
+@keyframes scoreParticleFloat {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.2);
+        opacity: 0.9;
+    }
+}
+
+// Animación del glow de fondo
+@keyframes scoreGlowPulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+@keyframes breathe {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(1.03);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes breatheMirrored {
+    0% {
+        transform: scaleX(-1) scaleY(1);
+    }
+    50% {
+        transform: scaleX(-1) scaleY(1.03);
+    }
+    100% {
+        transform: scaleX(-1) scaleY(1);
+    }
+}
+
+
+// Animaciones de floating para los derlets
+@keyframes floatingSlow {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+@keyframes floatingFast {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+// Animación de glow para los números del score
+@keyframes scoreGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(70, 130, 180, 0.9))
+                drop-shadow(0 0 12px rgba(50, 100, 150, 0.7))
+                drop-shadow(0 0 16px rgba(30, 70, 120, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 12px rgba(70, 130, 180, 1))
+                drop-shadow(0 0 18px rgba(50, 100, 150, 0.9))
+                drop-shadow(0 0 24px rgba(30, 70, 120, 0.7));
+    }
 }

@@ -26,20 +26,186 @@ const RankingTable: React.FC = () => {
         loadRanking();
     }, []);
 
-    const getRankClass = (rank: number) => {
-        if (rank === 1) return styles.rank1;
-        if (rank === 2) return styles.rank2;
-        if (rank === 3) return styles.rank3;
-        return '';
+    const getRankTier = (rank: number): string => {
+        if (rank === 1) return 'tourmaline';
+        if (rank === 2) return 'diamond';
+        if (rank === 3) return 'silver';
+        return 'bronze';
     };
 
-    const formatScore = (score: number) => {
-        return score.toLocaleString();
-    };
+    const getPetImage = (petType: string | null, petStage: number | null): string | null => {
+        // Validar petType (debe ser "1", "2", "3", "4", no "0")
+        if (!petType || petType === '0' || !['1', '2', '3', '4'].includes(petType)) {
+            return null; // No mostrar pet si no es válido
+        }
 
-    const getPetImage = (petType: string | null, petStage: number | null) => {
-        if (!petType || !petStage) return '/images/pets/nav-pet-1.png'; // Default pet image
+        // Validar petStage (debe ser 1, 2, o 3)
+        if (!petStage || petStage < 1 || petStage > 3) {
+            return null; // No mostrar pet si la etapa no es válida
+        }
+
         return `/images/pets/pet-${petType}-${petStage}.png`;
+    };
+
+    // Calcula la posición de un usuario en una categoría específica
+    const getCategoryRank = (entry: RankingEntry, category: keyof RankingEntry): number => {
+        const sortedByCategory = [...ranking].sort((a, b) => {
+            const aValue = a[category] as number;
+            const bValue = b[category] as number;
+            return bValue - aValue; // Orden descendente
+        });
+
+        return sortedByCategory.findIndex(e => e.userId === entry.userId) + 1;
+    };
+
+    // Obtiene el tier de icono basado en la posición en la categoría específica
+    const getCategoryTier = (entry: RankingEntry, category: keyof RankingEntry): string => {
+        const categoryValue = entry[category] as number;
+
+        // Si el valor de la categoría es 0, siempre retornar bronze
+        if (categoryValue === 0) {
+            return 'bronze';
+        }
+
+        const categoryRank = getCategoryRank(entry, category);
+        return getRankTier(categoryRank);
+    };
+
+    // Helper function to render rank number as images
+    const renderRankNumber = (rank: number) => {
+        const digits = rank.toString().split('');
+        return (
+            <div className={styles.rank__number}>
+                {digits.map((digit, index) => (
+                    <img
+                        key={index}
+                        src={`/images/numbers/${digit}.png`}
+                        alt={digit}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    // Helper function to render score as images
+    const renderScoreAsImages = (score: number) => {
+        const scoreString = score.toString();
+        return scoreString.split('').map((digit, index) => (
+            <img
+                key={index}
+                src={`/images/numbers/${digit}.png`}
+                alt={digit}
+                className={styles.score__digit}
+            />
+        ));
+    };
+
+    const renderRankingRow = (entry: RankingEntry, rowClass: string) => {
+        const winTier = getCategoryTier(entry, 'winsGained');
+        const masteryTier = getCategoryTier(entry, 'masteryLevelsGained');
+        const honorTier = getCategoryTier(entry, 'honorGained');
+        const levelTier = getCategoryTier(entry, 'levelGained');
+        const memberTier = getCategoryTier(entry, 'level30BonusCount');
+        const eloTier = getCategoryTier(entry, 'eloDivisionsGained');
+
+        return (
+            <div className={rowClass} key={entry.userId}>
+                {/* DESCRIPTION */}
+                <div className={styles.essencer__description}>
+                    {getPetImage(entry.petType, entry.petStage) && (
+                        <img
+                            src={getPetImage(entry.petType, entry.petStage)!}
+                            alt="Pet"
+                            className={styles.pet__mirrored}
+                        />
+                    )}
+                    <div className={styles.essencer__info}>
+                        <div className={styles.essencer__info__rank}>
+                            {renderRankNumber(entry.rank)}
+                            <span>{entry.rankedName}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* PROGRESS */}
+                <div className={styles.achievements__container}>
+                    {/* WIN */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${winTier}`]}`}>
+                        <img src={`/images/ranking/${winTier}/${winTier}-win.png`} alt="Win" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.winsGained}</span>
+                            <span className={styles.achievement__score}>{entry.winsScore > 0 ? entry.winsScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* MASTERY */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${masteryTier}`]}`}>
+                        <img src={`/images/ranking/${masteryTier}/${masteryTier}-mastery.png`} alt="Mastery" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.masteryLevelsGained}</span>
+                            <span className={styles.achievement__score}>{entry.masteryScore > 0 ? entry.masteryScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* HONOR */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${honorTier}`]}`}>
+                        <img src={`/images/ranking/${honorTier}/${honorTier}-honor.png`} alt="Honor" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.honorGained}</span>
+                            <span className={styles.achievement__score}>{entry.honorScore > 0 ? entry.honorScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* LEVEL */}
+                    <div className={`${styles.achievement__container} ${styles.achievement__level} ${styles[`achievement__${levelTier}`]}`}>
+                        <img src={`/images/ranking/${levelTier}/${levelTier}-level.png`} alt="Level" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.levelGained}</span>
+                            <span className={styles.achievement__score}>{entry.levelScore > 0 ? entry.levelScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* MEMBER */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${memberTier}`]}`}>
+                        <img src={`/images/ranking/${memberTier}/${memberTier}-member.png`} alt="Member" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.level30BonusCount}</span>
+                            <span className={styles.achievement__score}>{entry.memberScore > 0 ? entry.memberScore : ''}</span>
+                        </div>
+                    </div>
+                    {/* ELO */}
+                    <div className={`${styles.achievement__container} ${styles[`achievement__${eloTier}`]}`}>
+                        <img src={`/images/ranking/${eloTier}/${eloTier}-elo.png`} alt="Elo" />
+                        <div className={styles.achievement__stats}>
+                            <span className={styles.achievement__gained}>{entry.eloDivisionsGained}</span>
+                            <span className={styles.achievement__score}>{entry.eloScore > 0 ? entry.eloScore : ''}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* TOTAL */}
+                <div className={styles.total__container}>
+                    {/* Derlets flotantes */}
+                    <img
+                        src="/images/derlet/derlet-side.png"
+                        alt="derlet"
+                        className={`${styles.derlet} ${styles.derlet__right__top}`}
+                    />
+                    <img
+                        src="/images/derlet/derlet-side-2.png"
+                        alt="derlet"
+                        className={`${styles.derlet} ${styles.derlet__left__bottom}`}
+                    />
+
+                    {/* Partículas flotantes */}
+                    <div className={styles.score__particles__container}>
+                        {Array.from({ length: 12 }, (_, i) => (
+                            <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
+                        ))}
+                    </div>
+
+                    <div className={styles.score__numbers}>
+                        {renderScoreAsImages(entry.totalProgressScore)}
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     if (loading) {
@@ -66,91 +232,20 @@ const RankingTable: React.FC = () => {
 
     return (
         <div className={styles.ranking__container}>
-            <div className={styles.ranking__header}>
-                <h2>Progress Ranking</h2>
-            </div>
+            {/* DATA ROWS */}
+            {ranking.map((entry) => {
+                let rowClass = styles.essencer__default;
 
-            {ranking.length === 0 ? (
-                <div className={styles.empty}>No progress data available yet</div>
-            ) : (
-                <div className={styles.ranking__list}>
-                    {ranking.map((entry) => (
-                        <div
-                            key={`${entry.userId}-${entry.rank}`}
-                            className={`${styles.ranking__entry} ${entry.rank <= 3 ? styles.top3 : ''}`}
-                        >
-                            {/* Pet */}
-                            <div className={styles.pet__container}>
-                                <img 
-                                    src={getPetImage(entry.petType, entry.petStage)} 
-                                    alt="Pet" 
-                                    className={`${styles.pet__image} ${entry.petType === '1' ? styles.pet__mirrored : ''}`}
-                                />
-                            </div>
+                if (entry.rank === 1) {
+                    rowClass = styles.essencer__first;
+                } else if (entry.rank === 2) {
+                    rowClass = styles.essencer__second;
+                } else if (entry.rank === 3) {
+                    rowClass = styles.essencer__third;
+                }
 
-                            {/* Rank y Nombre */}
-                            <div className={styles.player__info}>
-                                <div className={`${styles.rank} ${getRankClass(entry.rank)}`}>
-                                    {entry.rank <= 3 ? (
-                                        entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'
-                                    ) : (
-                                        `#${entry.rank}`
-                                    )}
-                                </div>
-                                <div className={styles.player__name}>{entry.rankedName}</div>
-                            </div>
-
-                            {/* Wins */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>WINS</div>
-                                <div className={styles.stat__value}>{entry.winsGained}</div>
-                            </div>
-
-                            {/* Masteries */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>MASTERIES</div>
-                                <div className={styles.stat__value}>{entry.masteryLevelsGained}</div>
-                            </div>
-
-                            {/* Honor */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>HONOR</div>
-                                <div className={styles.stat__value}>{entry.honorGained}</div>
-                            </div>
-
-                            {/* Levels */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>LEVELS</div>
-                                <div className={styles.stat__value}>{entry.levelGained}</div>
-                            </div>
-
-                            {/* Member (Level 30 Bonus Count) */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>MEMBER</div>
-                                <div className={styles.stat__value}>
-                                    {entry.level30BonusCount > 0 ? (
-                                        <span className={styles.bonus__count}>{entry.level30BonusCount}</span>
-                                    ) : (
-                                        entry.level30BonusCount
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Elo (Divisiones progresadas) */}
-                            <div className={styles.stat__box}>
-                                <div className={styles.stat__label}>ELO</div>
-                                <div className={styles.stat__value}>{entry.eloDivisionsGained}</div>
-                            </div>
-
-                            {/* Score Total */}
-                            <div className={styles.score__container}>
-                                <div className={styles.score__value}>{formatScore(entry.totalProgressScore)}</div>
-                                <div className={styles.score__label}>SCORE</div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                return renderRankingRow(entry, rowClass);
+            })}
         </div>
     );
 };
