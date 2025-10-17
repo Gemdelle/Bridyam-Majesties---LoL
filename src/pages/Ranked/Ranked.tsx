@@ -26,7 +26,7 @@ const filterOptions: FilterOption[] = [
 const Ranked: React.FC = () => {
     // --- Hook para permisos ---
     const permissions = usePermissions();
-    const { canEditRankedUsername } = permissions;
+    const { canEditRankedUsername, isAdmin } = permissions;
 
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('all');
@@ -432,13 +432,14 @@ const Ranked: React.FC = () => {
                             <div className={styles.accounts}>
                                 {accounts.map((rankedAccount) => {
                                     const canEdit = canEditRankedUsername(rankedAccount.username);
-                                    console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}`);
+                                    console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}, canEditEssencer: ${isAdmin}`);
                                     return (
                                         <RankedAccount
                                             key={rankedAccount.id}
                                             rankedData={rankedAccount}
                                             onUpdateRankedData={handleUpdateRankedData}
                                             canEdit={canEdit}
+                                            canEditEssencer={isAdmin}
                                         />
                                     );
                                 })}
