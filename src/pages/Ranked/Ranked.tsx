@@ -5,6 +5,7 @@ import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import RankingTable from '../../components/RankingTable/RankingTable';
 import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
+import AchievementCard from '../../components/AchievementCard/AchievementCard';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -538,42 +539,35 @@ const Ranked: React.FC = () => {
             {showRulesPopup && (
                 <div className={styles.popup__overlay} onClick={() => setShowRulesPopup(false)}>
                     <div className={styles.popup__content} onClick={(e) => e.stopPropagation()}>
-                        <button
-                            className={styles.popup__close}
-                            onClick={() => setShowRulesPopup(false)}
-                        >
-                            ×
-                        </button>
-                        <h2 className={styles.popup__title}>How to Earn Points</h2>
-                        <div className={styles.popup__body}>
-                            <div className={styles.rule__item}>
-                                <h3>🏆 Wins</h3>
+                        <div className={styles.title__container}>
+                            <h2 className={styles.title}>How to Earn Points</h2>
+                        </div>
+                        <div className={styles.achievements__container}>
+                            {/* <RankingAchievement name="Achievement 1" description="Earn points for ..." iconSrc="/images/ranking/diamond/diamond-redeem.png" /> */}
+                        </div>
+                        <div className={styles.elo__container}>
+                            <div className={styles.elo__items}>
+                                <div className={styles.elo__item}>
+                                    <span>bronze</span>
+                                    <img src="/images/ranking/bronze/bronze-honor.png" alt="Elo" />
+                                </div>
+                                <div className={styles.elo__item}>
+                                    <span>vesuvianite</span>
+                                    <img src="/images/ranking/vesuvianite/vesuvianite-honor.png" alt="Elo" />
+                                </div>
+                                <div className={styles.elo__item}>
+                                    <span>silver</span>
+                                    <img src="/images/ranking/silver/silver-honor.png" alt="Elo" />
+                                </div>
+                                <div className={styles.elo__item}>
+                                    <span>diamond</span>
+                                    <img src="/images/ranking/diamond/diamond-honor.png" alt="Elo" />
+                                </div>
+                            </div>
+                            <div className={styles.elo__explanation}>
                                 <p>Earn points for every game won on your ranked accounts.</p>
                             </div>
-                            <div className={styles.rule__item}>
-                                <h3>⭐ Mastery</h3>
-                                <p>Gain points by leveling up champion masteries.</p>
-                            </div>
-                            <div className={styles.rule__item}>
-                                <h3>🎖️ Honor</h3>
-                                <p>Increase your honor level to earn more points.</p>
-                            </div>
-                            <div className={styles.rule__item}>
-                                <h3>📈 Level</h3>
-                                <p>Level up your account to gain progression points.</p>
-                            </div>
-                            <div className={styles.rule__item}>
-                                <h3>👥 Member</h3>
-                                <p>Bonus points for reaching level 30 on accounts.</p>
-                            </div>
-                            <div className={styles.rule__item}>
-                                <h3>💎 Elo</h3>
-                                <p>Climb ranked divisions to earn elo points.</p>
-                            </div>
-                            <div className={styles.rule__item}>
-                                <h3>🎁 Redeem</h3>
-                                <p>Earn points when you successfully redeem new accounts.</p>
-                            </div>
+
                         </div>
                     </div>
                 </div>

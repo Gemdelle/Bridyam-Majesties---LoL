@@ -536,17 +536,101 @@
 
 .popup__content {
   background: linear-gradient(145deg, #1a1f26, #0f1419);
-  border: 3px solid #b69461;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
+  // border: 8px ridge #1d1d1f;
+  border-radius: 10px;
+  width: 80%;
+  height: 80%;
+ overflow: hidden;
   position: relative;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   animation: slideIn 0.3s ease;
+  background-image: url('/images/bg/ranking-table-bg.png');
+  @include background;
+  @include flex-col;
+
+.title__container {
+  width: 40%;
+  height: 20%;
+  top: 0;
+  left: 30%;
+  position: absolute;
+  background-image: url('/images/frames/ranking-table-rules-frame.png');
+  @include background-center;
+  @include flex-center;
+  background-size: 100% 100%;
+  align-items: flex-start;
+
+  h2 {
+    font-size: 1.2vw;
+    color: #e4c493;
+    text-transform: uppercase;
+    letter-spacing: 0.3vw;
+    text-align: center;
+  }
 }
+
+.achievements__container {
+  width: 100%;
+  height: 70%;
+  margin-top: 0%;
+  @include flex-center;
+  background-color: red;
+}
+
+.elo__container {
+  width: 60%;
+  height: 30%;
+  // margin-top: 2%;
+  @include flex-center;
+  // background-color: blue;
+
+  .elo__items {
+    width: 80%;
+    height: 100%;
+    background-image: url('/images/frames/ranking-table-elo-frame.png');
+    // background-color: green;
+    gap: 2%;
+    @include flex-center;
+    @include background-center;
+
+    .elo__item {
+      width: 15%;
+      height: 65%;
+      @include flex-col;
+      // border: 1px solid #b69461;
+
+      span {
+        font-size: 0.7vw;
+        color: #e4c493;
+        text-transform: uppercase;
+        letter-spacing: 0.15vw;
+        margin-bottom: 8%;
+      }
+
+      img {
+        width: auto;
+        height: 60%;
+        object-fit: contain;
+        // background-color: red;
+      }
+    }
+  }
+
+  .elo__explanation {
+    width: 20%;
+    height: 100%;
+    color: #e4c493;
+    font-size: 0.7vw;
+    text-transform: uppercase;
+    letter-spacing: 0.15vw;
+    @include flex-center;
+    // background-color: red;
+  }
+}
+
+// <div className={styles.elo__container}>
+// <div className={styles.elo__items}>
+// <div className={styles.elo__item}>
+
 
 @keyframes slideIn {
   from {
@@ -638,3 +722,4 @@
     opacity: 1;
   }
 } 
+}
