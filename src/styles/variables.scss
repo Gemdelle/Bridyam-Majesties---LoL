@@ -122,11 +122,11 @@ $breakpoint-xl: 1200px;
     justify-content: space-between;
   }
 
-@mixin flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  @mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
 @mixin flex-title {
   display: flex;

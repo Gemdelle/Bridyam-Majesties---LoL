@@ -22,8 +22,8 @@ type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'e
  */
 
 // Tipo extendido para las notificaciones con filtro
-type ExtendedNotification = NotificationProps & { 
-    filterType: NotificationFilterType; 
+type ExtendedNotification = NotificationProps & {
+    filterType: NotificationFilterType;
     action: NotificationAction;
     rankedName: string;
     username: string;
