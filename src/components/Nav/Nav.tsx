@@ -61,20 +61,28 @@ export const Nav = () => {
         <div className={styles.nav}>
             <div className={styles.nav__container}>
                 <ul className={styles.nav__container__links__left}>
-                    <div className={styles.language__selector} onClick={toggleLanguage}>
-                        <img
-                            src={language === 'en' ? '/images/flags/flag-uk.png' : '/images/flags/flag-argentina.png'}
-                            alt={language === 'en' ? 'English' : 'Español'}
-                            className={styles.language__flag}
-                        />
-                        <div className={styles.language__hover}>
+                    <li className={styles.language__selector}>
+                        <div className={styles.language__current}>
+                            <img
+                                src={language === 'en' ? '/images/flags/flag-uk.png' : '/images/flags/flag-argentina.png'}
+                                alt={language === 'en' ? 'English' : 'Español'}
+                                className={styles.language__flag}
+                            />
+                            <span className={styles.language__text}>
+                                {language === 'en' ? 'English' : 'Castellano'}
+                            </span>
+                        </div>
+                        <div className={styles.language__hover} onClick={toggleLanguage}>
                             <img
                                 src={language === 'en' ? '/images/flags/flag-argentina.png' : '/images/flags/flag-uk.png'}
                                 alt={language === 'en' ? 'Español' : 'English'}
                                 className={styles.language__flag__hover}
                             />
+                            <span className={styles.language__text__hover}>
+                                {language === 'en' ? 'Castellano' : 'English'}
+                            </span>
                         </div>
-                    </div>
+                    </li>
                     <li
                         className={location.pathname === '/' ? styles.active : ''}
                         data-nav="accounts"
