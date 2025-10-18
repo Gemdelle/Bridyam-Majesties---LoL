@@ -12,11 +12,16 @@ export const Nav = () => {
     const { canSeeAllNavigation } = usePermissions()
     const [hasNewNotifications, setHasNewNotifications] = useState(false)
     const [lastNotificationCount, setLastNotificationCount] = useState(0)
+    const [language, setLanguage] = useState<'en' | 'es'>('en')
 
     const handleLogout = async () => {
         if (confirm('Are you sure you want to logout?')) {
             await logout()
         }
+    }
+
+    const toggleLanguage = () => {
+        setLanguage(language === 'en' ? 'es' : 'en')
     }
 
     // Verificar notificaciones nuevas cada 30 segundos
@@ -56,6 +61,20 @@ export const Nav = () => {
         <div className={styles.nav}>
             <div className={styles.nav__container}>
                 <ul className={styles.nav__container__links__left}>
+                    <div className={styles.language__selector} onClick={toggleLanguage}>
+                        <img
+                            src={language === 'en' ? '/images/flags/flag-uk.png' : '/images/flags/flag-argentina.png'}
+                            alt={language === 'en' ? 'English' : 'Español'}
+                            className={styles.language__flag}
+                        />
+                        <div className={styles.language__hover}>
+                            <img
+                                src={language === 'en' ? '/images/flags/flag-argentina.png' : '/images/flags/flag-uk.png'}
+                                alt={language === 'en' ? 'Español' : 'English'}
+                                className={styles.language__flag__hover}
+                            />
+                        </div>
+                    </div>
                     <li
                         className={location.pathname === '/' ? styles.active : ''}
                         data-nav="accounts"
