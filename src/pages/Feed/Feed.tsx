@@ -75,6 +75,10 @@ const Feed: React.FC = () => {
         if (level >= 1 && level <= 10) {
             return `/images/masteries/badges/${level}.png`;
         }
+        // Si el nivel es mayor a 10, usar la imagen del nivel 10
+        if (level > 10) {
+            return '/images/masteries/badges/10.png';
+        }
         return '/images/masteries/badges/1.png';
     };
 
