@@ -3,9 +3,8 @@ import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import RankingTable from '../../components/RankingTable/RankingTable';
-import { fetchRankedData, updateRankedData, type RankedData } from '../../services/apiRankedsService';
+import { fetchRankedData, updateRankedData, type RankedData, fetchRankingConfig, type RankingConfig } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
-import AchievementCard from '../../components/AchievementCard/AchievementCard';
 import RankingAchievement from '../../components/RankingAchievement/RankingAchievement';
 
 // --- Opciones para los filtros ---
@@ -39,6 +38,9 @@ const Ranked: React.FC = () => {
     const [rankedData, setRankedData] = useState<RankedData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // --- Estado para la configuración del ranking ---
+    const [rankingConfig, setRankingConfig] = useState<RankingConfig | null>(null);
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
@@ -129,12 +131,15 @@ const Ranked: React.FC = () => {
         });
     }, [permissions]);
 
-    // --- Cargar datos de ranked ---
+    // --- Cargar datos de ranked y configuración ---
     useEffect(() => {
         const loadRankedData = async () => {
             try {
                 setLoading(true);
-                const data = await fetchRankedData();
+                const [data, config] = await Promise.all([
+                    fetchRankedData(),
+                    fetchRankingConfig()
+                ]);
 
                 // Set default honor level to 3 only for accounts that don't have honor set
                 const dataWithDefaultHonor = data.map(account => ({
@@ -143,6 +148,7 @@ const Ranked: React.FC = () => {
                 }));
 
                 setRankedData(dataWithDefaultHonor);
+                setRankingConfig(config);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Error loading ranked data');
             } finally {
@@ -554,44 +560,44 @@ const Ranked: React.FC = () => {
                                 name="Wins"
                                 description="Win a ranked game (soloq/flex)"
                                 iconSrc="/images/ranking/diamond/diamond-win.png"
-                                value="+10 pts"
+                                value={rankingConfig?.wins || "+10 pts"}
                             />
                             <RankingAchievement
                                 name="Level"
                                 description="Level up your account"
                                 iconSrc="/images/ranking/diamond/diamond-level.png"
-                                value="+15 pts"
+                                value={rankingConfig?.level || "+15 pts"}
                             />
                             <RankingAchievement
                                 name="Mastery"
                                 description="Level up champion masteries"
                                 iconSrc="/images/ranking/diamond/diamond-mastery.png"
-                                value="+25 pts"
+                                value={rankingConfig?.mastery || "+25 pts"}
                             />
                             <RankingAchievement
                                 name="Honor"
                                 description="Increase your honor level"
                                 iconSrc="/images/ranking/diamond/diamond-honor.png"
-                                value="+50 pts"
+                                value={rankingConfig?.honor || "+50 pts"}
                             />
                             <RankingAchievement
                                 name="Elo"
                                 description="Climb ranked divisions"
                                 iconSrc="/images/ranking/diamond/diamond-elo.png"
-                                value="+75 pts"
+                                value={rankingConfig?.elo || "+75 pts"}
                                 clarification="Same points for any rank"
                             />
                             <RankingAchievement
                                 name="Redeem"
                                 description="Redeem an account"
                                 iconSrc="/images/ranking/diamond/diamond-redeem.png"
-                                value="+100 pts"
+                                value={rankingConfig?.redeem || "+100 pts"}
                             />
                             <RankingAchievement
                                 name="Member"
                                 description="Level up to 30"
                                 iconSrc="/images/ranking/diamond/diamond-member.png"
-                                value="+200 pts"
+                                value={rankingConfig?.member || "+200 pts"}
                                 clarification="ONLY reedeming account in level 10 or lower"
                             />
                         </div>

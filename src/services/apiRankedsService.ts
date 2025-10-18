@@ -146,4 +146,32 @@ export const fetchAvailableRankedAccounts = async (): Promise<RankedData[]> => {
         console.error('Error fetching available ranked accounts:', error);
         throw new Error('Failed to fetch available ranked accounts');
     }
+};
+
+// Interface for ranking configuration
+export interface RankingConfig {
+    wins: string;
+    level: string;
+    mastery: string;
+    honor: string;
+    elo: string;
+    redeem: string;
+    member: string;
+}
+
+// Fetch ranking configuration from API
+export const fetchRankingConfig = async (): Promise<RankingConfig> => {
+    try {
+        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked/config');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data: RankingConfig = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching ranking config:', error);
+        throw new Error('Failed to fetch ranking config');
+    }
 }; 
