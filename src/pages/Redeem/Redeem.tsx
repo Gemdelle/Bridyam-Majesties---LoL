@@ -60,16 +60,16 @@ const Redeem: React.FC = () => {
 
             if (result.success) {
                 console.log('Claim successful, refreshing profile...');
-                
+
                 // Refresh user profile to update rankedUsernames permissions
                 await refreshProfile();
-                
+
                 console.log('Profile refreshed, permissions updated');
-                
+
                 setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente! Permisos actualizados.`);
                 setRedeemCode('');
                 setSelectedAccount('');
-                
+
                 // Reload available accounts
                 const accounts = await fetchAvailableRankedAccounts();
                 setAvailableAccounts(accounts);
@@ -102,6 +102,7 @@ const Redeem: React.FC = () => {
                 onClose={handleCloseModal}
                 onConfirm={handleConfirmClaim}
                 username={user?.name || user?.email || 'Player'}
+                language="es"
             />
             <div className={styles.redeem__container}>
                 <header className={styles.redeem__header}>
@@ -151,9 +152,9 @@ const Redeem: React.FC = () => {
                                 ))}
                             </select>
                             <small className={styles.input__hint}>
-                                {loadingAccounts 
-                                    ? 'Cargando cuentas disponibles...' 
-                                    : availableAccounts.length > 0 
+                                {loadingAccounts
+                                    ? 'Cargando cuentas disponibles...'
+                                    : availableAccounts.length > 0
                                         ? 'Selecciona la cuenta ranked que deseas reclamar'
                                         : 'No hay cuentas disponibles en este momento'
                                 }
@@ -172,8 +173,8 @@ const Redeem: React.FC = () => {
                             </div>
                         )}
 
-                        <button 
-                            className={styles.redeem__button} 
+                        <button
+                            className={styles.redeem__button}
                             onClick={handleRedeem}
                             disabled={loading || !redeemCode || !selectedAccount}
                         >

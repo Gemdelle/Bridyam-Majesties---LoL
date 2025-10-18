@@ -6,10 +6,10 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
     isOpen,
     onClose,
     onConfirm,
-    username
+    username,
+    language
 }) => {
     const [step, setStep] = useState<1 | 2>(1);
-    const [language, setLanguage] = useState<Language>('es');
     const modalBodyRef = useRef<HTMLDivElement>(null);
     const [rules, setRules] = useState<RuleItem[]>([
         {
@@ -72,7 +72,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
 
     // Auto-scroll to bottom when all rules are checked
     const allRulesChecked = rules.every(rule => rule.checked);
-    
+
     useEffect(() => {
         if (allRulesChecked && modalBodyRef.current && isOpen) {
             // Small delay to allow content to render before scrolling
@@ -94,7 +94,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
             )
         );
     };
-    
+
     // Get the number of visible NOT ALLOWED rules (show next rule when previous is checked)
     const getVisibleRulesCount = () => {
         let count = 1; // Always show at least the first rule
@@ -107,7 +107,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
         }
         return count;
     };
-    
+
     const visibleRulesCount = getVisibleRulesCount();
 
     const handleNext = () => {
@@ -127,51 +127,17 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
         onClose();
     };
 
-    const toggleLanguage = () => {
-        setLanguage(prev => prev === 'en' ? 'es' : 'en');
-    };
-
     return (
         <div className={styles.modal__overlay}>
             <div className={styles.modal__content}>
                 {/* Close button */}
-                <button 
-                    className={styles.modal__close} 
+                <button
+                    className={styles.modal__close}
                     onClick={handleClose}
                     aria-label="Close"
                 >
                     ✕
                 </button>
-
-                {/* Language toggle */}
-                <div className={styles.language__toggle}>
-                    <button
-                        className={`${styles.language__button} ${language === 'en' ? styles.active : ''}`}
-                        onClick={() => setLanguage('en')}
-                        aria-label="English"
-                    >
-                        <img 
-                            src="/images/icons/flag-english.png" 
-                            alt="English"
-                            onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIGZpbGw9IiMwMTIxNjkiLz48cGF0aCBkPSJNMCAwTDMyIDI0TTMyIDBMMCAyNCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTAgMEwzMiAyNE0zMiAwTDAgMjQiIHN0cm9rZT0iI0MxMUEyNyIgc3Ryb2tlLXdpZHRoPSIyLjUiLz48L3N2Zz4=';
-                            }}
-                        />
-                    </button>
-                    <button
-                        className={`${styles.language__button} ${language === 'es' ? styles.active : ''}`}
-                        onClick={() => setLanguage('es')}
-                        aria-label="Español"
-                    >
-                        <img 
-                            src="/images/icons/flag-spanish.png" 
-                            alt="Español"
-                            onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iNiIgZmlsbD0iI0FBMTUxQiIvPjxyZWN0IHk9IjYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIxMiIgZmlsbD0iI0Y0QzQzMCIvPjxyZWN0IHk9IjE4IiB3aWR0aD0iMzIiIGhlaWdodD0iNiIgZmlsbD0iI0FBMTUxQiIvPjwvc3ZnPg==';
-                            }}
-                        />
-                    </button>
-                </div>
 
                 {step === 1 ? (
                     <>
@@ -190,8 +156,8 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                 </h3>
                                 <div className={styles.rules__list}>
                                     {rules.slice(0, visibleRulesCount).map((rule, index) => (
-                                        <label 
-                                            key={rule.id} 
+                                        <label
+                                            key={rule.id}
                                             className={`${styles.rule__item} ${styles.reveal}`}
                                             style={{ animationDelay: `${index * 0.1}s` }}
                                         >
@@ -220,7 +186,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                             {/* Positive message - only show when all NOT ALLOWED rules are checked */}
                             {allRulesChecked && (
                                 <div className={`${styles.positive__message} ${styles.reveal}`}>
-                                    {language === 'en' 
+                                    {language === 'en'
                                         ? "If it isn't positive, it's better not to say it. We all have bad games 🙁 let's not make it worse for others."
                                         : "Si no es positivo, es mejor no decirlo. Todos tenemos malas partidas 🙁 no lo hagamos peor para los demás."
                                     }
@@ -235,8 +201,8 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                     </h3>
                                     <div className={styles.rules__list}>
                                         {allowedRules.map((rule, index) => (
-                                            <div 
-                                                key={rule.id} 
+                                            <div
+                                                key={rule.id}
                                                 className={`${styles.allowed__item} ${styles.reveal}`}
                                                 style={{ animationDelay: `${0.3 + (index * 0.1)}s` }}
                                             >
