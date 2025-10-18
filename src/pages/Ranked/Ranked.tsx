@@ -557,47 +557,47 @@ const Ranked: React.FC = () => {
                         </div>
                         <div className={styles.achievements__container}>
                             <RankingAchievement
-                                name="Wins"
-                                description="Win a ranked game (soloq/flex)"
-                                iconSrc="/images/ranking/diamond/diamond-win.png"
-                                value={rankingConfig?.wins || "+10 pts"}
-                            />
-                            <RankingAchievement
-                                name="Level"
-                                description="Level up your account"
-                                iconSrc="/images/ranking/diamond/diamond-level.png"
-                                value={rankingConfig?.level || "+15 pts"}
+                                name="Elo"
+                                description="Climb ranked divisions"
+                                iconSrc="/images/ranking/diamond/diamond-elo.png"
+                                value={rankingConfig?.elo || "+25 pts"}
+                                clarification="Same points for any rank"
                             />
                             <RankingAchievement
                                 name="Mastery"
                                 description="Level up champion masteries"
                                 iconSrc="/images/ranking/diamond/diamond-mastery.png"
-                                value={rankingConfig?.mastery || "+25 pts"}
+                                value={rankingConfig?.mastery || "+50 pts"}
+                            />
+                            <RankingAchievement
+                                name="Wins"
+                                description="Win a ranked game (soloq/flex)"
+                                iconSrc="/images/ranking/diamond/diamond-win.png"
+                                value={rankingConfig?.wins || "+70 pts"}
+                            />
+                            <RankingAchievement
+                                name="Level"
+                                description="Level up your account"
+                                iconSrc="/images/ranking/diamond/diamond-level.png"
+                                value={rankingConfig?.level || "+80 pts"}
                             />
                             <RankingAchievement
                                 name="Honor"
                                 description="Increase your honor level"
                                 iconSrc="/images/ranking/diamond/diamond-honor.png"
-                                value={rankingConfig?.honor || "+50 pts"}
-                            />
-                            <RankingAchievement
-                                name="Elo"
-                                description="Climb ranked divisions"
-                                iconSrc="/images/ranking/diamond/diamond-elo.png"
-                                value={rankingConfig?.elo || "+75 pts"}
-                                clarification="Same points for any rank"
+                                value={rankingConfig?.honor || "+300 pts"}
                             />
                             <RankingAchievement
                                 name="Redeem"
                                 description="Redeem an account"
                                 iconSrc="/images/ranking/diamond/diamond-redeem.png"
-                                value={rankingConfig?.redeem || "+100 pts"}
+                                value={rankingConfig?.redeem || "+500 pts"}
                             />
                             <RankingAchievement
                                 name="Member"
                                 description="Level up to 30"
                                 iconSrc="/images/ranking/diamond/diamond-member.png"
-                                value={rankingConfig?.member || "+200 pts"}
+                                value={rankingConfig?.member || "+1000 pts"}
                                 clarification="ONLY reedeming account in level 10 or lower"
                             />
                         </div>
