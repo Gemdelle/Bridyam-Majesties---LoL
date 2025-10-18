@@ -13,6 +13,7 @@ export interface NotificationProps {
     petStage?: number | null;
     score?: number;
     isNew?: boolean;
+    masteryLevel?: string | null;
     onRead?: (id: number) => void;
     onClick?: (id: number) => void;
 }
@@ -29,6 +30,7 @@ const Notification: React.FC<NotificationProps> = ({
     petStage,
     score,
     isNew = false,
+    masteryLevel,
     onRead,
     onClick
 }) => {
@@ -116,14 +118,14 @@ const Notification: React.FC<NotificationProps> = ({
             />
             {/* Icon/Image */}
             {imageUrl && (
-                <div className={`${styles.notification__icon} ${type === 'mission' ? styles['notification__icon--redeem'] : ''}`}>
+                <div className={`${styles.notification__icon} ${type === 'mission' ? styles['notification__icon--redeem'] : ''} ${type === 'achievement' && masteryLevel ? styles[`notification__icon--mastery-${masteryLevel}`] : ''}`}>
                     <div className={styles.spinning__circle}></div>
                     {type === 'mission' ? (
                         <div className={styles.portrait__wrapper}>
-                            <img src={imageUrl} alt={type} />
+                            <img src={imageUrl} alt={type} className={styles.icon__img} />
                         </div>
                     ) : (
-                        <img src={imageUrl} alt={type} />
+                        <img src={imageUrl} alt={type} className={styles.icon__img} />
                     )}
                 </div>
             )}

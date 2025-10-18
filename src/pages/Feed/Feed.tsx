@@ -27,6 +27,7 @@ type ExtendedNotification = NotificationProps & {
     action: NotificationAction;
     rankedName: string;
     username: string;
+    masteryLevel?: string | null;
 };
 
 const Feed: React.FC = () => {
@@ -180,6 +181,8 @@ const Feed: React.FC = () => {
                 const masteryLvl = feedNotif.metadata.to || '1'; // 'to' contiene el mastery level alcanzado
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
+                // Agregar clase específica para el nivel de maestría
+                feedNotif.masteryLevel = masteryLvl;
                 break;
             }
             case NotificationAction.LEVEL_30_ACHIEVED:
@@ -254,7 +257,8 @@ const Feed: React.FC = () => {
             filterType: notifFilterType,
             action: feedNotif.action,
             rankedName: feedNotif.rankedName,
-            username: feedNotif.metadata.username || ''
+            username: feedNotif.metadata.username || '',
+            masteryLevel: feedNotif.masteryLevel || null
         };
     };
 

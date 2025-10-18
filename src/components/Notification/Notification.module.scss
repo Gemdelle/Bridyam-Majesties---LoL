@@ -65,7 +65,7 @@
     box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
   }
 
-  img {
+  .icon__img {
     width: auto;
     max-width: 70%;
     height: 75%;
@@ -386,5 +386,41 @@
     transform: scale(1.2);
     opacity: 0.8;
   }
+}
+
+// ===== CLASES ESPECÍFICAS PARA MAESTRÍAS =====
+// Nivel 1-2: Muy pequeño
+.notification__icon--mastery-1 .icon__img,
+.notification__icon--mastery-2 .icon__img {
+  width: auto;
+  height: 40%;
+}
+
+// Nivel 3-4: Pequeño
+.notification__icon--mastery-3 .icon__img,
+.notification__icon--mastery-4 .icon__img {
+  width: auto;
+  height: 40%;
+}
+
+// Nivel 5-6: Mediano
+.notification__icon--mastery-5 .icon__img,
+.notification__icon--mastery-6 .icon__img {
+  width: auto;
+  height: 50%;
+}
+
+// Nivel 7-8: Grande
+.notification__icon--mastery-7 .icon__img,
+.notification__icon--mastery-8 .icon__img {
+  width: auto;
+  height: 50%;
+}
+
+// Nivel 9-10: Muy grande
+.notification__icon--mastery-9 .icon__img,
+.notification__icon--mastery-10 .icon__img {
+  width: auto;
+  height: 50%;
 }
 
