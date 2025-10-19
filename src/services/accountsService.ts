@@ -18,8 +18,6 @@ export interface Account {
     adc: number;
     support: number;
   };
-  blueEssence: number;
-  orangeEssence: number;
 }
 
 export interface AccountsResponse {
@@ -36,7 +34,7 @@ export interface ApiError {
 export class AccountsService {
   private static instance: AccountsService;
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): AccountsService {
     if (!AccountsService.instance) {
@@ -57,7 +55,7 @@ export class AccountsService {
   async getAccounts(): Promise<Account[]> {
     try {
       const token = this.getAuthToken();
-      
+
       if (!token) {
         throw new Error('Authentication required. Please login first.');
       }
@@ -77,12 +75,12 @@ export class AccountsService {
       }
 
       const data: AccountsResponse = await response.json();
-      
+
       if (!data.accounts || !Array.isArray(data.accounts)) {
         console.error('Invalid response format:', data);
         throw new Error('Invalid response format from server');
       }
-      
+
       return data.accounts;
     } catch (error) {
       console.error('Error fetching accounts:', error);
@@ -142,7 +140,7 @@ export class AccountsService {
    * @returns Filtered accounts
    */
   getAccountsByName(accounts: Account[], name: string): Account[] {
-    return accounts.filter(account => 
+    return accounts.filter(account =>
       account.name.toLowerCase().includes(name.toLowerCase())
     );
   }

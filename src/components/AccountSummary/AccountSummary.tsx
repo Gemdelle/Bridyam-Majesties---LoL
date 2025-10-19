@@ -11,7 +11,6 @@ export interface AccountSummaryData {
     champions: number;
     skins: number;
     masteries: number;
-    elo?: number; // Made optional since it's not in the new protocol
     roles: {
         top: number;
         jungle: number;
@@ -19,28 +18,11 @@ export interface AccountSummaryData {
         adc: number;
         support: number;
     };
-    blueEssence: number;
-    orangeEssence: number;
 }
 
 interface AccountSummaryProps {
     data: AccountSummaryData;
 }
-
-// Function to get top 2 roles
-const getTopRoles = (roles: AccountSummaryData['roles']) => {
-    const roleEntries = [
-        { role: 'top', value: roles.top },
-        { role: 'jungle', value: roles.jungle },
-        { role: 'mid', value: roles.mid },
-        { role: 'adc', value: roles.adc },
-        { role: 'support', value: roles.support }
-    ];
-
-    return roleEntries
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 2);
-};
 
 // Function to convert number to digit images
 const renderNumberAsImages = (number: number) => {
@@ -153,36 +135,6 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                 </div>
 
 
-                <div className={styles.lower_info__container}>
-                    <img className={styles.flag__frame} src="/images/frames/flag-frame.png" alt="Flag Frame" />
-                    {/* <img className={styles.info__divider} src="/images/frames/lower-title-frame.png" alt="Info Divider" /> */}
-
-                    <div className={styles.info__description}>
-                        <div className={styles.elo__container}>
-                            <div className={styles.eloItem}>
-                                <img src="/images/lol-elements/tier-gold.webp" alt="Solo Rank" />
-                                <span>I</span>
-                            </div>
-                            <div className={styles.eloItem}>
-                                <img src="/images/lol-elements/tier-platinum.webp" alt="Flex Rank" />
-                                <span>III</span>
-                            </div>
-                        </div>
-
-
-
-                        <div className={styles.essences__container}>
-                            <div className={styles.essenceItem}>
-                                <img src="/images/lol-elements/blue-essence.png" alt="Blue Essence" />
-                                <span>{data.blueEssence.toLocaleString()}</span>
-                            </div>
-                            <div className={styles.essenceItem}>
-                                <img src="/images/lol-elements/orange-essence.png" alt="Orange Essence" />
-                                <span>{data.orangeEssence.toLocaleString()}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );

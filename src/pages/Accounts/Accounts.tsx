@@ -115,9 +115,7 @@ const Accounts: React.FC = () => {
               mid: 34,
               adc: 67,
               support: 45
-            },
-            blueEssence: 98760,
-            orangeEssence: 14560
+            }
           }
         ]);
       } finally {
@@ -204,9 +202,7 @@ const Accounts: React.FC = () => {
                 champions: account.champions,
                 skins: account.skins,
                 masteries: account.masteries,
-                roles: account.roles,
-                blueEssence: account.blueEssence,
-                orangeEssence: account.orangeEssence
+                roles: account.roles
               }}
             />
           ))}
@@ -264,21 +260,11 @@ const Accounts: React.FC = () => {
             <>
               {renderAccountRows()}
               <div className={styles.pagination}>
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className={styles.pagination__button}
-                >
+                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   &lt; Previous
                 </button>
-                <span className={styles.pagination__info}>
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className={styles.pagination__button}
-                >
+                <span>Page {currentPage} of {totalPages}</span>
+                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
                   Next &gt;
                 </button>
               </div>
