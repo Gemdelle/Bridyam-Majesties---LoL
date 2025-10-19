@@ -132,11 +132,14 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                                     </div>
                                     <div className={styles.champion__mastery}>
                                         {masteryLevel > 0 && (
-                                            <img
-                                                src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
-                                                alt={`Mastery ${masteryLevel}`}
-                                                className={styles.mastery__badge}
-                                            />
+                                            <>
+                                                <img
+                                                    src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
+                                                    alt={`Mastery ${masteryLevel}`}
+                                                    className={styles.mastery__badge}
+                                                />
+                                                <span className={styles.mastery__level}>{masteryLevel}</span>
+                                            </>
                                         )}
                                     </div>
                                 </div>

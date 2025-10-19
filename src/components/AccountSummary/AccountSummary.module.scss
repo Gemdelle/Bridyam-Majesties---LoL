@@ -110,7 +110,7 @@
   @include flex-col;
   background-size: 85% 90%;
   background-position: 100% center;
-  background-color: yellow;
+  // background-color: yellow;
   align-items: flex-end;
 }
 
@@ -120,7 +120,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  background-color: darkgoldenrod;
+  // background-color: darkgoldenrod;
   
   @include flex-col-between;
 }
@@ -128,7 +128,7 @@
 .info__stats {
   height: 50%;
   width: 100%;
-  background-color: blue;
+  // background-color: blue;
   background-image: url('/images/frames/account-description-frame-spadelline.png');
   @include background;
   @include flex-col;
@@ -158,15 +158,16 @@
 
 .champions {
   width: 75%;
-  height: 30%;
-  background-color: pink;
+  height: 35%;
+  margin-top: 5%;
+  // background-color: pink;
   @include flex-between;
 }
 
 .champion__container {
   width: 22%;
   height: 100%;
-  background-color: lightgreen;
+  // background-color: lightgreen;
   @include flex-col-between;
 }
 
@@ -174,7 +175,7 @@
   width: 100%;
   height: 50%;
   position: relative;
-  background-color: blue;
+  // background-color: blue;
   @include flex-center;
 }
 
@@ -200,8 +201,11 @@
 .champion__mastery {
   width: 100%;
   height: 50%;
-  background-color: darkcyan;
-  @include flex-center;
+  // background-color: darkcyan;
+  @include flex-col;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
 }
 
 .mastery__badge {
@@ -209,6 +213,14 @@
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6));
+}
+
+.mastery__level {
+  font-size: 0.8vw;
+  font-weight: bold;
+  color: #c8a867;
+  text-shadow: 0 0 10px rgba(240, 230, 210, 0.8), 0 0 15px rgba(200, 155, 60, 0.6);
+  letter-spacing: 0.05vw;
 }
 
 .essences {
