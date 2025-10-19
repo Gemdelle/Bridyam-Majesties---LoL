@@ -9,7 +9,7 @@
 
 .container {
   width: 95%;
-  height: 83%;
+  height: 75%;
   margin: 0 auto;
   margin-top: 6%;
   @include flex-col-between;
@@ -54,7 +54,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0%;
+  bottom: 5%;
   width: 20%;
   height: 5%;
   @include flex-between;
