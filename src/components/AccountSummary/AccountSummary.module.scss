@@ -9,52 +9,42 @@
   transition: all 0.3s ease;
   @include flex-col-between;
   
-  background-color: purple;
+  // background-color: purple;
 }
 
 .name {
   width: 100%;
-  height: auto;
-  font-size: 1vw;
-  font-weight: bold;
+  height: 7%;
+  font-size: 0.9vw;
   color: #e4c493;
   text-align: left;
-  text-shadow: 0px 0px 20px rgba(225, 221, 194, 0.9), 0px 0px 30px rgba(228, 196, 147, 0.5);
+  text-shadow: 0px 0px 10px rgba(225, 221, 194, 0.9), 0px 0px 30px rgba(228, 196, 147, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.2vw;
   margin: 0;
-  // background-color: pink;
-  // background-image: url('/images/frames/lower-title-frame.png');
-  // @include background;
-  // background-size: 50% 40%;
-  // background-position: 10% bottom;
-  // background-color: pink;
+  // background-color: red;
+  @include flex-start;
 }
 
 .username {
   width: 100%;
-  height: auto;
+  height: 7%;
   font-size: 0.9vw;
-  color: #e6dac9;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  color: #f8e2c4;
   letter-spacing: 0.15vw;
+  // background-color: lightcoral;
   margin: 0;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  text-align: left;
-  // margin-right: 50%;
-  background-color: lightcoral;
+  @include flex-start;
 }
 
 .ranking__container {
-  width: 6vw;
-  height: 6vw;
+  width: 5vw;
+  height: 5vw;
   position: absolute;
-  right: -15%;
-  top: 3%;
-  @include flex-center;
+  right: -10%;
+  top: -5%;
   // background-color: red;
+  @include flex-center;
   z-index: 10;
 }
 
@@ -63,7 +53,6 @@
   height: auto;
   position: absolute;
   right: 0;
-  top: 0;
   filter: drop-shadow(0px 0px 15px rgba(228, 196, 147, 0.6)) drop-shadow(0px 0px 25px rgba(228, 196, 147, 0.3));
   animation: rankingGlow 3s ease-in-out infinite;
 }
@@ -82,10 +71,10 @@
 
 .card__container {
   width: 100%;
-  height: 88%;
+  height: 95%;
   @include flex-col-between;
   align-items: flex-end;
-  background-color: lightblue;
+  // background-color: lightblue;
 }
 
 .profileIcon {
@@ -114,37 +103,41 @@
 }
 
 .info__container {
-  height: 50%;
+  height: 100%;
   width: 70%;
   backdrop-filter: blur(4px);
-  background-image: url('/images/frames/account-description-frame-spadelline.png');
-  @include background;
-  @include flex-center;
+  
+  @include flex-col;
   background-size: 85% 90%;
   background-position: 100% center;
   background-color: yellow;
+  align-items: flex-end;
 }
 
 .info {
   height: 100%;
   width: 75%;
-  margin-top: 28%;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  background-color: purple;
+  background-color: darkgoldenrod;
+  
   @include flex-col-between;
 }
 
 .info__stats {
   height: 50%;
-  width: 70%;
+  width: 100%;
   background-color: blue;
+  background-image: url('/images/frames/account-description-frame-spadelline.png');
+  @include background;
+  @include flex-col;
 }
 
 .info__item {
-  width: 100%;
-  height: 25%;
+  width: 50%;
+  height: 15%;
+  // background-color: red;
   @include flex-between;
 }
 
@@ -163,54 +156,10 @@
   text-shadow: 0px 0px 10px rgb(255, 255, 234);
 }
 
-.stats {
-  width: 80%;
-  margin: 0;
-  height: auto;
-  display: flex;
-  padding: 0;
-  @include flex-col;
-
-  li {
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0;
-    
-    span:first-child {
-      color: #cdbe91;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    
-    span:last-child {
-      color: #e4c493;
-      font-weight: bold;
-    }
-  }
-
-  list-style: none;
-}
-
-.roles {
-  border-top: 1px solid #b69461;
-  background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(30, 35, 40, 0.4));
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-  margin-top: 0.3vw;
-}
-
 .champions {
-  width: 100%;
-  height: 40%;
-  // background-color: red;
-  margin-left: 30%;
-  margin-bottom: 5%;
+  width: 70%;
+  height: 20%;
+  background-color: pink;
   @include flex-between;
 }
 

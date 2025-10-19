@@ -39,7 +39,6 @@
   height: 90%;
   @include flex-col;
   justify-content: space-around;
-
   // background-color: blue;
 }
 
@@ -48,12 +47,6 @@
   height: 45%;
   @include flex-between;
   // background-color: green;
-}
-
-.placeholder {
-  width: 23%;
-  height: 100%;
-  // background-color: red;
 }
 
 // Estilos para la paginación (igual que Ranked)
@@ -98,6 +91,7 @@
     color: $text-secondary-color;
     font-size: 1rem;
     letter-spacing: 1px;
+    // background-color: pink;
   }
 }
 
