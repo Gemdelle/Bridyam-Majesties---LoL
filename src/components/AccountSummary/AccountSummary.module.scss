@@ -157,17 +157,24 @@
 }
 
 .champions {
-  width: 70%;
-  height: 20%;
+  width: 75%;
+  height: 30%;
   background-color: pink;
   @include flex-between;
 }
 
-.champion__icon {
-  width: 30%;
+.champion__container {
+  width: 22%;
   height: 100%;
+  background-color: lightgreen;
+  @include flex-col-between;
+}
+
+.champion__icon {
+  width: 100%;
+  height: 50%;
   position: relative;
-  // background-color: blue;
+  background-color: blue;
   @include flex-center;
 }
 
@@ -188,6 +195,20 @@
   top: 0;
   left: 0;
   z-index: 2;
+}
+
+.champion__mastery {
+  width: 100%;
+  height: 50%;
+  background-color: darkcyan;
+  @include flex-center;
+}
+
+.mastery__badge {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6));
 }
 
 .essences {

@@ -44,19 +44,19 @@ const renderNumberAsImages = (number: number) => {
 const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
     const [likedChampions, setLikedChampions] = useState<Champion[]>([]);
 
-    // Get the first 3 liked champions from localStorage
+    // Get the first 4 liked champions from localStorage
     useEffect(() => {
         const getLikedChampions = () => {
             try {
                 const savedFavorites = localStorage.getItem('favoriteChampions');
                 if (savedFavorites) {
                     const favoriteIds: number[] = JSON.parse(savedFavorites);
-                    const firstThreeIds = favoriteIds.slice(0, 3);
+                    const firstFourIds = favoriteIds.slice(0, 4);
 
-                    // Load champions and filter to get the first 3 liked ones
+                    // Load champions and filter to get the first 4 liked ones
                     fetchChampions().then(champions => {
                         const likedChamps = champions.filter(champion =>
-                            firstThreeIds.includes(champion.id)
+                            firstFourIds.includes(champion.id)
                         );
                         setLikedChampions(likedChamps);
                     });
@@ -107,26 +107,38 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         </div>
                     </div>
                     <div className={styles.champions}>
-                        {[0, 1, 2].map((index) => {
+                        {[0, 1, 2, 3].map((index) => {
                             const champion = likedChampions[index];
+                            const masteryLevel = champion ? 7 : 0; // TODO: Obtener maestría real del backend
                             return (
-                                <div key={index} className={styles.champion__icon}>
-                                    <img
-                                        src={champion
-                                            ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`
-                                            : "/images/pets/nav-pet-2.png"
-                                        }
-                                        alt={champion ? champion.name : "Champion"}
-                                        className={styles.champion__icon__image}
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/images/pets/nav-pet-2.png';
-                                        }}
-                                    />
-                                    <img
-                                        src="/images/frames/account-champion-frame.png"
-                                        alt="Champion Frame"
-                                        className={styles.champion__icon__frame}
-                                    />
+                                <div key={index} className={styles.champion__container}>
+                                    <div className={styles.champion__icon}>
+                                        <img
+                                            src={champion
+                                                ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`
+                                                : "/images/pets/nav-pet-2.png"
+                                            }
+                                            alt={champion ? champion.name : "Champion"}
+                                            className={styles.champion__icon__image}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/images/pets/nav-pet-2.png';
+                                            }}
+                                        />
+                                        <img
+                                            src="/images/frames/account-champion-frame.png"
+                                            alt="Champion Frame"
+                                            className={styles.champion__icon__frame}
+                                        />
+                                    </div>
+                                    <div className={styles.champion__mastery}>
+                                        {masteryLevel > 0 && (
+                                            <img
+                                                src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
+                                                alt={`Mastery ${masteryLevel}`}
+                                                className={styles.mastery__badge}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                             );
                         })}
