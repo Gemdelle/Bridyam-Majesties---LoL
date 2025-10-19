@@ -19,13 +19,14 @@
 }
 
 .content__filters {
-  width: 30%;
+  width: auto;
   height: 7%;
   margin-left: 0%;
   position: relative;
   z-index: 9999;
+  display: flex;
+  gap: 1vw;
   // background-color: red;
-  @include flex-between;
 }
 
 .filters {

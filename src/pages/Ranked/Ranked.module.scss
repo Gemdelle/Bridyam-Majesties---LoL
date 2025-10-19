@@ -28,11 +28,12 @@
 }
 
 .content__filters {
-  width: 30%;
+  width: auto;
   height: 100%;
   // background-color: red;
   margin-right: 2%;
-  @include flex-between;
+  display: flex;
+  gap: 1vw;
   position: relative;
   z-index: 9999;
 }
