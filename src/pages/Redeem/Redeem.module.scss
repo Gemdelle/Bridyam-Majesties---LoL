@@ -1,101 +1,80 @@
 @use '../../styles/variables.scss' as *;
 
+// HEIGHTS
+$height-redeem-button: 5%;
+$height-majesty-portrait: 53%;
+$height-dropdown-group: 15%;
+$height-input-group: 18%;
+
 .redeem {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #0f1419 0%, #1e2328 100%);
-  overflow: hidden;
+  background-image: url('/images/bg/redeem-bg.png');
+  @include background-center;
+  background-size: 100% 100%;
 
   &__container {
     width: 92%;
-    height: 83%;
+    height: 76%;
     margin: 0 auto;
-    margin-top: 7%;
-    @include flex-col-between;
+    margin-top: 9%;
+    @include flex-center;
     // background-color: red;
   }
 
-  &__header {
-    height: 10%;
-    text-align: center;
-    // background-color: blue;
-  }
-
-  &__title {
-    margin: 0;
-    height: 70%;
-    font-size: 3rem;
-    color: #c89b3c;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.3rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    // background-color: yellow;
-  }
-
-  &__subtitle {
-    height: 30%;
-    margin: 0;
-    font-size: 1.2rem;
-    color: #cdbe91;
-    // background-color: green;
-  }
-
-  &__content {
-    height: 77%;
-    width: 100%;
-    @include flex-col-between;
-    // border: 1px solid white;
-    // background-color: violet;
-  }
-
   &__form {
-    width: 100%;
+    width: 50%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    max-width: 600px;
-    margin: 0 auto;
+    // background-color: rgb(45, 45, 9);
+    @include flex-col-between;
   }
 }
 
 .input__group {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  height: $height-input-group;
+  @include flex-col-between;
+  // background-color: white;
+}
+
+.dropdown__group {
+  width: 100%;
+  height: $height-dropdown-group;
+  @include flex-col-between;
+  // background-color: white;
 }
 
 .input__label {
+  width: 100%;
   font-size: 1.4rem;
   color: #c89b3c;
-  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   text-align: center;
 }
 
-.input__field,
-.input__select {
-  width: 100%;
+.input__field {
+  width: 45%;
+  height: 10%;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.4);
-  border: 3px solid #c89b3c;
-  border-radius: 10px;
+  background-image: url('/images/frames/bar.png');
+  border: none;
+  background-color: transparent;
   color: #cdbe91;
-  font-size: 1.2rem;
+  font-size: 0.9vw;
   font-family: inherit;
+  font-style: italic;
+  letter-spacing: 0.1vw;
   text-align: center;
   transition: all 0.3s ease;
+  @include background-center;
+  background-size: 100% 100%;
+  // background-color: white;
 
   &:focus {
     outline: none;
-    border-color: #d4a94a;
+    filter: brightness(1.2);
     box-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
-    background: rgba(0, 0, 0, 0.6);
   }
 
   &::placeholder {
@@ -106,12 +85,31 @@
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background: rgba(0, 0, 0, 0.2);
+    filter: grayscale(50%);
   }
 }
 
 .input__select {
+  width: 35%;
+  height: 65%;
+  appearance: none;       /* estándar */
+  padding: 1.5rem;
+  background-image: url('/images/frames/dropdown.png');
+  background-color: transparent;
+  // background-color: darkblue;
+  color: #cdbe91;
+  border: transparent;
+  font-size: 1.2rem;
+  font-family: inherit;
+  text-align: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  @include background-center;
+  background-size: 100% 100%;
+
+  &:focus {
+    outline: none;
+  }
   
   option {
     background: #1e2328;
@@ -122,7 +120,7 @@
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background: rgba(0, 0, 0, 0.2);
+    filter: grayscale(50%);
   }
 }
 
@@ -132,6 +130,93 @@
   opacity: 0.7;
   text-align: center;
   font-style: italic;
+}
+
+// MAJESTY PORTRAIT
+.majesty__portrait {
+  width: 30%;
+  height: $height-majesty-portrait;
+  @include flex-center;
+  background-image: url('/images/frames/default-majesty-portrait.png');
+  @include background-center;
+  background-size: contain;
+  position: relative;
+  // background-color: white;
+  filter: drop-shadow(0 0 20px rgba(200, 155, 60, 0.7)) 
+          drop-shadow(0 0 30px rgba(200, 155, 60, 0.5)) 
+          drop-shadow(0 0 40px rgba(200, 155, 60, 0.3));
+}
+
+.majesty__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+}
+
+// Particles container
+.particles__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(200, 155, 60, 0.9), rgba(200, 155, 60, 0.5));
+  border-radius: 50%;
+  animation: majestyParticleFloat 4s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(200, 155, 60, 0.8), 0 0 12px rgba(200, 155, 60, 0.5);
+}
+
+// Posiciones de las partículas alrededor del frame
+// Lado izquierdo
+.particle__1 { top: 15%; left: 3%; animation-delay: 0s; }
+.particle__2 { top: 35%; left: 5%; animation-delay: 0.4s; }
+.particle__3 { top: 55%; left: 2%; animation-delay: 0.8s; }
+.particle__4 { top: 75%; left: 4%; animation-delay: 1.2s; }
+.particle__5 { top: 90%; left: 8%; animation-delay: 1.6s; }
+
+// Lado derecho
+.particle__6 { top: 20%; right: 5%; animation-delay: 0.2s; }
+.particle__7 { top: 40%; right: 3%; animation-delay: 0.6s; }
+.particle__8 { top: 60%; right: 6%; animation-delay: 1s; }
+.particle__9 { top: 80%; right: 4%; animation-delay: 1.4s; }
+.particle__10 { top: 92%; right: 10%; animation-delay: 1.8s; }
+
+// Parte inferior
+.particle__11 { top: 88%; left: 20%; animation-delay: 2s; }
+.particle__12 { top: 92%; left: 35%; animation-delay: 2.2s; }
+.particle__13 { top: 90%; left: 50%; animation-delay: 2.4s; }
+.particle__14 { top: 93%; left: 65%; animation-delay: 2.6s; }
+.particle__15 { top: 89%; right: 25%; animation-delay: 2.8s; }
+
+// Parte superior (menos)
+.particle__16 { top: 8%; left: 15%; animation-delay: 3s; }
+.particle__17 { top: 10%; right: 20%; animation-delay: 3.2s; }
+.particle__18 { top: 12%; left: 50%; animation-delay: 3.4s; }
+
+// Extra laterales
+.particle__19 { top: 45%; left: 8%; animation-delay: 3.6s; }
+.particle__20 { top: 50%; right: 10%; animation-delay: 3.8s; }
+
+// Animación de partículas flotantes
+@keyframes majestyParticleFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.3);
+    opacity: 1;
+  }
 }
 
 .error__message {
@@ -170,20 +255,21 @@
 }
 
 .redeem__button {
-  width: 100%;
-  padding: 1.5rem 3rem;
+  width: 35%;
+  height: $height-redeem-button;
   background: rgba(200, 155, 60, 0.2);
   border: 3px solid #c89b3c;
   border-radius: 10px;
   color: #c89b3c;
-  font-size: 1.4rem;
-  font-weight: bold;
+  font-size: 0.9vw;
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.2vw;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  // background-color: white;
+  @include flex-center;
 
   &:hover:not(:disabled) {
     background: #c89b3c;
@@ -227,10 +313,6 @@
 
 @media (max-width: 768px) {
   .redeem {
-    &__container {
-      // background-color: red;
-    }
-
     &__title {
       font-size: 2rem;
     }

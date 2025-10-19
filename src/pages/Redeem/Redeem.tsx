@@ -5,6 +5,54 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { fetchAvailableRankedAccounts, type RankedData } from '../../services/apiRankedsService';
 import ClaimAccountRulesModal from '../../components/ClaimAccountRulesModal/ClaimAccountRulesModal';
 
+// Traducciones
+const translations = {
+    codeLabel: {
+        en: 'Redeem Code (8 characters)',
+        es: 'Código de Reclamación (8 caracteres)'
+    },
+    codeHint: {
+        en: 'Enter the 8-character alphanumeric code',
+        es: 'Ingresa el código alfanumérico de 8 caracteres'
+    },
+    codePlaceholder: {
+        en: 'Ex: ABC12345',
+        es: 'Ej: ABC12345'
+    },
+    accountLabel: {
+        en: 'Select Majesty Account',
+        es: 'Seleccionar Cuenta Majesty'
+    },
+    accountLoading: {
+        en: 'Loading accounts...',
+        es: 'Cargando cuentas...'
+    },
+    accountChoose: {
+        en: 'Choose an account...',
+        es: 'Elige una cuenta...'
+    },
+    buttonRedeeming: {
+        en: 'Redeeming...',
+        es: 'Canjeando...'
+    },
+    buttonRedeem: {
+        en: 'Redeem account',
+        es: 'Canjear cuenta'
+    },
+    errorLoading: {
+        en: 'Error loading available accounts',
+        es: 'Error al cargar las cuentas disponibles'
+    },
+    errorUnexpected: {
+        en: 'Unexpected error. Please try again.',
+        es: 'Error inesperado. Por favor, intenta de nuevo.'
+    },
+    successMessage: {
+        en: (username: string) => `Account "${username}" claimed successfully! Permissions updated.`,
+        es: (username: string) => `¡Cuenta "${username}" reclamada exitosamente! Permisos actualizados.`
+    }
+};
+
 const Redeem: React.FC = () => {
     const { refreshProfile, user } = useAuthContext();
     const [redeemCode, setRedeemCode] = useState('');
@@ -15,6 +63,7 @@ const Redeem: React.FC = () => {
     const [availableAccounts, setAvailableAccounts] = useState<RankedData[]>([]);
     const [loadingAccounts, setLoadingAccounts] = useState(true);
     const [showRulesModal, setShowRulesModal] = useState(false);
+    const language = 'es'; // TODO: Conectar con Language Context del Nav
 
     useEffect(() => {
         const loadAvailableAccounts = async () => {
@@ -24,7 +73,7 @@ const Redeem: React.FC = () => {
                 setAvailableAccounts(accounts);
             } catch (error) {
                 console.error('Error loading available accounts:', error);
-                setError('Error al cargar las cuentas disponibles');
+                setError(translations.errorLoading[language]);
             } finally {
                 setLoadingAccounts(false);
             }
@@ -66,7 +115,7 @@ const Redeem: React.FC = () => {
 
                 console.log('Profile refreshed, permissions updated');
 
-                setSuccess(`¡Cuenta "${result.rankedUsername}" reclamada exitosamente! Permisos actualizados.`);
+                setSuccess(translations.successMessage[language](result.rankedUsername || ''));
                 setRedeemCode('');
                 setSelectedAccount('');
 
@@ -78,7 +127,7 @@ const Redeem: React.FC = () => {
             }
         } catch (error) {
             console.error('Redeem error:', error);
-            setError('Error inesperado. Por favor, intenta de nuevo.');
+            setError(translations.errorUnexpected[language]);
         } finally {
             setLoading(false);
         }
@@ -102,85 +151,97 @@ const Redeem: React.FC = () => {
                 onClose={handleCloseModal}
                 onConfirm={handleConfirmClaim}
                 username={user?.name || user?.email || 'Player'}
-                language="es"
+                language={language}
             />
             <div className={styles.redeem__container}>
-                <header className={styles.redeem__header}>
-                    <h1 className={styles.redeem__title}>Redeem</h1>
-                    <p className={styles.redeem__subtitle}>Reclamar cuenta ranked con código</p>
-                </header>
+                <div className={styles.redeem__form}>
+                    <div className={styles.input__group}>
+                        <label htmlFor="redeemCode" className={styles.input__label}>
+                            {translations.codeLabel[language]}
+                        </label>
+                        <small className={styles.input__hint}>
+                            {translations.codeHint[language]}
+                        </small>
+                        <input
+                            type="text"
+                            id="redeemCode"
+                            className={styles.input__field}
+                            placeholder={translations.codePlaceholder[language]}
+                            value={redeemCode}
+                            onChange={handleCodeChange}
+                            maxLength={8}
+                            disabled={loading}
+                        />
 
-                <div className={styles.redeem__content}>
-                    <div className={styles.redeem__form}>
-                        <div className={styles.input__group}>
-                            <label htmlFor="redeemCode" className={styles.input__label}>
-                                Código de Reclamación (8 caracteres)
-                            </label>
-                            <input
-                                type="text"
-                                id="redeemCode"
-                                className={styles.input__field}
-                                placeholder="Ej: ABC12345"
-                                value={redeemCode}
-                                onChange={handleCodeChange}
-                                maxLength={8}
-                                disabled={loading}
-                            />
-                            <small className={styles.input__hint}>
-                                Ingresa el código alfanumérico de 8 caracteres
-                            </small>
-                        </div>
-
-                        <div className={styles.input__group}>
-                            <label htmlFor="majestyAccount" className={styles.input__label}>
-                                Seleccionar Cuenta Majesty
-                            </label>
-                            <select
-                                id="majestyAccount"
-                                className={styles.input__select}
-                                value={selectedAccount}
-                                onChange={(e) => setSelectedAccount(e.target.value)}
-                                disabled={loading || loadingAccounts}
-                            >
-                                <option value="" disabled>
-                                    {loadingAccounts ? 'Cargando cuentas...' : 'Elige una cuenta...'}
-                                </option>
-                                {availableAccounts.map((account) => (
-                                    <option key={account.id} value={account.username}>
-                                        {account.username}
-                                    </option>
-                                ))}
-                            </select>
-                            <small className={styles.input__hint}>
-                                {loadingAccounts
-                                    ? 'Cargando cuentas disponibles...'
-                                    : availableAccounts.length > 0
-                                        ? 'Selecciona la cuenta ranked que deseas reclamar'
-                                        : 'No hay cuentas disponibles en este momento'
-                                }
-                            </small>
-                        </div>
-
-                        {error && (
-                            <div className={styles.error__message}>
-                                {error}
-                            </div>
-                        )}
-
-                        {success && (
-                            <div className={styles.success__message}>
-                                {success}
-                            </div>
-                        )}
-
-                        <button
-                            className={styles.redeem__button}
-                            onClick={handleRedeem}
-                            disabled={loading || !redeemCode || !selectedAccount}
-                        >
-                            {loading ? 'Reclamando...' : 'Reclamar Cuenta'}
-                        </button>
                     </div>
+
+                    <div className={styles.dropdown__group}>
+                        <label htmlFor="majestyAccount" className={styles.input__label}>
+                            {translations.accountLabel[language]}
+                        </label>
+                        {/* <small className={styles.input__hint}>
+                            {loadingAccounts
+                                ? 'Cargando cuentas disponibles...'
+                                : availableAccounts.length > 0
+                                    ? 'Selecciona la cuenta ranked que deseas reclamar'
+                                    : 'No hay cuentas disponibles en este momento'
+                            }
+                        </small> */}
+                        <select
+                            id="majestyAccount"
+                            className={styles.input__select}
+                            value={selectedAccount}
+                            onChange={(e) => setSelectedAccount(e.target.value)}
+                            disabled={loading || loadingAccounts}
+                        >
+                            <option value="" disabled>
+                                {loadingAccounts ? translations.accountLoading[language] : translations.accountChoose[language]}
+                            </option>
+                            {availableAccounts.map((account) => (
+                                <option key={account.id} value={account.username}>
+                                    {account.username}
+                                </option>
+                            ))}
+                        </select>
+
+                    </div>
+
+                    {error && (
+                        <div className={styles.error__message}>
+                            {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className={styles.success__message}>
+                            {success}
+                        </div>
+                    )}
+
+                    <div className={styles.majesty__portrait}>
+                        {selectedAccount && (
+                            <img
+                                src={`/images/majesties/${selectedAccount}.png`}
+                                alt={selectedAccount}
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                            />
+                        )}
+                        <div className={styles.particles__container}>
+                            {Array.from({ length: 20 }, (_, i) => (
+                                <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <button
+                        className={styles.redeem__button}
+                        onClick={handleRedeem}
+                        disabled={loading || !redeemCode || !selectedAccount}
+                    >
+                        {loading ? translations.buttonRedeeming[language] : translations.buttonRedeem[language]}
+                    </button>
                 </div>
             </div>
         </div>
