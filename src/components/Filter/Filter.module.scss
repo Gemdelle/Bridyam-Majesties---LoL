@@ -1,27 +1,32 @@
 @use '../../styles/variables.scss' as *;
 
 .container {
-  height: 4vh;
-  width: 22vh;
-  border-radius: $border-radius-sm;
-  border-bottom: 3px solid rgb(182, 142, 97);
+  height: 100%;
+  width: 45%;
+  appearance: none;
   box-shadow: none;
   position: relative;
+  // background-color: red;
 }
 
 .header {
   @include flex-between;
   width: 100%;
-  background: transparent;
+  height: 100%;
+  background-image: url('/images/frames/dropdown.png');
   border: none;
-  padding: $spacing-sm $spacing-md;
   cursor: pointer;
   font-size: 1.1rem;
-  font-weight: bolder;
   color: #e4c493;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.15vw;
+  transition: all 0.2s;
+  background-color: transparent;
+  @include background;
+  
+  &:hover {
+    filter: brightness(1.1);
+  }
   
   .arrow {
     transition: transform $transition-normal;
@@ -41,7 +46,6 @@
   overflow: hidden;
   transition: max-height $transition-normal ease-out;
   background: rgba($color: #181818, $alpha: 0.8);
-  border: 3px solid #b69461;
   border-top: none;
   border-radius: 0 0 $border-radius-sm $border-radius-sm;
   box-shadow: none;

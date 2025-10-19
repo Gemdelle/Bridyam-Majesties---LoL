@@ -5,24 +5,17 @@ import AccountSummary from '../../components/AccountSummary';
 import AccountsService, { type Account } from '../../services/accountsService';
 
 // --- Opciones para los filtros ---
-const rankOptions: FilterOption[] = [
-  { id: 'iron', label: 'Iron' },
-  { id: 'bronze', label: 'Bronze' },
-  { id: 'silver', label: 'Silver' },
-  { id: 'gold', label: 'Gold' },
-  { id: 'platinum', label: 'Platinum' },
-  { id: 'emerald', label: 'Emerald' },
-  { id: 'diamond', label: 'Diamond' },
-  { id: 'master', label: 'Master' },
-  { id: 'grandmaster', label: 'Grandmaster' },
-  { id: 'challenger', label: 'Challenger' },
+const elementsOptions: FilterOption[] = [
+  { id: 'champions', label: 'Champions' },
+  { id: 'skins', label: 'Skins' },
 ];
 
-const tierOptions: FilterOption[] = [
-  { id: 'IV', label: 'IV' },
-  { id: 'III', label: 'III' },
-  { id: 'II', label: 'II' },
-  { id: 'I', label: 'I' },
+const masteryOptions: FilterOption[] = [
+  { id: '6', label: '6' },
+  { id: '7', label: '7' },
+  { id: '8', label: '8' },
+  { id: '9', label: '9' },
+  { id: '10', label: '10' },
 ];
 
 // Mapeo completo de usernames a portraits locales
@@ -76,9 +69,8 @@ const getLocalPortrait = (username: string): string => {
 
 const Accounts: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [selectedRank, setSelectedRank] = useState<string[]>([]);
-  const [selectedTier, setSelectedTier] = useState<string[]>([]);
-  const [selectedPortrait, setSelectedPortrait] = useState<string[]>([]);
+  const [selectedElements, setSelectedElements] = useState<string[]>([]);
+  const [selectedMastery, setSelectedMastery] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -126,39 +118,46 @@ const Accounts: React.FC = () => {
     loadAccounts();
   }, []);
 
-  const getPortraitOptions = (): FilterOption[] => {
-    const uniqueNames = [...new Set(accounts.map(account => account.name))];
-    return uniqueNames.map(name => ({
-      id: name,
-      label: name
-    }));
-  };
-
-  const handleRankChange = (ranks: string[]) => {
-    setSelectedRank(ranks);
+  const handleElementsChange = (elements: string[]) => {
+    setSelectedElements(elements);
     setCurrentPage(1); // Reset to first page when filters change
   };
 
-  const handleTierChange = (tiers: string[]) => {
-    setSelectedTier(tiers);
+  const handleMasteryChange = (masteries: string[]) => {
+    setSelectedMastery(masteries);
     setCurrentPage(1); // Reset to first page when filters change
   };
 
-  const handlePortraitChange = (portraits: string[]) => {
-    setSelectedPortrait(portraits);
-    setCurrentPage(1); // Reset to first page when filters change
-  };
+  const filteredAccounts = accounts
+    .filter((account: Account) => {
+      // Filter by elements (champions or skins)
+      const matchesElements = selectedElements.length === 0 || selectedElements.some(element => {
+        if (element === 'champions') return account.champions > 0;
+        if (element === 'skins') return account.skins > 0;
+        return true;
+      });
 
-  const filteredAccounts = accounts.filter((account: Account) => {
-    // Parse the solo_q_elo to extract rank and tier
-    const { rank, tier } = accountsService.parseElo(account.solo_q_elo);
+      // Filter by mastery level (6, 7, 8, 9, 10)
+      const matchesMastery = selectedMastery.length === 0 || selectedMastery.some(level => {
+        const masteryLevel = parseInt(level);
+        return account.masteries >= masteryLevel; // TODO: Cambiar cuando tengamos maestría por champion
+      });
 
-    const matchesRank = selectedRank.length === 0 || selectedRank.includes(rank);
-    const matchesTier = selectedTier.length === 0 || selectedTier.includes(tier);
-    const matchesPortrait = selectedPortrait.length === 0 || selectedPortrait.includes(account.name);
-
-    return matchesRank && matchesTier && matchesPortrait;
-  });
+      return matchesElements && matchesMastery;
+    })
+    .sort((a, b) => {
+      // Sort by the selected filter in descending order
+      if (selectedElements.length > 0) {
+        const element = selectedElements[0];
+        if (element === 'champions') return b.champions - a.champions;
+        if (element === 'skins') return b.skins - a.skins;
+      }
+      if (selectedMastery.length > 0) {
+        return b.masteries - a.masteries;
+      }
+      // Default: sort by champions descending
+      return b.champions - a.champions;
+    });
 
   // --- Calcular las accounts a mostrar en la página actual ---
   const getCurrentPageAccounts = () => {
@@ -237,22 +236,16 @@ const Accounts: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.content__filters}>
           <Filter
-            title="Rank"
-            options={rankOptions}
-            selectedOptions={selectedRank}
-            onSelectionChange={handleRankChange}
+            title="Elements"
+            options={elementsOptions}
+            selectedOptions={selectedElements}
+            onSelectionChange={handleElementsChange}
           />
           <Filter
-            title="Tier"
-            options={tierOptions}
-            selectedOptions={selectedTier}
-            onSelectionChange={handleTierChange}
-          />
-          <Filter
-            title="Portrait"
-            options={getPortraitOptions()}
-            selectedOptions={selectedPortrait}
-            onSelectionChange={handlePortraitChange}
+            title="Mastery"
+            options={masteryOptions}
+            selectedOptions={selectedMastery}
+            onSelectionChange={handleMasteryChange}
           />
         </div>
         <div className={styles.content}>
