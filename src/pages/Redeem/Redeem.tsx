@@ -4,57 +4,11 @@ import { claimService } from '../../services/claimService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { fetchAvailableRankedAccounts, type RankedData } from '../../services/apiRankedsService';
 import ClaimAccountRulesModal from '../../components/ClaimAccountRulesModal/ClaimAccountRulesModal';
-
-// Traducciones
-const translations = {
-    codeLabel: {
-        en: 'Redeem Code (8 characters)',
-        es: 'Código de Reclamación (8 caracteres)'
-    },
-    codeHint: {
-        en: 'Enter the 8-character alphanumeric code',
-        es: 'Ingresa el código alfanumérico de 8 caracteres'
-    },
-    codePlaceholder: {
-        en: 'Ex: ABC12345',
-        es: 'Ej: ABC12345'
-    },
-    accountLabel: {
-        en: 'Select Majesty Account',
-        es: 'Seleccionar Cuenta Majesty'
-    },
-    accountLoading: {
-        en: 'Loading accounts...',
-        es: 'Cargando cuentas...'
-    },
-    accountChoose: {
-        en: 'Choose an account...',
-        es: 'Elige una cuenta...'
-    },
-    buttonRedeeming: {
-        en: 'Redeeming...',
-        es: 'Canjeando...'
-    },
-    buttonRedeem: {
-        en: 'Redeem account',
-        es: 'Canjear cuenta'
-    },
-    errorLoading: {
-        en: 'Error loading available accounts',
-        es: 'Error al cargar las cuentas disponibles'
-    },
-    errorUnexpected: {
-        en: 'Unexpected error. Please try again.',
-        es: 'Error inesperado. Por favor, intenta de nuevo.'
-    },
-    successMessage: {
-        en: (username: string) => `Account "${username}" claimed successfully! Permissions updated.`,
-        es: (username: string) => `¡Cuenta "${username}" reclamada exitosamente! Permisos actualizados.`
-    }
-};
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Redeem: React.FC = () => {
     const { refreshProfile, user } = useAuthContext();
+    const { t } = useLanguage();
     const [redeemCode, setRedeemCode] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [loading, setLoading] = useState(false);
@@ -63,7 +17,6 @@ const Redeem: React.FC = () => {
     const [availableAccounts, setAvailableAccounts] = useState<RankedData[]>([]);
     const [loadingAccounts, setLoadingAccounts] = useState(true);
     const [showRulesModal, setShowRulesModal] = useState(false);
-    const language = 'es'; // TODO: Conectar con Language Context del Nav
 
     useEffect(() => {
         const loadAvailableAccounts = async () => {
@@ -73,7 +26,7 @@ const Redeem: React.FC = () => {
                 setAvailableAccounts(accounts);
             } catch (error) {
                 console.error('Error loading available accounts:', error);
-                setError(translations.errorLoading[language]);
+                setError(t('redeem.errorLoading'));
             } finally {
                 setLoadingAccounts(false);
             }
@@ -115,7 +68,7 @@ const Redeem: React.FC = () => {
 
                 console.log('Profile refreshed, permissions updated');
 
-                setSuccess(translations.successMessage[language](result.rankedUsername || ''));
+                setSuccess(t('redeem.successMessage').replace('{username}', result.rankedUsername || ''));
                 setRedeemCode('');
                 setSelectedAccount('');
 
@@ -127,7 +80,7 @@ const Redeem: React.FC = () => {
             }
         } catch (error) {
             console.error('Redeem error:', error);
-            setError(translations.errorUnexpected[language]);
+            setError(t('redeem.errorUnexpected'));
         } finally {
             setLoading(false);
         }
@@ -151,22 +104,21 @@ const Redeem: React.FC = () => {
                 onClose={handleCloseModal}
                 onConfirm={handleConfirmClaim}
                 username={user?.name || user?.email || 'Player'}
-                language={language}
             />
             <div className={styles.redeem__container}>
                 <div className={styles.redeem__form}>
                     <div className={styles.input__group}>
                         <label htmlFor="redeemCode" className={styles.input__label}>
-                            {translations.codeLabel[language]}
+                            {t('redeem.codeLabel')}
                         </label>
                         <small className={styles.input__hint}>
-                            {translations.codeHint[language]}
+                            {t('redeem.codeHint')}
                         </small>
                         <input
                             type="text"
                             id="redeemCode"
                             className={styles.input__field}
-                            placeholder={translations.codePlaceholder[language]}
+                            placeholder={t('redeem.codePlaceholder')}
                             value={redeemCode}
                             onChange={handleCodeChange}
                             maxLength={8}
@@ -177,7 +129,7 @@ const Redeem: React.FC = () => {
 
                     <div className={styles.dropdown__group}>
                         <label htmlFor="majestyAccount" className={styles.input__label}>
-                            {translations.accountLabel[language]}
+                            {t('redeem.accountLabel')}
                         </label>
                         {/* <small className={styles.input__hint}>
                             {loadingAccounts
@@ -195,7 +147,7 @@ const Redeem: React.FC = () => {
                             disabled={loading || loadingAccounts}
                         >
                             <option value="" disabled>
-                                {loadingAccounts ? translations.accountLoading[language] : translations.accountChoose[language]}
+                                {loadingAccounts ? t('redeem.accountLoading') : t('redeem.accountChoose')}
                             </option>
                             {availableAccounts.map((account) => (
                                 <option key={account.id} value={account.username}>
@@ -240,7 +192,7 @@ const Redeem: React.FC = () => {
                         onClick={handleRedeem}
                         disabled={loading || !redeemCode || !selectedAccount}
                     >
-                        {loading ? translations.buttonRedeeming[language] : translations.buttonRedeem[language]}
+                        {loading ? t('redeem.buttonRedeeming') : t('redeem.buttonRedeem')}
                     </button>
                 </div>
             </div>

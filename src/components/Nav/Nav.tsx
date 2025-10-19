@@ -5,14 +5,15 @@ import { useState, useEffect } from 'react'
 import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export const Nav = () => {
     const location = useLocation()
     const { logout } = useAuthContext()
     const { canSeeAllNavigation } = usePermissions()
+    const { language, setLanguage, t } = useLanguage()
     const [hasNewNotifications, setHasNewNotifications] = useState(false)
     const [lastNotificationCount, setLastNotificationCount] = useState(0)
-    const [language, setLanguage] = useState<'en' | 'es'>('en')
 
     const handleLogout = async () => {
         if (confirm('Are you sure you want to logout?')) {
@@ -21,7 +22,8 @@ export const Nav = () => {
     }
 
     const toggleLanguage = () => {
-        setLanguage(language === 'en' ? 'es' : 'en')
+        const newLang = language === 'en' ? 'es' : 'en';
+        setLanguage(newLang);
     }
 
     // Verificar notificaciones nuevas cada 30 segundos
@@ -69,7 +71,7 @@ export const Nav = () => {
                                 className={styles.language__flag}
                             />
                             <span className={styles.language__text}>
-                                {language === 'en' ? 'English' : 'Castellano'}
+                                {t('nav.language.' + (language === 'en' ? 'english' : 'spanish'))}
                             </span>
                         </div>
                         <div className={styles.language__hover} onClick={toggleLanguage}>
@@ -79,7 +81,7 @@ export const Nav = () => {
                                 className={styles.language__flag__hover}
                             />
                             <span className={styles.language__text__hover}>
-                                {language === 'en' ? 'Castellano' : 'English'}
+                                {t('nav.language.' + (language === 'en' ? 'spanish' : 'english'))}
                             </span>
                         </div>
                     </li>
@@ -87,25 +89,25 @@ export const Nav = () => {
                         className={location.pathname === '/' ? styles.active : ''}
                         data-nav="accounts"
                     >
-                        <Link to="/">Home</Link>
+                        <Link to="/">{t('nav.home')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/bloodlines' ? styles.active : ''}
                         data-nav="bloodlines"
                     >
-                        <Link to="/bloodlines">Bloodlines</Link>
+                        <Link to="/bloodlines">{t('nav.bloodlines')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/ranked' ? styles.active : ''}
                         data-nav="ranked"
                     >
-                        <Link to="/ranked">Ranked</Link>
+                        <Link to="/ranked">{t('nav.ranked')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/champions' ? styles.active : ''}
                         data-nav="champions"
                     >
-                        <Link to="/champions">Champions</Link>
+                        <Link to="/champions">{t('nav.champions')}</Link>
                     </li>
                     {canSeeAllNavigation && (
                         <>
@@ -113,19 +115,19 @@ export const Nav = () => {
                                 className={location.pathname === '/skins' ? styles.active : ''}
                                 data-nav="skins"
                             >
-                                <Link to="/skins">Skins</Link>
+                                <Link to="/skins">{t('nav.skins')}</Link>
                             </li>
                             <li
                                 className={location.pathname === '/achievements' ? styles.active : ''}
                                 data-nav="achievements"
                             >
-                                <Link to="/achievements">Achievements</Link>
+                                <Link to="/achievements">{t('nav.achievements')}</Link>
                             </li>
                             <li
                                 className={location.pathname === '/roulette' ? styles.active : ''}
                                 data-nav="roulette"
                             >
-                                <Link to="/roulette">Ruleta</Link>
+                                <Link to="/roulette">{t('nav.roulette')}</Link>
                             </li>
                         </>
                     )}
@@ -136,13 +138,13 @@ export const Nav = () => {
                         className={location.pathname === '/redeem' ? styles.active : ''}
                         data-nav="redeem"
                     >
-                        <Link to="/redeem">Redeem</Link>
+                        <Link to="/redeem">{t('nav.redeem')}</Link>
                     </li>
                     <li
                         className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
                         data-nav="feed"
                     >
-                        <Link to="/feed">Feed</Link>
+                        <Link to="/feed">{t('nav.feed')}</Link>
                         {hasNewNotifications && (
                             <div className={styles.particles__container}>
                                 {Array.from({ length: 8 }, (_, i) => (
@@ -163,7 +165,7 @@ export const Nav = () => {
                             className={styles.logoutButton}
                             onClick={handleLogout}
                         >
-                            Logout
+                            {t('nav.logout')}
                         </button>
                     </li>
                 </ul>

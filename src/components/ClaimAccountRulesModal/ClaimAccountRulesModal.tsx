@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import styles from './ClaimAccountRulesModal.module.scss';
 import { type ClaimAccountRulesModalProps, type RuleItem } from './ClaimAccountRulesModal.types';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
     isOpen,
     onClose,
     onConfirm,
-    username,
-    language
+    username
 }) => {
+    const { t } = useLanguage();
     const [step, setStep] = useState<1 | 2>(1);
     const [rules, setRules] = useState<RuleItem[]>([
         {
@@ -128,7 +129,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                         {/* Step 1: Behavior Rules */}
                         <div className={styles.modal__header}>
                             <h2 className={styles.modal__title}>
-                                {language === 'en' ? 'BEHAVIOR RULES' : 'REGLAS DE COMPORTAMIENTO'}
+                                {t('claimRules.behaviorRules')}
                             </h2>
                         </div>
 
@@ -136,7 +137,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                             {/* Not Allowed Section */}
                             <div className={styles.rules__section}>
                                 <h3 className={styles.section__title}>
-                                    {language === 'en' ? 'NOT ALLOWED' : 'NO PERMITIDO'}
+                                    {t('claimRules.notAllowed')}
                                 </h3>
                                 <div className={styles.rules__list}>
                                     {rules.map((rule) => (
@@ -150,7 +151,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                                 className={styles.rule__icon}
                                             />
                                             <span className={styles.rule__text}>
-                                                {String(rule.id).padStart(2, '0')}. {rule.text[language]}
+                                                {String(rule.id).padStart(2, '0')}. {t(`claimRules.rules.notAllowed.${rule.id}`)}
                                             </span>
                                             <input
                                                 type="checkbox"
@@ -172,16 +173,13 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
 
                             {/* Positive message */}
                             <div className={styles.positive__message}>
-                                {language === 'en'
-                                    ? "If it isn't positive, it's better not to say it. We all have bad games 🙁 let's not make it worse for others."
-                                    : "Si no es positivo, es mejor no decirlo. Todos tenemos malas partidas 🙁 no lo hagamos peor para los demás."
-                                }
+                                {t('claimRules.positiveMessage')}
                             </div>
 
                             {/* Allowed Section */}
                             <div className={styles.rules__section}>
                                 <h3 className={styles.section__title}>
-                                    {language === 'en' ? 'ALLOWED' : 'PERMITIDO'}
+                                    {t('claimRules.allowed')}
                                 </h3>
                                 <div className={styles.rules__list}>
                                     {allowedRules.map((rule) => (
@@ -195,7 +193,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                                 className={styles.rule__icon_allowed}
                                             />
                                             <span className={styles.rule__text}>
-                                                {String(rule.id).padStart(2, '0')}. {rule.text[language]}
+                                                {String(rule.id - 4).padStart(2, '0')}. {t(`claimRules.rules.allowed.${rule.id - 4}`)}
                                             </span>
                                             <input
                                                 type="checkbox"
@@ -222,7 +220,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                 onClick={handleNext}
                                 disabled={!allRulesChecked}
                             >
-                                {language === 'en' ? 'Next' : 'Siguiente'}
+                                {t('claimRules.next')}
                             </button>
                         </div>
                     </>
@@ -231,31 +229,22 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                         {/* Step 2: Consequences */}
                         <div className={styles.modal__header}>
                             <h2 className={styles.modal__title}>
-                                {language === 'en' ? 'CONSEQUENCES' : 'CONSECUENCIAS'}
+                                {t('claimRules.consequences')}
                             </h2>
                         </div>
 
                         <div className={styles.modal__body}>
                             <div className={styles.consequences__content}>
                                 <p className={styles.consequences__warning}>
-                                    {language === 'en'
-                                        ? "If any of these rules are broken, ACCOUNT ACCESS IS REVOKED IMMEDIATELY and you'll be banned from the stream. This is years of work—think about the kind of person you want to be."
-                                        : "Si se rompe alguna de estas reglas, SE REVOCA EL ACCESO A LA CUENTA INMEDIATAMENTE y serás baneado del stream. Esto es años de trabajo—piensa en el tipo de persona que quieres ser."
-                                    }
+                                    {t('claimRules.consequencesWarning')}
                                 </p>
 
                                 <p className={styles.consequences__welcome}>
-                                    {language === 'en'
-                                        ? `I hope we all have an awesome time together—welcome, ${username}! Thanks for being part of the community.`
-                                        : `Espero que todos la pasemos increíble juntos—¡bienvenido, ${username}! Gracias por ser parte de la comunidad.`
-                                    }
+                                    {t('claimRules.consequencesWelcome').replace('{username}', username)}
                                 </p>
 
                                 <p className={styles.consequences__benefit}>
-                                    {language === 'en'
-                                        ? "From now on, you've got priority to join games on and off stream."
-                                        : "De ahora en adelante, tienes prioridad para unirte a juegos dentro y fuera del stream."
-                                    }
+                                    {t('claimRules.consequencesBenefit')}
                                 </p>
                             </div>
                         </div>
@@ -265,7 +254,7 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                 className={styles.modal__button}
                                 onClick={handleConfirm}
                             >
-                                {language === 'en' ? 'Thank you' : 'Gracias'}
+                                {t('claimRules.thankYou')}
                             </button>
                         </div>
                     </>

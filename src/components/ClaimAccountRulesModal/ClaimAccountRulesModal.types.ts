@@ -3,7 +3,6 @@ export interface ClaimAccountRulesModalProps {
     onClose: () => void;
     onConfirm: () => void;
     username: string;
-    language: Language;
 }
 
 export type Language = 'en' | 'es';

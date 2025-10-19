@@ -1,0 +1,127 @@
+{
+    "nav": {
+        "home": "Home",
+        "bloodlines": "Bloodlines",
+        "ranked": "Ranked",
+        "champions": "Champions",
+        "skins": "Skins",
+        "achievements": "Achievements",
+        "roulette": "Ruleta",
+        "redeem": "Redeem",
+        "feed": "Feed",
+        "logout": "Logout",
+        "language": {
+            "english": "English",
+            "spanish": "Castellano"
+        }
+    },
+    "redeem": {
+        "codeLabel": "Redeem Code (8 characters)",
+        "codeHint": "Enter the 8-character alphanumeric code",
+        "codePlaceholder": "Ex: ABC12345",
+        "accountLabel": "Select Majesty Account",
+        "accountLoading": "Loading accounts...",
+        "accountChoose": "Choose an account...",
+        "buttonRedeeming": "Redeeming...",
+        "buttonRedeem": "Redeem account",
+        "errorLoading": "Error loading available accounts",
+        "errorUnexpected": "Unexpected error. Please try again.",
+        "successMessage": "Account \"{username}\" claimed successfully! Permissions updated."
+    },
+    "claimRules": {
+        "behaviorRules": "BEHAVIOR RULES",
+        "notAllowed": "NOT ALLOWED",
+        "allowed": "ALLOWED",
+        "next": "Next",
+        "consequences": "CONSEQUENCES",
+        "thankYou": "Thank you",
+        "positiveMessage": "If it isn't positive, it's better not to say it. We all have bad games 🙁 let's not make it worse for others.",
+        "consequencesWarning": "If any of these rules are broken, ACCOUNT ACCESS IS REVOKED IMMEDIATELY and you'll be banned from the stream. This is years of work—think about the kind of person you want to be.",
+        "consequencesWelcome": "I hope we all have an awesome time together—welcome, {username}! Thanks for being part of the community.",
+        "consequencesBenefit": "From now on, you've got priority to join games on and off stream.",
+        "rules": {
+            "notAllowed": {
+                "1": "Insulting other players",
+                "2": "Negative comments (includes \"ez\", \"?\", \"get better\", etc.)",
+                "3": "Excessive pinging/tagging",
+                "4": "Sharing your login details with anyone"
+            },
+            "allowed": {
+                "1": "Play any game mode you like (normals, ranked, URF, etc.)",
+                "2": "Add friends to play together",
+                "3": "Log in whenever you want. Once you've claimed the account, it's yours!"
+            }
+        }
+    },
+    "accounts": {
+        "filters": {
+            "elements": "Elements",
+            "mastery": "Mastery"
+        },
+        "filterOptions": {
+            "champions": "Champions",
+            "skins": "Skins"
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "page": "Page {current} of {total}"
+        },
+        "noResults": "No accounts found with the selected filters.",
+        "loading": "Loading..."
+    },
+    "ranked": {
+        "filters": {
+            "rank": "Rank",
+            "tier": "Tier",
+            "essencer": "Essencer"
+        },
+        "rulesTitle": "How can I earn points?",
+        "rulesButton": "See how it works",
+        "achievements": {
+            "wins": "Wins",
+            "winsDesc": "Win a ranked game (soloq/flex)",
+            "level": "Level",
+            "levelDesc": "Level up your account",
+            "mastery": "Mastery",
+            "masteryDesc": "Level up champion masteries",
+            "honor": "Honor",
+            "honorDesc": "Increase your honor level",
+            "elo": "Elo",
+            "eloDesc": "Climb ranked divisions",
+            "eloClarification": "Same points for any rank",
+            "redeem": "Redeem",
+            "redeemDesc": "Redeem an account",
+            "member": "Member",
+            "memberDesc": "Level up to 30",
+            "memberClarification": "ONLY reedeming account in level 10 or lower"
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "page": "Page {current} of {total}"
+        }
+    },
+    "feed": {
+        "filters": {
+            "all": "All",
+            "level": "Level",
+            "ranked": "Ranked",
+            "elo": "Elo",
+            "member": "Member",
+            "essencer": "Essencer",
+            "redeem": "Redeem",
+            "honor": "Honor",
+            "mastery": "Mastery",
+            "ranking": "Ranking"
+        }
+    },
+    "common": {
+        "close": "Close",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete"
+    }
+}

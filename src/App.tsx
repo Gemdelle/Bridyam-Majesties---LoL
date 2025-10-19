@@ -4,6 +4,7 @@ import { Nav } from './components/Nav/Nav'
 import { useAuthContext } from './contexts/AuthContext'
 import { PetProvider } from './contexts/PetContext'
 import { CursorProvider } from './contexts/CursorContext'
+import { LanguageProvider } from './contexts/LanguageContext'
 import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Tutorial from './components/Tutorial'
@@ -35,124 +36,126 @@ function AppContent() {
   const showNav = isAuthenticated && location.pathname !== '/adoption' && location.pathname !== '/cursor-selection';
 
   return (
-    <CursorProvider>
-      <PetProvider>
-        {showNav && <Nav />}
-        <Tutorial />
-        <Routes>
-          {/* Public routes */}
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <SignUp />
-            }
-          />
+    <LanguageProvider>
+      <CursorProvider>
+        <PetProvider>
+          {showNav && <Nav />}
+          <Tutorial />
+          <Routes>
+            {/* Public routes */}
+            <Route
+              path="/login"
+              element={
+                isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <SignUp />
+              }
+            />
 
-          {/* Protected routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Accounts />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/bloodlines"
-            element={
-              <ProtectedRoute>
-                <Bloodlines />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ranked"
-            element={
-              <ProtectedRoute>
-                <Ranked />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/cursor-selection"
-            element={
-              <ProtectedRoute>
-                <CursorSelection />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected routes */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Accounts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bloodlines"
+              element={
+                <ProtectedRoute>
+                  <Bloodlines />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ranked"
+              element={
+                <ProtectedRoute>
+                  <Ranked />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cursor-selection"
+              element={
+                <ProtectedRoute>
+                  <CursorSelection />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Redirect unknown routes to home or login */}
-          <Route
-            path="/champions"
-            element={
-              <ProtectedRoute>
-                <Champions />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/skins"
-            element={
-              <ProtectedRoute>
-                <Skins />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/achievements"
-            element={
-              <ProtectedRoute>
-                <Achievements />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/roulette"
-            element={
-              <ProtectedRoute>
-                <Roulette />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/redeem"
-            element={
-              <ProtectedRoute>
-                <Redeem />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/feed"
-            element={
-              <ProtectedRoute>
-                <Feed />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/adoption"
-            element={
-              <ProtectedRoute>
-                <Adoption />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*"
-            element={
-              <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
-            }
-          />
-        </Routes>
-      </PetProvider>
-    </CursorProvider>
+            {/* Redirect unknown routes to home or login */}
+            <Route
+              path="/champions"
+              element={
+                <ProtectedRoute>
+                  <Champions />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/skins"
+              element={
+                <ProtectedRoute>
+                  <Skins />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/achievements"
+              element={
+                <ProtectedRoute>
+                  <Achievements />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/roulette"
+              element={
+                <ProtectedRoute>
+                  <Roulette />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/redeem"
+              element={
+                <ProtectedRoute>
+                  <Redeem />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                <ProtectedRoute>
+                  <Feed />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/adoption"
+              element={
+                <ProtectedRoute>
+                  <Adoption />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*"
+              element={
+                <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
+              }
+            />
+          </Routes>
+        </PetProvider>
+      </CursorProvider>
+    </LanguageProvider>
   )
 }
 
