@@ -165,6 +165,7 @@
   flex-shrink: 0;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   position: relative;
+  margin-left: auto;
 
   &.checked {
     background: linear-gradient(145deg, #c8975c, #785a28);
@@ -184,20 +185,20 @@
 }
 
 .rule__icon {
-  font-size: 1.2rem;
-  color: #c1121f;
-  font-weight: bold;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
-  text-shadow: 0 0 10px rgba(193, 18, 31, 0.5);
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(193, 18, 31, 0.5));
 }
 
 .rule__icon_allowed {
-  font-size: 1.2rem;
-  color: #00a859;
-  font-weight: bold;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
-  text-shadow: 0 0 10px rgba(0, 168, 89, 0.5);
+  object-fit: contain;
   margin-right: 15px;
+  filter: drop-shadow(0 0 8px rgba(0, 168, 89, 0.5));
 }
 
 .rule__text {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ClaimAccountRulesModal.module.scss';
-import { type ClaimAccountRulesModalProps, type Language, type RuleItem } from './ClaimAccountRulesModal.types';
+import { type ClaimAccountRulesModalProps, type RuleItem } from './ClaimAccountRulesModal.types';
 
 const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
     isOpen,
@@ -161,6 +161,14 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                             className={`${styles.rule__item} ${styles.reveal}`}
                                             style={{ animationDelay: `${index * 0.1}s` }}
                                         >
+                                            <img
+                                                src="/images/bullets/bullet-wrong.png"
+                                                alt="Not allowed"
+                                                className={styles.rule__icon}
+                                            />
+                                            <span className={styles.rule__text}>
+                                                {String(rule.id).padStart(2, '0')}. {rule.text[language]}
+                                            </span>
                                             <input
                                                 type="checkbox"
                                                 checked={rule.checked}
@@ -173,10 +181,6 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                                                     </svg>
                                                 )}
-                                            </span>
-                                            <span className={styles.rule__icon}>✕</span>
-                                            <span className={styles.rule__text}>
-                                                {String(rule.id).padStart(2, '0')}. {rule.text[language]}
                                             </span>
                                         </label>
                                     ))}
@@ -206,7 +210,11 @@ const ClaimAccountRulesModal: React.FC<ClaimAccountRulesModalProps> = ({
                                                 className={`${styles.allowed__item} ${styles.reveal}`}
                                                 style={{ animationDelay: `${0.3 + (index * 0.1)}s` }}
                                             >
-                                                <span className={styles.rule__icon_allowed}>✓</span>
+                                                <img
+                                                    src="/images/bullets/bullet-right.png"
+                                                    alt="Allowed"
+                                                    className={styles.rule__icon_allowed}
+                                                />
                                                 <span className={styles.rule__text}>
                                                     {String(rule.id).padStart(2, '0')}. {rule.text[language]}
                                                 </span>
