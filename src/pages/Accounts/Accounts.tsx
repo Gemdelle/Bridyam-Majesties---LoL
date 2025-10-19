@@ -24,7 +24,7 @@ const usernameToPortraitMap: { [key: string]: string } = {
   'GEM Blaandel\'Valse#GEM': '/images/portraits/Blaandel\'Valse.png',
   'GEM Blaandelvals#GEM': '/images/portraits/Blaandel\'Valse.png',
   'GEM Bricellice#GEM': '/images/portraits/Bricellice.png',
-  'GEM Brincellezha#GEM': '/images/portraits/Bricellice.png',
+  'GEM Brincellezha#GEM': '/images/frames/default-majesty-portrait.png',
   'GEM Damglantine#GEM': '/images/portraits/Damglantine.png',
   'GEM Deestellirys#GEM': '/images/portraits/Deestellirys.png',
   'GEM Deellycella#GEM': '/images/frames/default-majesty-portrait.png',
