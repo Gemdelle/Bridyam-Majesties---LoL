@@ -32,13 +32,12 @@ const usernameToPortraitMap: { [key: string]: string } = {
   'GEM Blaandelvals#GEM': '/images/portraits/Blaandel\'Valse.png',
   'GEM Bricellice#GEM': '/images/portraits/Bricellice.png',
   'GEM Brincellezha#GEM': '/images/portraits/Bricellice.png',
-  'GEM Cordacrimory#GEM': '/images/portraits/Arminariknot.png',
   'GEM Damglantine#GEM': '/images/portraits/Damglantine.png',
   'GEM Deestellirys#GEM': '/images/portraits/Deestellirys.png',
-  'GEM Deellycella#GEM': '/images/portraits/Arminariknot.png',
+  'GEM Deellycella#GEM': '/images/frames/default-majesty-portrait.png',
   'GEM Dreemurdomme#GEM': '/images/portraits/Dreemurdomme.png',
   'GEM Eunilacealle#LAS': '/images/portraits/Eunilacealle.png',
-  'GEM Glacelynne#GEM': '/images/portraits/Arminariknot.png',
+  'GEM Glacelynne#GEM': '/images/frames/default-majesty-portrait.png',
   'GEM Hestiarethe#GEM': '/images/portraits/Hestiarethe.png',
   'GEM Ivelism#GEM': '/images/portraits/Ivelism.png',
   'GEM Lacellire#LAS': '/images/portraits/Lacellire.png',
@@ -46,33 +45,33 @@ const usernameToPortraitMap: { [key: string]: string } = {
   'GEM Orzyadhere#LAS': '/images/portraits/Orzyadhere.png',
   'GEM Vrillyarethez#GEM': '/images/portraits/Vrillyarethez.png',
   // Nuevos usernames del JSON proporcionado
-  'GEM Asticedicair#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Cierzellant#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Deliquesence#LAS': '/images/portraits/Arminariknot.png',
-  'GEM Dellablivien#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Gallilessya#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Greedgardell#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Irzeleriance#LAS': '/images/portraits/Arminariknot.png',
-  'GEM Lagrimelle#GEM': '/images/portraits/Lahallayd.png',
-  'GEM PelsNpurmips#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Phrasimfasya#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Plissevelary#GEM': '/images/portraits/Lahallayd.png',
-  'GEM Praireclovia#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Primrosenrot#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Priscyumice#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Purselgarmet#LAS': '/images/portraits/Arminariknot.png',
-  'GEM Regimbudlair#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Rothroyaume#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Stridellarea#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Vaelardorcel#GEM': '/images/portraits/Lahallayd.png',
-  'GEM Veldraveth#GEM': '/images/portraits/Arminariknot.png',
-  'GEM Velchelisse#GEM': '/images/portraits/Lahallayd.png',
-  'GEM Vespianelian#GEM': '/images/portraits/Arminariknot.png',
+  'GEM Asticedicair#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Cierzellant#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Deliquesence#LAS': '/images/frames/default-majesty-portrait.png',
+  'GEM Dellablivien#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Gallilessya#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Greedgardell#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Irzeleriance#LAS': '/images/frames/default-majesty-portrait.png',
+  'GEM Lagrimelle#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM PelsNpurmips#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Phrasimfasya#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Plissevelary#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Praireclovia#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Primrosenrot#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Priscyumice#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Purselgarmet#LAS': '/images/frames/default-majesty-portrait.png',
+  'GEM Regimbudlair#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Rothroyaume#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Stridellarea#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Vaelardorcel#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Veldraveth#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Velchelisse#GEM': '/images/frames/default-majesty-portrait.png',
+  'GEM Vespianelian#GEM': '/images/frames/default-majesty-portrait.png',
 };
 
 // Función para obtener el portrait local basado en el username
 const getLocalPortrait = (username: string): string => {
-  return usernameToPortraitMap[username] || '/images/portraits/Arminariknot.png'; // Fallback por defecto
+  return usernameToPortraitMap[username] || '/images/frames/default-majesty-portrait.png'; // Fallback por defecto
 };
 
 const Accounts: React.FC = () => {
@@ -189,7 +188,7 @@ const Accounts: React.FC = () => {
     const { accounts: currentPageAccounts } = getCurrentPageAccounts();
     const rows = [];
     const accountsPerRow = 4;
-    
+
     for (let i = 0; i < currentPageAccounts.length; i += accountsPerRow) {
       const rowAccounts = currentPageAccounts.slice(i, i + accountsPerRow);
       rows.push(
@@ -214,7 +213,7 @@ const Accounts: React.FC = () => {
         </div>
       );
     }
-    
+
     return rows;
   };
 
@@ -265,8 +264,8 @@ const Accounts: React.FC = () => {
             <>
               {renderAccountRows()}
               <div className={styles.pagination}>
-                <button 
-                  onClick={() => handlePageChange(currentPage - 1)} 
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                   className={styles.pagination__button}
                 >
@@ -275,8 +274,8 @@ const Accounts: React.FC = () => {
                 <span className={styles.pagination__info}>
                   Page {currentPage} of {totalPages}
                 </span>
-                <button 
-                  onClick={() => handlePageChange(currentPage + 1)} 
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   className={styles.pagination__button}
                 >

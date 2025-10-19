@@ -101,6 +101,9 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         key={data.id}
                         src={data.url}
                         alt={`${data.username} portrait`}
+                        onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/frames/default-majesty-portrait.png';
+                        }}
                     />
                 </div>
                 <h3 className={styles.username}>{data.name}</h3>

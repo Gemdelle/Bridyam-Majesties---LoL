@@ -103,6 +103,10 @@
     width: auto;
     height: 100%;
     transition: all 0.5s ease-in-out;
+    filter: drop-shadow(0 0 20px rgba(200, 155, 60, 0.7)) 
+            drop-shadow(0 0 30px rgba(200, 155, 60, 0.5)) 
+            drop-shadow(0 0 40px rgba(200, 155, 60, 0.3));
+    
     &:hover {
       transform: scale(1.05);
     }
