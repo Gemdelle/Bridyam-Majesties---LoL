@@ -109,11 +109,11 @@ ul li.active::before {
   position: relative;
   width: 5vw;
   min-width: 1vw;
-  margin-right: 1vw;
   padding: 0;
   height: 95%;
-  margin-top: 2%;
   transition: all 0.3s ease;
+  margin-left: 5%;
+  z-index: 999;
   // background-color: red;
   @include flex-center;
 
