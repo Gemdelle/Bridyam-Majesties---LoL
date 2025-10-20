@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AccountSummary.module.scss';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryDataByRankedId, type MasteryData } from '../../services/apiMasteriesService';
+import { fetchMasteryDataByRankedId } from '../../services/apiMasteriesService';
 
 // Define todos los datos numéricos que el componente necesita
 export interface AccountSummaryData {
@@ -116,12 +116,12 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                     })
                     .filter((item): item is ChampionWithMastery => item !== null);
 
-                // Sort by mastery level descending and take top 4
-                const topFour = championsWithMastery
+                // Sort by mastery level descending and take top 5
+                const topFive = championsWithMastery
                     .sort((a, b) => b.masteryLevel - a.masteryLevel)
-                    .slice(0, 4);
+                    .slice(0, 5);
 
-                setTopChampions(topFour);
+                setTopChampions(topFive);
             } catch (error) {
                 console.error('Error loading top champions:', error);
             }
@@ -172,7 +172,7 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         </div>
                     </div>
                     <div className={styles.champions}>
-                        {topChampions.map((championData, index) => {
+                        {topChampions.map((championData) => {
                             const champion = championData.champion;
                             const masteryLevel = championData.masteryLevel;
                             const hasImageError = imageErrors.has(champion.id);

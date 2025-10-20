@@ -2,7 +2,7 @@
 
 .card {
   height: 100%;
-  width: 20%;
+  width: 21.5%;
   display: flex;
   position: relative;
   backdrop-filter: blur(8px);
@@ -161,19 +161,19 @@
   height: 35%;
   margin-top: 5%;
   // background-color: pink;
-  @include flex-between;
+  @include flex-center;
 }
 
 .champion__container {
-  width: 22%;
+  width: 20%;
   height: 100%;
   // background-color: lightgreen;
   @include flex-col-between;
 }
 
 .champion__icon {
-  width: 100%;
-  height: 50%;
+  width: 110%;
+  height: 45%;
   position: relative;
   // background-color: blue;
   @include flex-center;
@@ -219,16 +219,16 @@
   width: 100%;
   height: 50%;
   // background-color: darkcyan;
-  @include flex-col;
+  @include flex-col-between;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  margin-bottom: 20%;
 }
 
 .mastery__badge {
   width: 100%;
-  height: 70%;
-  max-height: 90%;
+  height: 50%;
+  margin-bottom: 10%;
   filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6));
 }
 
@@ -238,47 +238,9 @@
 
 .mastery__level {
   font-size: 0.8vw;
-  font-weight: bold;
   color: #c8a867;
   text-shadow: 0 0 10px rgba(240, 230, 210, 0.8), 0 0 15px rgba(200, 155, 60, 0.6);
   letter-spacing: 0.05vw;
-}
-
-.essences {
-  display: flex;
-  justify-content: flex-end;
-  gap: $spacing-lg;
-  margin-top: auto;
-  padding-top: $spacing-xs;
-
-  .essenceItem {
-    @include flex-center;
-    flex-direction: column;
-    gap: $spacing-xs;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(30, 35, 40, 0.6));
-    border: 1px solid #463714;
-    transition: all 0.3s ease;
-
-    &:hover {
-      border-color: #b69461;
-      box-shadow: 0 0 8px rgba(180, 148, 97, 0.3);
-    }
-
-    img {
-      width: 32px;
-      height: 32px;
-      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
-    }
-
-    span {
-      font-weight: bold;
-      color: #cdbe91;
-      font-size: 0.9rem;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    }
-  }
 }
 
 .numberContainer {
