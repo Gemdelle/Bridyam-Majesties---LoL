@@ -38,7 +38,7 @@ const renderNumberAsImages = (number: number) => {
             {digits.map((digit, index) => (
                 <img
                     key={index}
-                    src={`/images/roulette/${digit}.png`}
+                    src={`/images/numbers/${digit}.png`}
                     alt={digit}
                     className={`${styles.digitImage} ${digit === '0' ? styles.zeroDigit : ''}`}
                 />
@@ -86,8 +86,9 @@ const getChampionImageName = (championName: string): string => {
 const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
     const [topChampions, setTopChampions] = useState<ChampionWithMastery[]>([]);
     const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+    const [masteryCount, setMasteryCount] = useState<number>(0);
 
-    // Get the top 4 champions with highest mastery for this account
+    // Get the top 5 champions with highest mastery for this account
     useEffect(() => {
         const getTopChampions = async () => {
             try {
@@ -116,6 +117,10 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                     })
                     .filter((item): item is ChampionWithMastery => item !== null);
 
+                // Count masteries 10 or 10+
+                const count10Plus = championsWithMastery.filter(c => c.masteryLevel >= 10).length;
+                setMasteryCount(count10Plus);
+
                 // Sort by mastery level descending and take top 5
                 const topFive = championsWithMastery
                     .sort((a, b) => b.masteryLevel - a.masteryLevel)
@@ -138,7 +143,7 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
         <div className={styles.card}>
             <div className={styles.ranking__container}>
                 <img src="/images/frames/account-ranking-position-frame.png" alt="Ranking Frame" className={styles.ranking__position_frame} />
-                <span className={styles.ranking__position}>{renderNumberAsImages(10)}</span>
+                <span className={styles.ranking__position}>{renderNumberAsImages(masteryCount)}</span>
             </div>
             <h2 className={styles.name}>{data.username}</h2>
 
