@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AccountSummary.module.scss';
-import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
+import { fetchMasteryDataByRankedId, type MasteryData } from '../../services/apiMasteriesService';
 
 // Define todos los datos numéricos que el componente necesita
 export interface AccountSummaryData {
@@ -24,6 +25,11 @@ interface AccountSummaryProps {
     data: AccountSummaryData;
 }
 
+interface ChampionWithMastery {
+    champion: Champion;
+    masteryLevel: number;
+}
+
 // Function to convert number to digit images
 const renderNumberAsImages = (number: number) => {
     const digits = number.toString().split('');
@@ -41,33 +47,92 @@ const renderNumberAsImages = (number: number) => {
     );
 };
 
+// Function to normalize champion name for Riot API
+const getChampionImageName = (championName: string): string => {
+    // Special cases that need specific handling
+    const specialCases: { [key: string]: string } = {
+        "Nunu & Willump": "Nunu",
+        "Wukong": "MonkeyKing",
+        "Renata Glasc": "Renata",
+        "Bel'Veth": "Belveth",
+        "Cho'Gath": "Chogath",
+        "Dr. Mundo": "DrMundo",
+        "Jarvan IV": "JarvanIV",
+        "K'Sante": "KSante",
+        "Kai'Sa": "Kaisa",
+        "Kha'Zix": "Khazix",
+        "Kog'Maw": "KogMaw",
+        "LeBlanc": "Leblanc",
+        "Lee Sin": "LeeSin",
+        "Master Yi": "MasterYi",
+        "Miss Fortune": "MissFortune",
+        "Twisted Fate": "TwistedFate",
+        "Tahm Kench": "TahmKench",
+        "Vel'Koz": "Velkoz",
+        "Xin Zhao": "XinZhao",
+        "Rek'Sai": "RekSai",
+        "Aurelion Sol": "AurelionSol"
+    };
+
+    // Check if it's a special case
+    if (specialCases[championName]) {
+        return specialCases[championName];
+    }
+
+    // Default: remove apostrophes, dots, spaces, and ampersands
+    return championName.replace(/['.\s&]/g, '');
+};
+
 const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
-    const [likedChampions, setLikedChampions] = useState<Champion[]>([]);
+    const [topChampions, setTopChampions] = useState<ChampionWithMastery[]>([]);
+    const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
-    // Get the first 4 liked champions from localStorage
+    // Get the top 4 champions with highest mastery for this account
     useEffect(() => {
-        const getLikedChampions = () => {
+        const getTopChampions = async () => {
             try {
-                const savedFavorites = localStorage.getItem('favoriteChampions');
-                if (savedFavorites) {
-                    const favoriteIds: number[] = JSON.parse(savedFavorites);
-                    const firstFourIds = favoriteIds.slice(0, 4);
+                // Load champions and masteries for this account
+                const [allChampions, accountMasteries] = await Promise.all([
+                    fetchChampions(),
+                    fetchMasteryDataByRankedId(data.id)
+                ]);
 
-                    // Load champions and filter to get the first 4 liked ones
-                    fetchChampions().then(champions => {
-                        const likedChamps = champions.filter(champion =>
-                            firstFourIds.includes(champion.id)
-                        );
-                        setLikedChampions(likedChamps);
-                    });
-                }
+                // Create a map of riot champion id to our champion id
+                const riotIdToChampionMap = new Map<number, Champion>();
+                allChampions.forEach(champion => {
+                    const riotId = getRiotIdForChampion(champion.id);
+                    riotIdToChampionMap.set(riotId, champion);
+                });
+
+                // Match masteries with champions and filter only champions with mastery > 0
+                const championsWithMastery: ChampionWithMastery[] = accountMasteries
+                    .filter(mastery => mastery.champion_level !== null && mastery.champion_level > 0)
+                    .map(mastery => {
+                        const champion = riotIdToChampionMap.get(mastery.champion_id);
+                        return champion ? {
+                            champion,
+                            masteryLevel: mastery.champion_level!
+                        } : null;
+                    })
+                    .filter((item): item is ChampionWithMastery => item !== null);
+
+                // Sort by mastery level descending and take top 4
+                const topFour = championsWithMastery
+                    .sort((a, b) => b.masteryLevel - a.masteryLevel)
+                    .slice(0, 4);
+
+                setTopChampions(topFour);
             } catch (error) {
-                console.error('Error loading liked champions:', error);
+                console.error('Error loading top champions:', error);
             }
         };
 
-        getLikedChampions();
-    }, []);
+        getTopChampions();
+    }, [data.id]);
+
+    const handleImageError = (championId: number) => {
+        setImageErrors(prev => new Set(prev).add(championId));
+    };
 
     return (
         <div className={styles.card}>
@@ -107,23 +172,24 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                         </div>
                     </div>
                     <div className={styles.champions}>
-                        {[0, 1, 2, 3].map((index) => {
-                            const champion = likedChampions[index];
-                            const masteryLevel = champion ? 7 : 0; // TODO: Obtener maestría real del backend
+                        {topChampions.map((championData, index) => {
+                            const champion = championData.champion;
+                            const masteryLevel = championData.masteryLevel;
+                            const hasImageError = imageErrors.has(champion.id);
+                            
                             return (
-                                <div key={index} className={styles.champion__container}>
+                                <div key={champion.id} className={styles.champion__container}>
                                     <div className={styles.champion__icon}>
-                                        <img
-                                            src={champion
-                                                ? `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`
-                                                : "/images/pets/nav-pet-2.png"
-                                            }
-                                            alt={champion ? champion.name : "Champion"}
-                                            className={styles.champion__icon__image}
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).src = '/images/pets/nav-pet-2.png';
-                                            }}
-                                        />
+                                        {!hasImageError ? (
+                                            <img
+                                                src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${getChampionImageName(champion.name)}.png`}
+                                                alt={champion.name}
+                                                className={styles.champion__icon__image}
+                                                onError={() => handleImageError(champion.id)}
+                                            />
+                                        ) : (
+                                            <div className={styles.champion__placeholder}>?</div>
+                                        )}
                                         <img
                                             src="/images/frames/account-champion-frame.png"
                                             alt="Champion Frame"
@@ -131,16 +197,14 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                                         />
                                     </div>
                                     <div className={styles.champion__mastery}>
-                                        {masteryLevel > 0 && (
-                                            <>
-                                                <img
-                                                    src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
-                                                    alt={`Mastery ${masteryLevel}`}
-                                                    className={styles.mastery__badge}
-                                                />
-                                                <span className={styles.mastery__level}>{masteryLevel}</span>
-                                            </>
-                                        )}
+                                        <img
+                                            src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
+                                            alt={`Mastery ${masteryLevel}`}
+                                            className={styles.mastery__badge}
+                                        />
+                                        <span className={styles.mastery__level}>
+                                            {masteryLevel > 10 ? '10+' : masteryLevel}
+                                        </span>
                                     </div>
                                 </div>
                             );
