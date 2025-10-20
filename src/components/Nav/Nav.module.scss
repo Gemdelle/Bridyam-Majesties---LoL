@@ -30,8 +30,6 @@ ul {
 
 ul li {
     @include flex-center;
-    margin: 0 0.5rem;
-    padding: 0.6rem 1.2rem;
     position: relative;
     // background-color: yellow;
 }
@@ -214,6 +212,7 @@ ul li.active::before {
   width: 45%;
   height: 100%;
   background-color: rgba(0, 0, 255, 0.3);
+  @include flex-between;
 }
 
 // User info styles
