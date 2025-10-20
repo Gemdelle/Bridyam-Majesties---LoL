@@ -200,7 +200,7 @@ const AccountSummary: React.FC<AccountSummaryProps> = ({ data }) => {
                                         <img
                                             src={`/images/masteries/badges/${Math.min(masteryLevel, 10)}.png`}
                                             alt={`Mastery ${masteryLevel}`}
-                                            className={styles.mastery__badge}
+                                            className={`${styles.mastery__badge} ${masteryLevel <= 3 ? styles['mastery__badge--small'] : ''}`}
                                         />
                                         <span className={styles.mastery__level}>
                                             {masteryLevel > 10 ? '10+' : masteryLevel}

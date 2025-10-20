@@ -227,9 +227,13 @@
 
 .mastery__badge {
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 70%;
+  max-height: 90%;
   filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.6));
+}
+
+.mastery__badge--small {
+  height: 50%;
 }
 
 .mastery__level {
