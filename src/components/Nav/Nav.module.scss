@@ -100,7 +100,7 @@ ul li.active::before {
 .nav__container__links__left {
   width: 45%;
   height: 100%;
-  background-color: rgba(255, 0, 0, 0.3);
+  // background-color: rgba(255, 0, 0, 0.3);
   position: relative;
 }
 
@@ -211,7 +211,7 @@ ul li.active::before {
 .nav__container__links__right {
   width: 45%;
   height: 100%;
-  background-color: rgba(0, 0, 255, 0.3);
+  // background-color: rgba(0, 0, 255, 0.3);
   @include flex-between;
 }
 
