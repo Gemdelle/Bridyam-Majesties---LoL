@@ -171,6 +171,10 @@ ul li.active::before {
   justify-content: center;
   gap: 0.2rem;
   z-index: 10000;
+  background-color: rgba(24, 24, 24, 0.9);
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: 1px solid rgba(182, 148, 97, 0.6);
 }
 
 .language__flag__hover {
