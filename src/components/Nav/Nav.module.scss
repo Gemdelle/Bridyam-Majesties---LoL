@@ -17,7 +17,7 @@
 } 
 
 .nav__container {
-  width: 90%;
+  width: 98%;
   height: 60%;
   @include flex-between;
   // background-color: $light-color;
@@ -100,9 +100,9 @@ ul li.active::before {
 }
 
 .nav__container__links__left {
-  width: 30%;
+  width: 45%;
   height: 100%;
-  // background-color: $secondary-color;
+  background-color: rgba(255, 0, 0, 0.3);
   position: relative;
 }
 
@@ -211,9 +211,9 @@ ul li.active::before {
 }
 
 .nav__container__links__right {
-  width: 30%;
+  width: 45%;
   height: 100%;
-  // background-color: $warning-color;
+  background-color: rgba(0, 0, 255, 0.3);
 }
 
 // User info styles

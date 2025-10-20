@@ -109,6 +109,9 @@ export const Nav = () => {
                     >
                         <Link to="/champions">{t('nav.champions')}</Link>
                     </li>
+                </ul>
+                <PetDisplay />
+                <ul className={styles.nav__container__links__right}>
                     {canSeeAllNavigation && (
                         <>
                             <li
@@ -131,9 +134,6 @@ export const Nav = () => {
                             </li>
                         </>
                     )}
-                </ul>
-                <PetDisplay />
-                <ul className={styles.nav__container__links__right}>
                     <li
                         className={location.pathname === '/redeem' ? styles.active : ''}
                         data-nav="redeem"
@@ -153,13 +153,6 @@ export const Nav = () => {
                             </div>
                         )}
                     </li>
-                    {canSeeAllNavigation && (
-                        <>
-                            <li>
-                                PAGE
-                            </li>
-                        </>
-                    )}
                     <li>
                         <button
                             className={styles.logoutButton}
