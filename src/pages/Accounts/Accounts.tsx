@@ -3,6 +3,12 @@ import styles from './Accounts.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import AccountSummary from '../../components/AccountSummary';
 import AccountsService, { type Account } from '../../services/accountsService';
+import { fetchMasteryDataByRankedId } from '../../services/apiMasteriesService';
+
+// Extended Account interface with mastery 10+ count
+interface AccountWithMasteryCount extends Account {
+  masteryCount10Plus: number;
+}
 
 // --- Opciones para los filtros ---
 const elementsOptions: FilterOption[] = [
@@ -11,11 +17,15 @@ const elementsOptions: FilterOption[] = [
 ];
 
 const masteryOptions: FilterOption[] = [
-  { id: '6', label: '6' },
-  { id: '7', label: '7' },
-  { id: '8', label: '8' },
-  { id: '9', label: '9' },
-  { id: '10', label: '10' },
+  { id: '100', label: '100' },
+  { id: '95', label: '95' },
+  { id: '90', label: '90' },
+  { id: '85', label: '85' },
+  { id: '80', label: '80' },
+  { id: '75', label: '75' },
+  { id: '70', label: '70' },
+  { id: '65', label: '65' },
+  { id: '60', label: '60' },
 ];
 
 // Mapeo completo de usernames a portraits locales
@@ -37,6 +47,8 @@ const usernameToPortraitMap: { [key: string]: string } = {
   'GEM Lahallayd#LAS': '/images/portraits/Lahallayd.png',
   'GEM Orzyadhere#LAS': '/images/portraits/Orzyadhere.png',
   'GEM Vrillyarethez#GEM': '/images/portraits/Vrillyarethez.png',
+  'GEM Vrillyarethez#LAS': '/images/portraits/Vrillyarethez.png',
+  'GEM Vrilyarethez#GEM': '/images/portraits/Vrillyarethez.png', // Typo in backend
   // Nuevos usernames del JSON proporcionado
   'GEM Asticedicair#GEM': '/images/frames/default-majesty-portrait.png',
   'GEM Cierzellant#GEM': '/images/frames/default-majesty-portrait.png',
@@ -68,7 +80,7 @@ const getLocalPortrait = (username: string): string => {
 };
 
 const Accounts: React.FC = () => {
-  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [accounts, setAccounts] = useState<AccountWithMasteryCount[]>([]);
   const [selectedElements, setSelectedElements] = useState<string[]>([]);
   const [selectedMastery, setSelectedMastery] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,30 +98,31 @@ const Accounts: React.FC = () => {
         setIsLoading(true);
         setError(null);
         const accountsData = await accountsService.getAccounts();
-        setAccounts(accountsData);
+
+        // Calculate mastery 10+ count for each account
+        const accountsWithMasteryCount = await Promise.all(
+          accountsData.map(async (account) => {
+            try {
+              const masteries = await fetchMasteryDataByRankedId(account.id);
+              const count10Plus = masteries.filter(m => m.champion_level !== null && m.champion_level >= 10).length;
+              return {
+                ...account,
+                masteryCount10Plus: count10Plus
+              };
+            } catch (err) {
+              console.error(`Error fetching masteries for account ${account.id}:`, err);
+              return {
+                ...account,
+                masteryCount10Plus: 0
+              };
+            }
+          })
+        );
+
+        setAccounts(accountsWithMasteryCount);
       } catch (error) {
         console.error('Error loading accounts:', error);
         setError(error instanceof Error ? error.message : 'Failed to load accounts');
-        // Set mock data for development/testing
-        setAccounts([
-          {
-            url: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/5413.png",
-            id: 19,
-            name: "Tryppy Troppy",
-            username: "GEM Damglantine#GEM",
-            champions: 84,
-            skins: 267,
-            masteries: 84,
-            solo_q_elo: "EMERALD 4",
-            roles: {
-              top: 45,
-              jungle: 78,
-              mid: 34,
-              adc: 67,
-              support: 45
-            }
-          }
-        ]);
       } finally {
         setIsLoading(false);
       }
@@ -129,7 +142,7 @@ const Accounts: React.FC = () => {
   };
 
   const filteredAccounts = accounts
-    .filter((account: Account) => {
+    .filter((account: AccountWithMasteryCount) => {
       // Filter by elements (champions or skins)
       const matchesElements = selectedElements.length === 0 || selectedElements.some(element => {
         if (element === 'champions') return account.champions > 0;
@@ -137,10 +150,10 @@ const Accounts: React.FC = () => {
         return true;
       });
 
-      // Filter by mastery level (6, 7, 8, 9, 10)
+      // Filter by mastery count (exact number of masteries 10/10+)
       const matchesMastery = selectedMastery.length === 0 || selectedMastery.some(level => {
         const masteryLevel = parseInt(level);
-        return account.masteries >= masteryLevel; // TODO: Cambiar cuando tengamos maestría por champion
+        return account.masteryCount10Plus === masteryLevel; // Filter by exact number of 10+ masteries
       });
 
       return matchesElements && matchesMastery;
@@ -153,10 +166,10 @@ const Accounts: React.FC = () => {
         if (element === 'skins') return b.skins - a.skins;
       }
       if (selectedMastery.length > 0) {
-        return b.masteries - a.masteries;
+        return b.masteryCount10Plus - a.masteryCount10Plus;
       }
-      // Default: sort by champions descending
-      return b.champions - a.champions;
+      // Default: sort by masteries 10+ count (ranking) descending
+      return b.masteryCount10Plus - a.masteryCount10Plus;
     });
 
   // --- Calcular las accounts a mostrar en la página actual ---
