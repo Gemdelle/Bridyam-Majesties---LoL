@@ -8,8 +8,9 @@ const PetDisplay: React.FC = () => {
     const { selectedPet } = usePetContext();
     const [petName, setPetName] = useState<string>('');
 
-    const handleClick = () => {
-        navigate('/login');
+    const handleClick = (e: React.MouseEvent) => {
+        console.log('Pet clicked!', e.target);
+        navigate('/profile');
     };
 
     useEffect(() => {
@@ -37,11 +38,11 @@ const PetDisplay: React.FC = () => {
     console.log('Final Display Name:', displayName);
 
     return (
-        <div className={styles.container} onClick={handleClick}>
+        <div className={styles.container}>
 
             <div className={styles.petContainer}>
                 <img src="/images/nav-frames/pet-2/frame-pet-2-level-6.png" alt="Pet Profile" className={styles.petFrame} />
-                <img src="/images/pets/nav-pet-2.png" alt="Pet" className={styles.pet} />
+                <img src="/images/pets/nav-pet-2.png" alt="Pet" className={styles.pet} onClick={handleClick} />
             </div>
 
             {/* Panel de emociones temporalmente oculto */}

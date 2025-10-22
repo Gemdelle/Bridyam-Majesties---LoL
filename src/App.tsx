@@ -21,6 +21,7 @@ import SignUp from './pages/SignUp/SignUp'
 import CursorSelection from './pages/CursorSelection/CursorSelection'
 import Roulette from './pages/Roulette/Roulette'
 import Feed from './pages/Feed/Feed'
+import Profile from './pages/Profile/Profile'
 
 function AppContent() {
   const { isAuthenticated } = useAuthContext();
@@ -144,6 +145,14 @@ function AppContent() {
               element={
                 <ProtectedRoute>
                   <Adoption />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

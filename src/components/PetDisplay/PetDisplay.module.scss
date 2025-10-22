@@ -3,23 +3,30 @@
 
 .container {
   position: absolute;
-  left: 50%;
-  transform: translateX(-20%);
-  height: 15vh;
-  width: 17vw;
+  // left: 50%;
+  // transform: translateX(-20%);
+  // height: 15vh;
+  // width: 17vw;
+  
+  left: 47%;
+  height: 7vw;
+  width: 7vw;
   margin-top: 5%;
   cursor: pointer;
   z-index: 10;
   // background-color: purple;
-  @include flex-between;
+  @include flex-center;
 }
+
 .petContainer {
   position: relative;
-  width: 45%;
+  // width: 40%;
+  width: 100%;
   height: 100%;
   @include flex-center;
-  // background-color: purple;
+  // background-color: blue;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none; // Prevent container from intercepting clicks
 }
 
 .petFrame {
@@ -32,13 +39,15 @@
 }
 
 .pet {
-  position: relative;
+  position: absolute;
   height: 65%; 
   width: auto;
   margin-top: 8%;
   transform-origin: center bottom;
   animation: petBreathe 3s ease-in-out infinite;
   z-index: 2;
+  cursor: pointer;
+  pointer-events: auto; // Ensure pet can receive clicks
   // background-color: purple;
 }
 
@@ -48,138 +57,138 @@
   100% { transform: scaleY(1); }
 }
 
-.emotionsPanel {
-  position: absolute;
-  top: 10%;
-  right: 0;
-  width: 75%;
-  height: 65%;
-  background-image: url('/images/frames/emotions-panel.png');
-  @include background;
-  @include flex-center;
-  justify-content: flex-end;
-}
+// .emotionsPanel {
+//   position: absolute;
+//   top: 10%;
+//   right: 0;
+//   width: 75%;
+//   height: 65%;
+//   background-image: url('/images/frames/emotions-panel.png');
+//   @include background;
+//   @include flex-center;
+//   justify-content: flex-end;
+// }
 
-.emotionsContainer {
-  width: 65%;
-  height: 80%;
-  margin-right: 8.5%;
-  @include flex-col;
-  color: #cdbe91;
-  font-size: 0.8rem;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  // background-color: purple;   
+// .emotionsContainer {
+//   width: 65%;
+//   height: 80%;
+//   margin-right: 8.5%;
+//   @include flex-col;
+//   color: #cdbe91;
+//   font-size: 0.8rem;
+//   font-weight: bold;
+//   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+//   // background-color: purple;   
 
-  .petName {
-    width: 70%;
-    height: 30%;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 0.1vw;
-    font-size: 0.9vw;
-    font-weight: lighter;
-    color: #f0e6d2;
-    // background-color: red;
-    @include flex-center;
-  }
+//   .petName {
+//     width: 70%;
+//     height: 30%;
+//     text-transform: uppercase;
+//     text-align: center;
+//     letter-spacing: 0.1vw;
+//     font-size: 0.9vw;
+//     font-weight: lighter;
+//     color: #f0e6d2;
+//     // background-color: red;
+//     @include flex-center;
+//   }
 
-  .barsContainer {
-    width: 100%;
-    height: 60%;
-    @include flex-col;
-    justify-content: space-around;
-    align-items: space-evenly;
-    // background-color: blue;
-  }
+//   .barsContainer {
+//     width: 100%;
+//     height: 60%;
+//     @include flex-col;
+//     justify-content: space-around;
+//     align-items: space-evenly;
+//     // background-color: blue;
+//   }
 
-  .hungerContainer, .energyContainer {
-    width: 100%;
-    height: 30%;
-    @include flex-between;
-    align-items: center;
-    padding: 5px;
-    // border: 1px solid #463714;
+//   .hungerContainer, .energyContainer {
+//     width: 100%;
+//     height: 30%;
+//     @include flex-between;
+//     align-items: center;
+//     padding: 5px;
+//     // border: 1px solid #463714;
 
-    span {
-      margin: 0;
-      font-size: 1vw;
-    }
+//     span {
+//       margin: 0;
+//       font-size: 1vw;
+//     }
 
-    .barContainer {
-      height: 100%;
-      width: 60%;
-      background-image: url('/images/frames/bar.png');
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-      @include flex-start;
-      @include background;
-      background-size: 100% 100%;
+//     .barContainer {
+//       height: 100%;
+//       width: 60%;
+//       background-image: url('/images/frames/bar.png');
+//       border-radius: 5px;
+//       overflow: hidden;
+//       position: relative;
+//       @include flex-start;
+//       @include background;
+//       background-size: 100% 100%;
 
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(90deg, 
-          rgba(200, 155, 60, 0.1) 0%, 
-          rgba(200, 155, 60, 0.3) 50%, 
-          rgba(200, 155, 60, 0.1) 100%
-        );
-        animation: shimmer 2s infinite;
-      }
+//       &::after {
+//         content: '';
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         right: 0;
+//         bottom: 0;
+//         background: linear-gradient(90deg, 
+//           rgba(200, 155, 60, 0.1) 0%, 
+//           rgba(200, 155, 60, 0.3) 50%, 
+//           rgba(200, 155, 60, 0.1) 100%
+//         );
+//         animation: shimmer 2s infinite;
+//       }
 
-      .bar {
-        height: 40%;
-        margin-left: 5%;
-        border-radius: 5px;
-        transition: width 0.3s ease;
-        position: relative;
-        overflow: hidden;
+//       .bar {
+//         height: 40%;
+//         margin-left: 5%;
+//         border-radius: 5px;
+//         transition: width 0.3s ease;
+//         position: relative;
+//         overflow: hidden;
         
 
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.4), 
-            transparent
-          );
-          animation: progressShine 2s infinite;
-        }
-      }
+//         &::after {
+//           content: '';
+//           position: absolute;
+//           top: 0;
+//           left: -100%;
+//           width: 100%;
+//           height: 100%;
+//           background: linear-gradient(90deg, 
+//             transparent, 
+//             rgba(255, 255, 255, 0.4), 
+//             transparent
+//           );
+//           animation: progressShine 2s infinite;
+//         }
+//       }
 
-      .hungerBar {
-        background: linear-gradient(90deg, #c89b3c, #d4a94a);
-        width: 75%; // Example value
-      }
+//       .hungerBar {
+//         background: linear-gradient(90deg, #c89b3c, #d4a94a);
+//         width: 75%; // Example value
+//       }
 
-      .energyBar {
-        background: linear-gradient(90deg, #c89b3c, #d4a94a);
-        width: 60%; // Example value
-      }
-    }
+//       .energyBar {
+//         background: linear-gradient(90deg, #c89b3c, #d4a94a);
+//         width: 60%; // Example value
+//       }
+//     }
 
-    .percentage {
-      margin: 0;
-      margin-left: 4%;
-      font-size: 0.7vw;
-      color: #f0e6d2;
-      text-align: right;
-      letter-spacing: 0.05vw;
-      @include flex-center;
-      // background-color: red;
-    }
-  }
-}
+//     .percentage {
+//       margin: 0;
+//       margin-left: 4%;
+//       font-size: 0.7vw;
+//       color: #f0e6d2;
+//       text-align: right;
+//       letter-spacing: 0.05vw;
+//       @include flex-center;
+//       // background-color: red;
+//     }
+//   }
+// }
 
 @keyframes shimmer {
   0%, 100% {

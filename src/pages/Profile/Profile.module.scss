@@ -1,0 +1,39 @@
+@use '../../styles/variables.scss' as *;
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f1419 0%, #1e2328 50%, #0f1419 100%);
+  color: $text-color;
+  padding-top: 8vh; // Account for fixed nav
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.content {
+  background-color: rgba($color: $primary-color, $alpha: 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
+  box-shadow: $shadow-lg;
+  
+  h1 {
+    color: $secondary-color;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  p {
+    color: $text-color;
+    font-size: 1.2rem;
+    text-align: center;
+    opacity: 0.8;
+  }
+}
