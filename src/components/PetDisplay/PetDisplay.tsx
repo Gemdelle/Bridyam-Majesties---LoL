@@ -8,8 +8,7 @@ const PetDisplay: React.FC = () => {
     const { selectedPet } = usePetContext();
     const [petName, setPetName] = useState<string>('');
 
-    const handleClick = (e: React.MouseEvent) => {
-        console.log('Pet clicked!', e.target);
+    const handleClick = () => {
         navigate('/profile');
     };
 
