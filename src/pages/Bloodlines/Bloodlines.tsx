@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './Bloodlines.module.css';
+import styles from './Bloodlines.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
@@ -411,8 +411,19 @@ const Bloodlines: React.FC = () => {
 
   // Get portrait URL from portraits.json
   const getPortraitUrl = (majestyName: string): string => {
-
     const img_name = majestyName.replace(/^GEM\s+/, '').replace(/\s+#GEM$/, '').replace(/#GEM$/, '').replace(/\s+#LAS$/, '').replace(/#LAS$/, '');
+
+    // List of known portraits to check if they exist
+    const knownPortraits = [
+      'Arminariknot', 'Blaandel\'Valse', 'Bricellice', 'Damglantine', 'Deestellirys',
+      'Dreemurdomme', 'Eunilacealle', 'Hestiarethe', 'Ivelism', 'Lacellire',
+      'Lahallayd', 'Orzyadhere', 'Vrillyarethez'
+    ];
+
+    // If the portrait is not in the known list, return empty string to show fallback
+    if (!knownPortraits.includes(img_name)) {
+      return '';
+    }
 
     return `/images/portraits/${img_name}.png`;
   };
@@ -668,10 +679,10 @@ const Bloodlines: React.FC = () => {
                           style={{ position: 'relative' }}
                         >
                           <span className={styles.mastery__roman}>
-                            {masteryLevel === null 
-                              ? '-' 
-                              : masteryLevel === 0 
-                                ? '0' 
+                            {masteryLevel === null
+                              ? '-'
+                              : masteryLevel === 0
+                                ? '0'
                                 : convertToRomanNumeral(masteryValue > 10 ? 10 : masteryValue)}
                           </span>
                           <img
