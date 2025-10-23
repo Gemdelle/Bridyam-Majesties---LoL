@@ -420,9 +420,9 @@ const Bloodlines: React.FC = () => {
       'Lahallayd', 'Orzyadhere', 'Vrillyarethez'
     ];
 
-    // If the portrait is not in the known list, return empty string to show fallback
+    // If the portrait is not in the known list, return default fallback image
     if (!knownPortraits.includes(img_name)) {
-      return '';
+      return '/images/frames/default-majesty-portrait.png';
     }
 
     return `/images/portraits/${img_name}.png`;
