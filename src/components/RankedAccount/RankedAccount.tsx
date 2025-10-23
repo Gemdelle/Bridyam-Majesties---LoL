@@ -449,7 +449,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                         // Show missions - ensure we show all 22 slots
                         Array.from({ length: 22 }, (_, index) => {
                             const isSelected = index < selectedMissions.length ? selectedMissions[index] : false;
-                            
+
                             // Find the last selected mission index
                             const lastSelectedIndex = selectedMissions.lastIndexOf(true);
 
@@ -474,7 +474,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                     )}
                 </div>
                 <div className={styles.wins__count}>
-                    {activeWinsTab === 'wins' 
+                    {activeWinsTab === 'wins'
                         ? `${rankedData.wins.current} / ${rankedData.wins.totals}`
                         : `${rankedData.missions.current_act.current} / 22`
                     }
