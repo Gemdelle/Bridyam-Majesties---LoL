@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './RankedAccount.module.scss';
 import { type RankedData } from '../../services/apiRankedsService';
+import { createMissionNotification } from '../../services/feedNotificationService';
+import { useAuth } from '../../hooks/useAuth';
 // Tier images are now served from public/images/
 const tierDiamond = '/images/lol-elements/tier-diamond.webp';
 const tierPlatinum = '/images/lol-elements/tier-platinum.webp';
@@ -19,6 +21,7 @@ export interface RankedAccountProps {
 }
 
 const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit, canEditEssencer, activeWinsTab = 'wins' }) => {
+    const { user } = useAuth();
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
@@ -143,14 +146,15 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
         });
     };
 
-    const handleMissionClick = (index: number) => {
+    const handleMissionClick = async (index: number) => {
         if (!canEdit) return; // Prevent editing if user doesn't have permission
 
         setSelectedMissions(prev => {
             const newState = [...prev];
+            const wasSelected = newState[index];
 
             // If clicking on a mission that's already selected, unselect it and all subsequent missions
-            if (newState[index]) {
+            if (wasSelected) {
                 for (let i = index; i < newState.length; i++) {
                     newState[i] = false;
                 }
@@ -178,6 +182,23 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
             // Call callback to update data
             onUpdateRankedData(updatedRankedData);
+
+            // Create notification if mission was completed (newly selected and user is available)
+            if (!wasSelected && user) {
+                try {
+                    await createMissionNotification({
+                        userId: user.id,
+                        rankedId: rankedData.id,
+                        rankedName: rankedData.name,
+                        rankedUsername: rankedData.username,
+                        bloodline: rankedData.bloodline,
+                        missionNumber: index + 1, // Missions are 1-indexed
+                        totalMissions: 22
+                    });
+                } catch (error) {
+                    console.error('Error creating mission notification:', error);
+                }
+            }
 
             return newState;
         });

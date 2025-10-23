@@ -5,7 +5,7 @@ import { fetchAllNotifications, NotificationAction } from '../../services/feedNo
 import type { FeedNotification } from '../../services/feedNotificationService';
 
 // Tipo de filtro para las notificaciones
-type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'essencer' | 'redeem' | 'honor' | 'mastery' | 'ranking';
+type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'essencer' | 'redeem' | 'honor' | 'mastery' | 'ranking' | 'mission';
 
 /**
  * Filtros de notificaciones:
@@ -19,6 +19,7 @@ type NotificationFilterType = 'all' | 'level' | 'ranked' | 'elo' | 'member' | 'e
  * - essencer: Cuando un usuario se REGISTRA en la página (USER_REGISTERED) - Filtra por username
  * - honor: Cuando sube de honor (HONOR_UP)
  * - ranking: Cuando alguien sube de posición en el ranking (bronze, silver, diamond, tourmaline) en cualquier categoría (pendiente implementación backend)
+ * - mission: Cuando completa una misión en Ranked (MISSION_COMPLETED)
  */
 
 // Tipo extendido para las notificaciones con filtro
@@ -229,6 +230,11 @@ const Feed: React.FC = () => {
                 imageUrl = '/images/achievement/achievement-1.png';
                 notifFilterType = 'essencer';
                 break;
+            case NotificationAction.MISSION_COMPLETED:
+                notifType = 'mission';
+                imageUrl = '/images/ranked-btn/mission.png'; // Usar la misma imagen que missions
+                notifFilterType = 'mission';
+                break;
             // TODO: Agregar caso para RANKING cuando el backend lo implemente
             // (cuando alguien sube de posición: bronze, silver, diamond, tourmaline)
             // Ej: "user ascendió a silver en mastery y desplazó a user2"
@@ -388,6 +394,7 @@ const Feed: React.FC = () => {
                             <option value="essencer">Essencer</option>
                             <option value="honor">Honor</option>
                             <option value="ranking">Ranking</option>
+                            <option value="mission">Mission</option>
                         </select>
                     </div>
 

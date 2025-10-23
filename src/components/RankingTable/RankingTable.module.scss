@@ -227,6 +227,11 @@
             transition: filter 0.3s ease;
         }
 
+        // Estilo específico para la imagen del redeem (primer achievement)
+        &:first-child img {
+            margin-top: 15%;
+        }
+
         .achievement__stats {
             height: 30%;
             width: 100%;

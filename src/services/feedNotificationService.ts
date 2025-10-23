@@ -13,7 +13,8 @@ export enum NotificationAction {
     LEVEL_30_ACHIEVED = 'LEVEL_30_ACHIEVED',
     ELO_DIVISION_UP = 'ELO_DIVISION_UP',
     MEMBER = 'MEMBER',
-    USER_REGISTERED = 'USER_REGISTERED'
+    USER_REGISTERED = 'USER_REGISTERED',
+    MISSION_COMPLETED = 'MISSION_COMPLETED'
 }
 
 /**
@@ -169,6 +170,8 @@ export const getNotificationIcon = (action: NotificationAction): string => {
             return '🎊';
         case NotificationAction.USER_REGISTERED:
             return '👋';
+        case NotificationAction.MISSION_COMPLETED:
+            return '🎯';
         default:
             return '📢';
     }
@@ -197,8 +200,50 @@ export const getNotificationColor = (action: NotificationAction): string => {
             return '#E91E63'; // Rosa
         case NotificationAction.USER_REGISTERED:
             return '#8BC34A'; // Verde claro
+        case NotificationAction.MISSION_COMPLETED:
+            return '#FF6B35'; // Naranja vibrante
         default:
             return '#757575'; // Gris
+    }
+};
+
+/**
+ * Interfaz para crear notificaciones de missions
+ */
+export interface CreateMissionNotificationRequest {
+    userId: string;
+    rankedId: number;
+    rankedName: string;
+    rankedUsername: string;
+    bloodline: string;
+    missionNumber: number;
+    totalMissions?: number;
+}
+
+/**
+ * Crea una notificación cuando un usuario completa una misión
+ */
+export const createMissionNotification = async (request: CreateMissionNotificationRequest): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/feed/notifications/mission`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...request,
+                totalMissions: request.totalMissions || 22
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to create mission notification: ${response.statusText}`);
+        }
+
+        console.log('Mission notification created successfully');
+    } catch (error) {
+        console.error('Error creating mission notification:', error);
+        throw error;
     }
 };
 
