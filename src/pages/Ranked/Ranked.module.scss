@@ -443,10 +443,12 @@
   padding: 0 0.5rem;
   position: relative;
   gap: 0.5rem;
+  opacity: 0.6;
   
   &:hover {
     color: #f0e6d2;
     text-shadow: 0 0 8px rgba(240, 230, 210, 0.6);
+    opacity: 0.8;
   }
 }
 
@@ -460,21 +462,11 @@
 .wins__tab__active {
   color: #f0e6d2;
   text-shadow: 0 0 10px rgba(240, 230, 210, 0.8);
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: #c89b3c;
-    animation: bottomGlow 3s ease-in-out infinite alternate;
-    border-radius: 2px;
-  }
+  opacity: 1;
   
   &:hover {
     color: #f0e6d2;
+    opacity: 1;
   }
 }
 

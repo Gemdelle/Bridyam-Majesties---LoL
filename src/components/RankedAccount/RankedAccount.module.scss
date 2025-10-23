@@ -189,21 +189,39 @@
 }
 
 .missions {
-    width: 85%;
-    height: 100%;
-    @include flex-evenly;
-    // background-color: white;
+  width: 85%;
+  height: 100%;
+  @include flex-evenly;
+  position: relative;
+  // background-color: white;
+  
+  // Línea dorada que conecta todos los puntitos
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    right: 2%;
+    height: 2px;
+    background: linear-gradient(90deg, #c89b3c 0%, #f0e6d2 50%, #c89b3c 100%);
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 1px;
+    box-shadow: 0 0 4px rgba(200, 155, 60, 0.6);
+  }
 }
 
 .mission {
-    width: 4%;
-    height: 50%;
-    transition: all 300ms ease-in-out;
-    cursor: pointer;
-    background-image: url('/images/ranked-btn/missing.png');
-    @include background-center;
-    background-size: 50% auto;
-    // background-color: red;
+  width: 4%;
+  height: 50%;
+  transition: all 300ms ease-in-out;
+  cursor: pointer;
+  background-image: url('/images/ranked-btn/missing.png');
+  @include background-center;
+  background-size: 50% auto;
+  position: relative;
+  z-index: 2;
+  // background-color: red;
 }
 
 .mission:hover {
