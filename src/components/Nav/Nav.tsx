@@ -109,17 +109,17 @@ export const Nav = () => {
                     >
                         <Link to="/champions">{t('nav.champions')}</Link>
                     </li>
+                    <li
+                        className={location.pathname === '/skins' ? styles.active : ''}
+                        data-nav="skins"
+                    >
+                        <Link to="/skins">{t('nav.skins')}</Link>
+                    </li>
                 </ul>
                 <PetDisplay />
                 <ul className={styles.nav__container__links__right}>
                     {canSeeAllNavigation && (
                         <>
-                            <li
-                                className={location.pathname === '/skins' ? styles.active : ''}
-                                data-nav="skins"
-                            >
-                                <Link to="/skins">{t('nav.skins')}</Link>
-                            </li>
                             <li
                                 className={location.pathname === '/achievements' ? styles.active : ''}
                                 data-nav="achievements"
@@ -152,6 +152,12 @@ export const Nav = () => {
                                 ))}
                             </div>
                         )}
+                    </li>
+                    <li
+                        className={location.pathname === '/page' ? styles.active : ''}
+                        data-nav="page"
+                    >
+                        <Link to="/page">Page</Link>
                     </li>
                     <li>
                         <button
