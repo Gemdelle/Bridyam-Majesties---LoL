@@ -413,19 +413,24 @@ const Bloodlines: React.FC = () => {
   const getPortraitUrl = (majestyName: string): string => {
     const img_name = majestyName.replace(/^GEM\s+/, '').replace(/\s+#GEM$/, '').replace(/#GEM$/, '').replace(/\s+#LAS$/, '').replace(/#LAS$/, '');
 
-    // List of known portraits to check if they exist
-    const knownPortraits = [
-      'Arminariknot', 'Blaandel\'Valse', 'Bricellice', 'Damglantine', 'Deestellirys',
-      'Dreemurdomme', 'Eunilacealle', 'Hestiarethe', 'Ivelism', 'Lacellire',
-      'Lahallayd', 'Orzyadhere', 'Vrillyarethez'
-    ];
+    // Use the same mapping as Accounts.tsx
+    const usernameToPortraitMap: { [key: string]: string } = {
+      'GEM Arminariknot#GEM': '/images/portraits/Arminariknot.png',
+      'GEM Blaandelvals#GEM': '/images/portraits/Blaandel\'Valse.png',
+      'GEM Bricellice#GEM': '/images/portraits/Bricellice.png',
+      'GEM Damglantine#GEM': '/images/portraits/Damglantine.png',
+      'GEM Deestellirys#GEM': '/images/portraits/Deestellirys.png',
+      'GEM Dreemurdomme#GEM': '/images/portraits/Dreemurdomme.png',
+      'GEM Eunilacealle#LAS': '/images/portraits/Eunilacealle.png',
+      'GEM Hestiarethe#GEM': '/images/portraits/Hestiarethe.png',
+      'GEM Ivelism#GEM': '/images/portraits/Ivelism.png',
+      'GEM Lacellire#LAS': '/images/portraits/Lacellire.png',
+      'GEM Lahallayd#GEM': '/images/portraits/Lahallayd.png',
+      'GEM Orzyadhere#LAS': '/images/portraits/Orzyadhere.png',
+      'GEM Vrilyarethez#GEM': '/images/portraits/Vrillyarethez.png'
+    };
 
-    // If the portrait is not in the known list, return default fallback image
-    if (!knownPortraits.includes(img_name)) {
-      return '/images/frames/default-majesty-portrait.png';
-    }
-
-    return `/images/portraits/${img_name}.png`;
+    return usernameToPortraitMap[majestyName] || '/images/frames/default-majesty-portrait.png';
   };
 
   // Handle click on account header to sort by mastery
