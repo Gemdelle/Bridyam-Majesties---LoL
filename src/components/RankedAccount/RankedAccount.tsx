@@ -118,11 +118,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                     newState[i] = false;
                 }
             }
-            // If clicking on a win that's not selected, only allow if previous win is selected
+            // If clicking on a win that's not selected, select it and all previous wins (accumulate)
             else {
-                // Allow selecting the first win (index 0) or if the previous win is selected
-                if (index === 0 || newState[index - 1]) {
-                    newState[index] = true;
+                // Select all wins from 0 to the clicked index
+                for (let i = 0; i <= index; i++) {
+                    newState[i] = true;
                 }
             }
 
@@ -155,11 +155,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                     newState[i] = false;
                 }
             }
-            // If clicking on a mission that's not selected, only allow if previous mission is selected
+            // If clicking on a mission that's not selected, select it and all previous missions (accumulate)
             else {
-                // Allow selecting the first mission (index 0) or if the previous mission is selected
-                if (index === 0 || newState[index - 1]) {
-                    newState[index] = true;
+                // Select all missions from 0 to the clicked index
+                for (let i = 0; i <= index; i++) {
+                    newState[i] = true;
                 }
             }
 
