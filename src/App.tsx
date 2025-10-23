@@ -9,7 +9,7 @@ import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Tutorial from './components/Tutorial'
 import Accounts from './pages/Accounts/Accounts'
-import Bloodlines from './pages/Bloodlines/Bloodlines'
+import Mastery from './pages/Mastery/Mastery'
 import Ranked from './pages/Ranked/Ranked'
 import Champions from './pages/Champions/Champions'
 import Skins from './pages/Skins/Skins'
@@ -70,7 +70,7 @@ function AppContent() {
               path="/bloodlines"
               element={
                 <ProtectedRoute>
-                  <Bloodlines />
+                  <Mastery />
                 </ProtectedRoute>
               }
             />
