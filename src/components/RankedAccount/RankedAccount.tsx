@@ -15,14 +15,15 @@ export interface RankedAccountProps {
     onUpdateRankedData: (updatedData: RankedData) => void | Promise<void>;
     canEdit: boolean;
     canEditEssencer?: boolean; // Optional, defaults to canEdit if not provided
+    activeWinsTab?: 'wins' | 'missions'; // Tab activo para alternar entre wins y missions
 }
 
-const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit, canEditEssencer }) => {
+const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRankedData, canEdit, canEditEssencer, activeWinsTab = 'wins' }) => {
     // States for rank selectors
     const [showSoloqSelector, setShowSoloqSelector] = useState(false);
     const [showFlexSelector, setShowFlexSelector] = useState(false);
     const [showHonorSelector, setShowHonorSelector] = useState(false);
-    
+
     // Use canEditEssencer if provided, otherwise fallback to canEdit
     const essencerEditable = canEditEssencer !== undefined ? canEditEssencer : canEdit;
 
@@ -48,6 +49,16 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
         return initialWins;
     });
 
+    const [selectedMissions, setSelectedMissions] = useState<boolean[]>(() => {
+        const initialMissions = Array(22).fill(false);
+        // Set true for missions up to current value (using current_act)
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 22; i++) {
+            initialMissions[i] = true;
+        }
+        return initialMissions;
+    });
+
+
     // Update states when rankedData changes
     useEffect(() => {
         // Update wins
@@ -56,6 +67,14 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
             newWins[i] = true;
         }
         setSelectedWins(newWins);
+
+        // Update missions
+        const newMissions = Array(22).fill(false);
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 22; i++) {
+            newMissions[i] = true;
+        }
+        setSelectedMissions(newMissions);
+
 
         // Update essencer name
         setTempEssencerName(rankedData.name);
@@ -123,6 +142,47 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
             return newState;
         });
     };
+
+    const handleMissionClick = (index: number) => {
+        if (!canEdit) return; // Prevent editing if user doesn't have permission
+
+        setSelectedMissions(prev => {
+            const newState = [...prev];
+
+            // If clicking on a mission that's already selected, unselect it and all subsequent missions
+            if (newState[index]) {
+                for (let i = index; i < newState.length; i++) {
+                    newState[i] = false;
+                }
+            }
+            // If clicking on a mission that's not selected, only allow if previous mission is selected
+            else {
+                // Allow selecting the first mission (index 0) or if the previous mission is selected
+                if (index === 0 || newState[index - 1]) {
+                    newState[index] = true;
+                }
+            }
+
+            // Update rankedData with new missions count
+            const newCurrent = newState.filter(Boolean).length;
+            const updatedRankedData = {
+                ...rankedData,
+                missions: {
+                    ...rankedData.missions,
+                    current_act: {
+                        ...rankedData.missions.current_act,
+                        current: newCurrent
+                    }
+                }
+            };
+
+            // Call callback to update data
+            onUpdateRankedData(updatedRankedData);
+
+            return newState;
+        });
+    };
+
 
     const handleEssencerEdit = () => {
         if (!essencerEditable) return; // Prevent editing if user doesn't have permission
@@ -361,31 +421,63 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
             <div className={styles.wins__container}>
                 <div className={styles.wins}>
-                    {selectedWins.map((isSelected, index) => {
-                        // Find the last selected win index
-                        const lastSelectedIndex = selectedWins.lastIndexOf(true);
+                    {activeWinsTab === 'wins' ? (
+                        // Show wins
+                        selectedWins.map((isSelected, index) => {
+                            // Find the last selected win index
+                            const lastSelectedIndex = selectedWins.lastIndexOf(true);
 
-                        // Find the next available win
-                        const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
-                        const isNextAvailable = !isSelected && index === nextAvailableIndex;
+                            // Find the next available win
+                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
+                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
 
-                        return (
-                            <div
-                                key={index}
-                                className={`${styles.win} ${isSelected
-                                    ? styles.win__selected
-                                    : isNextAvailable
-                                        ? styles.win__next
-                                        : ''
-                                    }`}
-                                style={isSelected ? { backgroundImage: getBloodlineImage(), cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
-                                onClick={() => handleWinClick(index)}
-                            ></div>
-                        );
-                    })}
+                            return (
+                                <div
+                                    key={index}
+                                    className={`${styles.win} ${isSelected
+                                        ? styles.win__selected
+                                        : isNextAvailable
+                                            ? styles.win__next
+                                            : ''
+                                        }`}
+                                    style={isSelected ? { backgroundImage: getBloodlineImage(), cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
+                                    onClick={() => handleWinClick(index)}
+                                ></div>
+                            );
+                        })
+                    ) : (
+                        // Show missions - ensure we show all 22 slots
+                        Array.from({ length: 22 }, (_, index) => {
+                            const isSelected = index < selectedMissions.length ? selectedMissions[index] : false;
+                            
+                            // Find the last selected mission index
+                            const lastSelectedIndex = selectedMissions.lastIndexOf(true);
+
+                            // Find the next available mission
+                            const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
+                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
+
+                            return (
+                                <div
+                                    key={index}
+                                    className={`${styles.mission} ${isSelected
+                                        ? styles.mission__selected
+                                        : isNextAvailable
+                                            ? styles.mission__next
+                                            : ''
+                                        }`}
+                                    style={isSelected ? { backgroundImage: 'url(/images/ranked-btn/fire.png)', cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
+                                    onClick={() => handleMissionClick(index)}
+                                ></div>
+                            );
+                        })
+                    )}
                 </div>
                 <div className={styles.wins__count}>
-                    {rankedData.wins.current} / {rankedData.wins.totals}
+                    {activeWinsTab === 'wins' 
+                        ? `${rankedData.wins.current} / ${rankedData.wins.totals}`
+                        : `${rankedData.missions.current_act.current} / 22`
+                    }
                 </div>
             </div>
 

@@ -49,6 +49,9 @@ const Ranked: React.FC = () => {
     // --- Estado para la búsqueda ---
     const [searchTerm, setSearchTerm] = useState<string>('');
 
+    // --- Estado para el tab activo de wins/missions ---
+    const [activeWinsTab, setActiveWinsTab] = useState<'wins' | 'missions'>('wins');
+
     // --- Estado para el ordenamiento por columnas ---
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -337,6 +340,10 @@ const Ranked: React.FC = () => {
 
     // --- Handler para ordenamiento por columnas ---
     const handleColumnSort = (column: string) => {
+        if (column === 'wins' || column === 'missions') {
+            setActiveWinsTab(column as 'wins' | 'missions');
+        }
+
         if (sortColumn === column) {
             // Si ya está ordenado por esta columna, cambiar dirección
             setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -471,11 +478,23 @@ const Ranked: React.FC = () => {
                             >
                                 ESSENCER{sortColumn === 'essencer' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
                             </div>
-                            <div
-                                className={`${styles.header__wins} ${styles.sortable}`}
-                                onClick={() => handleColumnSort('wins')}
-                            >
-                                WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                            <div className={styles.header__wins}>
+                                <div className={styles.wins__tabs}>
+                                    <div
+                                        className={`${styles.wins__tab} ${activeWinsTab === 'wins' ? styles.wins__tab__active : ''}`}
+                                        onClick={() => handleColumnSort('wins')}
+                                    >
+                                        <img src="/images/ranked-btn/wins.png" alt="Wins" className={styles.tab__image} />
+                                        WINS{sortColumn === 'wins' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                                    </div>
+                                    <div
+                                        className={`${styles.wins__tab} ${activeWinsTab === 'missions' ? styles.wins__tab__active : ''}`}
+                                        onClick={() => handleColumnSort('missions')}
+                                    >
+                                        <img src="/images/ranked-btn/mission.png" alt="Missions" className={styles.tab__image} />
+                                        MISSIONS{sortColumn === 'missions' ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ''}
+                                    </div>
+                                </div>
                             </div>
                             <div
                                 className={`${styles.header__honor} ${styles.sortable}`}
@@ -521,6 +540,7 @@ const Ranked: React.FC = () => {
                                             onUpdateRankedData={handleUpdateRankedData}
                                             canEdit={canEdit}
                                             canEditEssencer={isAdmin}
+                                            activeWinsTab={activeWinsTab}
                                         />
                                     );
                                 })}

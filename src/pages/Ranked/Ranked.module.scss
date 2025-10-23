@@ -424,6 +424,69 @@
   // background-color: red;
 }
 
+// Wins tabs styles - usando el estilo original de missions con línea de fondo
+.wins__tabs {
+  width: 100%;
+  height: 100%;
+  @include flex-evenly;
+}
+
+.wins__tab {
+  @include flex-center;
+  height: 100%;
+  color: #cdbe91;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0 0.5rem;
+  position: relative;
+  gap: 0.5rem;
+  
+  &:hover {
+    color: #f0e6d2;
+    text-shadow: 0 0 8px rgba(240, 230, 210, 0.6);
+  }
+}
+
+.tab__image {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: brightness(1.2);
+}
+
+.wins__tab__active {
+  color: #f0e6d2;
+  text-shadow: 0 0 10px rgba(240, 230, 210, 0.8);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #c89b3c;
+    animation: bottomGlow 3s ease-in-out infinite alternate;
+    border-radius: 2px;
+  }
+  
+  &:hover {
+    color: #f0e6d2;
+  }
+}
+
+@keyframes bottomGlow {
+  0% {
+    background: #c89b3c;
+  }
+  100% {
+    background: #f0e6d2;
+  }
+}
+
 // Sortable header styles
 .sortable {
   cursor: pointer;
