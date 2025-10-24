@@ -393,6 +393,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
             <div className={styles.portrait__container}>
                 <img src={rankedData.icon} alt={rankedData.name} className={styles.portrait} />
+                <img
+                    src="/images/frames/account-champion-frame.png"
+                    alt="frame"
+                    className={styles.portrait__frame}
+                />
             </div>
 
             <div className={styles.divider}></div>
