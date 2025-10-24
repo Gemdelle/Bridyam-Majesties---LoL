@@ -231,8 +231,8 @@ const Feed: React.FC = () => {
                 notifFilterType = 'essencer';
                 break;
             case NotificationAction.MISSION_COMPLETED:
-                notifType = 'mission';
-                imageUrl = '/images/ranked-btn/mission.png'; // Usar la misma imagen que missions
+                notifType = 'achievement';
+                imageUrl = '/images/ranked-btn/fire.png'; // Usar el símbolo de fuego que se usa para marcar las misiones
                 notifFilterType = 'mission';
                 break;
             // TODO: Agregar caso para RANKING cuando el backend lo implemente
