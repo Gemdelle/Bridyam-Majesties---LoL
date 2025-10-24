@@ -48,7 +48,7 @@ const usernameToPortraitMap: { [key: string]: string } = {
   'GEM Orzyadhere#LAS': '/images/portraits/Orzyadhere.png',
   'GEM Vrillyarethez#GEM': '/images/portraits/Vrillyarethez.png',
   'GEM Vrillyarethez#LAS': '/images/portraits/Vrillyarethez.png',
-  'GEM Vrilyarethez#GEM': '/images/portraits/Vrillyarethez.png', // Typo in backend
+  'GEM Vrilyarethez#GEM': '/images/portraits/Vrillyarethez.png', //  Typo in backend
   // Nuevos usernames del JSON proporcionado
   'GEM Asticedicair#GEM': '/images/frames/default-majesty-portrait.png',
   'GEM Cierzellant#GEM': '/images/frames/default-majesty-portrait.png',
