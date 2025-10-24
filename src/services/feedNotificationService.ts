@@ -127,15 +127,15 @@ export const formatNotificationDate = (dateString: string): string => {
         const diffDays = Math.floor(diffMs / 86400000);
 
         if (diffMins < 1) {
-            return 'Justo ahora';
+            return 'Just now';
         } else if (diffMins < 60) {
-            return `Hace ${diffMins} ${diffMins === 1 ? 'minuto' : 'minutos'}`;
+            return `${diffMins}m ago`;
         } else if (diffHours < 24) {
-            return `Hace ${diffHours} ${diffHours === 1 ? 'hora' : 'horas'}`;
+            return `${diffHours}h ago`;
         } else if (diffDays < 7) {
-            return `Hace ${diffDays} ${diffDays === 1 ? 'día' : 'días'}`;
+            return `${diffDays}d ago`;
         } else {
-            return date.toLocaleDateString('es-ES', {
+            return date.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'

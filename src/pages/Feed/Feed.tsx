@@ -286,7 +286,7 @@ const Feed: React.FC = () => {
             setLoading(false);
         } catch (err) {
             console.error('Error loading notifications:', err);
-            setError('No se pudieron cargar las notificaciones');
+            setError('Failed to load notifications');
             setNotifications([]);
             setLoading(false);
         }
@@ -364,7 +364,7 @@ const Feed: React.FC = () => {
                     <div className={styles.content}>
                         <p style={{ color: '#e74c3c' }}>{error}</p>
                         <button onClick={loadNotifications} style={{ marginTop: '1rem' }}>
-                            Reintentar
+                            Retry
                         </button>
                     </div>
                 </div>
@@ -437,9 +437,9 @@ const Feed: React.FC = () => {
                                 </div>
                             ))
                         ) : searchTerm ? (
-                            <p className={styles.no__notifications}>No se encontraron notificaciones que coincidan con "{searchTerm}"</p>
+                            <p className={styles.no__notifications}>No notifications found matching "{searchTerm}"</p>
                         ) : (
-                            <p className={styles.no__notifications}>No hay notificaciones aún</p>
+                            <p className={styles.no__notifications}>No notifications yet</p>
                         )}
                     </div>
                 </div>
