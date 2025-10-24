@@ -183,8 +183,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
             // Call callback to update data
             onUpdateRankedData(updatedRankedData);
 
-            // Create notification if mission was completed (newly selected and user is available)
-            if (!wasSelected && user) {
+            // Create notification ONLY if mission was newly selected (increment) and user is available
+            if (!wasSelected && newCurrent > rankedData.missions.current_act.current && user) {
                 // Fire and forget - don't await since this is inside a state setter callback
                 createMissionNotification({
                     userId: user.id,
@@ -192,7 +192,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                     rankedName: rankedData.name,
                     rankedUsername: rankedData.username,
                     bloodline: rankedData.bloodline,
-                    missionNumber: index + 1, // Missions are 1-indexed
+                    missionNumber: newCurrent, // Current total missions completed
                     totalMissions: 22
                 }).catch(error => {
                     console.error('Error creating mission notification:', error);
