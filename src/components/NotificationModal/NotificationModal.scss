@@ -1,54 +1,49 @@
+@use '../../styles/variables.scss' as *;
+@use 'sass:color';
+
 .notification-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
   backdrop-filter: blur(2px);
+  // background-color: red;  
 }
 
 .notification-modal {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.notification-content {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 80%;
+  height: 75%;
+  margin-top: 5%;
+  @include flex-center;
+  background-color: green;
 }
 
 .notification-frame {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  width: auto;
+  background-color: blue;
 }
 
 .frame-image {
-  max-width: 100%;
-  max-height: 80vh;
+  height: 100%;
+  width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 20px rgba(200, 155, 60, 0.3));
 }
 
 .pet-image {
+  height: 55%;
+  width: auto;
   position: absolute;
-  left: 15%;
-  top: 50%;
-  transform: translateY(-50%) scaleX(-1);
-  max-width: 25%;
-  max-height: 60vh;
+  left: 10%;
+  bottom: 10%;
+  transform: scaleX(-1);
   object-fit: contain;
   filter: drop-shadow(0 0 15px rgba(200, 155, 60, 0.4));
   z-index: 5;

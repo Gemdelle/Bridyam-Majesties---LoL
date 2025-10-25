@@ -48,50 +48,49 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
   return (
     <div className="notification-modal-overlay" onClick={onClose}>
       <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="notification-content">
-          <div className="notification-frame">
-            <img 
-              src={frameImage} 
-              alt="Notification Frame" 
-              className="frame-image"
-            />
-            <img 
-              src={petImage} 
-              alt="Pet" 
-              className="pet-image"
-            />
-            <div className="notification-text">
-              <h2 className="notification-title">{title}</h2>
-              <p className="notification-message">{notification.message}</p>
-              
-              {notification.bulletPoints && notification.bulletPoints.length > 0 && (
-                <ul className="notification-bullets">
-                  {notification.bulletPoints.map((point, index) => (
-                    <li key={index} className="bullet-item">
-                      <img 
-                        src="/images/bullets/bullet-right.png" 
-                        alt="Bullet" 
-                        className="bullet-icon"
-                      />
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              
-              {notification.closing && (
-                <p className="notification-closing">{notification.closing}</p>
-              )}
-              
-              {notification.showButton && (
-                <button 
-                  className="notification-button"
-                  onClick={onClose}
-                >
-                  {notification.buttonText}
-                </button>
-              )}
-            </div>
+
+        <div className="notification-frame">
+          <img
+            src={frameImage}
+            alt="Notification Frame"
+            className="frame-image"
+          />
+          <img
+            src={petImage}
+            alt="Pet"
+            className="pet-image"
+          />
+          <div className="notification-text">
+            <h2 className="notification-title">{title}</h2>
+            <p className="notification-message">{notification.message}</p>
+
+            {notification.bulletPoints && notification.bulletPoints.length > 0 && (
+              <ul className="notification-bullets">
+                {notification.bulletPoints.map((point, index) => (
+                  <li key={index} className="bullet-item">
+                    <img
+                      src="/images/bullets/bullet-right.png"
+                      alt="Bullet"
+                      className="bullet-icon"
+                    />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {notification.closing && (
+              <p className="notification-closing">{notification.closing}</p>
+            )}
+
+            {notification.showButton && (
+              <button
+                className="notification-button"
+                onClick={onClose}
+              >
+                {notification.buttonText}
+              </button>
+            )}
           </div>
         </div>
       </div>
