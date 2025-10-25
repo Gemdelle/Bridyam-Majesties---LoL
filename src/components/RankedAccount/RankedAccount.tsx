@@ -53,9 +53,9 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
     });
 
     const [selectedMissions, setSelectedMissions] = useState<boolean[]>(() => {
-        const initialMissions = Array(22).fill(false);
+        const initialMissions = Array(12).fill(false);
         // Set true for missions up to current value (using current_act)
-        for (let i = 0; i < rankedData.missions.current_act.current && i < 22; i++) {
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 12; i++) {
             initialMissions[i] = true;
         }
         return initialMissions;
@@ -72,8 +72,8 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
         setSelectedWins(newWins);
 
         // Update missions
-        const newMissions = Array(22).fill(false);
-        for (let i = 0; i < rankedData.missions.current_act.current && i < 22; i++) {
+        const newMissions = Array(12).fill(false);
+        for (let i = 0; i < rankedData.missions.current_act.current && i < 12; i++) {
             newMissions[i] = true;
         }
         setSelectedMissions(newMissions);
@@ -193,7 +193,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                     rankedUsername: rankedData.username,
                     bloodline: rankedData.bloodline,
                     missionNumber: newCurrent, // Current total missions completed
-                    totalMissions: 22
+                    totalMissions: 12
                 }).catch(error => {
                     console.error('Error creating mission notification:', error);
                 });
@@ -471,37 +471,52 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                             );
                         })
                     ) : (
-                        // Show missions - ensure we show all 22 slots
-                        Array.from({ length: 22 }, (_, index) => {
-                            const isSelected = index < selectedMissions.length ? selectedMissions[index] : false;
-
+                        // Show missions - use specific mission levels
+                        (() => {
+                            const missionLevels = [2, 3, 5, 6, 7, 10, 11, 14, 16, 18, 20, 22];
                             // Find the last selected mission index
                             const lastSelectedIndex = selectedMissions.lastIndexOf(true);
-
-                            // Find the next available mission
                             const nextAvailableIndex = lastSelectedIndex === -1 ? 0 : lastSelectedIndex + 1;
-                            const isNextAvailable = !isSelected && index === nextAvailableIndex;
 
-                            return (
-                                <div
-                                    key={index}
-                                    className={`${styles.mission} ${isSelected
-                                        ? styles.mission__selected
-                                        : isNextAvailable
-                                            ? styles.mission__next
-                                            : ''
-                                        }`}
-                                    style={isSelected ? { backgroundImage: 'url(/images/ranked-btn/fire.png)', cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
-                                    onClick={() => handleMissionClick(index)}
-                                ></div>
-                            );
-                        })
+                            return missionLevels.map((level, index) => {
+                                const isSelected = index < selectedMissions.length ? selectedMissions[index] : false;
+                                const isNextAvailable = !isSelected && index === nextAvailableIndex;
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className={`${styles.mission} ${isSelected
+                                            ? styles.mission__selected
+                                            : isNextAvailable
+                                                ? styles.mission__next
+                                                : ''
+                                            }`}
+                                        style={isSelected ? { backgroundImage: 'url(/images/ranked-btn/fire.png)', cursor: canEdit ? 'pointer' : 'default' } : { cursor: canEdit ? 'pointer' : 'default' }}
+                                        onClick={() => handleMissionClick(index)}
+                                    >
+                                        {/* Show number ONLY for next available mission using images */}
+                                        {isNextAvailable && (
+                                            <div className={styles.mission__number__container}>
+                                                {level.toString().split('').map((digit, digitIndex) => (
+                                                    <img
+                                                        key={digitIndex}
+                                                        src={`/images/numbers/${digit}.png`}
+                                                        alt={digit}
+                                                        className={styles.mission__number__digit}
+                                                    />
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            });
+                        })()
                     )}
                 </div>
                 <div className={styles.wins__count}>
                     {activeWinsTab === 'wins'
                         ? `${rankedData.wins.current} / ${rankedData.wins.totals}`
-                        : `${rankedData.missions.current_act.current} / 22`
+                        : `${rankedData.missions.current_act.current} / 12`
                     }
                 </div>
             </div>

@@ -221,7 +221,22 @@
   position: relative;
   z-index: 2;
   background-color: transparent;
+  @include flex-center;
   // background-color: red;
+}
+
+.mission__number__container {
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mission__number__digit {
+  height: 80%;
+  width: auto;
+  object-fit: contain;
 }
 
 .mission:hover {
@@ -244,9 +259,7 @@
 }
 
 .mission__next {
-    background-image: url('/images/ranked-btn/missing.png');
-    @include background-center;
-    background-size: 40% auto;
+    background-image: none !important; // Remove the dot background for next available mission
     animation: brightnessPulse 2s infinite ease-in-out;
 }
 
