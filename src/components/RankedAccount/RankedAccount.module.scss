@@ -246,11 +246,12 @@
 
 .mission__selected {
     @include background-center;
-    width: 3%;
-    height: 80%;
+    width: 4%;
+    height: 100%;
     border: none;
     background-size: 100% auto;
     filter: drop-shadow(0 0 3px rgba(182, 148, 97, 0.4)) brightness(1);
+    // background-color: red;
 }
 
 .mission__selected:hover {
