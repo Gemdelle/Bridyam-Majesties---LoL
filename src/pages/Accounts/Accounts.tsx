@@ -3,7 +3,7 @@ import styles from './Accounts.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import AccountSummary from '../../components/AccountSummary';
 import AccountsService, { type Account } from '../../services/accountsService';
-import { fetchMasteryDataByRankedId } from '../../services/apiMasteriesService';
+import { fetchMasteryData } from '../../services/apiMasteriesService';
 
 // Extended Account interface with mastery 10+ count
 interface AccountWithMasteryCount extends Account {
@@ -97,27 +97,22 @@ const Accounts: React.FC = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const accountsData = await accountsService.getAccounts();
+        
+        // Make both calls in parallel - single mastery request instead of multiple
+        const [accountsData, allMasteries] = await Promise.all([
+          accountsService.getAccounts(),
+          fetchMasteryData() // Single call to get all mastery data
+        ]);
 
-        // Calculate mastery 10+ count for each account
-        const accountsWithMasteryCount = await Promise.all(
-          accountsData.map(async (account) => {
-            try {
-              const masteries = await fetchMasteryDataByRankedId(account.id);
-              const count10Plus = masteries.filter(m => m.champion_level !== null && m.champion_level >= 10).length;
-              return {
-                ...account,
-                masteryCount10Plus: count10Plus
-              };
-            } catch (err) {
-              console.error(`Error fetching masteries for account ${account.id}:`, err);
-              return {
-                ...account,
-                masteryCount10Plus: 0
-              };
-            }
-          })
-        );
+        // Process data locally instead of making individual requests
+        const accountsWithMasteryCount = accountsData.map((account) => {
+          const accountMasteries = allMasteries.filter(m => m.ranked_id === account.id);
+          const count10Plus = accountMasteries.filter(m => m.champion_level !== null && m.champion_level >= 10).length;
+          return {
+            ...account,
+            masteryCount10Plus: count10Plus
+          };
+        });
 
         setAccounts(accountsWithMasteryCount);
       } catch (error) {

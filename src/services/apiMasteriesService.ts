@@ -27,9 +27,21 @@ export interface MasteryResponse {
     masteries: UserMasteryData[];
 }
 
-// Fetch mastery data from API
+// Cache variables for performance optimization
+let cachedMasteryData: MasteryData[] | null = null;
+let cacheTimestamp: number = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+// Fetch mastery data from API with caching
 export const fetchMasteryData = async (): Promise<MasteryData[]> => {
+    // Check if we have cached data and it hasn't expired
+    if (cachedMasteryData && Date.now() - cacheTimestamp < CACHE_DURATION) {
+        console.log('Using cached mastery data');
+        return cachedMasteryData;
+    }
+
     try {
+        console.log('Fetching fresh mastery data from API');
         const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
 
         if (!response.ok) {
@@ -42,6 +54,11 @@ export const fetchMasteryData = async (): Promise<MasteryData[]> => {
         data.masteries.forEach(user => {
             flattenedMasteries.push(...user.masteries_by_champions);
         });
+        
+        // Cache the data
+        cachedMasteryData = flattenedMasteries;
+        cacheTimestamp = Date.now();
+        
         return flattenedMasteries;
     } catch (error) {
         console.error('Error fetching mastery data:', error);
@@ -139,6 +156,9 @@ export const updateMasteries = async (masteriesData: MasteryData[]): Promise<voi
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        // Clear cache after update to ensure fresh data on next request
+        clearMasteryCache();
     } catch (error) {
         console.error('Error updating masteries data:', error);
         throw new Error('Failed to update masteries data');
@@ -162,8 +182,18 @@ export const updateMasteriesByRankedId = async (rankedId: number, masteriesData:
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        // Clear cache after update to ensure fresh data on next request
+        clearMasteryCache();
     } catch (error) {
         console.error('Error updating masteries data by ranked_id:', error);
         throw new Error('Failed to update masteries data by ranked_id');
     }
+};
+
+// Clear mastery data cache
+export const clearMasteryCache = (): void => {
+    cachedMasteryData = null;
+    cacheTimestamp = 0;
+    console.log('Mastery cache cleared');
 }; 
