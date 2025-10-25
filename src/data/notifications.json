@@ -1,0 +1,15 @@
+{
+  "currentNotification": {
+    "id": "4f36396a-9f07-4892-9ad1-cee92116065d",
+    "title": "Hola, {username}",
+    "message": "Para que la página pueda seguir funcionando, necesitamos que de ahora en adelante, además de actualizar tus wins y honor:",
+    "bulletPoints": [
+      "Actualices el elo de tu cuenta",
+      "Actualices el nivel"
+    ],
+    "closing": "Muchas gracias",
+    "showButton": true,
+    "buttonText": "Aceptar",
+    "active": true
+  }
+}

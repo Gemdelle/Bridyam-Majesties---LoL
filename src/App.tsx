@@ -8,6 +8,7 @@ import { LanguageProvider } from './contexts/LanguageContext'
 import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Tutorial from './components/Tutorial'
+import { NotificationWrapper } from './components/NotificationWrapper'
 import Accounts from './pages/Accounts/Accounts'
 import Mastery from './pages/Mastery/Mastery'
 import Ranked from './pages/Ranked/Ranked'
@@ -40,9 +41,10 @@ function AppContent() {
     <LanguageProvider>
       <CursorProvider>
         <PetProvider>
-          {showNav && <Nav />}
-          <Tutorial />
-          <Routes>
+          <NotificationWrapper>
+            {showNav && <Nav />}
+            <Tutorial />
+            <Routes>
             {/* Public routes */}
             <Route
               path="/login"
@@ -162,6 +164,7 @@ function AppContent() {
               }
             />
           </Routes>
+          </NotificationWrapper>
         </PetProvider>
       </CursorProvider>
     </LanguageProvider>
