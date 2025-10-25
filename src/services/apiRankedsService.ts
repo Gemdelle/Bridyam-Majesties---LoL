@@ -77,15 +77,65 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
     }
 };
 
-// Update ranked data via POST to API
-export const updateRankedData = async (rankedData: RankedData[]): Promise<RankedData[]> => {
+// Helper function to compare two RankedData objects and detect changes
+export const getChangedRankedData = (originalData: RankedData[], modifiedData: RankedData[]): RankedData[] => {
+    const changedItems: RankedData[] = [];
+    
+    for (const modified of modifiedData) {
+        const original = originalData.find(item => item.id === modified.id);
+        
+        if (!original) {
+            // New item, include it
+            changedItems.push(modified);
+            continue;
+        }
+        
+        // Deep comparison to detect changes
+        const hasChanges = 
+            original.name !== modified.name ||
+            original.username !== modified.username ||
+            original.bloodline !== modified.bloodline ||
+            original.champions !== modified.champions ||
+            original.skins !== modified.skins ||
+            original.masteries !== modified.masteries ||
+            original.level !== modified.level ||
+            original.icon !== modified.icon ||
+            original.wins.current !== modified.wins.current ||
+            original.wins.totals !== modified.wins.totals ||
+            original.missions.current_act.current !== modified.missions.current_act.current ||
+            original.missions.current_act.totals !== modified.missions.current_act.totals ||
+            original.missions.current_hall_of_legends.current !== modified.missions.current_hall_of_legends.current ||
+            original.missions.current_hall_of_legends.totals !== modified.missions.current_hall_of_legends.totals ||
+            original.elo_soloq.tier !== modified.elo_soloq.tier ||
+            original.elo_soloq.division !== modified.elo_soloq.division ||
+            original.elo_flex.tier !== modified.elo_flex.tier ||
+            original.elo_flex.division !== modified.elo_flex.division ||
+            original.honor !== modified.honor ||
+            original.rol.top !== modified.rol.top ||
+            original.rol.jungle !== modified.rol.jungle ||
+            original.rol.mid !== modified.rol.mid ||
+            original.rol.adc !== modified.rol.adc ||
+            original.rol.support !== modified.rol.support ||
+            original.blue_essence !== modified.blue_essence ||
+            original.orange_essence !== modified.orange_essence;
+        
+        if (hasChanges) {
+            changedItems.push(modified);
+        }
+    }
+    
+    return changedItems;
+};
+
+// Update ranked data via PUT to API (only sends modified data)
+export const updateRankedData = async (modifiedRankedData: RankedData[]): Promise<RankedData[]> => {
     try {
         const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(rankedData),
+            body: JSON.stringify(modifiedRankedData),
         });
 
         if (!response.ok) {
@@ -98,6 +148,19 @@ export const updateRankedData = async (rankedData: RankedData[]): Promise<Ranked
         console.error('Error updating ranked data:', error);
         throw new Error('Failed to update ranked data');
     }
+};
+
+// Update only changed ranked data (recommended method)
+export const updateChangedRankedData = async (originalData: RankedData[], modifiedData: RankedData[]): Promise<RankedData[]> => {
+    const changedData = getChangedRankedData(originalData, modifiedData);
+    
+    if (changedData.length === 0) {
+        console.log('No changes detected, skipping update');
+        return modifiedData; // Return the modified data as-is
+    }
+    
+    console.log(`Sending ${changedData.length} changed items out of ${modifiedData.length} total items`);
+    return await updateRankedData(changedData);
 };
 
 // Fetch ranked data by bloodline
