@@ -3,7 +3,7 @@ import styles from './Ranked.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import RankingTable from '../../components/RankingTable/RankingTable';
-import { fetchRankedData, updateRankedData, type RankedData, fetchRankingConfig, type RankingConfig } from '../../services/apiRankedsService';
+import { fetchRankedData, updateChangedRankedData, type RankedData, fetchRankingConfig, type RankingConfig } from '../../services/apiRankedsService';
 import { usePermissions } from '../../hooks/usePermissions';
 import RankingAchievement from '../../components/RankingAchievement/RankingAchievement';
 
@@ -36,6 +36,7 @@ const Ranked: React.FC = () => {
 
     // --- Estado para los datos de ranked ---
     const [rankedData, setRankedData] = useState<RankedData[]>([]);
+    const [originalRankedData, setOriginalRankedData] = useState<RankedData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -151,6 +152,7 @@ const Ranked: React.FC = () => {
                 }));
 
                 setRankedData(dataWithDefaultHonor);
+                setOriginalRankedData(dataWithDefaultHonor); // Store original data for comparison
                 setRankingConfig(config);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Error loading ranked data');
@@ -173,9 +175,12 @@ const Ranked: React.FC = () => {
             console.log('New data array:', newData);
             setRankedData(newData);
 
-            // Make POST request with updated data immediately
-            await updateRankedData(newData);
-            console.log('Data updated successfully');
+            // Use the optimized method that only sends changed data
+            const updatedDataFromServer = await updateChangedRankedData(originalRankedData, newData);
+            console.log('Data updated successfully with optimized method');
+            
+            // Update original data to reflect the changes for future comparisons
+            setOriginalRankedData(updatedDataFromServer);
         } catch (error) {
             console.error('Error updating ranked data:', error);
             setError('Failed to update data on server');
