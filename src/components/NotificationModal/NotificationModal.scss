@@ -21,6 +21,7 @@
   height: 75%;
   margin-top: 5%;
   @include flex-center;
+  position: relative;
   // background-color: green;
 }
 
@@ -64,6 +65,112 @@
   }
   100% {
     transform: scaleX(-1) scaleY(1);
+  }
+}
+
+// Corazones flotantes
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.heart {
+  position: absolute;
+  width: 3vw;
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.6));
+}
+
+// Corazón izquierdo
+.heart-left {
+  left: 5%;
+  animation: floatUpLeft 6s ease-in-out infinite;
+}
+
+// Corazón derecho
+.heart-right {
+  right: 5%;
+  animation: floatUpRight 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+// Corazón centro (opcional, con delay)
+.heart-center {
+  left: 50%;
+  transform: translateX(-50%);
+  animation: floatUpCenter 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes floatUpLeft {
+  0% {
+    bottom: 0%;
+    opacity: 0;
+    transform: translateX(0) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-10px) scale(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+    transform: translateX(10px) scale(0.8);
+  }
+}
+
+@keyframes floatUpRight {
+  0% {
+    bottom: 0%;
+    opacity: 0;
+    transform: translateX(0) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(10px) scale(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+    transform: translateX(-10px) scale(0.8);
+  }
+}
+
+@keyframes floatUpCenter {
+  0% {
+    bottom: 0%;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
   }
 }
 

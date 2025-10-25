@@ -49,6 +49,13 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
     <div className="notification-modal-overlay" onClick={onClose}>
       <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
 
+        {/* Corazones flotantes */}
+        <div className="floating-hearts">
+          <img src="/images/icons/love-icon-1.png" alt="heart" className="heart heart-left" />
+          <img src="/images/icons/love-icon-2.png" alt="heart" className="heart heart-right" />
+          <img src="/images/icons/love-icon-3.png" alt="heart" className="heart heart-center" />
+        </div>
+
         <div className="notification-frame">
           <img
             src={petImage}
