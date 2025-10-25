@@ -51,11 +51,6 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
 
         <div className="notification-frame">
           <img
-            src={frameImage}
-            alt="Notification Frame"
-            className="frame-image"
-          />
-          <img
             src={petImage}
             alt="Pet"
             className="pet-image"
@@ -73,7 +68,7 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
                       alt="Bullet"
                       className="bullet-icon"
                     />
-                    <span>{point}</span>
+                    <span className="bullet-text">{point}</span>
                   </li>
                 ))}
               </ul>
