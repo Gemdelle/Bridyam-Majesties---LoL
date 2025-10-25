@@ -25,9 +25,6 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
 }) => {
   if (!notification.active) return null;
 
-  const frameImage = `/images/frames/news-frame-${currentPet}.png`;
-  const petImage = `/images/pets/pet-${currentPet}-1.png`;
-
   // Get username from localStorage
   const getUsername = () => {
     try {
@@ -44,6 +41,12 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
 
   const username = getUsername();
   const title = notification.title.replace('{username}', username);
+  const petImage = `/images/pets/pet-${currentPet}-1.png`;
+
+  // Set CSS custom property for dynamic frame
+  const frameStyle = {
+    '--frame-image': `url('/images/frames/news-frame-${currentPet}.png')`
+  } as React.CSSProperties;
 
   return (
     <div className="notification-modal-overlay" onClick={onClose}>
@@ -56,7 +59,7 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
           <img src="/images/icons/love-icon-3.png" alt="heart" className="heart heart-center" />
         </div>
 
-        <div className="notification-frame">
+        <div className="notification-frame" style={frameStyle}>
           <img
             src={petImage}
             alt="Pet"
