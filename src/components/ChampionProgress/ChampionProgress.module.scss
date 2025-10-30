@@ -9,6 +9,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-image: url('..//images/frames/dropdown.png');
+  @include background;
+  background-size: 85% 120%;
+  background-position: right center;
   // background-color: yellow;
 }
 
@@ -48,7 +52,7 @@
 .right__container {
   position: relative;
   width: 76%;
-  height: 100%;
+  height: 70%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -85,7 +89,7 @@
 
 // Crystals container
 .crystals__container {
-  width: 100%;
+  width: 85%;
   height: 60%;
   display: flex;
   align-items: center;
@@ -111,7 +115,7 @@
 
 // XP container (30% width)
 .xp__container {
-  width: 25%;
+  width: 20%;
   height: auto;
   display: flex;
   align-items: center;
@@ -132,6 +136,7 @@
   width: 25%;
   height: 100%;
   display: flex;
+  margin-right: 7%;
   @include flex-col-between;
   // background-color: coral;
 }
@@ -141,6 +146,10 @@
   height: 65%;
   object-fit: contain;
   // background-color: red;
+}
+
+.mastery__badge__small {
+  height: 50% !important;
 }
 
 .mastery__score__text {

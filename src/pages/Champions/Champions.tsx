@@ -24,7 +24,7 @@ const Champions: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // 5 champions per page
+    const itemsPerPage = 28; // 28 champions per page (4 containers × 7 champions each)
 
     // Role filter options
     const roleOptions: FilterOption[] = [
@@ -336,37 +336,43 @@ const Champions: React.FC = () => {
                                     return b.masteryProgress - a.masteryProgress;
                                 });
 
-                            return championsWithMastery.slice(0, 4).map((championData, sortedIndex) => {
-                                const { champion, masteryLevel, masteryProgress } = championData;
-
-                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
-
-                                // Mock XP data
-                                const currentXP = Math.floor(Math.random() * 1000) + 100;
-                                const totalXP = Math.floor(Math.random() * 2000) + 1000;
-
-                                // Calculate the actual position in the current page (1-based)
-                                const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
+                            // Create 4 green divs, each containing up to 7 ChampionProgress
+                            return Array.from({ length: 4 }, (_, containerIndex) => {
+                                const startIndex = containerIndex * 7;
+                                const championSlice = championsWithMastery.slice(startIndex, startIndex + 7);
 
                                 return (
                                     <div
-                                        key={champion.id}
-                                        style={{
-                                            width: '22%',
-                                            height: '100%',
-                                            backgroundColor: 'green'
-                                        }}
+                                        key={`container-${containerIndex}`}
+                                        className={styles.champion__container__item}
                                     >
-                                        <ChampionProgress
-                                            championName={champion.name}
-                                            championImage={championImageUrl}
-                                            masteryLevel={masteryLevel}
-                                            masteryProgress={masteryProgress}
-                                            currentXP={currentXP}
-                                            totalXP={totalXP}
-                                            championNumber={championNumber}
-                                            accountName="GEM Damglantine#GEM"
-                                        />
+                                        {championSlice.length > 0 ? championSlice.map((championData, localIndex) => {
+                                            const { champion, masteryLevel, masteryProgress } = championData;
+                                            const sortedIndex = startIndex + localIndex;
+
+                                            const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+
+                                            // Mock XP data
+                                            const currentXP = Math.floor(Math.random() * 1000) + 100;
+                                            const totalXP = Math.floor(Math.random() * 2000) + 1000;
+
+                                            // Calculate the actual position in the current page (1-based)
+                                            const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
+
+                                            return (
+                                                <ChampionProgress
+                                                    key={champion.id}
+                                                    championName={champion.name}
+                                                    championImage={championImageUrl}
+                                                    masteryLevel={masteryLevel}
+                                                    masteryProgress={masteryProgress}
+                                                    currentXP={currentXP}
+                                                    totalXP={totalXP}
+                                                    championNumber={championNumber}
+                                                    accountName="GEM Damglantine#GEM"
+                                                />
+                                            );
+                                        }) : null}
                                     </div>
                                 );
                             });

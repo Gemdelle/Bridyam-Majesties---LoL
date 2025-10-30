@@ -70,7 +70,7 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                     <img
                         src={`/images/masteries/badges/${masteryLevel}.png`}
                         alt={`Mastery ${masteryLevel}`}
-                        className={styles.mastery__score__badge}
+                        className={`${styles.mastery__score__badge} ${masteryLevel >= 1 && masteryLevel <= 4 ? styles.mastery__badge__small : ''}`}
                     />
                     <div className={styles.mastery__score__text}>
                         {currentXP}/{totalXP}
