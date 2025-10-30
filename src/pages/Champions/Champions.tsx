@@ -41,7 +41,7 @@ const Champions: React.FC = () => {
         { id: 'all', label: 'All Accounts' },
         ...userAccounts.map(account => ({
             id: account.username,
-            label: account.name || account.username
+            label: account.username
         }))
     ];
 
