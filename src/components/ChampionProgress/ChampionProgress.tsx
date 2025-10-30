@@ -42,14 +42,14 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
 
             {/* Right side - Account name and progress info (70% width) */}
             <div className={styles.right__container}>
-                {/* Account name at top */}
-                <div className={styles.account__name}>
-                    {accountName}
-                </div>
+                {/* Left info container (60% width) - Name and crystals */}
+                <div className={styles.left__info__container}>
+                    {/* Account name */}
+                    <div className={styles.account__name}>
+                        {accountName}
+                    </div>
 
-                {/* Bottom container with crystals and XP */}
-                <div className={styles.bottom__info__container}>
-                    {/* Crystals container (70% width) */}
+                    {/* Crystals container */}
                     <div className={styles.crystals__container}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const isUnlocked = i < masteryLevel;
@@ -63,12 +63,17 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                             );
                         })}
                     </div>
+                </div>
 
-                    {/* XP points container (30% width) */}
-                    <div className={styles.xp__container}>
-                        <div className={styles.xp__text}>
-                            {currentXP}/{totalXP}
-                        </div>
+                {/* Right mastery container (20% width, 100% height) */}
+                <div className={styles.mastery__score__container}>
+                    <img
+                        src={`/images/masteries/badges/${masteryLevel}.png`}
+                        alt={`Mastery ${masteryLevel}`}
+                        className={styles.mastery__score__badge}
+                    />
+                    <div className={styles.mastery__score__text}>
+                        {currentXP}/{totalXP}
                     </div>
                 </div>
             </div>
