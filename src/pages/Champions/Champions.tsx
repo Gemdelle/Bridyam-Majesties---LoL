@@ -336,7 +336,7 @@ const Champions: React.FC = () => {
                                     return b.masteryProgress - a.masteryProgress;
                                 });
 
-                            return championsWithMastery.map((championData, sortedIndex) => {
+                            return championsWithMastery.slice(0, 4).map((championData, sortedIndex) => {
                                 const { champion, masteryLevel, masteryProgress } = championData;
 
                                 const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
@@ -349,17 +349,25 @@ const Champions: React.FC = () => {
                                 const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
 
                                 return (
-                                    <ChampionProgress
+                                    <div
                                         key={champion.id}
-                                        championName={champion.name}
-                                        championImage={championImageUrl}
-                                        masteryLevel={masteryLevel}
-                                        masteryProgress={masteryProgress}
-                                        currentXP={currentXP}
-                                        totalXP={totalXP}
-                                        championNumber={championNumber}
-                                        accountName="GEM Damglantine#GEM"
-                                    />
+                                        style={{
+                                            width: '22%',
+                                            height: '100%',
+                                            backgroundColor: 'green'
+                                        }}
+                                    >
+                                        <ChampionProgress
+                                            championName={champion.name}
+                                            championImage={championImageUrl}
+                                            masteryLevel={masteryLevel}
+                                            masteryProgress={masteryProgress}
+                                            currentXP={currentXP}
+                                            totalXP={totalXP}
+                                            championNumber={championNumber}
+                                            accountName="GEM Damglantine#GEM"
+                                        />
+                                    </div>
                                 );
                             });
                         })()}
