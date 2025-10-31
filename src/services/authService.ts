@@ -268,7 +268,16 @@ export class AuthService {
 
       if (response.ok) {
         const data = await response.json();
-        return data.user || null;
+        const user = data.user || null;
+        
+        // Debug logs
+        if (user) {
+          console.log('❤️ MI EMAIL:', user.email);
+          console.log('❤️ MIS RANKED USERNAMES:', user.rankedUsernames);
+          console.log('❤️ CANTIDAD DE CUENTAS:', user.rankedUsernames?.length || 0);
+        }
+        
+        return user;
       } else {
         return null;
       }
