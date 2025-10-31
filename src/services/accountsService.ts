@@ -81,6 +81,9 @@ export class AccountsService {
         throw new Error('Invalid response format from server');
       }
 
+      console.log('❤️ CUENTAS RECIBIDAS:', data.accounts.length, 'cuentas');
+      console.log('❤️ USERNAMES:', data.accounts.map(a => a.username));
+
       return data.accounts;
     } catch (error) {
       console.error('Error fetching accounts:', error);
