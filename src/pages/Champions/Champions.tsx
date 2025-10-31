@@ -316,6 +316,7 @@ const Champions: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.current_champions__container}>
+                        
                         {(() => {
                             const { champions: currentChampions } = getCurrentPageChampions();
 
@@ -372,10 +373,12 @@ const Champions: React.FC = () => {
                                 const championSlice = championsWithMastery.slice(startIndex, startIndex + 7);
 
                                 return (
+                                    
                                     <div
                                         key={`container-${containerIndex}`}
                                         className={styles.champion__container__item}
                                     >
+                                        <div className={styles.account__name}>{accountToUse?.username || 'No account selected'}</div>
                                         {championSlice.length > 0 ? championSlice.map((championData, localIndex) => {
                                             const { champion, masteryLevel, masteryProgress, currentXP, totalXP } = championData;
                                             const sortedIndex = startIndex + localIndex;
