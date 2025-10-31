@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Champions.module.scss';
-import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { AccountsService, type Account } from '../../services/accountsService';
+import { type MasteryData } from '../../services/apiMasteriesService';
+import { masteryCacheService } from '../../services/masteryCacheService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
+import CacheStatus from '../../components/CacheStatus/CacheStatus';
 
 const Champions: React.FC = () => {
     const [champions, setChampions] = useState<Champion[]>([]);
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [userAccounts, setUserAccounts] = useState<Account[]>([]);
+    const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
@@ -65,14 +69,16 @@ const Champions: React.FC = () => {
             try {
                 setLoading(true);
 
-                // Load champions
-                const championsData = await fetchChampions();
-                setChampions(championsData);
+                // Load all data in parallel using shared cache
+                const [championsData, accountsData, masteriesData] = await Promise.all([
+                    fetchChampions(),
+                    AccountsService.getInstance().getAccounts(),
+                    masteryCacheService.getMasteries() // Use shared cache
+                ]);
 
-                // Load user accounts
-                const accountsService = AccountsService.getInstance();
-                const accountsData = await accountsService.getAccounts();
+                setChampions(championsData);
                 setUserAccounts(accountsData);
+                setMasteryData(masteriesData);
 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -313,27 +319,51 @@ const Champions: React.FC = () => {
                         {(() => {
                             const { champions: currentChampions } = getCurrentPageChampions();
 
-                            // Create array with mastery data and sort by mastery level (descending)
+                            // Determine which account to use for mastery data
+                            // If specific accounts are selected, use the first one; otherwise use first user account
+                            const accountToUse = selectedAccounts.length > 0 && !selectedAccounts.includes('all')
+                                ? userAccounts.find(acc => acc.username === selectedAccounts[0])
+                                : userAccounts[0];
+
+                            // Create array with REAL mastery data from shared cache
                             const championsWithMastery = currentChampions
                                 .filter(champion => champion !== null)
                                 .map((champion, index) => {
-                                    // Mock mastery data
-                                    const masteryLevel = Math.floor(Math.random() * 11);
-                                    const masteryProgress = Math.floor(Math.random() * 101);
+                                    // Get real mastery data from cache
+                                    const riotChampionId = getRiotIdForChampion(champion.id);
+                                    const mastery = accountToUse 
+                                        ? masteryData.find(m => 
+                                            m.ranked_id === accountToUse.id && 
+                                            m.champion_id === riotChampionId
+                                          )
+                                        : null;
+
+                                    const masteryLevel = mastery?.champion_level || 0;
+                                    const masteryPoints = mastery?.champion_points || 0;
+                                    const pointsSinceLastLevel = mastery?.champion_points_since_last_level || 0;
+                                    const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
+
+                                    // Calculate progress percentage
+                                    const masteryProgress = pointsUntilNextLevel > 0 
+                                        ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
+                                        : 0;
 
                                     return {
                                         champion,
                                         masteryLevel,
                                         masteryProgress,
+                                        masteryPoints,
+                                        currentXP: pointsSinceLastLevel,
+                                        totalXP: pointsSinceLastLevel + pointsUntilNextLevel,
                                         originalIndex: index
                                     };
                                 })
                                 .sort((a, b) => {
-                                    // Sort by mastery level descending, then by mastery progress descending
+                                    // Sort by mastery level descending, then by mastery points descending
                                     if (b.masteryLevel !== a.masteryLevel) {
                                         return b.masteryLevel - a.masteryLevel;
                                     }
-                                    return b.masteryProgress - a.masteryProgress;
+                                    return b.masteryPoints - a.masteryPoints;
                                 });
 
                             // Create 4 green divs, each containing up to 7 ChampionProgress
@@ -347,14 +377,10 @@ const Champions: React.FC = () => {
                                         className={styles.champion__container__item}
                                     >
                                         {championSlice.length > 0 ? championSlice.map((championData, localIndex) => {
-                                            const { champion, masteryLevel, masteryProgress } = championData;
+                                            const { champion, masteryLevel, masteryProgress, currentXP, totalXP } = championData;
                                             const sortedIndex = startIndex + localIndex;
 
                                             const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
-
-                                            // Mock XP data
-                                            const currentXP = Math.floor(Math.random() * 1000) + 100;
-                                            const totalXP = Math.floor(Math.random() * 2000) + 1000;
 
                                             // Calculate the actual position in the current page (1-based)
                                             const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
@@ -369,7 +395,7 @@ const Champions: React.FC = () => {
                                                     currentXP={currentXP}
                                                     totalXP={totalXP}
                                                     championNumber={championNumber}
-                                                    accountName="GEM Damglantine#GEM"
+                                                    accountName={accountToUse?.username || ""}
                                                 />
                                             );
                                         }) : null}
@@ -490,6 +516,8 @@ const Champions: React.FC = () => {
                 title="Test Achievement"
                 description="This is a temporary testing popup for achievements and badges."
             />
+            
+            <CacheStatus />
         </div>
     );
 };

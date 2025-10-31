@@ -3,7 +3,8 @@ import styles from './Accounts.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import AccountSummary from '../../components/AccountSummary';
 import AccountsService, { type Account } from '../../services/accountsService';
-import { fetchMasteryData } from '../../services/apiMasteriesService';
+import { masteryCacheService } from '../../services/masteryCacheService';
+import CacheStatus from '../../components/CacheStatus/CacheStatus';
 
 // Extended Account interface with mastery 10+ count
 interface AccountWithMasteryCount extends Account {
@@ -98,18 +99,36 @@ const Accounts: React.FC = () => {
         setIsLoading(true);
         setError(null);
         
-        // Make both calls in parallel - single mastery request instead of multiple
+        // Make both calls in parallel - using shared mastery cache
         const [accountsData, allMasteries] = await Promise.all([
           accountsService.getAccounts(),
-          fetchMasteryData() // Single call to get all mastery data
+          masteryCacheService.getMasteries() // Use shared cache (no duplicate backend requests)
         ]);
 
         // Process data locally instead of making individual requests
+        // Calculate real values from masteries cache (same as Champions and Mastery pages)
         const accountsWithMasteryCount = accountsData.map((account) => {
           const accountMasteries = allMasteries.filter(m => m.ranked_id === account.id);
-          const count10Plus = accountMasteries.filter(m => m.champion_level !== null && m.champion_level >= 10).length;
+          
+          // Calculate real champions count: unique champions with any mastery level
+          const uniqueChampions = accountMasteries.filter(m => 
+            m.champion_level !== null && m.champion_level > 0
+          ).length;
+          
+          // Calculate masteries 10+ count (for filtering)
+          const count10Plus = accountMasteries.filter(m => 
+            m.champion_level !== null && m.champion_level >= 10
+          ).length;
+          
+          // Calculate total masteries: count all champions with mastery level > 0
+          const totalMasteries = accountMasteries.filter(m => 
+            m.champion_level !== null && m.champion_level > 0
+          ).length;
+          
           return {
             ...account,
+            champions: uniqueChampions, // Override with real value from masteries cache
+            masteries: totalMasteries, // Override with real value from masteries cache
             masteryCount10Plus: count10Plus
           };
         });
@@ -277,6 +296,7 @@ const Accounts: React.FC = () => {
           )}
         </div>
       </div>
+      <CacheStatus />
     </div>
   );
 };

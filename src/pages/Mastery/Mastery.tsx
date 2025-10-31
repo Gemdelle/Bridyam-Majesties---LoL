@@ -3,8 +3,10 @@ import styles from './Mastery.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { fetchMasteryData, type MasteryData, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
+import { type MasteryData, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
+import { masteryCacheService } from '../../services/masteryCacheService';
 import { usePermissions } from '../../hooks/usePermissions';
+import CacheStatus from '../../components/CacheStatus/CacheStatus';
 
 // --- Opciones para los filtros ---
 const viewOptions: FilterOption[] = [
@@ -99,7 +101,7 @@ const Mastery: React.FC = () => {
         const loadMasteries = async () => {
             try {
                 setMasteryLoading(true);
-                const data = await fetchMasteryData();
+                const data = await masteryCacheService.getMasteries(); // Use shared cache
                 setMasteryData(data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Error loading mastery data');
@@ -344,8 +346,11 @@ const Mastery: React.FC = () => {
 
             console.log('PUT request successful, reloading data...');
 
-            // Reload mastery data from backend to reflect changes
-            const updatedData = await fetchMasteryData();
+            // Invalidate cache to force fresh data on next request
+            masteryCacheService.invalidateCache();
+            
+            // Reload mastery data from backend (will refresh cache)
+            const updatedData = await masteryCacheService.getMasteries();
             setMasteryData(updatedData);
 
             // Close dropdown
@@ -750,6 +755,7 @@ const Mastery: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <CacheStatus />
         </div>
     );
 };
