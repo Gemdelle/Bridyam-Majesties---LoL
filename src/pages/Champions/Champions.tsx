@@ -47,7 +47,7 @@ const Champions: React.FC = () => {
     const filteredAccountsForFilter = rankedUsernames.length > 0
         ? userAccounts.filter(acc => rankedUsernames.includes(acc.username))
         : userAccounts;
-    
+
     const accountOptions: FilterOption[] = [
         { id: 'all', label: 'All Accounts' },
         ...filteredAccountsForFilter.map(account => ({
@@ -187,7 +187,7 @@ const Champions: React.FC = () => {
     };
 
     // Type for list items (accounts and champions)
-    type ListItem = 
+    type ListItem =
         | { type: 'account', account: Account }
         | { type: 'champion', champion: Champion, account: Account, masteryLevel: number, masteryProgress: number, masteryPoints: number, currentXP: number, totalXP: number };
 
@@ -242,8 +242,8 @@ const Champions: React.FC = () => {
                 .map((champion, index) => {
                     // Get real mastery data from cache for this specific account
                     const riotChampionId = getRiotIdForChampion(champion.id);
-                    const mastery = masteryData.find(m => 
-                        m.ranked_id === account.id && 
+                    const mastery = masteryData.find(m =>
+                        m.ranked_id === account.id &&
                         m.champion_id === riotChampionId
                     );
 
@@ -253,7 +253,7 @@ const Champions: React.FC = () => {
                     const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
 
                     // Calculate progress percentage
-                    const masteryProgress = pointsUntilNextLevel > 0 
+                    const masteryProgress = pointsUntilNextLevel > 0
                         ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
                         : 0;
 
@@ -320,16 +320,16 @@ const Champions: React.FC = () => {
         const championsFromItems = items
             .filter((item): item is Extract<ListItem, { type: 'champion' }> => item.type === 'champion')
             .map(item => item.champion);
-        
+
         // Fill with nulls to maintain itemsPerPage size
         const likedChampions: (Champion | null)[] = [...championsFromItems];
         while (likedChampions.length < itemsPerPage) {
             likedChampions.push(null);
         }
 
-        return { 
-            champions: likedChampions, 
-            totalPages: getAllItems().totalPages 
+        return {
+            champions: likedChampions,
+            totalPages: getAllItems().totalPages
         };
     };
 
@@ -413,7 +413,7 @@ const Champions: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.current_champions__container}>
-                        
+
                         {(() => {
                             // Get paginated items for current page
                             const { items: currentPageItems } = getAllItems();
@@ -428,7 +428,7 @@ const Champions: React.FC = () => {
                                 const itemsPerColumn = 7;
                                 const startIndex = containerIndex * itemsPerColumn;
                                 const endIndex = startIndex + itemsPerColumn;
-                                
+
                                 // Get items for this column (7 items per column)
                                 const columnItems = currentPageItems.slice(startIndex, endIndex);
 
@@ -444,31 +444,29 @@ const Champions: React.FC = () => {
                                             // Column 2: indices 14-20 (itemIndex 0-6, but globalIndex = 14 + itemIndex)
                                             // Column 3: indices 21-27 (itemIndex 0-6, but globalIndex = 21 + itemIndex)
                                             const globalIndexInPage = startIndex + itemIndex;
-                                            
+
                                             if (item.type === 'account') {
                                                 return (
-                                                    <div 
-                                                        key={`account-${item.account.id}-${globalIndexInPage}`} 
+                                                    <div
+                                                        key={`account-${item.account.id}-${globalIndexInPage}`}
                                                         className={styles.account__name}
                                                     >
-                                                        <span className={styles.particle}></span>
                                                         <span className={styles.account__text}>
                                                             {item.account.username || 'No account selected'}
                                                         </span>
-                                                        <span className={styles.particle}></span>
                                                     </div>
                                                 );
                                             } else {
                                                 const { champion, account, masteryLevel, masteryProgress, currentXP, totalXP } = item;
                                                 const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
-                                                
+
                                                 // Calculate the actual position in the full list (1-based)
                                                 // Count only champions (not account names) for the numbering
                                                 const allItemsList = getAllItemsUnpaginated();
                                                 const pageStartIndex = (currentPage - 1) * itemsPerPage;
                                                 const absoluteIndex = pageStartIndex + globalIndexInPage;
                                                 let championNumber = 0;
-                                                
+
                                                 // Count champions from the beginning up to this champion's position
                                                 for (let i = 0; i <= absoluteIndex; i++) {
                                                     if (allItemsList[i] && allItemsList[i].type === 'champion') {
@@ -608,7 +606,7 @@ const Champions: React.FC = () => {
                 title="Test Achievement"
                 description="This is a temporary testing popup for achievements and badges."
             />
-            
+
             <CacheStatus />
         </div>
     );
