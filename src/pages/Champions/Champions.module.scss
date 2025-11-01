@@ -42,6 +42,31 @@
   // background-color: green;
 }
 
+.total__masteries__container {
+  height: 100%;
+  width: auto;
+  margin-right: 40%;
+  position: relative;
+  @include flex-center;
+  // background-color: red;
+}
+
+.total__masteries__frame {
+  position: absolute;
+  height: 120%;
+  top: -25%;
+  width: auto;
+  object-fit: contain;
+}
+
+.total__masteries__text {
+  color: #cdbe91;
+  font-size: 0.9vw;
+  letter-spacing: 0.1vw;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
 .actions__container {
   height: 100%;
   width: 35%;

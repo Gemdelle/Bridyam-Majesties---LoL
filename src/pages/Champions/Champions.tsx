@@ -523,6 +523,17 @@ const Champions: React.FC = () => {
         }
     };
 
+    // Calculate total masteries based on current filter
+    const calculateTotalMasteries = (): number => {
+        const allItems = getAllItemsUnpaginated();
+
+        // Get all champion items
+        const championItems = allItems.filter((item): item is Extract<ListItem, { type: 'champion' }> => item.type === 'champion');
+
+        // Sum all mastery levels
+        return championItems.reduce((total, item) => total + item.masteryLevel, 0);
+    };
+
     if (loading) {
         return (
             <div className={styles.page}>
@@ -567,6 +578,16 @@ const Champions: React.FC = () => {
                                     onSelectionChange={setSelectedChampions}
                                 />
                             </div>
+                        </div>
+                        <div className={styles.total__masteries__container}>
+                            <img
+                                src="/images/frames/account-ranking-position-frame.png"
+                                alt="Masteries frame"
+                                className={styles.total__masteries__frame}
+                            />
+                            <span className={styles.total__masteries__text}>
+                                {calculateTotalMasteries()}
+                            </span>
                         </div>
                         <div className={styles.actions__container}>
                             <div className={styles.search__container}>
