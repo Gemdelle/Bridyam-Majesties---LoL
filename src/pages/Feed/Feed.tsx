@@ -114,10 +114,11 @@ const Feed: React.FC = () => {
             const bloodlineLower = bloodline.toLowerCase();
 
             // Mapeo por nombre
-            if (bloodlineLower.includes('porveldam')) return '/images/achievement/gem-pet-1.png';
-            if (bloodlineLower.includes('spadelline')) return '/images/achievement/gem-pet-2.png';
-            if (bloodlineLower.includes('zephir')) return '/images/achievement/gem-pet-3.png';
-            if (bloodlineLower.includes('gladasmy')) return '/images/achievement/gem-pet-4.png';
+            if (bloodlineLower.includes('porveldam')) return '/images/icons/gem-icon-porveldam.png';
+            if (bloodlineLower.includes('spadelline')) return '/images/icons/gem-icon-spadelline.png';
+            if (bloodlineLower.includes('zephir')) return '/images/icons/gem-icon-zephiroth.png';
+            if (bloodlineLower.includes('gladasmy')) return '/images/icons/gem-icon-gladasmy.png';
+            if (bloodlineLower.includes('primogenit')) return '/images/icons/gem-icon-primogenit.png';
 
             // Intentar parsear como número
             const bloodlineNum = parseInt(bloodline);
@@ -131,15 +132,17 @@ const Feed: React.FC = () => {
 
         switch (bloodlineNum) {
             case 1: // Porveldam
-                return '/images/achievement/gem-pet-1.png';
+                return '/images/icons/gem-icon-porveldam.png';
             case 2: // Spadelline
-                return '/images/achievement/gem-pet-2.png';
+                return '/images/icons/gem-icon-spadelline.png';
             case 3: // Zephiroth
-                return '/images/achievement/gem-pet-3.png';
+                return '/images/icons/gem-icon-zephiroth.png';
             case 4: // Gladasmy
-                return '/images/achievement/gem-pet-4.png';
+                return '/images/icons/gem-icon-gladasmy.png';
+            case 5: // Primogenit
+                return '/images/icons/gem-icon-primogenit.png';
             default:
-                return '/images/achievement/gem-pet-1.png'; // Default: Porveldam
+                return '/images/icons/gem-icon-porveldam.png'; // Default: Porveldam
         }
     };
 
@@ -149,6 +152,8 @@ const Feed: React.FC = () => {
         let notifType: NotificationProps['type'] = 'general';
         let imageUrl = '';
         let notifFilterType: NotificationFilterType = 'all';
+        let notificationTitle = feedNotif.title; // Título base, puede ser modificado según el tipo de notificación
+        let notificationMessage = feedNotif.description; // Mensaje base, puede ser modificado según el tipo de notificación
 
 
         switch (feedNotif.action) {
@@ -163,12 +168,15 @@ const Feed: React.FC = () => {
                 const honorLevel = feedNotif.metadata.to || '1'; // 'to' contiene el honor level alcanzado
                 imageUrl = getHonorImage(honorLevel);
                 notifFilterType = 'honor';
+                // Agregar "in {account_name}" después del nivel en el mensaje si existe rankedUsername
+                if (feedNotif.rankedUsername) {
+                    notificationMessage = `${notificationMessage} in ${feedNotif.rankedUsername}`;
+                }
                 break;
             }
             case NotificationAction.WIN:
                 notifType = 'achievement';
-                // Usar gem-pet según la bloodline de la cuenta
-                console.log('WIN - bloodline:', feedNotif.bloodline, 'imageUrl:', getBloodlineGem(feedNotif.bloodline));
+                // Usar ícono de gem según la bloodline de la cuenta (porveldam, spadelline, zephiroth, gladasmy, primogenit)
                 imageUrl = getBloodlineGem(feedNotif.bloodline);
                 notifFilterType = 'ranked';
                 break;
@@ -256,8 +264,8 @@ const Feed: React.FC = () => {
         return {
             id: feedNotif.id,
             type: notifType,
-            title: feedNotif.title,
-            message: feedNotif.description,
+            title: notificationTitle,
+            message: notificationMessage,
             timestamp: new Date(feedNotif.createdAt),
             isRead: false,
             imageUrl: imageUrl,
