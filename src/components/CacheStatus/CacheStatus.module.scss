@@ -1,0 +1,60 @@
+@use '../../styles/variables.scss' as *;
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(200, 155, 60, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    font-size: 0.85rem;
+    color: #cdbe91;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: rgba(200, 155, 60, 0.6);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+    }
+}
+
+.icon {
+    font-size: 1.2rem;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: #8b7355;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.time {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #d4bf97;
+    letter-spacing: 0.05rem;
+}
+

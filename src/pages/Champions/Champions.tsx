@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Champions.module.scss';
-import { fetchChampions, type Champion } from '../../services/championsService';
+import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { AccountsService, type Account } from '../../services/accountsService';
+import { type MasteryData } from '../../services/apiMasteriesService';
+import { masteryCacheService } from '../../services/masteryCacheService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
+import CacheStatus from '../../components/CacheStatus/CacheStatus';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const Champions: React.FC = () => {
+    const { user } = useAuthContext();
     const [champions, setChampions] = useState<Champion[]>([]);
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [userAccounts, setUserAccounts] = useState<Account[]>([]);
+    const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
@@ -36,10 +42,15 @@ const Champions: React.FC = () => {
         { id: 'top', label: 'Top' }
     ];
 
-    // Account filter options (based on user's claimed accounts)
+    // Account filter options (based on user's claimed accounts filtered by rankedUsernames)
+    const rankedUsernames = user?.rankedUsernames || [];
+    const filteredAccountsForFilter = rankedUsernames.length > 0
+        ? userAccounts.filter(acc => rankedUsernames.includes(acc.username))
+        : userAccounts;
+    
     const accountOptions: FilterOption[] = [
         { id: 'all', label: 'All Accounts' },
-        ...userAccounts.map(account => ({
+        ...filteredAccountsForFilter.map(account => ({
             id: account.username,
             label: account.username
         }))
@@ -65,14 +76,16 @@ const Champions: React.FC = () => {
             try {
                 setLoading(true);
 
-                // Load champions
-                const championsData = await fetchChampions();
-                setChampions(championsData);
+                // Load all data in parallel using shared cache
+                const [championsData, accountsData, masteriesData] = await Promise.all([
+                    fetchChampions(),
+                    AccountsService.getInstance().getAccounts(),
+                    masteryCacheService.getMasteries() // Use shared cache
+                ]);
 
-                // Load user accounts
-                const accountsService = AccountsService.getInstance();
-                const accountsData = await accountsService.getAccounts();
+                setChampions(championsData);
                 setUserAccounts(accountsData);
+                setMasteryData(masteriesData);
 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -173,8 +186,25 @@ const Champions: React.FC = () => {
         });
     };
 
-    // Get champions for current page
-    const getCurrentPageChampions = () => {
+    // Type for list items (accounts and champions)
+    type ListItem = 
+        | { type: 'account', account: Account }
+        | { type: 'champion', champion: Champion, account: Account, masteryLevel: number, masteryProgress: number, masteryPoints: number, currentXP: number, totalXP: number };
+
+    // Get all items without pagination (for counting purposes)
+    const getAllItemsUnpaginated = (): ListItem[] => {
+        // Filter accounts by user's rankedUsernames first
+        const rankedUsernames = user?.rankedUsernames || [];
+        const filteredAccountsByUser = rankedUsernames.length > 0
+            ? userAccounts.filter(acc => rankedUsernames.includes(acc.username))
+            : userAccounts;
+
+        // Determine which accounts to use
+        const accountsToUse = selectedAccounts.length > 0 && !selectedAccounts.includes('all')
+            ? filteredAccountsByUser.filter(acc => selectedAccounts.includes(acc.username))
+            : filteredAccountsByUser;
+
+        // Get favorite champions
         let favoriteChampionsList = favoriteChampions
             .map(id => champions.find(champion => champion.id === id))
             .filter((champion): champion is Champion => champion !== undefined);
@@ -193,16 +223,6 @@ const Champions: React.FC = () => {
             );
         }
 
-        // Apply account filter (filter by user's claimed accounts)
-        if (selectedAccounts.length > 0 && !selectedAccounts.includes('all')) {
-            // In a real implementation, this would filter champions based on which account they belong to
-            // For now, we'll simulate this by showing champions that "belong" to the selected accounts
-            favoriteChampionsList = favoriteChampionsList.filter((_, index) => {
-                const accountUsername = selectedAccounts[index % selectedAccounts.length];
-                return selectedAccounts.includes(accountUsername);
-            });
-        }
-
         // Apply champion filter to favorite champions
         if (selectedChampions.length > 0 && !selectedChampions.includes('all')) {
             favoriteChampionsList = favoriteChampionsList.filter(champion =>
@@ -210,24 +230,107 @@ const Champions: React.FC = () => {
             );
         }
 
-        const totalPages = Math.ceil(favoriteChampionsList.length / itemsPerPage);
+        // Create a flat list alternating between account names and champions
+        const itemsList: ListItem[] = [];
+
+        accountsToUse.forEach((account) => {
+            // Add account name as an item
+            itemsList.push({ type: 'account', account });
+
+            // Get champions with mastery data for this account
+            const championsWithMastery = favoriteChampionsList
+                .map((champion, index) => {
+                    // Get real mastery data from cache for this specific account
+                    const riotChampionId = getRiotIdForChampion(champion.id);
+                    const mastery = masteryData.find(m => 
+                        m.ranked_id === account.id && 
+                        m.champion_id === riotChampionId
+                    );
+
+                    const masteryLevel = mastery?.champion_level || 0;
+                    const masteryPoints = mastery?.champion_points || 0;
+                    const pointsSinceLastLevel = mastery?.champion_points_since_last_level || 0;
+                    const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
+
+                    // Calculate progress percentage
+                    const masteryProgress = pointsUntilNextLevel > 0 
+                        ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
+                        : 0;
+
+                    return {
+                        champion,
+                        masteryLevel,
+                        masteryProgress,
+                        masteryPoints,
+                        currentXP: pointsSinceLastLevel,
+                        totalXP: pointsSinceLastLevel + pointsUntilNextLevel,
+                        originalIndex: index,
+                        account
+                    };
+                })
+                .sort((a, b) => {
+                    // Sort by mastery level descending, then by mastery points descending
+                    if (b.masteryLevel !== a.masteryLevel) {
+                        return b.masteryLevel - a.masteryLevel;
+                    }
+                    return b.masteryPoints - a.masteryPoints;
+                });
+
+            // Add champions for this account
+            championsWithMastery.forEach((championData) => {
+                itemsList.push({
+                    type: 'champion',
+                    champion: championData.champion,
+                    account: account,
+                    masteryLevel: championData.masteryLevel,
+                    masteryProgress: championData.masteryProgress,
+                    masteryPoints: championData.masteryPoints,
+                    currentXP: championData.currentXP,
+                    totalXP: championData.totalXP
+                });
+            });
+        });
+
+        return itemsList;
+    };
+
+    // Get all items (accounts + champions) for pagination
+    const getAllItems = (): { items: ListItem[], totalPages: number } => {
+        const itemsList = getAllItemsUnpaginated();
+
+        // Calculate total pages based on items (28 items per page = 4 columns × 7 items)
+        const totalPages = Math.ceil(itemsList.length / itemsPerPage);
 
         // Reset to page 1 if current page is out of bounds
         if (currentPage > totalPages && totalPages > 0) {
             setCurrentPage(1);
         }
 
+        // Get items for current page
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        const currentChampions = favoriteChampionsList.slice(startIndex, endIndex);
+        const currentPageItems = itemsList.slice(startIndex, endIndex);
 
-        // Fill remaining slots with placeholder data if less than 5
-        const likedChampions: (Champion | null)[] = [...currentChampions];
+        return { items: currentPageItems, totalPages };
+    };
+
+    // Legacy function for backward compatibility (returns champions only for filtering logic)
+    const getCurrentPageChampions = () => {
+        const { items } = getAllItems();
+        const championsFromItems = items
+            .filter((item): item is Extract<ListItem, { type: 'champion' }> => item.type === 'champion')
+            .map(item => item.champion);
+        
+        // Fill with nulls to maintain itemsPerPage size
+        const likedChampions: (Champion | null)[] = [...championsFromItems];
         while (likedChampions.length < itemsPerPage) {
             likedChampions.push(null);
         }
 
-        return { champions: likedChampions, totalPages };
+        return { 
+            champions: likedChampions, 
+            totalPages: getAllItems().totalPages 
+        };
     };
 
     const handlePageChange = (newPage: number) => {
@@ -310,69 +413,84 @@ const Champions: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.current_champions__container}>
+                        
                         {(() => {
-                            const { champions: currentChampions } = getCurrentPageChampions();
+                            // Get paginated items for current page
+                            const { items: currentPageItems } = getAllItems();
 
-                            // Create array with mastery data and sort by mastery level (descending)
-                            const championsWithMastery = currentChampions
-                                .filter(champion => champion !== null)
-                                .map((champion, index) => {
-                                    // Mock mastery data
-                                    const masteryLevel = Math.floor(Math.random() * 11);
-                                    const masteryProgress = Math.floor(Math.random() * 101);
-
-                                    return {
-                                        champion,
-                                        masteryLevel,
-                                        masteryProgress,
-                                        originalIndex: index
-                                    };
-                                })
-                                .sort((a, b) => {
-                                    // Sort by mastery level descending, then by mastery progress descending
-                                    if (b.masteryLevel !== a.masteryLevel) {
-                                        return b.masteryLevel - a.masteryLevel;
-                                    }
-                                    return b.masteryProgress - a.masteryProgress;
-                                });
-
-                            // Create 4 green divs, each containing up to 7 ChampionProgress
+                            // Distribute items across 4 columns (each column gets up to 7 items)
+                            // Fill each column completely from top to bottom, then move to next column (left to right)
+                            // Column 0: items 0-6
+                            // Column 1: items 7-13
+                            // Column 2: items 14-20
+                            // Column 3: items 21-27
                             return Array.from({ length: 4 }, (_, containerIndex) => {
-                                const startIndex = containerIndex * 7;
-                                const championSlice = championsWithMastery.slice(startIndex, startIndex + 7);
+                                const itemsPerColumn = 7;
+                                const startIndex = containerIndex * itemsPerColumn;
+                                const endIndex = startIndex + itemsPerColumn;
+                                
+                                // Get items for this column (7 items per column)
+                                const columnItems = currentPageItems.slice(startIndex, endIndex);
 
                                 return (
                                     <div
                                         key={`container-${containerIndex}`}
                                         className={styles.champion__container__item}
                                     >
-                                        {championSlice.length > 0 ? championSlice.map((championData, localIndex) => {
-                                            const { champion, masteryLevel, masteryProgress } = championData;
-                                            const sortedIndex = startIndex + localIndex;
+                                        {columnItems.map((item, itemIndex) => {
+                                            // Calculate the global index in the current page
+                                            // Column 0: indices 0-6 (itemIndex 0-6)
+                                            // Column 1: indices 7-13 (itemIndex 0-6, but globalIndex = 7 + itemIndex)
+                                            // Column 2: indices 14-20 (itemIndex 0-6, but globalIndex = 14 + itemIndex)
+                                            // Column 3: indices 21-27 (itemIndex 0-6, but globalIndex = 21 + itemIndex)
+                                            const globalIndexInPage = startIndex + itemIndex;
+                                            
+                                            if (item.type === 'account') {
+                                                return (
+                                                    <div 
+                                                        key={`account-${item.account.id}-${globalIndexInPage}`} 
+                                                        className={styles.account__name}
+                                                    >
+                                                        <span className={styles.particle}></span>
+                                                        <span className={styles.account__text}>
+                                                            {item.account.username || 'No account selected'}
+                                                        </span>
+                                                        <span className={styles.particle}></span>
+                                                    </div>
+                                                );
+                                            } else {
+                                                const { champion, account, masteryLevel, masteryProgress, currentXP, totalXP } = item;
+                                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+                                                
+                                                // Calculate the actual position in the full list (1-based)
+                                                // Count only champions (not account names) for the numbering
+                                                const allItemsList = getAllItemsUnpaginated();
+                                                const pageStartIndex = (currentPage - 1) * itemsPerPage;
+                                                const absoluteIndex = pageStartIndex + globalIndexInPage;
+                                                let championNumber = 0;
+                                                
+                                                // Count champions from the beginning up to this champion's position
+                                                for (let i = 0; i <= absoluteIndex; i++) {
+                                                    if (allItemsList[i] && allItemsList[i].type === 'champion') {
+                                                        championNumber++;
+                                                    }
+                                                }
 
-                                            const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
-
-                                            // Mock XP data
-                                            const currentXP = Math.floor(Math.random() * 1000) + 100;
-                                            const totalXP = Math.floor(Math.random() * 2000) + 1000;
-
-                                            // Calculate the actual position in the current page (1-based)
-                                            const championNumber = (currentPage - 1) * itemsPerPage + sortedIndex + 1;
-
-                                            return (
-                                                <ChampionProgress
-                                                    key={champion.id}
-                                                    championName={champion.name}
-                                                    championImage={championImageUrl}
-                                                    masteryLevel={masteryLevel}
-                                                    masteryProgress={masteryProgress}
-                                                    currentXP={currentXP}
-                                                    totalXP={totalXP}
-                                                    championNumber={championNumber}
-                                                    accountName="GEM Damglantine#GEM"
-                                                />
-                                            );
-                                        }) : null}
+                                                return (
+                                                    <ChampionProgress
+                                                        key={`champion-${champion.id}-${account.id}-${globalIndexInPage}`}
+                                                        championName={champion.name}
+                                                        championImage={championImageUrl}
+                                                        masteryLevel={masteryLevel}
+                                                        masteryProgress={masteryProgress}
+                                                        currentXP={currentXP}
+                                                        totalXP={totalXP}
+                                                        championNumber={(currentPage - 1) * itemsPerPage + championNumber}
+                                                        accountName={account.username || ""}
+                                                    />
+                                                );
+                                            }
+                                        })}
                                     </div>
                                 );
                             });
@@ -490,6 +608,8 @@ const Champions: React.FC = () => {
                 title="Test Achievement"
                 description="This is a temporary testing popup for achievements and badges."
             />
+            
+            <CacheStatus />
         </div>
     );
 };
