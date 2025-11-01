@@ -228,8 +228,11 @@ const Champions: React.FC = () => {
             );
         }
 
+        // Check if a specific champion is selected
+        const isSpecificChampionSelected = selectedChampions.length > 0 && !selectedChampions.includes('all');
+
         // Apply champion filter to favorite champions
-        if (selectedChampions.length > 0 && !selectedChampions.includes('all')) {
+        if (isSpecificChampionSelected) {
             favoriteChampionsList = favoriteChampionsList.filter(champion =>
                 selectedChampions.includes(champion.id.toString())
             );
@@ -241,69 +244,122 @@ const Champions: React.FC = () => {
         // Check if only one account is selected
         const isSingleAccountSelected = accountsToUse.length === 1;
 
-        accountsToUse.forEach((account) => {
-            // Add account name as an item
-            itemsList.push({ type: 'account', account });
+        // Special case: if a specific champion is selected, show it for each account without account names
+        if (isSpecificChampionSelected && favoriteChampionsList.length > 0) {
+            const selectedChampion = favoriteChampionsList[0]; // Get the selected champion
 
-            // Get champions with mastery data for this account
-            let championsWithMastery = favoriteChampionsList
-                .map((champion, index) => {
-                    // Get real mastery data from cache for this specific account
-                    const riotChampionId = getRiotIdForChampion(champion.id);
-                    const mastery = masteryData.find(m =>
-                        m.ranked_id === account.id &&
-                        m.champion_id === riotChampionId
-                    );
+            // Use ALL accounts when a specific champion is selected (not just claimed ones)
+            const allAccountsForChampion = selectedAccounts.length > 0 && !selectedAccounts.includes('all')
+                ? userAccounts.filter(acc => selectedAccounts.includes(acc.username))
+                : userAccounts;
 
-                    const masteryLevel = mastery?.champion_level || 0;
-                    const masteryPoints = mastery?.champion_points || 0;
-                    const pointsSinceLastLevel = mastery?.champion_points_since_last_level || 0;
-                    const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
+            // Create champion entries for all accounts
+            const championEntries = allAccountsForChampion.map((account) => {
+                // Get mastery data for this specific champion and account
+                const riotChampionId = getRiotIdForChampion(selectedChampion.id);
+                const mastery = masteryData.find(m =>
+                    m.ranked_id === account.id &&
+                    m.champion_id === riotChampionId
+                );
 
-                    // Calculate progress percentage
-                    const masteryProgress = pointsUntilNextLevel > 0
-                        ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
-                        : 0;
+                const masteryLevel = mastery?.champion_level || 0;
+                const masteryPoints = mastery?.champion_points || 0;
+                const pointsSinceLastLevel = mastery?.champion_points_since_last_level || 0;
+                const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
 
-                    return {
-                        champion,
-                        masteryLevel,
-                        masteryProgress,
-                        masteryPoints,
-                        currentXP: pointsSinceLastLevel,
-                        totalXP: pointsSinceLastLevel + pointsUntilNextLevel,
-                        originalIndex: index,
-                        account
-                    };
-                })
-                .sort((a, b) => {
-                    // Sort by mastery level descending, then by mastery points descending
-                    if (b.masteryLevel !== a.masteryLevel) {
-                        return b.masteryLevel - a.masteryLevel;
-                    }
-                    return b.masteryPoints - a.masteryPoints;
-                });
+                // Calculate progress percentage
+                const masteryProgress = pointsUntilNextLevel > 0
+                    ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
+                    : 0;
 
-            // Limit to top 6 champions by mastery ONLY if multiple accounts are selected
-            // If only one account is selected, show all favorite champions
-            if (!isSingleAccountSelected) {
-                championsWithMastery = championsWithMastery.slice(0, 6);
-            }
-
-            // Add champions for this account
-            championsWithMastery.forEach((championData) => {
-                itemsList.push({
-                    type: 'champion',
-                    champion: championData.champion,
+                return {
+                    type: 'champion' as const,
+                    champion: selectedChampion,
                     account: account,
-                    masteryLevel: championData.masteryLevel,
-                    masteryProgress: championData.masteryProgress,
-                    masteryPoints: championData.masteryPoints,
-                    currentXP: championData.currentXP,
-                    totalXP: championData.totalXP
+                    masteryLevel,
+                    masteryProgress,
+                    masteryPoints,
+                    currentXP: pointsSinceLastLevel,
+                    totalXP: pointsSinceLastLevel + pointsUntilNextLevel
+                };
+            });
+
+            // Sort by mastery level descending, then by mastery points descending
+            championEntries.sort((a, b) => {
+                if (b.masteryLevel !== a.masteryLevel) {
+                    return b.masteryLevel - a.masteryLevel;
+                }
+                return b.masteryPoints - a.masteryPoints;
+            });
+
+            // Add all sorted champions to itemsList (NO account names)
+            itemsList.push(...championEntries);
+        } else {
+            // Normal flow: show accounts with their champions
+            accountsToUse.forEach((account) => {
+                // Add account name as an item
+                itemsList.push({ type: 'account', account });
+
+                // Get champions with mastery data for this account
+                let championsWithMastery = favoriteChampionsList
+                    .map((champion, index) => {
+                        // Get real mastery data from cache for this specific account
+                        const riotChampionId = getRiotIdForChampion(champion.id);
+                        const mastery = masteryData.find(m =>
+                            m.ranked_id === account.id &&
+                            m.champion_id === riotChampionId
+                        );
+
+                        const masteryLevel = mastery?.champion_level || 0;
+                        const masteryPoints = mastery?.champion_points || 0;
+                        const pointsSinceLastLevel = mastery?.champion_points_since_last_level || 0;
+                        const pointsUntilNextLevel = mastery?.champion_points_until_next_level || 0;
+
+                        // Calculate progress percentage
+                        const masteryProgress = pointsUntilNextLevel > 0
+                            ? Math.floor((pointsSinceLastLevel / (pointsSinceLastLevel + pointsUntilNextLevel)) * 100)
+                            : 0;
+
+                        return {
+                            champion,
+                            masteryLevel,
+                            masteryProgress,
+                            masteryPoints,
+                            currentXP: pointsSinceLastLevel,
+                            totalXP: pointsSinceLastLevel + pointsUntilNextLevel,
+                            originalIndex: index,
+                            account
+                        };
+                    })
+                    .sort((a, b) => {
+                        // Sort by mastery level descending, then by mastery points descending
+                        if (b.masteryLevel !== a.masteryLevel) {
+                            return b.masteryLevel - a.masteryLevel;
+                        }
+                        return b.masteryPoints - a.masteryPoints;
+                    });
+
+                // Limit to top 6 champions by mastery ONLY if multiple accounts are selected
+                // If only one account is selected, show all favorite champions
+                if (!isSingleAccountSelected) {
+                    championsWithMastery = championsWithMastery.slice(0, 6);
+                }
+
+                // Add champions for this account
+                championsWithMastery.forEach((championData) => {
+                    itemsList.push({
+                        type: 'champion',
+                        champion: championData.champion,
+                        account: account,
+                        masteryLevel: championData.masteryLevel,
+                        masteryProgress: championData.masteryProgress,
+                        masteryPoints: championData.masteryPoints,
+                        currentXP: championData.currentXP,
+                        totalXP: championData.totalXP
+                    });
                 });
             });
-        });
+        }
 
         return itemsList;
     };
@@ -311,6 +367,33 @@ const Champions: React.FC = () => {
     // Legacy function for backward compatibility (returns champions only for filtering logic)
     const getCurrentPageChampions = () => {
         const allItems = getAllItemsUnpaginated();
+
+        // Check if a specific champion is selected (all items will be champions, no account names)
+        const isSpecificChampionSelected = selectedChampions.length > 0 && !selectedChampions.includes('all') &&
+            allItems.length > 0 && allItems.every(item => item.type === 'champion');
+
+        if (isSpecificChampionSelected) {
+            // Special case: specific champion selected
+            const allChampions = allItems.filter((item): item is Extract<ListItem, { type: 'champion' }> => item.type === 'champion');
+            const championsPerPage = 28;
+            const totalPages = Math.ceil(allChampions.length / championsPerPage);
+
+            const startChampionIndex = (currentPage - 1) * championsPerPage;
+            const endChampionIndex = startChampionIndex + championsPerPage;
+            const championsFromItems = allChampions
+                .slice(startChampionIndex, endChampionIndex)
+                .map(item => item.champion);
+
+            const likedChampions: (Champion | null)[] = [...championsFromItems];
+            while (likedChampions.length < itemsPerPage) {
+                likedChampions.push(null);
+            }
+
+            return {
+                champions: likedChampions,
+                totalPages
+            };
+        }
 
         // Group items by account to calculate total pages
         const allAccountsGroups: Array<{ account: Account, champions: Extract<ListItem, { type: 'champion' }>[] }> = [];
@@ -463,7 +546,66 @@ const Champions: React.FC = () => {
                             // Get all items without pagination to organize by account
                             const allItems = getAllItemsUnpaginated();
 
-                            // Group items by account
+                            // Check if a specific champion is selected (all items will be champions, no account names)
+                            const isSpecificChampionSelected = selectedChampions.length > 0 && !selectedChampions.includes('all') &&
+                                allItems.length > 0 && allItems.every(item => item.type === 'champion');
+
+                            if (isSpecificChampionSelected) {
+                                // Special case: specific champion selected - show champion for each account without account names
+                                const allChampions = allItems.filter((item): item is Extract<ListItem, { type: 'champion' }> => item.type === 'champion');
+
+                                // Pagination: 28 champions per page (7 per column × 4 columns)
+                                const championsPerPage = 28;
+                                const totalPages = Math.ceil(allChampions.length / championsPerPage);
+
+                                // Reset to page 1 if current page is out of bounds
+                                if (currentPage > totalPages && totalPages > 0) {
+                                    setCurrentPage(1);
+                                }
+
+                                // Get champions for current page
+                                const startChampionIndex = (currentPage - 1) * championsPerPage;
+                                const endChampionIndex = startChampionIndex + championsPerPage;
+                                const currentPageChampions = allChampions.slice(startChampionIndex, endChampionIndex);
+
+                                // Distribute champions across 4 columns (7 champions per column)
+                                return Array.from({ length: 4 }, (_, containerIndex) => {
+                                    const championsPerColumn = 7;
+                                    const startIndex = containerIndex * championsPerColumn;
+                                    const endIndex = startIndex + championsPerColumn;
+                                    const columnChampions = currentPageChampions.slice(startIndex, endIndex);
+
+                                    return (
+                                        <div
+                                            key={`container-${containerIndex}`}
+                                            className={styles.champion__container__item}
+                                        >
+                                            {/* No account names - just champions one below the other */}
+                                            {columnChampions.map((championItem, championIndex) => {
+                                                const { champion, account, masteryLevel, masteryProgress, currentXP, totalXP } = championItem;
+                                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+                                                const globalChampionIndex = startChampionIndex + startIndex + championIndex;
+
+                                                return (
+                                                    <ChampionProgress
+                                                        key={`champion-${champion.id}-${account.id}-${championIndex}`}
+                                                        championName={champion.name}
+                                                        championImage={championImageUrl}
+                                                        masteryLevel={masteryLevel}
+                                                        masteryProgress={masteryProgress}
+                                                        currentXP={currentXP}
+                                                        totalXP={totalXP}
+                                                        championNumber={globalChampionIndex + 1}
+                                                        accountName={account.username || ""}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                });
+                            }
+
+                            // Group items by account (normal flow)
                             const allAccountsGroups: Array<{ account: Account, champions: Extract<ListItem, { type: 'champion' }>[] }> = [];
                             let currentAccount: Account | null = null;
                             let currentChampions: Extract<ListItem, { type: 'champion' }>[] = [];
