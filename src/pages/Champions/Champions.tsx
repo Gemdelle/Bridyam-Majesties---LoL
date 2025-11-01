@@ -4,6 +4,7 @@ import { fetchChampions, type Champion, getRiotIdForChampion } from '../../servi
 import { AccountsService, type Account } from '../../services/accountsService';
 import { type MasteryData } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
+import { getFavorites, saveFavorites } from '../../services/favoritesService';
 import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
@@ -20,10 +21,8 @@ const Champions: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
     const [selectedChampions, setSelectedChampions] = useState<string[]>([]);
-    const [favoriteChampions, setFavoriteChampions] = useState<number[]>(() => {
-        const saved = localStorage.getItem('favoriteChampions');
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [favoriteChampions, setFavoriteChampions] = useState<number[]>([]);
+    const [favoritesLoaded, setFavoritesLoaded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [showChampions, setShowChampions] = useState(false);
@@ -62,10 +61,66 @@ const Champions: React.FC = () => {
         return champion ? { id: champion.id.toString(), label: champion.name } : null;
     }).filter((option): option is FilterOption => option !== null);
 
-    // Save favorites to localStorage whenever they change
+    // Load favorites from database on mount
     useEffect(() => {
+        const loadFavorites = async () => {
+            if (!user?.id) {
+                // No user logged in, load from localStorage as fallback
+                const saved = localStorage.getItem('favoriteChampions');
+                if (saved) {
+                    setFavoriteChampions(JSON.parse(saved));
+                }
+                setFavoritesLoaded(true);
+                return;
+            }
+
+            try {
+                // Load from database
+                const dbFavorites = await getFavorites(user.id);
+                if (dbFavorites.length > 0) {
+                    setFavoriteChampions(dbFavorites);
+                    // Also save to localStorage as backup
+                    localStorage.setItem('favoriteChampions', JSON.stringify(dbFavorites));
+                } else {
+                    // No favorites in DB, try loading from localStorage
+                    const saved = localStorage.getItem('favoriteChampions');
+                    if (saved) {
+                        const localFavorites = JSON.parse(saved);
+                        setFavoriteChampions(localFavorites);
+                        // Sync localStorage favorites to DB
+                        await saveFavorites(user.id, localFavorites);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading favorites from database:', error);
+                // Fallback to localStorage
+                const saved = localStorage.getItem('favoriteChampions');
+                if (saved) {
+                    setFavoriteChampions(JSON.parse(saved));
+                }
+            } finally {
+                setFavoritesLoaded(true);
+            }
+        };
+
+        loadFavorites();
+    }, [user?.id]);
+
+    // Save favorites to database and localStorage whenever they change
+    useEffect(() => {
+        if (!favoritesLoaded) return; // Don't save during initial load
+
+        // Always save to localStorage as backup
         localStorage.setItem('favoriteChampions', JSON.stringify(favoriteChampions));
-    }, [favoriteChampions]);
+
+        // Save to database if user is logged in
+        if (user?.id) {
+            saveFavorites(user.id, favoriteChampions).catch(error => {
+                console.error('Error saving favorites to database:', error);
+                // Continue anyway, localStorage is saved as backup
+            });
+        }
+    }, [favoriteChampions, user?.id, favoritesLoaded]);
 
     // Load champions and user accounts on component mount
     useEffect(() => {
