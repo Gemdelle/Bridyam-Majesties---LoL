@@ -57,13 +57,10 @@ const Champions: React.FC = () => {
     ];
 
     // Champion filter options (based on favorite champions)
-    const championOptions: FilterOption[] = [
-        { id: 'all', label: 'All Champions' },
-        ...favoriteChampions.map(id => {
-            const champion = champions.find(c => c.id === id);
-            return champion ? { id: champion.id.toString(), label: champion.name } : null;
-        }).filter((option): option is FilterOption => option !== null)
-    ];
+    const championOptions: FilterOption[] = favoriteChampions.map(id => {
+        const champion = champions.find(c => c.id === id);
+        return champion ? { id: champion.id.toString(), label: champion.name } : null;
+    }).filter((option): option is FilterOption => option !== null);
 
     // Save favorites to localStorage whenever they change
     useEffect(() => {
@@ -200,9 +197,17 @@ const Champions: React.FC = () => {
             : userAccounts;
 
         // Determine which accounts to use
-        const accountsToUse = selectedAccounts.length > 0 && !selectedAccounts.includes('all')
+        let accountsToUse = selectedAccounts.length > 0 && !selectedAccounts.includes('all')
             ? filteredAccountsByUser.filter(acc => selectedAccounts.includes(acc.username))
             : filteredAccountsByUser;
+
+        // Sort accounts by total number of masteries (highest first)
+        // Calculate total masteries for each account
+        accountsToUse = accountsToUse.sort((accountA, accountB) => {
+            const masteriesA = masteryData.filter(m => m.ranked_id === accountA.id).length;
+            const masteriesB = masteryData.filter(m => m.ranked_id === accountB.id).length;
+            return masteriesB - masteriesA; // Sort descending (highest first)
+        });
 
         // Get favorite champions
         let favoriteChampionsList = favoriteChampions
@@ -233,12 +238,15 @@ const Champions: React.FC = () => {
         // Create a flat list alternating between account names and champions
         const itemsList: ListItem[] = [];
 
+        // Check if only one account is selected
+        const isSingleAccountSelected = accountsToUse.length === 1;
+
         accountsToUse.forEach((account) => {
             // Add account name as an item
             itemsList.push({ type: 'account', account });
 
             // Get champions with mastery data for this account
-            const championsWithMastery = favoriteChampionsList
+            let championsWithMastery = favoriteChampionsList
                 .map((champion, index) => {
                     // Get real mastery data from cache for this specific account
                     const riotChampionId = getRiotIdForChampion(champion.id);
@@ -274,10 +282,15 @@ const Champions: React.FC = () => {
                         return b.masteryLevel - a.masteryLevel;
                     }
                     return b.masteryPoints - a.masteryPoints;
-                })
-                .slice(0, 6); // Limit to top 6 champions by mastery
+                });
 
-            // Add champions for this account (maximum 6)
+            // Limit to top 6 champions by mastery ONLY if multiple accounts are selected
+            // If only one account is selected, show all favorite champions
+            if (!isSingleAccountSelected) {
+                championsWithMastery = championsWithMastery.slice(0, 6);
+            }
+
+            // Add champions for this account
             championsWithMastery.forEach((championData) => {
                 itemsList.push({
                     type: 'champion',
@@ -320,18 +333,38 @@ const Champions: React.FC = () => {
             allAccountsGroups.push({ account: currentAccount, champions: currentChampions });
         }
 
-        // Pagination: 4 accounts per page
-        const accountsPerPage = 4;
-        const totalPages = Math.ceil(allAccountsGroups.length / accountsPerPage);
+        let totalPages: number;
+        let championsFromItems: Champion[];
 
-        // Get champions for current page
-        const startAccountIndex = (currentPage - 1) * accountsPerPage;
-        const endAccountIndex = startAccountIndex + accountsPerPage;
-        const currentPageAccountsGroups = allAccountsGroups.slice(startAccountIndex, endAccountIndex);
+        // Check if only one account is selected
+        const isSingleAccount = allAccountsGroups.length === 1;
 
-        const championsFromItems = currentPageAccountsGroups.flatMap(group =>
-            group.champions.map(item => item.champion)
-        );
+        if (isSingleAccount) {
+            // Single account: pagination by champions (27 per page: 6 + 7 + 7 + 7)
+            const singleAccountGroup = allAccountsGroups[0];
+            const championsPerPage = 27;
+            totalPages = Math.ceil(singleAccountGroup.champions.length / championsPerPage);
+
+            // Get champions for current page
+            const startChampionIndex = (currentPage - 1) * championsPerPage;
+            const endChampionIndex = startChampionIndex + championsPerPage;
+            championsFromItems = singleAccountGroup.champions
+                .slice(startChampionIndex, endChampionIndex)
+                .map(item => item.champion);
+        } else {
+            // Multiple accounts: pagination by accounts (4 per page)
+            const accountsPerPage = 4;
+            totalPages = Math.ceil(allAccountsGroups.length / accountsPerPage);
+
+            // Get champions for current page
+            const startAccountIndex = (currentPage - 1) * accountsPerPage;
+            const endAccountIndex = startAccountIndex + accountsPerPage;
+            const currentPageAccountsGroups = allAccountsGroups.slice(startAccountIndex, endAccountIndex);
+
+            championsFromItems = currentPageAccountsGroups.flatMap(group =>
+                group.champions.map(item => item.champion)
+            );
+        }
 
         // Fill with nulls if needed (not required anymore, but keeping for compatibility)
         const likedChampions: (Champion | null)[] = [...championsFromItems];
@@ -455,87 +488,173 @@ const Champions: React.FC = () => {
                                 allAccountsGroups.push({ account: currentAccount, champions: currentChampions });
                             }
 
-                            // Pagination: 4 accounts per page
-                            const accountsPerPage = 4;
-                            const totalPages = Math.ceil(allAccountsGroups.length / accountsPerPage);
+                            // Check if only one account is selected
+                            const isSingleAccount = allAccountsGroups.length === 1;
 
-                            // Reset to page 1 if current page is out of bounds
-                            if (currentPage > totalPages && totalPages > 0) {
-                                setCurrentPage(1);
-                            }
+                            if (isSingleAccount) {
+                                // Single account: distribute all champions across 4 columns with pagination
+                                const singleAccountGroup = allAccountsGroups[0];
+                                const { account, champions } = singleAccountGroup;
 
-                            // Get accounts for current page
-                            const startAccountIndex = (currentPage - 1) * accountsPerPage;
-                            const endAccountIndex = startAccountIndex + accountsPerPage;
-                            const currentPageAccountsGroups = allAccountsGroups.slice(startAccountIndex, endAccountIndex);
+                                // Pagination: 27 champions per page (first column: 6 champions + account name, others: 7 champions each)
+                                // Total: 6 + 7 + 7 + 7 = 27 champions per page
+                                const championsPerPage = 27;
+                                const totalPages = Math.ceil(champions.length / championsPerPage);
 
-                            // Count all champions from previous pages for numbering
-                            let championCount = 0;
-                            for (let i = 0; i < startAccountIndex; i++) {
-                                championCount += allAccountsGroups[i].champions.length;
-                            }
+                                // Reset to page 1 if current page is out of bounds
+                                if (currentPage > totalPages && totalPages > 0) {
+                                    setCurrentPage(1);
+                                }
 
-                            // Distribute accounts across 4 columns (each column gets 1 account with its champions)
-                            return Array.from({ length: 4 }, (_, containerIndex) => {
-                                const accountGroup = currentPageAccountsGroups[containerIndex];
+                                // Get champions for current page
+                                const startChampionIndex = (currentPage - 1) * championsPerPage;
+                                const endChampionIndex = startChampionIndex + championsPerPage;
+                                const currentPageChampions = champions.slice(startChampionIndex, endChampionIndex);
 
-                                if (!accountGroup) {
+                                // Distribute champions across 4 columns
+                                // First column: 6 champions (account name takes up space), others: 7 champions each
+                                return Array.from({ length: 4 }, (_, containerIndex) => {
+                                    let startIndex: number;
+                                    let endIndex: number;
+
+                                    if (containerIndex === 0) {
+                                        // First column: 6 champions (account name uses one slot)
+                                        startIndex = 0;
+                                        endIndex = 6;
+                                    } else {
+                                        // Other columns: 7 champions each
+                                        // Column 2: starts at 6, ends at 13
+                                        // Column 3: starts at 13, ends at 20
+                                        // Column 4: starts at 20, ends at 27
+                                        startIndex = 6 + (containerIndex - 1) * 7;
+                                        endIndex = startIndex + 7;
+                                    }
+
+                                    const columnChampions = currentPageChampions.slice(startIndex, endIndex);
+
                                     return (
                                         <div
                                             key={`container-${containerIndex}`}
                                             className={styles.champion__container__item}
-                                        />
-                                    );
-                                }
-
-                                const { account, champions } = accountGroup;
-
-                                // Count champions from previous columns on current page
-                                let currentPageChampionCount = championCount;
-                                for (let i = 0; i < containerIndex; i++) {
-                                    const prevGroup = currentPageAccountsGroups[i];
-                                    if (prevGroup) {
-                                        currentPageChampionCount += prevGroup.champions.length;
-                                    }
-                                }
-
-                                return (
-                                    <div
-                                        key={`container-${containerIndex}`}
-                                        className={styles.champion__container__item}
-                                    >
-                                        {/* Account name */}
-                                        <div
-                                            key={`account-${account.id}`}
-                                            className={styles.account__name}
                                         >
-                                            <span className={styles.account__text}>
-                                                {account.username || 'No account selected'}
-                                            </span>
+                                            {/* Show account name only in first column */}
+                                            {containerIndex === 0 && (
+                                                <div
+                                                    key={`account-${account.id}`}
+                                                    className={styles.account__name}
+                                                >
+                                                    <span className={styles.account__text}>
+                                                        {account.username || 'No account selected'}
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            {/* Champions for this column */}
+                                            {columnChampions.map((championItem, championIndex) => {
+                                                const { champion, masteryLevel, masteryProgress, currentXP, totalXP } = championItem;
+                                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+                                                const globalChampionIndex = startChampionIndex + startIndex + championIndex;
+
+                                                return (
+                                                    <ChampionProgress
+                                                        key={`champion-${champion.id}-${account.id}-${championIndex}`}
+                                                        championName={champion.name}
+                                                        championImage={championImageUrl}
+                                                        masteryLevel={masteryLevel}
+                                                        masteryProgress={masteryProgress}
+                                                        currentXP={currentXP}
+                                                        totalXP={totalXP}
+                                                        championNumber={globalChampionIndex + 1}
+                                                        accountName={account.username || ""}
+                                                    />
+                                                );
+                                            })}
                                         </div>
+                                    );
+                                });
+                            } else {
+                                // Multiple accounts: one account per column, max 6 champions per account
+                                const accountsPerPage = 4;
+                                const totalPages = Math.ceil(allAccountsGroups.length / accountsPerPage);
 
-                                        {/* Champions for this account (max 6) */}
-                                        {champions.map((championItem, championIndex) => {
-                                            const { champion, masteryLevel, masteryProgress, currentXP, totalXP } = championItem;
-                                            const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+                                // Reset to page 1 if current page is out of bounds
+                                if (currentPage > totalPages && totalPages > 0) {
+                                    setCurrentPage(1);
+                                }
 
-                                            return (
-                                                <ChampionProgress
-                                                    key={`champion-${champion.id}-${account.id}-${championIndex}`}
-                                                    championName={champion.name}
-                                                    championImage={championImageUrl}
-                                                    masteryLevel={masteryLevel}
-                                                    masteryProgress={masteryProgress}
-                                                    currentXP={currentXP}
-                                                    totalXP={totalXP}
-                                                    championNumber={currentPageChampionCount + championIndex + 1}
-                                                    accountName={account.username || ""}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                );
-                            });
+                                // Get accounts for current page
+                                const startAccountIndex = (currentPage - 1) * accountsPerPage;
+                                const endAccountIndex = startAccountIndex + accountsPerPage;
+                                const currentPageAccountsGroups = allAccountsGroups.slice(startAccountIndex, endAccountIndex);
+
+                                // Count all champions from previous pages for numbering
+                                let championCount = 0;
+                                for (let i = 0; i < startAccountIndex; i++) {
+                                    championCount += allAccountsGroups[i].champions.length;
+                                }
+
+                                // Distribute accounts across 4 columns (each column gets 1 account with its champions)
+                                return Array.from({ length: 4 }, (_, containerIndex) => {
+                                    const accountGroup = currentPageAccountsGroups[containerIndex];
+
+                                    if (!accountGroup) {
+                                        return (
+                                            <div
+                                                key={`container-${containerIndex}`}
+                                                className={styles.champion__container__item}
+                                            />
+                                        );
+                                    }
+
+                                    const { account, champions } = accountGroup;
+
+                                    // Count champions from previous columns on current page
+                                    let currentPageChampionCount = championCount;
+                                    for (let i = 0; i < containerIndex; i++) {
+                                        const prevGroup = currentPageAccountsGroups[i];
+                                        if (prevGroup) {
+                                            currentPageChampionCount += prevGroup.champions.length;
+                                        }
+                                    }
+
+                                    return (
+                                        <div
+                                            key={`container-${containerIndex}`}
+                                            className={styles.champion__container__item}
+                                        >
+                                            {/* Account name */}
+                                            <div
+                                                key={`account-${account.id}`}
+                                                className={styles.account__name}
+                                            >
+                                                <span className={styles.account__text}>
+                                                    {account.username || 'No account selected'}
+                                                </span>
+                                            </div>
+
+                                            {/* Champions for this account (max 6) */}
+                                            {champions.map((championItem, championIndex) => {
+                                                const { champion, masteryLevel, masteryProgress, currentXP, totalXP } = championItem;
+                                                const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${champion.name.replace(/['.\s]/g, '')}.png`;
+
+                                                return (
+                                                    <ChampionProgress
+                                                        key={`champion-${champion.id}-${account.id}-${championIndex}`}
+                                                        championName={champion.name}
+                                                        championImage={championImageUrl}
+                                                        masteryLevel={masteryLevel}
+                                                        masteryProgress={masteryProgress}
+                                                        currentXP={currentXP}
+                                                        totalXP={totalXP}
+                                                        championNumber={currentPageChampionCount + championIndex + 1}
+                                                        accountName={account.username || ""}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                });
+                            }
                         })()}
                     </div>
 

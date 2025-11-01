@@ -22,6 +22,9 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     championNumber,
     accountName
 }) => {
+    // Limit mastery badge image to level 10 maximum
+    const masteryBadgeLevel = Math.min(masteryLevel, 10);
+
     return (
         <div className={styles.champion__card}>
             {/* Left side - Champion portrait with frame (30% width) */}
@@ -68,9 +71,9 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                 {/* Right mastery container (20% width, 100% height) */}
                 <div className={styles.mastery__score__container}>
                     <img
-                        src={`/images/masteries/badges/${masteryLevel}.png`}
+                        src={`/images/masteries/badges/${masteryBadgeLevel}.png`}
                         alt={`Mastery ${masteryLevel}`}
-                        className={`${styles.mastery__score__badge} ${masteryLevel >= 1 && masteryLevel <= 4 ? styles.mastery__badge__small : ''}`}
+                        className={`${styles.mastery__score__badge} ${masteryBadgeLevel >= 1 && masteryBadgeLevel <= 4 ? styles.mastery__badge__small : ''}`}
                     />
                     <div className={styles.mastery__score__text}>
                         {masteryLevel}
