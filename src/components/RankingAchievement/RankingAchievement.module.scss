@@ -20,7 +20,7 @@
 }
 
 .achievement__name {
-    margin-top: 70%;
+    margin-top: 75%;
     height: auto;
     font-size: 0.8vw;
     color: #e4c493;
@@ -32,7 +32,7 @@
 
 .achievement__icon {
     width: 50%;
-    height: 25%;
+    height: 22%;
     position: relative;
     // background-color: red;
     @include flex-center;
@@ -53,7 +53,7 @@
 }
 
 .achievement__value {
-    font-size: 1.2vw;
+    font-size: 0.9vw;
     color: #c89b3c;
     text-align: center;
     font-weight: bold;
@@ -68,8 +68,8 @@
     font-size: 0.8vw;
     color: #cdbe91;
     text-align: center;
-    letter-spacing: 0.08vw;
-    margin-bottom: 5%;
+    letter-spacing: 0.04vw;
+    margin-bottom: 2%;
 }
 
 .achievement__clarification {
