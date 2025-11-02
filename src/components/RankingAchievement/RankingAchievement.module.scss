@@ -20,7 +20,7 @@
 }
 
 .achievement__name {
-    margin-top: 75%;
+    margin-top: 65%;
     height: auto;
     font-size: 0.8vw;
     color: #e4c493;
@@ -61,23 +61,63 @@
     text-shadow: 0 0 8px rgba(200, 155, 60, 0.5);
 }
 
-.achievement__description {
-    margin-top: 2%;
-    height: auto;
+.achievement__text__container {
     width: 50%;
+    height: 13%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    @include flex-col;
+    // background-color: yellow;
+}
+
+.achievement__description {
+    height: auto;
+    width: 100%;
     font-size: 0.8vw;
     color: #cdbe91;
     text-align: center;
     letter-spacing: 0.04vw;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
+    @include flex-center;
+    // background-color: green;
 }
 
 .achievement__clarification {
-    height: 10%;
-    width: 50%;
+    height: auto;
+    width: 100%;
     font-size: 0.7vw;
     margin: 0;
     color: #b69461;
     text-align: center;
     font-style: italic;
+    line-height: 1.1;
+    @include flex-center;
+    // background-color: blue;
+}
+
+.elo__breakdown {
+    width: 50%;
+    @include flex-col;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 1%;
+    // background-color: red;
+}
+
+.elo__point {
+    width: 100%;
+    @include flex-center;
+    gap: 0.5rem;
+}
+
+.elo__icon {
+    width: 1.2vw;
+    height: 1.2vw;
+    object-fit: contain;
+}
+
+.elo__number {
+    font-size: 0.8vw;
+    color: #e4c493;
+    font-weight: bold;
 }
