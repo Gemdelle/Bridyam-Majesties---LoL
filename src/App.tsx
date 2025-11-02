@@ -9,6 +9,8 @@ import { tutorialService } from './services/tutorialService'
 import ProtectedRoute from './components/ProtectedRoute'
 import Tutorial from './components/Tutorial'
 import { NotificationWrapper } from './components/NotificationWrapper'
+import AchievementPopup from './components/AchievementPopup'
+import { useAchievementNotifications } from './hooks/useAchievementNotifications'
 import Accounts from './pages/Accounts/Accounts'
 import Mastery from './pages/Mastery/Mastery'
 import Ranked from './pages/Ranked/Ranked'
@@ -25,8 +27,9 @@ import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
 
 function AppContent() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
   const location = useLocation();
+  const { currentAchievement, closeAchievement } = useAchievementNotifications();
 
   // Check if user has a pet
   const hasPet = () => {
@@ -37,6 +40,17 @@ function AppContent() {
   // Hide navigation on adoption and cursor-selection pages
   const showNav = isAuthenticated && location.pathname !== '/adoption' && location.pathname !== '/cursor-selection';
 
+  // Get pet data for achievement popup
+  const getPetData = () => {
+    const pet = tutorialService.getSelectedPet();
+    return {
+      petType: pet?.petType || '1',
+      petStage: pet?.petStage || 1
+    };
+  };
+
+  const petData = getPetData();
+
   return (
     <LanguageProvider>
       <CursorProvider>
@@ -44,6 +58,24 @@ function AppContent() {
           <NotificationWrapper>
             {showNav && <Nav />}
             <Tutorial />
+            
+            {/* Global Achievement Popup - shows when new achievements are detected */}
+            {currentAchievement && (
+              <AchievementPopup
+                isOpen={true}
+                onClose={closeAchievement}
+                title={currentAchievement.notification.title}
+                description={currentAchievement.notification.description}
+                category={currentAchievement.category}
+                elo={currentAchievement.elo}
+                progress={currentAchievement.progress}
+                total={currentAchievement.total}
+                petType={petData.petType}
+                petStage={petData.petStage}
+                userName={user?.username || 'beast'}
+              />
+            )}
+
             <Routes>
             {/* Public routes */}
             <Route
