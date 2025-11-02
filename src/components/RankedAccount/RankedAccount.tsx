@@ -3,6 +3,7 @@ import styles from './RankedAccount.module.scss';
 import { type RankedData } from '../../services/apiRankedsService';
 import { createMissionNotification } from '../../services/feedNotificationService';
 import { useAuth } from '../../hooks/useAuth';
+import { playProgressClickSound } from '../../utils/soundUtils';
 // Tier images are now served from public/images/
 const tierDiamond = '/images/lol-elements/tier-diamond.webp';
 const tierPlatinum = '/images/lol-elements/tier-platinum.webp';
@@ -140,6 +141,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
             };
 
             // Call callback to update data
+            playProgressClickSound();
             onUpdateRankedData(updatedRankedData);
 
             return newState;
@@ -243,6 +245,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                 ...rankedData,
                 level: levelValue
             };
+            playProgressClickSound();
             onUpdateRankedData(updatedRankedData);
         } else {
             // Reset to original value if invalid
@@ -352,6 +355,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
         console.log('Updated data:', updatedData); // Debug log
         console.log('Calling onUpdateRankedData with:', updatedData);
+        playProgressClickSound();
         onUpdateRankedData(updatedData);
 
         // Close the selector
@@ -376,6 +380,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
 
         console.log('Updated data:', updatedData); // Debug log
         console.log('Calling onUpdateRankedData with:', updatedData);
+        playProgressClickSound();
         onUpdateRankedData(updatedData);
 
         // Close the selector

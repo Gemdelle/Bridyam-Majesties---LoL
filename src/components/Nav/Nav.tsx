@@ -6,6 +6,7 @@ import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 
 export const Nav = () => {
     const location = useLocation()
@@ -16,12 +17,14 @@ export const Nav = () => {
     const [lastNotificationCount, setLastNotificationCount] = useState(0)
 
     const handleLogout = async () => {
+        playClickSound();
         if (confirm('Are you sure you want to logout?')) {
             await logout()
         }
     }
 
     const toggleLanguage = () => {
+        playClickSound();
         const newLang = language === 'en' ? 'es' : 'en';
         setLanguage(newLang);
     }
@@ -33,9 +36,10 @@ export const Nav = () => {
                 const notifications = await fetchAllNotifications(100)
                 const currentCount = notifications.length
 
-                // Si hay más notificaciones que antes, mostrar efecto
+                // Si hay más notificaciones que antes, mostrar efecto y reproducir sonido
                 if (lastNotificationCount > 0 && currentCount > lastNotificationCount) {
                     setHasNewNotifications(true)
+                    playNotificationSound()
                 } else if (currentCount === 0) {
                     setHasNewNotifications(false)
                 }
@@ -89,31 +93,31 @@ export const Nav = () => {
                         className={location.pathname === '/' ? styles.active : ''}
                         data-nav="accounts"
                     >
-                        <Link to="/">{t('nav.home')}</Link>
+                        <Link to="/" onClick={playClickSound}>{t('nav.home')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/bloodlines' ? styles.active : ''}
                         data-nav="bloodlines"
                     >
-                        <Link to="/bloodlines">{t('nav.bloodlines')}</Link>
+                        <Link to="/bloodlines" onClick={playClickSound}>{t('nav.bloodlines')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/ranked' ? styles.active : ''}
                         data-nav="ranked"
                     >
-                        <Link to="/ranked">{t('nav.ranked')}</Link>
+                        <Link to="/ranked" onClick={playClickSound}>{t('nav.ranked')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/champions' ? styles.active : ''}
                         data-nav="champions"
                     >
-                        <Link to="/champions">{t('nav.champions')}</Link>
+                        <Link to="/champions" onClick={playClickSound}>{t('nav.champions')}</Link>
                     </li>
                     <li
                         className={location.pathname === '/skins' ? styles.active : ''}
                         data-nav="skins"
                     >
-                        <Link to="/skins">{t('nav.skins')}</Link>
+                        <Link to="/skins" onClick={playClickSound}>{t('nav.skins')}</Link>
                     </li>
                 </ul>
                 <PetDisplay />
@@ -124,13 +128,13 @@ export const Nav = () => {
                                 className={location.pathname === '/achievements' ? styles.active : ''}
                                 data-nav="achievements"
                             >
-                                <Link to="/achievements">{t('nav.achievements')}</Link>
+                                <Link to="/achievements" onClick={playClickSound}>{t('nav.achievements')}</Link>
                             </li>
                             <li
                                 className={location.pathname === '/roulette' ? styles.active : ''}
                                 data-nav="roulette"
                             >
-                                <Link to="/roulette">{t('nav.roulette')}</Link>
+                                <Link to="/roulette" onClick={playClickSound}>{t('nav.roulette')}</Link>
                             </li>
                         </>
                     )}
@@ -138,13 +142,13 @@ export const Nav = () => {
                         className={location.pathname === '/redeem' ? styles.active : ''}
                         data-nav="redeem"
                     >
-                        <Link to="/redeem">{t('nav.redeem')}</Link>
+                        <Link to="/redeem" onClick={playClickSound}>{t('nav.redeem')}</Link>
                     </li>
                     <li
                         className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
                         data-nav="feed"
                     >
-                        <Link to="/feed">{t('nav.feed')}</Link>
+                        <Link to="/feed" onClick={playClickSound}>{t('nav.feed')}</Link>
                         {hasNewNotifications && (
                             <div className={styles.particles__container}>
                                 {Array.from({ length: 8 }, (_, i) => (
@@ -157,7 +161,7 @@ export const Nav = () => {
                         className={location.pathname === '/page' ? styles.active : ''}
                         data-nav="page"
                     >
-                        <Link to="/page">Page</Link>
+                        <Link to="/page" onClick={playClickSound}>Page</Link>
                     </li>
                     <li>
                         <button
