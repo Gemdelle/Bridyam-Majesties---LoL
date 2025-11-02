@@ -291,12 +291,6 @@
   @include flex-between;
 
   .rank,
-  .win,
-  .mastery,
-  .honor,
-  .level,
-  .member,
-  .elo,
   .score {
     color: #e4c493;
     // background-color: lightblue;
@@ -304,35 +298,32 @@
   }
 
   .rank {
-    width: 22%;
-  }
-
-  .win {
-    width: 8%;
-  }
-
-  .mastery {
-    width: 10%;
-  }
-
-  .honor {
-    width: 10%;
-  }
-
-  .level {
-    width: 10%;
-  }
-
-  .member {
-    width: 10%;
-  }
-
-  .elo {
-    width: 10%;
+    width: 23%;
+    // background-color: red;
   }
 
   .score {
-    width: 15%;
+    width: 18%;
+    // background-color: red;
+  }
+
+  .achievements__header {
+    flex: 1;
+    height: 100%;
+    @include flex-between;
+    // background-color: green;
+
+    .redeem,
+    .win,
+    .mastery,
+    .honor,
+    .level,
+    .member,
+    .elo {
+      flex: 1;
+      color: #e4c493;
+      @include flex-center;
+    }
   }
 }
 
