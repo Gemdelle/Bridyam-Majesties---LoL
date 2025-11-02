@@ -9,6 +9,7 @@ export interface AchievementData {
     progress?: number;
     total?: number;
     badgeImage?: string;
+    tier?: string;
 }
 
 /**
@@ -21,6 +22,24 @@ export const useAchievementNotifications = () => {
     const [achievementQueue, setAchievementQueue] = useState<AchievementData[]>([]);
     const lastCheckedRef = useRef<string | null>(null);
     const isCheckingRef = useRef(false);
+
+    // Helper to map LoL tier to ranking tier image
+    const getTierForRanking = (lolTier: string): string => {
+        const tierLower = lolTier.toLowerCase();
+        const tierMap: Record<string, string> = {
+            'iron': 'bronze',
+            'bronze': 'bronze',
+            'silver': 'silver',
+            'gold': 'silver',
+            'platinum': 'diamond',
+            'emerald': 'diamond',
+            'diamond': 'diamond',
+            'master': 'tourmaline',
+            'grandmaster': 'tourmaline',
+            'challenger': 'vesuvianite'
+        };
+        return tierMap[tierLower] || 'vesuvianite';
+    };
 
     // Mapea la notificación a datos del achievement popup
     const mapNotificationToAchievement = useCallback((notification: FeedNotification): AchievementData | null => {
@@ -35,7 +54,8 @@ export const useAchievementNotifications = () => {
                     category: 'level',
                     progress: to,
                     total: 30,
-                    badgeImage: `/images/icons/level-up-icon.png`
+                    badgeImage: `/images/icons/level-up-icon.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -46,7 +66,8 @@ export const useAchievementNotifications = () => {
                     category: 'honor',
                     progress: to,
                     total: 5,
-                    badgeImage: `/images/honor/honor-${to}.png`
+                    badgeImage: `/images/honor/honor-${to}.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -57,7 +78,8 @@ export const useAchievementNotifications = () => {
                     category: 'wins',
                     progress: wins,
                     total: 100, // Total aproximado
-                    badgeImage: `/images/icons/level-up-icon.png`
+                    badgeImage: `/images/icons/level-up-icon.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -79,7 +101,8 @@ export const useAchievementNotifications = () => {
                     elo: eloDisplay,
                     progress: 5 - toDivision, // Divisions desde IV hasta I
                     total: 4,
-                    badgeImage: `/images/lol-elements/tier-${toTier.toLowerCase()}-helm.webp`
+                    badgeImage: `/images/lol-elements/tier-${toTier.toLowerCase()}-helm.webp`,
+                    tier: getTierForRanking(toTier)
                 };
             }
             
@@ -91,7 +114,8 @@ export const useAchievementNotifications = () => {
                     category: 'mastery',
                     progress: to,
                     total: 10,
-                    badgeImage: `/images/masteries/badges/${to}.png`
+                    badgeImage: `/images/masteries/badges/${to}.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -102,7 +126,8 @@ export const useAchievementNotifications = () => {
                     elo: 'LEVEL 30',
                     progress: 30,
                     total: 30,
-                    badgeImage: `/images/icons/level-up-icon.png`
+                    badgeImage: `/images/icons/level-up-icon.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -112,7 +137,8 @@ export const useAchievementNotifications = () => {
                     category: 'redeem',
                     progress: 1,
                     total: 1,
-                    badgeImage: `/images/icons/level-up-icon.png`
+                    badgeImage: `/images/icons/level-up-icon.png`,
+                    tier: 'vesuvianite'
                 };
             }
             
@@ -124,7 +150,8 @@ export const useAchievementNotifications = () => {
                     category: 'mission',
                     progress: missionNumber,
                     total: totalMissions,
-                    badgeImage: `/images/icons/level-up-icon.png`
+                    badgeImage: `/images/icons/level-up-icon.png`,
+                    tier: 'vesuvianite'
                 };
             }
             

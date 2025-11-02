@@ -15,6 +15,7 @@ interface AchievementPopupProps {
     petType?: string | number; // Pet type (1-4)
     petStage?: number; // Pet stage (1-3), defaults to 1
     userName?: string; // User name for personalized messages
+    tier?: string; // Ranking tier (bronze, silver, diamond, tourmaline, vesuvianite)
 }
 
 const AchievementPopup: React.FC<AchievementPopupProps> = ({
@@ -29,7 +30,8 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
     total,
     petType = '1',
     petStage = 1,
-    userName = 'beast'
+    userName = 'beast',
+    tier = 'vesuvianite'
 }) => {
     const [currentMessage, setCurrentMessage] = useState<string>('');
     const messageIntervalRef = useRef<number | null>(null);
@@ -50,6 +52,29 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
         const validType = validTypes.includes(petTypeStr) ? petTypeStr : '1';
         const validStage = (petStage >= 1 && petStage <= 3) ? petStage : 1;
         return `/images/pets/pet-${validType}-${validStage}.png`;
+    };
+
+    // Get achievement image based on category and tier
+    const getAchievementImage = (): string => {
+        if (!category) {
+            return `/images/ranking/${tier}/${tier}-mastery.png`;
+        }
+
+        // Map category to image filename
+        const categoryMap: Record<string, string> = {
+            'wins': 'win',
+            'win': 'win',
+            'level': 'level',
+            'honor': 'honor',
+            'mastery': 'mastery',
+            'elo': 'elo',
+            'member': 'member',
+            'redeem': 'redeem',
+            'mission': 'win' // Use win image for missions
+        };
+
+        const imageType = categoryMap[category.toLowerCase()] || 'mastery';
+        return `/images/ranking/${tier}/${tier}-${imageType}.png`;
     };
 
     useEffect(() => {
@@ -161,7 +186,7 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
                     )}
 
                     <div className={styles.popup__title__image}>
-                        <img src="/images/ranking/vesuvianite/vesuvianite-mastery.png" alt={title || "Achievement"} />
+                        <img src={getAchievementImage()} alt={title || "Achievement"} />
                     </div>
                     <div className={styles.popup__text__container}>
                         {category && (
