@@ -984,8 +984,10 @@ const Champions: React.FC = () => {
             <AchievementPopup
                 isOpen={showAchievementPopup}
                 onClose={() => setShowAchievementPopup(false)}
-                title="Test Achievement"
-                description="This is a temporary testing popup for achievements and badges."
+                category="REDEEM"
+                elo="vesuvianite"
+                progress={3}
+                total={3}
             />
 
             <CacheStatus />
