@@ -990,7 +990,7 @@ const Champions: React.FC = () => {
                 total={3}
                 petType="1"
                 petStage={1}
-                userName={user?.name || user?.email || 'beast'}
+                userName={user?.name || 'beast'}
             />
 
             <CacheStatus />
