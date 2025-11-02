@@ -31,10 +31,7 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
     userName = 'beast'
 }) => {
     const [currentMessage, setCurrentMessage] = useState<string>('');
-    const [hearts, setHearts] = useState<Array<{ id: number; left: number; top: number; delay: number }>>([]);
-    const heartIdRef = useRef(0);
     const messageIntervalRef = useRef<number | null>(null);
-    const heartIntervalRef = useRef<number | null>(null);
 
     // Messages array - memoized to avoid dependency issues
     const messages = React.useMemo(() => [
@@ -65,56 +62,50 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
             setCurrentMessage(messages[Math.floor(Math.random() * messages.length)]);
         }, 3000);
 
-        // Generate hearts every 1.5 seconds
-        heartIntervalRef.current = window.setInterval(() => {
-            const newHeart = {
-                id: heartIdRef.current++,
-                left: 50 + (Math.random() - 0.5) * 15, // Random position around pet center
-                top: 50 + (Math.random() - 0.5) * 15,
-                delay: Math.random() * 0.3 // Small random delay for variety
-            };
-            setHearts(prev => [...prev, newHeart]);
-
-            // Remove heart after animation (2s)
-            setTimeout(() => {
-                setHearts(prev => prev.filter(h => h.id !== newHeart.id));
-            }, 2000);
-        }, 1500);
-
         return () => {
             if (messageIntervalRef.current) clearInterval(messageIntervalRef.current);
-            if (heartIntervalRef.current) clearInterval(heartIntervalRef.current);
-            setHearts([]);
         };
     }, [isOpen, userName, messages]);
 
+    // Generate particles only once when popup opens - using useMemo to prevent regeneration
+    const particles = React.useMemo(() => {
+        if (!isOpen) return [];
+
+        const particleCount = 24;
+        // Use a seed or fixed random seed for consistent generation
+        return Array.from({ length: particleCount }, (_, i) => {
+            // Distribute particles in a circular/radial pattern around center
+            const angle = (i / particleCount) * Math.PI * 2;
+            const radius = 30 + (i % 3) * 15; // Varying distances from center
+            const centerX = 50; // Center of viewport
+            const centerY = 50;
+
+            // Use a pseudo-random based on index for consistent positioning
+            // This creates random-like positions but they stay fixed
+            const seed = i * 137.508; // Golden angle for better distribution
+            const randomOffsetX = (Math.sin(seed) * 10);
+            const randomOffsetY = (Math.cos(seed) * 10);
+
+            const left = centerX + (radius * Math.cos(angle)) + randomOffsetX;
+            const top = centerY + (radius * Math.sin(angle)) + randomOffsetY;
+
+            // Use index-based pseudo-random for size, delay, and duration
+            const sizeSeed = Math.sin(i * 42.17) * 0.5 + 0.5; // 0-1 range
+            const delaySeed = Math.sin(i * 73.91) * 0.5 + 0.5; // 0-1 range
+            const durationSeed = Math.sin(i * 101.43) * 0.5 + 0.5; // 0-1 range
+
+            return {
+                id: i,
+                top: `${Math.max(5, Math.min(95, top))}%`,
+                left: `${Math.max(5, Math.min(95, left))}%`,
+                size: `${5 + sizeSeed * 7}px`,
+                delay: `${delaySeed * 2}s`,
+                duration: `${12 + durationSeed * 8}s`
+            };
+        });
+    }, [isOpen]); // Only regenerate when isOpen changes
+
     if (!isOpen) return null;
-
-    // Generate particles distributed around the popup in a more organized way
-    const particleCount = 24;
-    const particles = Array.from({ length: particleCount }, (_, i) => {
-        // Distribute particles in a circular/radial pattern around center
-        const angle = (i / particleCount) * Math.PI * 2;
-        const radius = 30 + (i % 3) * 15; // Varying distances from center
-        const centerX = 50; // Center of viewport
-        const centerY = 50;
-
-        // Add some randomness to make it more natural
-        const randomOffsetX = (Math.random() - 0.5) * 10;
-        const randomOffsetY = (Math.random() - 0.5) * 10;
-
-        const left = centerX + (radius * Math.cos(angle)) + randomOffsetX;
-        const top = centerY + (radius * Math.sin(angle)) + randomOffsetY;
-
-        return {
-            id: i,
-            top: `${Math.max(5, Math.min(95, top))}%`,
-            left: `${Math.max(5, Math.min(95, left))}%`,
-            size: `${5 + Math.random() * 7}px`,
-            delay: `${Math.random() * 2}s`,
-            duration: `${12 + Math.random() * 8}s`
-        };
-    });
 
     // Get achievement description based on category
     const getAchievementDescription = (category: string, progress: number, total: number): string => {
@@ -192,21 +183,6 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
 
             {/* Pet Section */}
             <div className={styles.pet__container}>
-                {/* Hearts */}
-                {hearts.map(heart => (
-                    <div
-                        key={heart.id}
-                        className={styles.heart}
-                        style={{
-                            left: `${heart.left}%`,
-                            top: `${heart.top}%`,
-                            animationDelay: `${heart.delay}s`
-                        }}
-                    >
-                        ❤️
-                    </div>
-                ))}
-
                 {/* Pet Image */}
                 <img
                     src={getPetImage()}
