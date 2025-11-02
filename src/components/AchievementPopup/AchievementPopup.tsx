@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './AchievementPopup.module.scss';
 
 interface AchievementPopupProps {
@@ -11,6 +11,9 @@ interface AchievementPopupProps {
     elo?: string;
     progress?: number;
     total?: number;
+    petType?: string | number; // Pet type (1-4)
+    petStage?: number; // Pet stage (1-3), defaults to 1
+    userName?: string; // User name for personalized messages
 }
 
 const AchievementPopup: React.FC<AchievementPopupProps> = ({
@@ -22,8 +25,69 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
     category,
     elo,
     progress,
-    total
+    total,
+    petType = '1',
+    petStage = 1,
+    userName = 'beast'
 }) => {
+    const [currentMessage, setCurrentMessage] = useState<string>('');
+    const [hearts, setHearts] = useState<Array<{ id: number; left: number; top: number; delay: number }>>([]);
+    const heartIdRef = useRef(0);
+    const messageIntervalRef = useRef<number | null>(null);
+    const heartIntervalRef = useRef<number | null>(null);
+
+    // Messages array - memoized to avoid dependency issues
+    const messages = React.useMemo(() => [
+        `I love you, ${userName}`,
+        "Let's go, beast",
+        "The GOAT",
+        `Let's go, ${userName}`,
+        "We are not noobs anymore"
+    ], [userName]);
+
+    // Get pet image path
+    const getPetImage = (): string => {
+        const petTypeStr = String(petType);
+        const validTypes = ['1', '2', '3', '4'];
+        const validType = validTypes.includes(petTypeStr) ? petTypeStr : '1';
+        const validStage = (petStage >= 1 && petStage <= 3) ? petStage : 1;
+        return `/images/pets/pet-${validType}-${validStage}.png`;
+    };
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        // Set initial message
+        setCurrentMessage(messages[Math.floor(Math.random() * messages.length)]);
+
+        // Change message every 3 seconds
+        messageIntervalRef.current = window.setInterval(() => {
+            setCurrentMessage(messages[Math.floor(Math.random() * messages.length)]);
+        }, 3000);
+
+        // Generate hearts every 1.5 seconds
+        heartIntervalRef.current = window.setInterval(() => {
+            const newHeart = {
+                id: heartIdRef.current++,
+                left: 50 + (Math.random() - 0.5) * 15, // Random position around pet center
+                top: 50 + (Math.random() - 0.5) * 15,
+                delay: Math.random() * 0.3 // Small random delay for variety
+            };
+            setHearts(prev => [...prev, newHeart]);
+
+            // Remove heart after animation (2s)
+            setTimeout(() => {
+                setHearts(prev => prev.filter(h => h.id !== newHeart.id));
+            }, 2000);
+        }, 1500);
+
+        return () => {
+            if (messageIntervalRef.current) clearInterval(messageIntervalRef.current);
+            if (heartIntervalRef.current) clearInterval(heartIntervalRef.current);
+            setHearts([]);
+        };
+    }, [isOpen, userName, messages]);
+
     if (!isOpen) return null;
 
     // Generate particles distributed around the popup in a more organized way
@@ -124,6 +188,38 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
                 <button className={styles.popup__confirm} onClick={onClose}>
                     Awesome!
                 </button>
+            </div>
+
+            {/* Pet Section */}
+            <div className={styles.pet__container}>
+                {/* Hearts */}
+                {hearts.map(heart => (
+                    <div
+                        key={heart.id}
+                        className={styles.heart}
+                        style={{
+                            left: `${heart.left}%`,
+                            top: `${heart.top}%`,
+                            animationDelay: `${heart.delay}s`
+                        }}
+                    >
+                        ❤️
+                    </div>
+                ))}
+
+                {/* Pet Image */}
+                <img
+                    src={getPetImage()}
+                    alt="Pet"
+                    className={styles.pet__image}
+                />
+
+                {/* Message Bubble */}
+                {currentMessage && (
+                    <div className={styles.pet__message}>
+                        {currentMessage}
+                    </div>
+                )}
             </div>
         </div>
     );

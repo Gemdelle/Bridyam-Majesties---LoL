@@ -275,4 +275,107 @@
     opacity: 0.9;
     filter: blur(1.2px) brightness(1.1);
   }
+}
+
+.pet__container {
+  position: absolute;
+  right: 10%;
+  bottom: 10%;
+  width: 15%;
+  height: 40%;
+  @include flex-col;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  // background-color: rgba(255, 0, 0, 0.1);
+}
+
+.pet__image {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  position: relative;
+  filter: drop-shadow(0 0 10px rgba(200, 155, 60, 0.5));
+}
+
+.pet__message {
+  position: absolute;
+  top: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 20, 25, 0.95);
+  border: 2px solid #c89b3c;
+  border-radius: 15px;
+  padding: 0.6rem 1rem;
+  color: #cdbe91;
+  font-size: 0.9vw;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 140px;
+  z-index: 3;
+  animation: messageFade 0.5s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #c89b3c;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(15, 20, 25, 0.95);
+    z-index: 1;
+  }
+}
+
+@keyframes messageFade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.heart {
+  position: absolute;
+  font-size: 1.5vw;
+  pointer-events: none;
+  z-index: 1;
+  animation: heartFloat 2s ease-out forwards;
+  filter: drop-shadow(0 0 5px rgba(255, 100, 100, 0.8));
+}
+
+@keyframes heartFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-50px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.8);
+  }
 } 
