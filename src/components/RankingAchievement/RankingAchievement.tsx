@@ -32,6 +32,8 @@ const RankingAchievement: React.FC<RankingAchievementProps> = ({
     ];
 
     const elos = eloBreakdown || defaultEloBreakdown;
+    // Reverse the order to show Diamond first, Bronze last
+    const reversedElos = [...elos].reverse();
 
     const getEloIconPath = (elo: string) => {
         return `/images/ranking/${elo}/${elo}-honor.png`;
@@ -59,7 +61,7 @@ const RankingAchievement: React.FC<RankingAchievementProps> = ({
                 )}
             </div>
             <div className={styles.elo__breakdown}>
-                {elos.map((eloPoint, index) => (
+                {reversedElos.map((eloPoint, index) => (
                     <div key={index} className={styles.elo__point}>
                         <img
                             src={getEloIconPath(eloPoint.elo)}

@@ -590,36 +590,72 @@ const Ranked: React.FC = () => {
                                 iconSrc="/images/ranking/diamond/diamond-elo.png"
                                 value={rankingConfig?.elo || "+25 pts"}
                                 clarification="Same points for any rank"
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 1 },
+                                    { elo: 'vesuvianite', points: 3 },
+                                    { elo: 'silver', points: 10 },
+                                    { elo: 'diamond', points: 25 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Mastery"
                                 description="Level up champion masteries"
                                 iconSrc="/images/ranking/diamond/diamond-mastery.png"
                                 value={rankingConfig?.mastery || "+50 pts"}
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 3 },
+                                    { elo: 'vesuvianite', points: 10 },
+                                    { elo: 'silver', points: 25 },
+                                    { elo: 'diamond', points: 50 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Wins"
                                 description="Win a ranked game (soloq/flex)"
                                 iconSrc="/images/ranking/diamond/diamond-win.png"
                                 value={rankingConfig?.wins || "+70 pts"}
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 3 },
+                                    { elo: 'vesuvianite', points: 15 },
+                                    { elo: 'silver', points: 30 },
+                                    { elo: 'diamond', points: 75 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Level"
                                 description="Level up your account"
                                 iconSrc="/images/ranking/diamond/diamond-level.png"
                                 value={rankingConfig?.level || "+80 pts"}
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 1 },
+                                    { elo: 'vesuvianite', points: 15 },
+                                    { elo: 'silver', points: 40 },
+                                    { elo: 'diamond', points: 75 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Honor"
                                 description="Increase your honor level"
                                 iconSrc="/images/ranking/diamond/diamond-honor.png"
                                 value={rankingConfig?.honor || "+300 pts"}
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 1 },
+                                    { elo: 'vesuvianite', points: 3 },
+                                    { elo: 'silver', points: 8 },
+                                    { elo: 'diamond', points: 12 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Redeem"
                                 description="Redeem an account"
                                 iconSrc="/images/ranking/diamond/diamond-redeem.png"
                                 value={rankingConfig?.redeem || "+500 pts"}
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 1 },
+                                    { elo: 'vesuvianite', points: 3 },
+                                    { elo: 'silver', points: 5 },
+                                    { elo: 'diamond', points: 8 }
+                                ]}
                             />
                             <RankingAchievement
                                 name="Member"
@@ -627,6 +663,12 @@ const Ranked: React.FC = () => {
                                 iconSrc="/images/ranking/diamond/diamond-member.png"
                                 value={rankingConfig?.member || "+1000 pts"}
                                 clarification="ONLY reedeming account in level 10 or lower"
+                                eloBreakdown={[
+                                    { elo: 'bronze', points: 0 },
+                                    { elo: 'vesuvianite', points: 1 },
+                                    { elo: 'silver', points: 2 },
+                                    { elo: 'diamond', points: 3 }
+                                ]}
                             />
                         </div>
                         <div className={styles.elo__container}>
