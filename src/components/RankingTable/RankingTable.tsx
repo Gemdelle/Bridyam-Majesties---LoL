@@ -26,13 +26,6 @@ const RankingTable: React.FC = () => {
         loadRanking();
     }, []);
 
-    const getRankTier = (rank: number): string => {
-        if (rank === 1) return 'diamond';
-        if (rank === 2) return 'silver';
-        if (rank === 3) return 'vesuvianite';
-        return 'bronze';
-    };
-
     const getPetImage = (petType: string | null, petStage: number | null): string | null => {
         // Validar petType (debe ser "1", "2", "3", "4", no "0")
         if (!petType || petType === '0' || !['1', '2', '3', '4'].includes(petType)) {
@@ -47,28 +40,43 @@ const RankingTable: React.FC = () => {
         return `/images/pets/pet-${petType}-${petStage}.png`;
     };
 
-    // Calcula la posición de un usuario en una categoría específica
-    const getCategoryRank = (entry: RankingEntry, category: keyof RankingEntry): number => {
-        const sortedByCategory = [...ranking].sort((a, b) => {
-            const aValue = a[category] as number;
-            const bValue = b[category] as number;
-            return bValue - aValue; // Orden descendente
-        });
-
-        return sortedByCategory.findIndex(e => e.userId === entry.userId) + 1;
+    // Thresholds for each category based on elo values
+    // Format: { bronze: value, vesuvianite: value, silver: value, diamond: value }
+    const categoryThresholds: Record<string, { bronze: number; vesuvianite: number; silver: number; diamond: number }> = {
+        eloDivisionsGained: { bronze: 1, vesuvianite: 3, silver: 10, diamond: 25 },
+        masteryLevelsGained: { bronze: 3, vesuvianite: 10, silver: 25, diamond: 50 },
+        winsGained: { bronze: 3, vesuvianite: 15, silver: 30, diamond: 75 },
+        levelGained: { bronze: 1, vesuvianite: 15, silver: 40, diamond: 75 },
+        honorGained: { bronze: 1, vesuvianite: 3, silver: 8, diamond: 12 },
+        redeemCount: { bronze: 1, vesuvianite: 3, silver: 5, diamond: 8 },
+        level30BonusCount: { bronze: 0, vesuvianite: 1, silver: 2, diamond: 3 }
     };
 
-    // Obtiene el tier de icono basado en la posición en la categoría específica
+    // Obtiene el tier de icono basado en el valor real de la categoría
     const getCategoryTier = (entry: RankingEntry, category: keyof RankingEntry): string => {
         const categoryValue = entry[category] as number;
 
-        // Si el valor de la categoría es 0, siempre retornar bronze
-        if (categoryValue === 0) {
+        // Si el valor de la categoría es 0 o menor, siempre retornar bronze
+        if (categoryValue <= 0) {
             return 'bronze';
         }
 
-        const categoryRank = getCategoryRank(entry, category);
-        return getRankTier(categoryRank);
+        const thresholds = categoryThresholds[category as string];
+        if (!thresholds) {
+            // Fallback a bronze si no hay thresholds definidos
+            return 'bronze';
+        }
+
+        // Determinar el tier basándose en los umbrales
+        if (categoryValue >= thresholds.diamond) {
+            return 'diamond';
+        } else if (categoryValue >= thresholds.silver) {
+            return 'silver';
+        } else if (categoryValue >= thresholds.vesuvianite) {
+            return 'vesuvianite';
+        } else {
+            return 'bronze';
+        }
     };
 
     // Helper function to render rank number as images
