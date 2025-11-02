@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './AchievementPopup.module.scss';
+import { playAchievementSound, playClickSound } from '../../utils/soundUtils';
 
 interface AchievementPopupProps {
     isOpen: boolean;
@@ -53,6 +54,9 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
 
     useEffect(() => {
         if (!isOpen) return;
+
+        // Play achievement sound when popup opens
+        playAchievementSound();
 
         // Set initial message
         setCurrentMessage(messages[Math.floor(Math.random() * messages.length)]);
@@ -176,7 +180,13 @@ const AchievementPopup: React.FC<AchievementPopupProps> = ({
                     </div>
                 </div>
 
-                <button className={styles.popup__confirm} onClick={onClose}>
+                <button
+                    className={styles.popup__confirm}
+                    onClick={() => {
+                        playClickSound();
+                        onClose();
+                    }}
+                >
                     Awesome!
                 </button>
             </div>

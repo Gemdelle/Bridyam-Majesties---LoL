@@ -10,6 +10,7 @@ import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { playClickSound } from '../../utils/soundUtils';
 
 const Champions: React.FC = () => {
     const { user } = useAuthContext();
@@ -551,7 +552,10 @@ const Champions: React.FC = () => {
             {/* Temporary Achievement Button */}
             <button
                 className={styles.achievement__button}
-                onClick={() => setShowAchievementPopup(true)}
+                onClick={() => {
+                    playClickSound();
+                    setShowAchievementPopup(true);
+                }}
             >
                 Achievement
             </button>
@@ -600,7 +604,10 @@ const Champions: React.FC = () => {
                                 />
                                 {searchTerm && (
                                     <button
-                                        onClick={() => setSearchTerm('')}
+                                        onClick={() => {
+                                            playClickSound();
+                                            setSearchTerm('');
+                                        }}
                                         className={styles.search__clear}
                                         type="button"
                                     >
@@ -610,7 +617,10 @@ const Champions: React.FC = () => {
                             </div>
                             <button
                                 className={styles.choose__champions__button}
-                                onClick={() => setShowChampions(true)}
+                                onClick={() => {
+                                    playClickSound();
+                                    setShowChampions(true);
+                                }}
                             >
                                 Champions
                             </button>
@@ -894,11 +904,17 @@ const Champions: React.FC = () => {
 
                     {/* Pagination */}
                     <div className={styles.pagination}>
-                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                        <button onClick={() => {
+                            playClickSound();
+                            handlePageChange(currentPage - 1);
+                        }} disabled={currentPage === 1}>
                             &lt; Previous
                         </button>
                         <span>Page {currentPage} of {getCurrentPageChampions().totalPages}</span>
-                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === getCurrentPageChampions().totalPages}>
+                        <button onClick={() => {
+                            playClickSound();
+                            handlePageChange(currentPage + 1);
+                        }} disabled={currentPage === getCurrentPageChampions().totalPages}>
                             Next &gt;
                         </button>
                     </div>
@@ -928,7 +944,10 @@ const Champions: React.FC = () => {
                                 />
                                 {searchTerm && (
                                     <button
-                                        onClick={() => setSearchTerm('')}
+                                        onClick={() => {
+                                            playClickSound();
+                                            setSearchTerm('');
+                                        }}
                                         className={styles.search__clear}
                                         type="button"
                                     >
