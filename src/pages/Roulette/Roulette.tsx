@@ -43,7 +43,7 @@ const Roulette: React.FC = () => {
         {digits.map((digit, index) => (
           <img
             key={index}
-            src={`/images/roulette/${digit}.png`}
+            src={`/images/numbers/${digit}.png`}
             alt={digit}
             className={styles.digitImage}
           />

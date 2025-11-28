@@ -241,6 +241,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .header__champion {
@@ -249,11 +251,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .header__account {
   height: 100%;
   flex: 1;
+  min-width: 120px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -343,11 +349,13 @@
 }
 
 .row__id {
-  width: 2.5%;
+  width: 3%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
   color: #cdbe91;
   font-weight: bold;
   font-size: 0.9rem;
@@ -359,6 +367,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
   color: #e4c493;
   font-weight: 600;
   font-size: 0.65vw;
@@ -369,12 +379,13 @@
 .row__account {
   flex: 1;
   height: 100%;
+  min-width: 120px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #8b7355;
   font-size: 0.9rem;
-  min-width: 120px;
   position: relative;
 }
 
