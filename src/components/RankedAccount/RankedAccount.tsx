@@ -332,7 +332,7 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
         return validTiers.includes(rankedData.elo_flex.tier.toLowerCase());
     };
 
-    const availableTiers = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+    const availableTiers = ['unranked', 'iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
     const availableDivisions = [1, 2, 3, 4];
 
     const handleRankChange = (queueType: 'soloq' | 'flex', tier: string, division: number) => {
@@ -588,7 +588,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                                         handleRankChange('soloq', tier, rankedData.elo_soloq.division);
                                     }}
                                 >
-                                    <img src={getTierImage(tier)} alt={tier} />
+                                    {tier === 'unranked' ? (
+                                        <span className={styles.unranked__label}>U</span>
+                                    ) : (
+                                        <img src={getTierImage(tier)} alt={tier} />
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -631,7 +635,11 @@ const RankedAccount: React.FC<RankedAccountProps> = ({ rankedData, onUpdateRanke
                                         handleRankChange('flex', tier, rankedData.elo_flex.division);
                                     }}
                                 >
-                                    <img src={getTierImage(tier)} alt={tier} />
+                                    {tier === 'unranked' ? (
+                                        <span className={styles.unranked__label}>U</span>
+                                    ) : (
+                                        <img src={getTierImage(tier)} alt={tier} />
+                                    )}
                                 </div>
                             ))}
                         </div>

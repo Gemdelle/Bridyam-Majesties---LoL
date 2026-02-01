@@ -389,7 +389,7 @@
     border-radius: 8px;
     padding: 0.5rem;
     z-index: 1000;
-    min-width: 200px;
+    min-width: 280px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
@@ -460,6 +460,12 @@
     background: #c89b3c;
     border-color: #f0e6d2;
     transform: scale(1.1);
+}
+
+.unranked__label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #8b8b8b;
 }
 
 .honor__selector {

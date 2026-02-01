@@ -265,7 +265,7 @@ const Ranked: React.FC = () => {
                         comparison = a.honor - b.honor;
                         break;
                     case 'soloq': {
-                        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+                        const tierOrder = ['unranked', 'iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
                         const aTierIndex = tierOrder.indexOf(a.elo_soloq.tier.toLowerCase());
                         const bTierIndex = tierOrder.indexOf(b.elo_soloq.tier.toLowerCase());
                         if (aTierIndex !== bTierIndex) {
@@ -276,7 +276,7 @@ const Ranked: React.FC = () => {
                         break;
                     }
                     case 'flex': {
-                        const tierOrder = ['iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
+                        const tierOrder = ['unranked', 'iron', 'bronze', 'silver', 'gold', 'platinum', 'emerald', 'diamond'];
                         const aTierIndexFlex = tierOrder.indexOf(a.elo_flex.tier.toLowerCase());
                         const bTierIndexFlex = tierOrder.indexOf(b.elo_flex.tier.toLowerCase());
                         if (aTierIndexFlex !== bTierIndexFlex) {
