@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "¿Cuál es el objetivo principal del juego League of Legends?",
+    "category_id": 1,
+    "answers": [
+      "Destruir la base enemiga",
+      "Conseguir más oro",
+      "Matar más campeones",
+      "Controlar más objetivos"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 2,
+    "question": "¿Cuál es la habilidad definitiva de Yasuo?",
+    "category_id": 2,
+    "answers": [
+      "Last Breath",
+      "Steel Tempest",
+      "Wind Wall",
+      "Sweeping Blade"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 3,
+    "question": "¿Qué objeto te da más velocidad de ataque?",
+    "category_id": 3,
+    "answers": [
+      "Infinity Edge",
+      "Rapid Firecannon",
+      "Phantom Dancer",
+      "Todas las anteriores"
+    ],
+    "correct_answer_index": 3
+  },
+  {
+    "id": 4,
+    "question": "¿Cuántos dragones hay en el mapa?",
+    "category_id": 4,
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct_answer_index": 2
+  },
+  {
+    "id": 5,
+    "question": "¿Qué equipo ganó el Worlds 2023?",
+    "category_id": 5,
+    "answers": [
+      "T1",
+      "JDG",
+      "Gen.G",
+      "DRX"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 6,
+    "question": "¿De qué región es originario Yasuo?",
+    "category_id": 6,
+    "answers": [
+      "Ionia",
+      "Noxus",
+      "Demacia",
+      "Freljord"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 7,
+    "question": "¿Qué significa \"CS\" en League of Legends?",
+    "category_id": 1,
+    "answers": [
+      "Creep Score",
+      "Champion Score",
+      "Combat Score",
+      "Control Score"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 8,
+    "question": "¿Cuál es el rango más alto en el sistema de ranked?",
+    "category_id": 1,
+    "answers": [
+      "Challenger",
+      "Grandmaster",
+      "Master",
+      "Diamond"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 9,
+    "question": "¿Qué evento especial ocurre en diciembre?",
+    "category_id": 3,
+    "answers": [
+      "Snowdown",
+      "Harvest Festival",
+      "Bilgewater Event",
+      "Star Guardian"
+    ],
+    "correct_answer_index": 0
+  },
+  {
+    "id": 10,
+    "question": "¿Quién es conocido como \"The Baus\"?",
+    "category_id": 4,
+    "answers": [
+      "Tyler1",
+      "Imaqtpie",
+      "TheBausffs",
+      "BoxBox"
+    ],
+    "correct_answer_index": 2
+  },
+  {
+    "id": 11,
+    "question": "¿Con qué frecuencia se lanzan parches regulares?",
+    "category_id": 6,
+    "answers": [
+      "Semanalmente",
+      "Cada 2 semanas",
+      "Mensualmente",
+      "Cada 3 semanas"
+    ],
+    "correct_answer_index": 1
+  },
+  {
+    "id": 12,
+    "question": "¿En qué año se lanzó League of Legends?",
+    "category_id": 1,
+    "answers": [
+      "2007",
+      "2008",
+      "2009",
+      "2010"
+    ],
+    "correct_answer_index": 2
+  }
+]

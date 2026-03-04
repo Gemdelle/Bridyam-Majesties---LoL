@@ -43,30 +43,23 @@ export interface ClaimPetResponse {
     pet?: Pet;
 }
 
-import { authService } from './authService';
+// import { authService } from './authService'; // DISABLED - Local mode
 
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
-
+// LOCAL MODE: Fetch pets from local JSON
 /**
- * Fetches all pets from the API
+ * Fetches all pets from local JSON
  * @returns Promise<Pet[]> - Array of all pets
  */
 export const fetchPets = async (): Promise<Pet[]> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/pets`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        const response = await fetch('/data/pets.json');
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: PetsResponse = await response.json();
-        return data.pets;
+        const data: Pet[] = await response.json();
+        return data;
     } catch (error) {
         console.error('Error fetching pets:', error);
         throw error;
@@ -74,28 +67,14 @@ export const fetchPets = async (): Promise<Pet[]> => {
 };
 
 /**
- * Fetches a specific pet by ID
+ * Fetches a specific pet by ID from local JSON
  * @param id - The pet ID
  * @returns Promise<Pet | null> - The pet or null if not found
  */
 export const fetchPetById = async (id: string): Promise<Pet | null> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/pets/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            if (response.status === 404) {
-                return null;
-            }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const pet: Pet = await response.json();
-        return pet;
+        const pets = await fetchPets();
+        return pets.find(pet => pet.id === id) || null;
     } catch (error) {
         console.error(`Error fetching pet with ID ${id}:`, error);
         throw error;
@@ -103,35 +82,14 @@ export const fetchPetById = async (id: string): Promise<Pet | null> => {
 };
 
 /**
- * Claims a pet with a given name
+ * DISABLED - Local mode: Claims a pet with a given name
  * @param petId - The pet ID to claim
  * @param name - The name for the pet
  * @returns Promise<ClaimPetResponse> - The claim response
  */
 export const claimPet = async (petId: string, name: string): Promise<ClaimPetResponse> => {
-    try {
-        const response = await authService.makeAuthenticatedRequest(`${API_BASE_URL}/pets/claim`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                petId,
-                name
-            } as ClaimPetRequest),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-        }
-
-        const data: ClaimPetResponse = await response.json();
-        return data;
-    } catch (error) {
-        console.error(`Error claiming pet ${petId} with name ${name}:`, error);
-        throw error;
-    }
+    console.log('LOCAL MODE: claimPet is disabled.');
+    return { success: false, message: 'Local mode: claiming pets is disabled' };
 };
 
 /**
@@ -161,7 +119,7 @@ export const getPetsByType = (pets: Pet[], type: Pet['type']): Pet[] => {
  */
 export const getStrongestPet = (pets: Pet[]): Pet | undefined => {
     if (pets.length === 0) return undefined;
-    
+
     return pets.reduce((strongest, current) => {
         const strongestTotal = Object.values(strongest.stats).reduce((sum, stat) => sum + stat, 0);
         const currentTotal = Object.values(current.stats).reduce((sum, stat) => sum + stat, 0);
@@ -177,8 +135,8 @@ export const getStrongestPet = (pets: Pet[]): Pet | undefined => {
  * @returns Pet[] - Sorted array of pets
  */
 export const getPetsSortedByStat = (
-    pets: Pet[], 
-    stat: keyof PetStats, 
+    pets: Pet[],
+    stat: keyof PetStats,
     order: 'asc' | 'desc' = 'desc'
 ): Pet[] => {
     return [...pets].sort((a, b) => {

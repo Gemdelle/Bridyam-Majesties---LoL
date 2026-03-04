@@ -1,5 +1,4 @@
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
+// LOCAL MODE: Accounts loaded from local JSON
 
 // Types
 export interface Account {
@@ -30,6 +29,22 @@ export interface ApiError {
   errors?: string[];
 }
 
+// Interface for local ranked data
+interface LocalRankedData {
+  id: number;
+  name: string;
+  username: string;
+  bloodline: string;
+  essencer: string;
+  champions: number;
+  skins: number;
+  masteries: number;
+  level: number;
+  icon: string;
+  elo_soloq: { tier: string; division: number };
+  rol: { top: number; jungle: number; mid: number; adc: number; support: number };
+}
+
 // Accounts service class
 export class AccountsService {
   private static instance: AccountsService;
@@ -43,48 +58,42 @@ export class AccountsService {
     return AccountsService.instance;
   }
 
-  // Get auth token from localStorage
-  private getAuthToken(): string | null {
-    return localStorage.getItem('auth_token');
-  }
-
   /**
-   * Fetches all accounts from the API
+   * LOCAL MODE: Fetches all accounts from local JSON
    * @returns Promise<Account[]> - Array of all accounts
    */
   async getAccounts(): Promise<Account[]> {
     try {
-      const token = this.getAuthToken();
-
-      if (!token) {
-        throw new Error('Authentication required. Please login first.');
-      }
-
-      const response = await fetch(`${API_BASE_URL}/accounts`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const response = await fetch('/data/rankeds.json');
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API Error Response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data: AccountsResponse = await response.json();
+      const rankedData: LocalRankedData[] = await response.json();
 
-      if (!data.accounts || !Array.isArray(data.accounts)) {
-        console.error('Invalid response format:', data);
-        throw new Error('Invalid response format from server');
-      }
+      const accounts: Account[] = rankedData.map(ranked => ({
+        url: ranked.icon,
+        id: ranked.id,
+        name: ranked.essencer !== '-' ? ranked.essencer : ranked.bloodline,
+        username: ranked.username,
+        champions: ranked.champions,
+        skins: ranked.skins,
+        masteries: ranked.masteries,
+        solo_q_elo: ranked.elo_soloq.tier !== 'unranked'
+          ? `${ranked.elo_soloq.tier.toUpperCase()} ${ranked.elo_soloq.division}`
+          : 'UNRANKED',
+        roles: {
+          top: ranked.rol.top,
+          jungle: ranked.rol.jungle,
+          mid: ranked.rol.mid,
+          adc: ranked.rol.adc,
+          support: ranked.rol.support
+        }
+      }));
 
-      console.log('❤️ CUENTAS RECIBIDAS:', data.accounts.length, 'cuentas');
-      console.log('❤️ USERNAMES:', data.accounts.map(a => a.username));
-
-      return data.accounts;
+      console.log('LOCAL MODE: Cuentas cargadas:', accounts.length);
+      return accounts;
     } catch (error) {
       console.error('Error fetching accounts:', error);
       throw error;

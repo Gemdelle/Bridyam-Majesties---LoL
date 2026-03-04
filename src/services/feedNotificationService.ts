@@ -1,5 +1,4 @@
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
+// LOCAL MODE: Feed notifications disabled (no backend)
 
 /**
  * Tipos de acción de notificación
@@ -43,75 +42,35 @@ export interface FeedNotification {
 export type FeedNotificationType = FeedNotification;
 
 /**
- * Obtiene todas las notificaciones del feed (global)
+ * LOCAL MODE: Obtiene todas las notificaciones del feed (devuelve array vacío)
  */
 export const fetchAllNotifications = async (limit: number = 100): Promise<FeedNotification[]> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/feed/notifications?limit=${limit}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch notifications: ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching all notifications:', error);
-        throw error;
-    }
+    // LOCAL MODE: No backend, return empty array
+    return [];
 };
 
 /**
- * Obtiene las notificaciones de un usuario específico
+ * LOCAL MODE: Obtiene las notificaciones de un usuario específico
  */
 export const fetchNotificationsByUser = async (userId: string, limit: number = 50): Promise<FeedNotification[]> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/feed/notifications/user/${userId}?limit=${limit}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch user notifications: ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching notifications for user ${userId}:`, error);
-        throw error;
-    }
+    // LOCAL MODE: No backend, return empty array
+    return [];
 };
 
 /**
- * Obtiene las notificaciones de una bloodline específica
+ * LOCAL MODE: Obtiene las notificaciones de una bloodline específica
  */
 export const fetchNotificationsByBloodline = async (bloodline: string, limit: number = 100): Promise<FeedNotification[]> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/feed/notifications/bloodline/${bloodline}?limit=${limit}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch bloodline notifications: ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching notifications for bloodline ${bloodline}:`, error);
-        throw error;
-    }
+    // LOCAL MODE: No backend, return empty array
+    return [];
 };
 
 /**
- * Obtiene las notificaciones de una cuenta ranked específica
+ * LOCAL MODE: Obtiene las notificaciones de una cuenta ranked específica
  */
 export const fetchNotificationsByRanked = async (rankedId: number, limit: number = 50): Promise<FeedNotification[]> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/feed/notifications/ranked/${rankedId}?limit=${limit}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch ranked notifications: ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching notifications for ranked ${rankedId}:`, error);
-        throw error;
-    }
+    // LOCAL MODE: No backend, return empty array
+    return [];
 };
 
 /**
@@ -221,29 +180,10 @@ export interface CreateMissionNotificationRequest {
 }
 
 /**
- * Crea una notificación cuando un usuario completa una misión
+ * LOCAL MODE: Crea una notificación cuando un usuario completa una misión (disabled)
  */
 export const createMissionNotification = async (request: CreateMissionNotificationRequest): Promise<void> => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/feed/notifications/mission`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ...request,
-                totalMissions: request.totalMissions || 22
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to create mission notification: ${response.statusText}`);
-        }
-
-        console.log('Mission notification created successfully');
-    } catch (error) {
-        console.error('Error creating mission notification:', error);
-        throw error;
-    }
+    // LOCAL MODE: No backend, do nothing
+    console.log('LOCAL MODE: createMissionNotification is disabled');
 };
 

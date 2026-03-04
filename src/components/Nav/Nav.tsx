@@ -138,12 +138,14 @@ export const Nav = () => {
                             </li>
                         </>
                     )}
+                    {/* DISABLED - Local mode: Redeem functionality is disabled
                     <li
                         className={location.pathname === '/redeem' ? styles.active : ''}
                         data-nav="redeem"
                     >
                         <Link to="/redeem" onClick={playClickSound}>{t('nav.redeem')}</Link>
                     </li>
+                    */}
                     <li
                         className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
                         data-nav="feed"
@@ -163,6 +165,7 @@ export const Nav = () => {
                     >
                         <Link to="/page" onClick={playClickSound}>Page</Link>
                     </li>
+                    {/* DISABLED - Local mode: Logout button is disabled
                     <li>
                         <button
                             className={styles.logoutButton}
@@ -171,6 +174,7 @@ export const Nav = () => {
                             {t('nav.logout')}
                         </button>
                     </li>
+                    */}
                 </ul>
             </div>
         </div>

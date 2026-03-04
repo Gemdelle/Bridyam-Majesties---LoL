@@ -1,0 +1,44 @@
+{
+  "essencers": {
+    "peraltadoctor": {
+      "petType": "2",
+      "petName": "Pettlewyn",
+      "petStage": 2
+    },
+    "Gemy": {
+      "petType": "2",
+      "petName": "Pettlewyn",
+      "petStage": 2
+    },
+    "jony_lu": {
+      "petType": "1",
+      "petName": "Flarnit",
+      "petStage": 2
+    },
+    "Matutte": {
+      "petType": "1",
+      "petName": "Flarnit",
+      "petStage": 2
+    },
+    "Enzyto": {
+      "petType": "1",
+      "petName": "Flarnit",
+      "petStage": 2
+    },
+    "Zoro": {
+      "petType": "3",
+      "petName": "Peewee",
+      "petStage": 2
+    },
+    "AegonLucifer": {
+      "petType": "1",
+      "petName": "Flarnit",
+      "petStage": 2
+    },
+    "AmNightmare": {
+      "petType": "4",
+      "petName": "Vindeloon",
+      "petStage": 2
+    }
+  }
+}

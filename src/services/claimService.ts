@@ -1,5 +1,4 @@
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
+// LOCAL MODE: Claim functionality disabled
 
 // Types
 export interface ClaimRequest {
@@ -32,49 +31,13 @@ export class ClaimService {
     return ClaimService.instance;
   }
 
-  // Get auth token from localStorage
-  private getAuthToken(): string | null {
-    return localStorage.getItem('auth_token');
-  }
-
-  // Claim account method
+  // LOCAL MODE: Claim account method (disabled)
   async claimAccount(claimData: ClaimRequest): Promise<ClaimResponse> {
-    try {
-      const token = this.getAuthToken();
-      
-      if (!token) {
-        return {
-          success: false,
-          message: 'Authentication required. Please login first.',
-        };
-      }
-
-      const response = await fetch(`${API_BASE_URL}/claim/account`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(claimData),
-      });
-
-      const data: ClaimResponse = await response.json();
-
-      if (response.ok && data.success) {
-        return data;
-      } else {
-        return {
-          success: false,
-          message: data.message || 'Failed to claim account',
-        };
-      }
-    } catch (error) {
-      console.error('Claim account error:', error);
-      return {
-        success: false,
-        message: 'Network error. Please try again.',
-      };
-    }
+    console.log('LOCAL MODE: claimAccount is disabled');
+    return {
+      success: false,
+      message: 'LOCAL MODE: Claiming accounts is disabled. Edit rankeds.json directly.',
+    };
   }
 
   // Validate claim data

@@ -1,4 +1,4 @@
-import { authService } from './authService';
+// import { authService } from './authService'; // DISABLED - Local mode
 
 // Interface for the ranked data structure
 export interface RankedData {
@@ -6,6 +6,7 @@ export interface RankedData {
     name: string;
     username: string;
     bloodline: string;
+    essencer: string;
     champions: number;
     skins: number;
     masteries: number;
@@ -50,27 +51,17 @@ export interface RankedResponse {
     ranked: RankedData[];
 }
 
-// Fetch ranked data from API
+// LOCAL MODE: Fetch ranked data from local JSON
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked');
+        const response = await fetch('/data/rankeds.json');
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: RankedResponse = await response.json();
-
-        // Fix incorrect wins.totals values - should always be 15, not 100
-        const correctedData = data.ranked.map(account => ({
-            ...account,
-            wins: {
-                ...account.wins,
-                totals: 15 // Always set to 15, regardless of what comes from backend
-            }
-        }));
-
-        return correctedData;
+        const data: RankedData[] = await response.json();
+        return data;
     } catch (error) {
         console.error('Error fetching ranked data:', error);
         throw new Error('Failed to fetch ranked data');
@@ -127,40 +118,17 @@ export const getChangedRankedData = (originalData: RankedData[], modifiedData: R
     return changedItems;
 };
 
-// Update ranked data via PUT to API (only sends modified data)
+// DISABLED - Local mode: Update ranked data via PUT to API
+// To update data, edit public/data/rankeds.json directly
 export const updateRankedData = async (modifiedRankedData: RankedData[]): Promise<RankedData[]> => {
-    try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(modifiedRankedData),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: RankedResponse = await response.json();
-        return data.ranked;
-    } catch (error) {
-        console.error('Error updating ranked data:', error);
-        throw new Error('Failed to update ranked data');
-    }
+    console.log('LOCAL MODE: updateRankedData is disabled. Edit public/data/rankeds.json directly.');
+    return modifiedRankedData;
 };
 
-// Update only changed ranked data (recommended method)
+// DISABLED - Local mode: Update only changed ranked data
 export const updateChangedRankedData = async (originalData: RankedData[], modifiedData: RankedData[]): Promise<RankedData[]> => {
-    const changedData = getChangedRankedData(originalData, modifiedData);
-    
-    if (changedData.length === 0) {
-        console.log('No changes detected, skipping update');
-        return modifiedData; // Return the modified data as-is
-    }
-    
-    console.log(`Sending ${changedData.length} changed items out of ${modifiedData.length} total items`);
-    return await updateRankedData(changedData);
+    console.log('LOCAL MODE: updateChangedRankedData is disabled. Edit public/data/rankeds.json directly.');
+    return modifiedData;
 };
 
 // Fetch ranked data by bloodline
@@ -184,27 +152,11 @@ export const searchRankedData = async (query: string): Promise<RankedData[]> => 
     );
 };
 
-// Fetch available ranked accounts (accounts not claimed by any user)
+// LOCAL MODE: Fetch available ranked accounts (accounts with essencer = "-")
 export const fetchAvailableRankedAccounts = async (): Promise<RankedData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked/available');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: RankedResponse = await response.json();
-
-        // Fix incorrect wins.totals values - should always be 15, not 100
-        const correctedData = data.ranked.map(account => ({
-            ...account,
-            wins: {
-                ...account.wins,
-                totals: 15 // Always set to 15, regardless of what comes from backend
-            }
-        }));
-
-        return correctedData;
+        const allData = await fetchRankedData();
+        return allData.filter(account => account.essencer === '-');
     } catch (error) {
         console.error('Error fetching available ranked accounts:', error);
         throw new Error('Failed to fetch available ranked accounts');
@@ -222,19 +174,15 @@ export interface RankingConfig {
     member: string;
 }
 
-// Fetch ranking configuration from API
+// LOCAL MODE: Return static ranking configuration
 export const fetchRankingConfig = async (): Promise<RankingConfig> => {
-    try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/ranked/config');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: RankingConfig = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching ranking config:', error);
-        throw new Error('Failed to fetch ranking config');
-    }
+    return {
+        wins: "5",
+        level: "3",
+        mastery: "2",
+        honor: "4",
+        elo: "6",
+        redeem: "1",
+        member: "1"
+    };
 }; 

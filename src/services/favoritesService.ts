@@ -1,5 +1,4 @@
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
+// LOCAL MODE: Uses localStorage for essencer favorites
 
 // Types
 export interface FavoritesResponse {
@@ -13,92 +12,84 @@ export interface ApiError {
   errors?: string[];
 }
 
-// Get auth token from localStorage
-const getAuthToken = (): string | null => {
-  return localStorage.getItem('auth_token');
+// Essencer favorites type
+export type EssencerFavorites = Record<string, number[]>;
+
+// Cache for essencer favorites
+let essencerFavoritesCache: EssencerFavorites | null = null;
+
+/**
+ * LOCAL MODE: Load all essencer favorites from localStorage
+ */
+export const loadAllEssencerFavorites = (): EssencerFavorites => {
+  if (essencerFavoritesCache) return essencerFavoritesCache;
+  
+  const stored = localStorage.getItem('essencer-favorites');
+  if (stored) {
+    essencerFavoritesCache = JSON.parse(stored);
+    return essencerFavoritesCache || {};
+  }
+  
+  // Default empty favorites for known essencers
+  essencerFavoritesCache = {
+    "peraltadoctor": [],
+    "Gemy": [],
+    "jony_lu": [],
+    "Matutte": [],
+    "Enzyto": [],
+    "Zoro": [],
+    "AegonLucifer": [],
+    "AmNightmare": []
+  };
+  localStorage.setItem('essencer-favorites', JSON.stringify(essencerFavoritesCache));
+  return essencerFavoritesCache;
 };
 
 /**
- * Fetches favorite champions from the API
- * @param userId - The user ID
- * @returns Promise<number[]> - Array of favorite champion IDs
+ * LOCAL MODE: Get favorites for a specific essencer
  */
+export const getEssencerFavorites = (essencerName: string): number[] => {
+  const allFavorites = loadAllEssencerFavorites();
+  return allFavorites[essencerName] || [];
+};
+
+/**
+ * LOCAL MODE: Save favorites for a specific essencer
+ */
+export const saveEssencerFavorites = (essencerName: string, favoriteIds: number[]): void => {
+  const allFavorites = loadAllEssencerFavorites();
+  allFavorites[essencerName] = favoriteIds;
+  essencerFavoritesCache = allFavorites;
+  localStorage.setItem('essencer-favorites', JSON.stringify(allFavorites));
+};
+
+/**
+ * LOCAL MODE: Get list of all essencers
+ */
+export const getEssencerList = async (): Promise<string[]> => {
+  try {
+    const response = await fetch('/data/essencers.json');
+    if (response.ok) {
+      const data = await response.json();
+      return Object.keys(data.essencers || {});
+    }
+  } catch (error) {
+    console.error('Error loading essencers:', error);
+  }
+  return ['peraltadoctor', 'Gemy', 'jony_lu', 'Matutte', 'Enzyto', 'Zoro', 'AegonLucifer', 'AmNightmare'];
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getFavorites = async (userId: string): Promise<number[]> => {
-  try {
-    const token = getAuthToken();
-
-    if (!token) {
-      throw new Error('Authentication required. Please login first.');
-    }
-
-    const response = await fetch(`${API_BASE_URL}/users/${userId}/favorites`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      // If 404, return empty array (user has no favorites yet)
-      if (response.status === 404) {
-        return [];
-      }
-      const errorText = await response.text();
-      console.error('API Error Response:', errorText);
-      throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-    }
-
-    const data: FavoritesResponse = await response.json();
-
-    if (!data.success || !Array.isArray(data.favorites)) {
-      console.error('Invalid response format:', data);
-      return [];
-    }
-
-    return data.favorites;
-  } catch (error) {
-    console.error('Error fetching favorites:', error);
-    // Return empty array on error, fallback to localStorage
-    return [];
-  }
+  // LOCAL MODE: Return from localStorage
+  const saved = localStorage.getItem('favoriteChampions');
+  return saved ? JSON.parse(saved) : [];
 };
 
-/**
- * Saves favorite champions to the API
- * @param userId - The user ID
- * @param favoriteIds - Array of favorite champion IDs
- * @returns Promise<boolean> - Success status
- */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const saveFavorites = async (userId: string, favoriteIds: number[]): Promise<boolean> => {
-  try {
-    const token = getAuthToken();
-
-    if (!token) {
-      throw new Error('Authentication required. Please login first.');
-    }
-
-    const response = await fetch(`${API_BASE_URL}/users/${userId}/favorites`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({ favorites: favoriteIds }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('API Error Response:', errorText);
-      throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
-
-    return data.success !== false;
-  } catch (error) {
-    console.error('Error saving favorites:', error);
-    return false;
-  }
+  // LOCAL MODE: Save to localStorage
+  localStorage.setItem('favoriteChampions', JSON.stringify(favoriteIds));
+  return true;
 };
 

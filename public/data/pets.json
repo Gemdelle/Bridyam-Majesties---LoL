@@ -1,0 +1,62 @@
+[
+  {
+    "id": "3a64431d-f33a-4586-9959-242d3e7ff681",
+    "name": "Flarnit",
+    "type": "fighter",
+    "lore": "Legends say the first Flarnit rose from molten craters, howling at lightning. Once bonded, they guard for life — but without loyalty, they destroy without pause. Many trainers fear the middle stage more than the final, as it's harder to predict. Some tribes worship them as war heralds, feeding them smoke and hot stone. Their roars have cracked battlefield armor. When cornered, a Flarnit doesn't flee — it detonates. Only those who prove strength without cruelty earn their full trust.",
+    "description": "A fierce fighter pet with molten origins",
+    "stats": { "force": 4, "instinct": 2, "pressure": 3, "cleverness": 1 },
+    "matchups": { "weak_against": "Pettlewyn", "strong_against": "Vindeloon" },
+    "abilities": [
+      { "name": "Bristle", "type": "defensive", "description": "Deflects hits raising back-spikes." },
+      { "name": "Rake", "type": "offensive", "description": "Slashes forward with molten claws in sweeping arc." },
+      { "name": "Gore", "type": "offensive", "description": "Charges with its horns." },
+      { "name": "Ravage", "type": "ultimate", "description": "Unleashes its full jaw power." }
+    ]
+  },
+  {
+    "id": "8412e3d5-2976-4c58-ba5a-453dd2154fef",
+    "name": "Peewee",
+    "type": "water",
+    "lore": "Born in trench-light and silence, Peewee hears every sound in the dark. Its eye doesn't blink — it remembers, and it holds you in place. Those who lie near it feel dizzy, then weak. Some believe it speaks only once in its lifetime — to deliver judgment. Peewee protects balance, not people. And its balance is absolute. It's less pet, more presence. Less monster, more reckoning. Still, it watches the ones it likes. It remembers kindness.",
+    "description": "A mysterious water pet with deep-sea origins",
+    "stats": { "force": 3, "instinct": 1, "pressure": 4, "cleverness": 2 },
+    "matchups": { "weak_against": "Vindeloon", "strong_against": "Pettlewyn" },
+    "abilities": [
+      { "name": "Glint", "type": "defensive", "description": "Scales shimmer with deeplight, reducing incoming damage." },
+      { "name": "Tide", "type": "offensive", "description": "Unleashes a flowing current." },
+      { "name": "Swell", "type": "offensive", "description": "Wraps enemy in a film of deep-sea pressure." },
+      { "name": "Verdict", "type": "ultimate", "description": "Channels the Eye to unleash a judgment." }
+    ]
+  },
+  {
+    "id": "adb9781a-e11e-4339-a8a5-455dd8b6cbd5",
+    "name": "Pettlewyn",
+    "type": "venom",
+    "lore": "Pettlewyn hatchlings are raised in hidden groves, trained in beauty and stillness. They're mistaken for harmless creatures — until they act. When a Pettlewyn strikes, there's no warning, only elegance and aftermath. They don't enjoy violence, but they're excellent at it. Gardens with white petals often grow from places Pettlewyn has defended. Some believe their wings are made of crystallized regret. They bond quietly, almost like scent — not affection, but mutual acceptance.",
+    "description": "A venomous pet with elegant beauty",
+    "stats": { "force": 2, "instinct": 4, "pressure": 1, "cleverness": 3 },
+    "matchups": { "weak_against": "Peewee", "strong_against": "Flarnit" },
+    "abilities": [
+      { "name": "Veil", "type": "defensive", "description": "Swirls petals to blur its body." },
+      { "name": "Drift", "type": "offensive", "description": "Releases floating pollen that weakens foes over time." },
+      { "name": "Sip", "type": "offensive", "description": "Delivers a venom-laced bite." },
+      { "name": "Bloom", "type": "ultimate", "description": "Unfurls fully into a radiant rose, flooding the area with paralyzing spores." }
+    ]
+  },
+  {
+    "id": "f405373c-f852-4a4e-beba-b89f8b7f1fc2",
+    "name": "Vindeloon",
+    "type": "psychic",
+    "lore": "Vindeloon are planted, not born — sprouting from memory roots in forgotten places. They're slow to move, but always watching. When they speak, they speak in other voices — ones you've heard before. Trainers often forget arguments they had near one. Its garden is not physical, but mental — blooming inside those nearby. Vindeloon do not forgive, but they do remove. Their loyalty is rare, but total. Their peace... slightly unnerving.",
+    "description": "A psychic pet with memory-based powers",
+    "stats": { "force": 1, "instinct": 3, "pressure": 2, "cleverness": 4 },
+    "matchups": { "weak_against": "Flarnit", "strong_against": "Peewee" },
+    "abilities": [
+      { "name": "Gaze", "type": "defensive", "description": "Locks eyes to confuse the enemy, dulling aggression." },
+      { "name": "Echo", "type": "offensive", "description": "Sends a focused psychic ripple that disrupts nearby enemies." },
+      { "name": "Flare", "type": "offensive", "description": "Triggers a burst of psychic energy to distort space." },
+      { "name": "Oblivion", "type": "ultimate", "description": "Releases a focused sonar pulse to collapse thought." }
+    ]
+  }
+]

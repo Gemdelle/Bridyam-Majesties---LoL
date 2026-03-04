@@ -1,6 +1,24 @@
 import { useState, useEffect } from 'react';
 import { authService, type User } from '../services/authService';
 
+// LOCAL MODE: Set to true to bypass login (only you use the page)
+const LOCAL_MODE = true;
+
+// LOCAL MODE: Default user when login is disabled
+const LOCAL_USER: User = {
+  id: 'local-user',
+  email: 'gemdelle@bridyam.com',
+  username: 'Gemy',
+  isActive: true,
+  pet: {
+    id: '1',
+    name: 'LocalPet',
+    type: 'fighter',
+    level: 10,
+    xp: 500
+  }
+};
+
 export interface AuthState {
   user: User | null;
   token: string | null;
@@ -87,6 +105,14 @@ export const useAuth = () => {
   };
 
   const logout = async () => {
+    // LOCAL MODE: Logout is disabled, just reload the page
+    if (LOCAL_MODE) {
+      console.log('LOCAL MODE: Logout is disabled. Refreshing page...');
+      window.location.reload();
+      return;
+    }
+
+    // ORIGINAL CODE (disabled in local mode):
     setAuthState(prev => ({ ...prev, isLoading: true }));
     
     try {
@@ -94,7 +120,6 @@ export const useAuth = () => {
       updateAuthState(null, null);
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if logout fails, clear local state
       updateAuthState(null, null);
     }
   };
@@ -174,15 +199,19 @@ export const useAuth = () => {
   // Initialize auth state on mount (with reduced validation frequency)
   useEffect(() => {
     const initializeAuth = async () => {
+      // LOCAL MODE: Bypass authentication, always use local user
+      if (LOCAL_MODE) {
+        updateAuthState(LOCAL_USER, 'local-token');
+        return;
+      }
+
+      // ORIGINAL CODE (disabled in local mode):
       const token = authService.getToken();
       const user = authService.getCurrentUser();
       
       if (token && user) {
-        // Only validate if we don't have recent validation cache
-        // This reduces unnecessary API calls
         const isValid = await validateToken(false);
         if (!isValid) {
-          // Token is invalid, user needs to log in again
           updateAuthState(null, null);
         }
       } else {

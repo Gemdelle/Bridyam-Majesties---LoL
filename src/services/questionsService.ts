@@ -1,5 +1,4 @@
-// API configuration
-const API_BASE_URL = 'https://bridyam-majesties-back-production.up.railway.app';
+// LOCAL MODE: Questions loaded from local JSON
 
 interface Category {
   id: number;
@@ -7,57 +6,76 @@ interface Category {
   description: string;
 }
 
+interface QuestionData {
+  id: number;
+  question: string;
+  category_id: number;
+  answers: string[];
+  correct_answer_index: number;
+}
+
 interface Question {
   id: number;
   question: string;
   category: Category;
   answers: string[];
-  correctAnswerIndex: number; // Índice de la respuesta correcta (0-3)
+  correctAnswerIndex: number;
 }
 
 class QuestionsService {
-  private baseURL = `${API_BASE_URL}/questions`;
+  private questions: QuestionData[] | null = null;
+  private categories: Category[] | null = null;
+
+  private async loadData(): Promise<void> {
+    if (this.questions && this.categories) return;
+
+    const [questionsRes, categoriesRes] = await Promise.all([
+      fetch('/data/questions.json'),
+      fetch('/data/categories.json')
+    ]);
+
+    this.questions = await questionsRes.json();
+    this.categories = await categoriesRes.json();
+  }
+
+  private formatQuestion(q: QuestionData): Question {
+    const category = this.categories?.find(c => c.id === q.category_id) || {
+      id: q.category_id,
+      name: 'Unknown',
+      description: ''
+    };
+
+    return {
+      id: q.id,
+      question: q.question,
+      category,
+      answers: q.answers,
+      correctAnswerIndex: q.correct_answer_index
+    };
+  }
 
   async getRandomQuestion(): Promise<Question> {
-    try {
-      const response = await fetch(`${this.baseURL}/random`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching random question:', error);
-      throw error;
+    await this.loadData();
+    
+    if (!this.questions || this.questions.length === 0) {
+      throw new Error('No questions available');
     }
+
+    const randomIndex = Math.floor(Math.random() * this.questions.length);
+    return this.formatQuestion(this.questions[randomIndex]);
   }
 
   async getQuestionByCategory(categoryId: number): Promise<Question> {
-    try {
-      const response = await fetch(`${this.baseURL}/category/${categoryId}/random`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching question by category:', error);
-      throw error;
+    await this.loadData();
+    
+    const categoryQuestions = this.questions?.filter(q => q.category_id === categoryId) || [];
+    
+    if (categoryQuestions.length === 0) {
+      throw new Error(`No questions found for category ${categoryId}`);
     }
+
+    const randomIndex = Math.floor(Math.random() * categoryQuestions.length);
+    return this.formatQuestion(categoryQuestions[randomIndex]);
   }
 }
 

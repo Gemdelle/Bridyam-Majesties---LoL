@@ -1,0 +1,13 @@
+id,question,category_id,answers,correct_answer_index,created_at,updated_at
+1,¿Cuál es el objetivo principal del juego League of Legends?,1,"[""Destruir la base enemiga"",""Conseguir más oro"",""Matar más campeones"",""Controlar más objetivos""]",0,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+2,¿Cuál es la habilidad definitiva de Yasuo?,2,"[""Last Breath"",""Steel Tempest"",""Wind Wall"",""Sweeping Blade""]",0,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+3,¿Qué objeto te da más velocidad de ataque?,3,"[""Infinity Edge"",""Rapid Firecannon"",""Phantom Dancer"",""Todas las anteriores""]",3,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+4,¿Cuántos dragones hay en el mapa?,4,"[""2"",""3"",""4"",""5""]",2,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+5,¿Qué equipo ganó el Worlds 2023?,5,"[""T1"",""JDG"",""Gen.G"",""DRX""]",0,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+6,¿De qué región es originario Yasuo?,6,"[""Ionia"",""Noxus"",""Demacia"",""Freljord""]",0,2025-07-30 21:14:17.279452+00,2025-07-30 21:14:17.279452+00
+7,"¿Qué significa ""CS"" en League of Legends?",1,"[""Creep Score"",""Champion Score"",""Combat Score"",""Control Score""]",0,2025-07-30 21:14:17.279452+00,2025-08-04 00:13:17.398316+00
+8,¿Cuál es el rango más alto en el sistema de ranked?,1,"[""Challenger"",""Grandmaster"",""Master"",""Diamond""]",0,2025-07-30 21:14:17.279452+00,2025-08-04 00:13:32.06271+00
+9,¿Qué evento especial ocurre en diciembre?,3,"[""Snowdown"",""Harvest Festival"",""Bilgewater Event"",""Star Guardian""]",0,2025-07-30 21:14:17.279452+00,2025-08-04 00:13:54.853074+00
+10,"¿Quién es conocido como ""The Baus""?",4,"[""Tyler1"",""Imaqtpie"",""TheBausffs"",""BoxBox""]",2,2025-07-30 21:14:17.279452+00,2025-08-04 00:14:04.952955+00
+11,¿Con qué frecuencia se lanzan parches regulares?,6,"[""Semanalmente"",""Cada 2 semanas"",""Mensualmente"",""Cada 3 semanas""]",1,2025-07-30 21:14:17.279452+00,2025-08-04 00:14:16.802197+00
+12,¿En qué año se lanzó League of Legends?,1,"[""2007"",""2008"",""2009"",""2010""]",2,2025-07-30 21:14:17.279452+00,2025-08-04 00:14:27.148177+00

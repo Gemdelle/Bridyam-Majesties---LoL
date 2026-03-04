@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Majesties",
+    "description": "Preguntas sobre el juego base de League of Legends"
+  },
+  {
+    "id": 2,
+    "name": "Bloodlines",
+    "description": "Preguntas sobre campeones específicos y sus habilidades"
+  },
+  {
+    "id": 3,
+    "name": "League of Legends",
+    "description": "Preguntas sobre objetos, builds y estadísticas"
+  },
+  {
+    "id": 4,
+    "name": "Majesties_2",
+    "description": "Preguntas sobre el mapa, dragones, barón y torretas"
+  },
+  {
+    "id": 5,
+    "name": "Bloodlines_2",
+    "description": "Preguntas sobre el esports y la escena competitiva"
+  },
+  {
+    "id": 6,
+    "name": "League of Legends_2",
+    "description": "Preguntas sobre la historia y el universo de Runeterra"
+  }
+]

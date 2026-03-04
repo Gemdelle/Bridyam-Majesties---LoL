@@ -1,0 +1,2422 @@
+[
+  {
+    "id": 1,
+    "name": "AmNightmare",
+    "username": "GEM Arminariknot#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "AmNightmare",
+    "champions": 81,
+    "skins": 320,
+    "masteries": 81,
+    "level": 55,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6841.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 2,
+    "name": "Matutte",
+    "username": "GEM Cordacrimory#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "Matutte",
+    "champions": 83,
+    "skins": 320,
+    "masteries": 83,
+    "level": 98,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6754.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 3,
+    "name": "peraltadoctor",
+    "username": "GEM Dreemurdomme#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "peraltadoctor",
+    "champions": 88,
+    "skins": 456,
+    "masteries": 88,
+    "level": 90,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4618.png",
+    "wins": {
+      "totals": 15,
+      "current": 5
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "platinum",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 89,
+      "jungle": 34,
+      "support": 67
+    },
+    "blue_essence": 234560,
+    "orange_essence": 34560
+  },
+  {
+    "id": 4,
+    "name": "Matutte",
+    "username": "GEM Hestiarethe#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "Matutte",
+    "champions": 83,
+    "skins": 267,
+    "masteries": 83,
+    "level": 60,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6805.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 12,
+      "mid": 45,
+      "top": 87,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 125430,
+    "orange_essence": 18750
+  },
+  {
+    "id": 5,
+    "name": "-",
+    "username": "GEM Orzyadhere#LAS",
+    "bloodline": "Porveldam",
+    "essencer": "-",
+    "champions": 90,
+    "skins": 298,
+    "masteries": 90,
+    "level": 70,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5637.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 56,
+      "mid": 23,
+      "top": 45,
+      "jungle": 78,
+      "support": 12
+    },
+    "blue_essence": 98750,
+    "orange_essence": 22340
+  },
+  {
+    "id": 6,
+    "name": "-",
+    "username": "GEM Purselgarmet#LAS",
+    "bloodline": "Porveldam",
+    "essencer": "-",
+    "champions": 47,
+    "skins": 345,
+    "masteries": 47,
+    "level": 42,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5898.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 7,
+    "name": "Gemy",
+    "username": "GEM Rothroyaume#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "Gemy",
+    "champions": 49,
+    "skins": 345,
+    "masteries": 49,
+    "level": 47,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6801.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 8,
+    "name": "AmNightmare",
+    "username": "GEM Stridellarea#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "AmNightmare",
+    "champions": 77,
+    "skins": 345,
+    "masteries": 77,
+    "level": 78,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5879.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 9,
+    "name": "Gemy",
+    "username": "GEM Brincellezha#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "Gemy",
+    "champions": 95,
+    "skins": 345,
+    "masteries": 95,
+    "level": 91,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6330.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "platinum",
+      "division": 2
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 10,
+    "name": "AmNightmare",
+    "username": "GEM Deellycella#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "AmNightmare",
+    "champions": 71,
+    "skins": 345,
+    "masteries": 71,
+    "level": 73,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5896.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 11,
+    "name": "peraltadoctor",
+    "username": "GEM Eunilacealle#LAS",
+    "bloodline": "Spadelline",
+    "essencer": "peraltadoctor",
+    "champions": 84,
+    "skins": 345,
+    "masteries": 84,
+    "level": 72,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6893.png",
+    "wins": {
+      "totals": 15,
+      "current": 13
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 89,
+      "top": 23,
+      "jungle": 45,
+      "support": 67
+    },
+    "blue_essence": 145670,
+    "orange_essence": 19870
+  },
+  {
+    "id": 12,
+    "name": "-",
+    "username": "GEM Lacellire#LAS",
+    "bloodline": "Spadelline",
+    "essencer": "-",
+    "champions": 84,
+    "skins": 289,
+    "masteries": 84,
+    "level": 87,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6386.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 89
+    },
+    "blue_essence": 134560,
+    "orange_essence": 21340
+  },
+  {
+    "id": 13,
+    "name": "-",
+    "username": "GEM PelsNpurmips#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "-",
+    "champions": 55,
+    "skins": 289,
+    "masteries": 55,
+    "level": 42,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4163.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 89
+    },
+    "blue_essence": 134560,
+    "orange_essence": 21340
+  },
+  {
+    "id": 14,
+    "name": "-",
+    "username": "GEM Primrosenrot#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "-",
+    "champions": 86,
+    "skins": 289,
+    "masteries": 86,
+    "level": 86,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/1457.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 89
+    },
+    "blue_essence": 134560,
+    "orange_essence": 21340
+  },
+  {
+    "id": 15,
+    "name": "Gemy",
+    "username": "GEM Priscyumice#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "Gemy",
+    "champions": 76,
+    "skins": 289,
+    "masteries": 76,
+    "level": 113,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3018.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 89
+    },
+    "blue_essence": 134560,
+    "orange_essence": 21340
+  },
+  {
+    "id": 16,
+    "name": "Enzyto",
+    "username": "GEM Regimbudlair#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "Enzyto",
+    "champions": 64,
+    "skins": 289,
+    "masteries": 64,
+    "level": 50,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6331.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 89
+    },
+    "blue_essence": 134560,
+    "orange_essence": 21340
+  },
+  {
+    "id": 17,
+    "name": "-",
+    "username": "GEM Blaandelvals#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "-",
+    "champions": 83,
+    "skins": 298,
+    "masteries": 83,
+    "level": 47,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6446.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 78,
+      "mid": 45,
+      "top": 34,
+      "jungle": 67,
+      "support": 56
+    },
+    "blue_essence": 123450,
+    "orange_essence": 19870
+  },
+  {
+    "id": 18,
+    "name": "-",
+    "username": "GEM Bricellice#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "-",
+    "champions": 121,
+    "skins": 389,
+    "masteries": 121,
+    "level": 81,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6447.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 34,
+      "mid": 67,
+      "top": 78,
+      "jungle": 45,
+      "support": 89
+    },
+    "blue_essence": 187650,
+    "orange_essence": 26780
+  },
+  {
+    "id": 19,
+    "name": "Gemy",
+    "username": "GEM Damglantine#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Gemy",
+    "champions": 90,
+    "skins": 267,
+    "masteries": 90,
+    "level": 85,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5413.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 67,
+      "mid": 34,
+      "top": 45,
+      "jungle": 78,
+      "support": 45
+    },
+    "blue_essence": 98760,
+    "orange_essence": 14560
+  },
+  {
+    "id": 20,
+    "name": "jony_lu",
+    "username": "GEM Deestellirys#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "jony_lu",
+    "champions": 102,
+    "skins": 445,
+    "masteries": 102,
+    "level": 225,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6448.png",
+    "wins": {
+      "totals": 15,
+      "current": 5
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "emerald",
+      "division": 3
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 23,
+      "mid": 89,
+      "top": 78,
+      "jungle": 45,
+      "support": 56
+    },
+    "blue_essence": 223450,
+    "orange_essence": 32450
+  },
+  {
+    "id": 21,
+    "name": "jony_lu",
+    "username": "GEM Envicingess#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "jony_lu",
+    "champions": 22,
+    "skins": 298,
+    "masteries": 22,
+    "level": 39,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3176.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 78,
+      "mid": 45,
+      "top": 34,
+      "jungle": 67,
+      "support": 56
+    },
+    "blue_essence": 123450,
+    "orange_essence": 19870
+  },
+  {
+    "id": 22,
+    "name": "Gemy",
+    "username": "GEM Glacelynne#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Gemy",
+    "champions": 79,
+    "skins": 298,
+    "masteries": 79,
+    "level": 82,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5579.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 45,
+      "top": 34,
+      "jungle": 67,
+      "support": 56
+    },
+    "blue_essence": 123450,
+    "orange_essence": 19870
+  },
+  {
+    "id": 23,
+    "name": "Gemy",
+    "username": "GEM Ivelism#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Gemy",
+    "champions": 67,
+    "skins": 256,
+    "masteries": 67,
+    "level": 44,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6432.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 89,
+      "mid": 45,
+      "top": 34,
+      "jungle": 67,
+      "support": 12
+    },
+    "blue_essence": 87650,
+    "orange_essence": 15670
+  },
+  {
+    "id": 24,
+    "name": "Zoro",
+    "username": "GEM Lahallayd#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Zoro",
+    "champions": 86,
+    "skins": 412,
+    "masteries": 86,
+    "level": 82,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5292.png",
+    "wins": {
+      "totals": 15,
+      "current": 5
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "gold",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 67,
+      "top": 89,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 189230,
+    "orange_essence": 28750
+  },
+  {
+    "id": 25,
+    "name": "-",
+    "username": "GEM Lagrimelle#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "-",
+    "champions": 116,
+    "skins": 412,
+    "masteries": 116,
+    "level": 95,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5640.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 67,
+      "top": 89,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 189230,
+    "orange_essence": 28750
+  },
+  {
+    "id": 26,
+    "name": "Matutte",
+    "username": "GEM Plissevelary#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Matutte",
+    "champions": 50,
+    "skins": 412,
+    "masteries": 50,
+    "level": 38,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6921.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 67,
+      "top": 89,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 189230,
+    "orange_essence": 28750
+  },
+  {
+    "id": 27,
+    "name": "Gemy",
+    "username": "GEM Vaelardorcel#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Gemy",
+    "champions": 47,
+    "skins": 412,
+    "masteries": 47,
+    "level": 37,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/1384.png",
+    "wins": {
+      "totals": 15,
+      "current": 5
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "gold",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 45,
+      "mid": 67,
+      "top": 89,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 189230,
+    "orange_essence": 28750
+  },
+  {
+    "id": 28,
+    "name": "-",
+    "username": "GEM Velchelisse#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "-",
+    "champions": 51,
+    "skins": 412,
+    "masteries": 51,
+    "level": 36,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5463.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 67,
+      "top": 89,
+      "jungle": 23,
+      "support": 34
+    },
+    "blue_essence": 189230,
+    "orange_essence": 28750
+  },
+  {
+    "id": 29,
+    "name": "-",
+    "username": "GEM Asticedicair#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 82,
+    "skins": 378,
+    "masteries": 82,
+    "level": 51,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5471.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 30,
+    "name": "Gemy",
+    "username": "GEM Dellablivien#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "Gemy",
+    "champions": 68,
+    "skins": 378,
+    "masteries": 68,
+    "level": 55,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5636.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 31,
+    "name": "-",
+    "username": "GEM Gallilessya#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 56,
+    "skins": 378,
+    "masteries": 56,
+    "level": 37,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/22.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 3,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 32,
+    "name": "-",
+    "username": "GEM Greedgardell#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 100,
+    "skins": 378,
+    "masteries": 100,
+    "level": 112,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5639.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 3,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 33,
+    "name": "-",
+    "username": "GEM Irzeleriance#LAS",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 55,
+    "skins": 378,
+    "masteries": 55,
+    "level": 38,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/18.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 34,
+    "name": "peraltadoctor",
+    "username": "GEM Phrasimfasya#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "peraltadoctor",
+    "champions": 44,
+    "skins": 378,
+    "masteries": 44,
+    "level": 30,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6541.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "silver",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "emerald",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 35,
+    "name": "Matutte",
+    "username": "GEM Praireclovia#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "Matutte",
+    "champions": 98,
+    "skins": 378,
+    "masteries": 98,
+    "level": 83,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3836.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "emerald",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 36,
+    "name": "-",
+    "username": "GEM Vespianelian#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 83,
+    "skins": 378,
+    "masteries": 83,
+    "level": 78,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5416.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 37,
+    "name": "Gemy",
+    "username": "GEM Vrilyarethez#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "Gemy",
+    "champions": 83,
+    "skins": 378,
+    "masteries": 83,
+    "level": 94,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5454.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 38,
+    "name": "Matutte",
+    "username": "GEM Cierzellant#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "Matutte",
+    "champions": 58,
+    "skins": 378,
+    "masteries": 58,
+    "level": 44,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4288.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "diamond",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 39,
+    "name": "peraltadoctor",
+    "username": "GEM Deliquesence#LAS",
+    "bloodline": "Primogenit",
+    "essencer": "peraltadoctor",
+    "champions": 37,
+    "skins": 378,
+    "masteries": 37,
+    "level": 40,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5875.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "diamond",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 40,
+    "name": "jony_lu",
+    "username": "GEM Veldraveth#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "jony_lu",
+    "champions": 49,
+    "skins": 378,
+    "masteries": 49,
+    "level": 58,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6247.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 23,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 38,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "gold",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 78,
+      "mid": 56,
+      "top": 67,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 167890,
+    "orange_essence": 24560
+  },
+  {
+    "id": 41,
+    "name": "-",
+    "username": "GEM Religerness#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "-",
+    "champions": 29,
+    "skins": 320,
+    "masteries": 29,
+    "level": 30,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6894.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 42,
+    "name": "AmNightmare",
+    "username": "GEM Debranice#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "AmNightmare",
+    "champions": 47,
+    "skins": 320,
+    "masteries": 47,
+    "level": 37,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/21.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 43,
+    "name": "jony_lu",
+    "username": "GEM Gliecernice#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "jony_lu",
+    "champions": 20,
+    "skins": 320,
+    "masteries": 20,
+    "level": 33,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/2.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 44,
+    "name": "Matutte",
+    "username": "GEM Golzendants#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "Matutte",
+    "champions": 22,
+    "skins": 320,
+    "masteries": 22,
+    "level": 31,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6022.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 45,
+    "name": "peraltadoctor",
+    "username": "GEM Argyndorness#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "peraltadoctor",
+    "champions": 4,
+    "skins": 320,
+    "masteries": 4,
+    "level": 15,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/907.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "diamond",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 46,
+    "name": "AmNightmare",
+    "username": "GEM Ornetchreans#GEM",
+    "bloodline": "Primogenit",
+    "essencer": "AmNightmare",
+    "champions": 8,
+    "skins": 320,
+    "masteries": 8,
+    "level": 30,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/12.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 1
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 47,
+    "name": "Enzyto",
+    "username": "GEM Lageldrynne#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "Enzyto",
+    "champions": 48,
+    "skins": 320,
+    "masteries": 48,
+    "level": 33,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4.png",
+    "wins": {
+      "totals": 15,
+      "current": 10
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "gold",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 48,
+    "name": "AegonLucifer",
+    "username": "GEM Furninscorce#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "AegonLucifer",
+    "champions": 11,
+    "skins": 320,
+    "masteries": 11,
+    "level": 34,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3598.png",
+    "wins": {
+      "totals": 15,
+      "current": 6
+    },
+    "missions": {
+      "current_act": {
+        "totals": 10,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 5,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "gold",
+      "division": 3
+    },
+    "elo_flex": {
+      "tier": "gold",
+      "division": 1
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 45,
+      "mid": 78,
+      "top": 56,
+      "jungle": 34,
+      "support": 23
+    },
+    "blue_essence": 156780,
+    "orange_essence": 23450
+  },
+  {
+    "id": 49,
+    "name": "Matutte",
+    "username": "GEM Arklyndarce#GEM",
+    "bloodline": "Porveldam",
+    "essencer": "Matutte",
+    "champions": 21,
+    "skins": 0,
+    "masteries": 21,
+    "level": 30,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6923.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 2
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 50,
+    "name": "-",
+    "username": "GEM Buddelizeth#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "-",
+    "champions": 0,
+    "skins": 0,
+    "masteries": 0,
+    "level": 16,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/7.png",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 51,
+    "name": "Gemy",
+    "username": "GEM Depurallire#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "Gemy",
+    "champions": 21,
+    "skins": 0,
+    "masteries": 21,
+    "level": 32,
+    "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3149.png",
+    "wins": {
+      "totals": 15,
+      "current": 15
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "platinum",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 52,
+    "name": "jony_lu",
+    "username": "GEM Pracelgance#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "jony_lu",
+    "champions": 0,
+    "skins": 0,
+    "masteries": 0,
+    "level": 30,
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 53,
+    "name": "-",
+    "username": "GEM Reamsetmours#GEM",
+    "bloodline": "Spadelline",
+    "essencer": "-",
+    "champions": 0,
+    "skins": 0,
+    "masteries": 0,
+    "level": 33,
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 4
+    },
+    "honor": 5,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 54,
+    "name": "-",
+    "username": "GEM Auzglades#GEM",
+    "bloodline": "Zephiroth",
+    "essencer": "-",
+    "champions": 0,
+    "skins": 0,
+    "masteries": 0,
+    "level": 19,
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 4,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  },
+  {
+    "id": 55,
+    "name": "-",
+    "username": "GEM Envealscenth#GEM",
+    "bloodline": "Gladasmy",
+    "essencer": "-",
+    "champions": 0,
+    "skins": 0,
+    "masteries": 0,
+    "level": 14,
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "wins": {
+      "totals": 15,
+      "current": 0
+    },
+    "missions": {
+      "current_act": {
+        "totals": 0,
+        "current": 0
+      },
+      "current_hall_of_legends": {
+        "totals": 0,
+        "current": 0
+      }
+    },
+    "elo_soloq": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "elo_flex": {
+      "tier": "unranked",
+      "division": 0
+    },
+    "honor": 3,
+    "rol": {
+      "adc": 0,
+      "mid": 0,
+      "top": 0,
+      "jungle": 0,
+      "support": 0
+    },
+    "blue_essence": 0,
+    "orange_essence": 0
+  }
+]

@@ -1,4 +1,4 @@
-import { authService } from './authService';
+// import { authService } from './authService'; // DISABLED - Local mode
 import { purchasedChampionsService } from './purchasedChampionsService';
 
 // Interface for the individual mastery data structure
@@ -32,7 +32,18 @@ let cachedMasteryData: MasteryData[] | null = null;
 let cacheTimestamp: number = 0;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 
-// Fetch mastery data from API with caching
+// Interface for local mastery JSON structure
+interface LocalMasteryEntry {
+    ranked_id: number;
+    username: string;
+    masteries: {
+        champion_id: number;
+        champion_level: number;
+        champion_points: number;
+    }[];
+}
+
+// LOCAL MODE: Fetch mastery data from local JSON
 export const fetchMasteryData = async (): Promise<MasteryData[]> => {
     // Check if we have cached data and it hasn't expired
     if (cachedMasteryData && Date.now() - cacheTimestamp < CACHE_DURATION) {
@@ -41,28 +52,42 @@ export const fetchMasteryData = async (): Promise<MasteryData[]> => {
     }
 
     try {
-        console.log('Fetching fresh mastery data from API');
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
+        console.log('LOCAL MODE: Fetching mastery data from local JSON');
+        const response = await fetch('/data/masteries.json');
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: MasteryResponse = await response.json();
-        // Flatten the data from the new grouped structure
+        const localData: LocalMasteryEntry[] = await response.json();
+
+        // Flatten the data to match the original structure
         const flattenedMasteries: MasteryData[] = [];
-        data.masteries.forEach(user => {
-            flattenedMasteries.push(...user.masteries_by_champions);
+        localData.forEach(user => {
+            user.masteries.forEach(mastery => {
+                flattenedMasteries.push({
+                    id: null,
+                    ranked_id: user.ranked_id,
+                    username: user.username,
+                    champion_id: mastery.champion_id,
+                    champion_level: mastery.champion_level,
+                    champion_points: mastery.champion_points,
+                    champion_points_since_last_level: 0,
+                    champion_points_until_next_level: 0,
+                    chest_granted: false,
+                    last_play_time: null
+                });
+            });
         });
-        
+
         // Cache the data
         cachedMasteryData = flattenedMasteries;
         cacheTimestamp = Date.now();
-        
+
         return flattenedMasteries;
     } catch (error) {
-        console.error('Error fetching mastery data:', error);
-        throw new Error('Failed to fetch mastery data');
+        console.error('Error fetching local mastery data:', error);
+        return [];
     }
 };
 
@@ -91,20 +116,39 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
     return allData.find(item => item.ranked_id === rankedId && item.champion_id === championId) || null;
 };
 
-// Fetch raw mastery data grouped by users (new structure)
+// LOCAL MODE: Fetch raw mastery data grouped by users from local JSON
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
-        const response = await authService.makeAuthenticatedRequest('https://bridyam-majesties-back-production.up.railway.app/masteries');
+        const response = await fetch('/data/masteries.json');
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: MasteryResponse = await response.json();
-        return data.masteries;
+        const localData: LocalMasteryEntry[] = await response.json();
+
+        // Convert to UserMasteryData format
+        const groupedData: UserMasteryData[] = localData.map(user => ({
+            id: user.ranked_id,
+            username: user.username,
+            masteries_by_champions: user.masteries.map(m => ({
+                id: null,
+                ranked_id: user.ranked_id,
+                username: user.username,
+                champion_id: m.champion_id,
+                champion_level: m.champion_level,
+                champion_points: m.champion_points,
+                champion_points_since_last_level: 0,
+                champion_points_until_next_level: 0,
+                chest_granted: false,
+                last_play_time: null
+            }))
+        }));
+
+        return groupedData;
     } catch (error) {
         console.error('Error fetching grouped mastery data:', error);
-        throw new Error('Failed to fetch grouped mastery data');
+        return [];
     }
 };
 
@@ -139,56 +183,14 @@ export const isChampionPurchased = (rankedId: number, championId: number): boole
     return purchasedChampionsService.isPurchased(rankedId, championId);
 };
 
-// Update masteries data via PUT request
-export const updateMasteries = async (masteriesData: MasteryData[]): Promise<void> => {
-    try {
-        const response = await authService.makeAuthenticatedRequest(
-            'https://bridyam-majesties-back-production.up.railway.app/masteries',
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ masteries: masteriesData }),
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        // Clear cache after update to ensure fresh data on next request
-        clearMasteryCache();
-    } catch (error) {
-        console.error('Error updating masteries data:', error);
-        throw new Error('Failed to update masteries data');
-    }
+// LOCAL MODE: Update masteries data (disabled)
+export const updateMasteries = async (_masteriesData: MasteryData[]): Promise<void> => {
+    console.log('LOCAL MODE: updateMasteries is disabled');
 };
 
-// Update masteries data for a specific ranked account via PUT request with ranked_id
-export const updateMasteriesByRankedId = async (rankedId: number, masteriesData: MasteryData[]): Promise<void> => {
-    try {
-        const response = await authService.makeAuthenticatedRequest(
-            `https://bridyam-majesties-back-production.up.railway.app/masteries/${rankedId}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ masteries: masteriesData }),
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        // Clear cache after update to ensure fresh data on next request
-        clearMasteryCache();
-    } catch (error) {
-        console.error('Error updating masteries data by ranked_id:', error);
-        throw new Error('Failed to update masteries data by ranked_id');
-    }
+// LOCAL MODE: Update masteries data for a specific ranked account (disabled)
+export const updateMasteriesByRankedId = async (_rankedId: number, _masteriesData: MasteryData[]): Promise<void> => {
+    console.log('LOCAL MODE: updateMasteriesByRankedId is disabled');
 };
 
 // Clear mastery data cache
