@@ -174,7 +174,7 @@
   overflow-y: auto;
   scrollbar-width: none;
   padding-top: 0.5vw;
-  // background-color: blue;
+  background-color: blue;
 }
 
 .champions__grid {
@@ -194,7 +194,7 @@
   transition: all 0.3s ease;
   cursor: pointer;
   @include flex-col;
-  // background-color: purple;
+  background-color: purple;
 }
 
 .champion__frame {
@@ -664,7 +664,7 @@
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
 }
 
 .essencer__title {
@@ -719,7 +719,7 @@
 
 .favorite__card {
   width: 70px;
-  height: 90px;
+  height: 100px;
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -733,15 +733,15 @@
 }
 
 .favorite__card.selected {
-  transform: scale(1.1);
   filter: drop-shadow(0 0 10px rgba(200, 155, 60, 0.8));
 }
 
 .favorite__card__img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 50%;
+  margin-top: 10%;
 }
 
 .favorite__card__frame {
@@ -757,9 +757,10 @@
 
 .favorite__card__stats {
   color: #cdbe91;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  margin-top: 2px;
+  margin-top: 15px;
+  letter-spacing: 0.1rem;
 }
 
 .no__favorites__message {
@@ -805,10 +806,12 @@
   width: 100%;
   flex: 1;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, 31%);
+  justify-content: space-between;
+  align-content: start;
   gap: 0.5rem;
-  padding-right: 0.5rem;
+  padding: 0.5rem;
   scrollbar-width: thin;
   scrollbar-color: #463714 #1e2328;
 }
