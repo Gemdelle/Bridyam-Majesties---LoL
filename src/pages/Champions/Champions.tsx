@@ -5,14 +5,30 @@ import { type MasteryData } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
 import { getEssencerList, getEssencerFavorites, saveEssencerFavorites } from '../../services/favoritesService';
 import AchievementPopup from '../../components/AchievementPopup';
+import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { playClickSound } from '../../utils/soundUtils';
+
+interface RankedAccount {
+    id: number;
+    name: string;
+    username: string;
+}
 
 interface EssencerData {
     name: string;
     favorites: number[];
     totalMastery: number;
+}
+
+interface ChampionMasteryDetail {
+    rankedId: number;
+    accountName: string;
+    masteryLevel: number;
+    masteryPoints: number;
+    currentXP: number;
+    totalXP: number;
 }
 
 type ViewState = 'list' | 'essencer' | 'selector';
@@ -23,7 +39,9 @@ const Champions: React.FC = () => {
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
     const [essencers, setEssencers] = useState<EssencerData[]>([]);
+    const [rankedAccounts, setRankedAccounts] = useState<RankedAccount[]>([]);
     const [selectedEssencer, setSelectedEssencer] = useState<string | null>(null);
+    const [selectedChampion, setSelectedChampion] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
@@ -43,10 +61,11 @@ const Champions: React.FC = () => {
 
                 // Also load rankeds to calculate total mastery
                 const rankedsResponse = await fetch('/data/rankeds.json');
-                const rankedsData = await rankedsResponse.json();
+                const rankedsData: RankedAccount[] = await rankedsResponse.json();
 
                 setChampions(championsData);
                 setMasteryData(masteriesData);
+                setRankedAccounts(rankedsData);
 
                 // Build essencer data with their favorites and total mastery
                 const essencerDataList: EssencerData[] = essencerNames.map(name => {
@@ -177,6 +196,64 @@ const Champions: React.FC = () => {
     // Get current essencer data
     const currentEssencer = essencers.find(e => e.name === selectedEssencer);
 
+    // Get mastery details for a champion across all accounts
+    const getChampionMasteryDetails = (champId: number): ChampionMasteryDetail[] => {
+        const riotId = getRiotIdForChampion(champId);
+        const details: ChampionMasteryDetail[] = [];
+
+        rankedAccounts.forEach(account => {
+            const mastery = masteryData.find(m => 
+                m.ranked_id === account.id && m.champion_id === riotId
+            );
+            
+            if (mastery && (mastery.champion_level ?? 0) > 0) {
+                details.push({
+                    rankedId: account.id,
+                    accountName: account.username || account.name,
+                    masteryLevel: mastery.champion_level || 0,
+                    masteryPoints: mastery.champion_points || 0,
+                    currentXP: mastery.champion_points_since_last_level || 0,
+                    totalXP: (mastery.champion_points_since_last_level || 0) + (mastery.champion_points_until_next_level || 0)
+                });
+            }
+        });
+
+        // Sort by mastery level descending
+        return details.sort((a, b) => b.masteryLevel - a.masteryLevel);
+    };
+
+    // Calculate total mastery and max possible for a champion
+    const getChampionMasteryStats = (champId: number): { current: number; max: number } => {
+        const riotId = getRiotIdForChampion(champId);
+        let current = 0;
+        let accountsWithMastery = 0;
+
+        rankedAccounts.forEach(account => {
+            const mastery = masteryData.find(m => 
+                m.ranked_id === account.id && m.champion_id === riotId
+            );
+            const level = mastery?.champion_level ?? 0;
+            if (level > 0) {
+                current += level;
+                accountsWithMastery++;
+            }
+        });
+
+        // Max is 10 per account that has any mastery
+        const max = accountsWithMastery * 10;
+        return { current, max };
+    };
+
+    // Toggle selected champion for details view
+    const toggleChampionDetails = (champId: number) => {
+        playClickSound();
+        if (selectedChampion === champId) {
+            setSelectedChampion(null);
+        } else {
+            setSelectedChampion(champId);
+        }
+    };
+
     if (loading) {
         return (
             <div className={styles.page}>
@@ -224,42 +301,47 @@ const Champions: React.FC = () => {
             {viewState === 'essencer' && currentEssencer && (
                 <div className={styles.essencer__view}>
                     <div className={styles.essencer__header}>
-                        <button className={styles.back__button} onClick={goBack}>
+                        <button className={styles.small__button} onClick={goBack}>
                             Back
                         </button>
                         <h2 className={styles.essencer__title}>{currentEssencer.name}</h2>
-                        <button className={styles.champions__button} onClick={openChampionSelector}>
+                        <button className={styles.small__button} onClick={openChampionSelector}>
                             Champions
                         </button>
                     </div>
 
                     <div className={styles.essencer__content}>
-                        <div className={styles.stats__row}>
-                            <div className={styles.total__masteries__container}>
-                                <img
-                                    src="/images/frames/account-ranking-position-frame.png"
-                                    alt="Masteries frame"
-                                    className={styles.total__masteries__frame}
-                                />
-                                <span className={styles.total__masteries__text}>
-                                    {currentEssencer.totalMastery}
-                                </span>
-                            </div>
-                        </div>
-
+                        {/* Champions grid */}
                         <div className={styles.favorites__grid}>
-                            {currentEssencer.favorites.map(champId => (
-                                <div key={champId} className={styles.favorite__card}>
-                                    <img
-                                        src={getChampionImage(champId)}
-                                        alt="Champion"
-                                        className={styles.favorite__card__img}
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                        }}
-                                    />
-                                </div>
-                            ))}
+                            {currentEssencer.favorites.map(champId => {
+                                const stats = getChampionMasteryStats(champId);
+                                const isSelected = selectedChampion === champId;
+                                
+                                return (
+                                    <div
+                                        key={champId}
+                                        className={`${styles.favorite__card} ${isSelected ? styles.selected : ''}`}
+                                        onClick={() => toggleChampionDetails(champId)}
+                                    >
+                                        <img
+                                            src={getChampionImage(champId)}
+                                            alt="Champion"
+                                            className={styles.favorite__card__img}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                            }}
+                                        />
+                                        <img
+                                            src="/images/frames/account-champion-frame.png"
+                                            alt="Frame"
+                                            className={styles.favorite__card__frame}
+                                        />
+                                        <span className={styles.favorite__card__stats}>
+                                            {stats.current}/{stats.max}
+                                        </span>
+                                    </div>
+                                );
+                            })}
                             {currentEssencer.favorites.length === 0 && (
                                 <div className={styles.no__favorites__message}>
                                     <p>No favorite champions yet</p>
@@ -267,6 +349,33 @@ const Champions: React.FC = () => {
                                 </div>
                             )}
                         </div>
+
+                        {/* Champion details list */}
+                        {selectedChampion && (
+                            <div className={styles.champion__details__list}>
+                                <h3 className={styles.details__title}>
+                                    {champions.find(c => c.id === selectedChampion)?.name} - Mastery by Account
+                                </h3>
+                                <div className={styles.details__scroll}>
+                                    {getChampionMasteryDetails(selectedChampion).map((detail, index) => (
+                                        <ChampionProgress
+                                            key={detail.rankedId}
+                                            championName={champions.find(c => c.id === selectedChampion)?.name || ''}
+                                            championImage={getChampionImage(selectedChampion)}
+                                            masteryLevel={detail.masteryLevel}
+                                            masteryProgress={detail.totalXP > 0 ? Math.floor((detail.currentXP / detail.totalXP) * 100) : 0}
+                                            currentXP={detail.currentXP}
+                                            totalXP={detail.totalXP}
+                                            championNumber={index + 1}
+                                            accountName={detail.accountName}
+                                        />
+                                    ))}
+                                    {getChampionMasteryDetails(selectedChampion).length === 0 && (
+                                        <p className={styles.no__mastery}>No mastery data for this champion</p>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
