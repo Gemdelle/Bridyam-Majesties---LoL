@@ -301,17 +301,17 @@ const Champions: React.FC = () => {
             {viewState === 'essencer' && currentEssencer && (
                 <div className={styles.essencer__view}>
                     <div className={styles.essencer__header}>
-                        <button className={styles.small__button} onClick={goBack}>
-                            Back
-                        </button>
-                        <h2 className={styles.essencer__title}>{currentEssencer.name}</h2>
-                        <button className={styles.small__button} onClick={openChampionSelector}>
-                            Champions
-                        </button>
-                    </div>
-
-                    <div className={styles.essencer__content}>
-                        {/* Champions grid */}
+                        <div className={styles.header__left}>
+                            <button className={styles.small__button} onClick={goBack}>
+                                Back
+                            </button>
+                            <h2 className={styles.essencer__title}>{currentEssencer.name}</h2>
+                            <button className={styles.small__button} onClick={openChampionSelector}>
+                                Champions
+                            </button>
+                        </div>
+                        
+                        {/* Champions grid in header */}
                         <div className={styles.favorites__grid}>
                             {currentEssencer.favorites.map(champId => {
                                 const stats = getChampionMasteryStats(champId);
@@ -343,19 +343,15 @@ const Champions: React.FC = () => {
                                 );
                             })}
                             {currentEssencer.favorites.length === 0 && (
-                                <div className={styles.no__favorites__message}>
-                                    <p>No favorite champions yet</p>
-                                    <p>Click "Champions" to add some!</p>
-                                </div>
+                                <span className={styles.no__favorites__inline}>No favorites</span>
                             )}
                         </div>
+                    </div>
 
+                    <div className={styles.essencer__content}>
                         {/* Champion details list */}
                         {selectedChampion && (
                             <div className={styles.champion__details__list}>
-                                <h3 className={styles.details__title}>
-                                    {champions.find(c => c.id === selectedChampion)?.name} - Mastery by Account
-                                </h3>
                                 <div className={styles.details__scroll}>
                                     {getChampionMasteryDetails(selectedChampion).map((detail, index) => (
                                         <ChampionProgress
