@@ -69,6 +69,9 @@ const Champions: React.FC = () => {
                     return { name, favorites, totalMastery };
                 });
 
+                // Sort alphabetically
+                essencerDataList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
                 setEssencers(essencerDataList);
 
             } catch (error) {
