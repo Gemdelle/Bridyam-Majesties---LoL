@@ -93,3 +93,29 @@ export const saveFavorites = async (userId: string, favoriteIds: number[]): Prom
   return true;
 };
 
+/**
+ * Export all essencer favorites as a downloadable JSON file
+ */
+export const exportFavoritesToFile = (): void => {
+  const allFavorites = loadAllEssencerFavorites();
+  const dataStr = JSON.stringify(allFavorites, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'essencer-favorites.json';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+/**
+ * Import essencer favorites from a JSON object (for loading from file)
+ */
+export const importFavoritesFromData = (data: EssencerFavorites): void => {
+  essencerFavoritesCache = data;
+  localStorage.setItem('essencer-favorites', JSON.stringify(data));
+};
+

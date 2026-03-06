@@ -3,7 +3,7 @@ import styles from './Champions.module.scss';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { type MasteryData } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
-import { getEssencerList, getEssencerFavorites, saveEssencerFavorites } from '../../services/favoritesService';
+import { getEssencerList, getEssencerFavorites, saveEssencerFavorites, exportFavoritesToFile } from '../../services/favoritesService';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
@@ -174,6 +174,14 @@ const Champions: React.FC = () => {
         playClickSound();
         setSelectedEssencer(essencerName);
         setViewState('essencer');
+        
+        // Auto-select first champion if available
+        const favorites = getEssencerFavorites(essencerName);
+        if (favorites.length > 0) {
+            setSelectedChampion(favorites[0]);
+        } else {
+            setSelectedChampion(null);
+        }
     };
 
     // Open champion selector
@@ -196,6 +204,21 @@ const Champions: React.FC = () => {
     // Get current essencer data
     const currentEssencer = essencers.find(e => e.name === selectedEssencer);
 
+    // Clean account name (remove GEM prefix and #tag suffix)
+    const cleanAccountName = (name: string): string => {
+        let cleaned = name;
+        // Remove "GEM " prefix
+        if (cleaned.startsWith('GEM ')) {
+            cleaned = cleaned.substring(4);
+        }
+        // Remove #tag suffix
+        const hashIndex = cleaned.indexOf('#');
+        if (hashIndex !== -1) {
+            cleaned = cleaned.substring(0, hashIndex);
+        }
+        return cleaned;
+    };
+
     // Get mastery details for a champion across all accounts
     const getChampionMasteryDetails = (champId: number): ChampionMasteryDetail[] => {
         const riotId = getRiotIdForChampion(champId);
@@ -209,7 +232,7 @@ const Champions: React.FC = () => {
             if (mastery && (mastery.champion_level ?? 0) > 0) {
                 details.push({
                     rankedId: account.id,
-                    accountName: account.username || account.name,
+                    accountName: cleanAccountName(account.username || account.name),
                     masteryLevel: mastery.champion_level || 0,
                     masteryPoints: mastery.champion_points || 0,
                     currentXP: mastery.champion_points_since_last_level || 0,
@@ -282,6 +305,16 @@ const Champions: React.FC = () => {
             {viewState === 'list' && (
                 <div className={styles.essencers__container}>
                     <h2 className={styles.section__title}>Select Essencer</h2>
+                    
+                    <button 
+                        className={styles.export__button}
+                        onClick={() => {
+                            playClickSound();
+                            exportFavoritesToFile();
+                        }}
+                    >
+                        Export Favorites
+                    </button>
                     
                     <div className={styles.essencers__grid}>
                         {essencers.map(essencer => (
@@ -363,7 +396,7 @@ const Champions: React.FC = () => {
                                             currentXP={detail.currentXP}
                                             totalXP={detail.totalXP}
                                             championNumber={index + 1}
-                                            accountName={detail.accountName}
+                                            accountName={cleanAccountName(detail.accountName)}
                                         />
                                     ))}
                                     {getChampionMasteryDetails(selectedChampion).length === 0 && (
