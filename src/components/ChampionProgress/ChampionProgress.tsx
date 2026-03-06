@@ -80,14 +80,14 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                 </div>
 
                 <div className={styles.mastery__score__container}>
+                    <div className={styles.mastery__score__text}>
+                        {masteryLevel}
+                    </div>
                     <img
                         src={`/images/masteries/badges/${masteryBadgeLevel}.png`}
                         alt={`Mastery ${masteryLevel}`}
                         className={`${styles.mastery__score__badge} ${masteryBadgeLevel >= 1 && masteryBadgeLevel <= 4 ? styles.mastery__badge__small : ''}`}
                     />
-                    <div className={styles.mastery__score__text}>
-                        {masteryLevel}
-                    </div>
                 </div>
             </div>
         </div>

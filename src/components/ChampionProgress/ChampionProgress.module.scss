@@ -146,20 +146,21 @@
   width: 20%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   margin-right: 7%;
 }
 
 .mastery__score__badge {
   width: auto;
-  height: 80%;
+  height: 65%;
   object-fit: contain;
 }
 
 .mastery__badge__small {
-  height: 60% !important;
+  height: 50% !important;
 }
 
 .mastery__score__text {
