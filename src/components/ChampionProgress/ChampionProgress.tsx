@@ -10,32 +10,46 @@ interface ChampionProgressProps {
     totalXP: number;
     championNumber: number;
     accountName: string;
+    onMasteryChange?: (delta: number) => void;
+    editable?: boolean;
 }
 
 const ChampionProgress: React.FC<ChampionProgressProps> = ({
-    championName,
     championImage,
     masteryLevel,
-    masteryProgress,
-    currentXP,
-    totalXP,
-    championNumber,
-    accountName
+    accountName,
+    onMasteryChange,
+    editable = false
 }) => {
-    // Limit mastery badge image to level 10 maximum
     const masteryBadgeLevel = Math.min(masteryLevel, 10);
+
+    const handleCrystalClick = (crystalIndex: number) => {
+        if (!editable || !onMasteryChange) return;
+        
+        // If clicking on an unlocked crystal, set level to that crystal (or one less if it's the current level)
+        // If clicking on a locked crystal, set level to that crystal + 1
+        const clickedLevel = crystalIndex + 1;
+        
+        if (clickedLevel === masteryLevel) {
+            // Clicking the last unlocked crystal decreases level by 1
+            onMasteryChange(-1);
+        } else if (clickedLevel > masteryLevel) {
+            // Clicking a locked crystal sets level to that position
+            onMasteryChange(clickedLevel - masteryLevel);
+        } else {
+            // Clicking a lower unlocked crystal sets level to that position
+            onMasteryChange(clickedLevel - masteryLevel);
+        }
+    };
 
     return (
         <div className={styles.champion__card}>
-            {/* Left side - Champion portrait with frame (30% width) */}
+            {/* Left side - Champion portrait with frame */}
             <div className={styles.left__container}>
-                {/* Champion image as background */}
                 <div
                     className={styles.champion__image__background}
                     style={{ backgroundImage: `url(${championImage})` }}
                 ></div>
-
-                {/* Frame overlay */}
                 <img
                     src="/images/frames/personal-champion.frame.png"
                     alt="Champion Frame"
@@ -43,16 +57,12 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                 />
             </div>
 
-            {/* Right side - Account name and progress info (70% width) */}
+            {/* Right side - Account name and progress info */}
             <div className={styles.right__container}>
-                {/* Left info container (60% width) - Name and crystals */}
                 <div className={styles.left__info__container}>
-                    {/* Account name */}
                     <div className={styles.account__name}>
                         {accountName}
                     </div>
-
-                    {/* Crystals container */}
                     <div className={styles.crystals__container}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const isUnlocked = i < masteryLevel;
@@ -61,14 +71,14 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
                                     key={i}
                                     src="/images/gems/crystal.png"
                                     alt="Crystal"
-                                    className={`${styles.crystal} ${isUnlocked ? styles.crystal__unlocked : styles.crystal__locked}`}
+                                    className={`${styles.crystal} ${isUnlocked ? styles.crystal__unlocked : styles.crystal__locked} ${editable ? styles.crystal__clickable : ''}`}
+                                    onClick={() => handleCrystalClick(i)}
                                 />
                             );
                         })}
                     </div>
                 </div>
 
-                {/* Right mastery container (20% width, 100% height) */}
                 <div className={styles.mastery__score__container}>
                     <img
                         src={`/images/masteries/badges/${masteryBadgeLevel}.png`}

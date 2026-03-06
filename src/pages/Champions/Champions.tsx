@@ -46,6 +46,7 @@ const Champions: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [viewState, setViewState] = useState<ViewState>('list');
+    const [, setMasteryUpdateTrigger] = useState(0); // Force re-render on mastery change
 
     // Load data on mount
     useEffect(() => {
@@ -205,6 +206,17 @@ const Champions: React.FC = () => {
     // Get current essencer data
     const currentEssencer = essencers.find(e => e.name === selectedEssencer);
 
+    // Get favorites sorted by total mastery (highest first)
+    const getSortedFavorites = (): number[] => {
+        if (!currentEssencer) return [];
+        
+        return [...currentEssencer.favorites].sort((a, b) => {
+            const statsA = getChampionMasteryStats(a);
+            const statsB = getChampionMasteryStats(b);
+            return statsB.current - statsA.current;
+        });
+    };
+
     // Clean account name (remove GEM prefix and #tag suffix)
     const cleanAccountName = (name: string): string => {
         let cleaned = name;
@@ -278,6 +290,53 @@ const Champions: React.FC = () => {
         }
     };
 
+    // Update mastery level for a specific champion and account
+    const updateMasteryLevel = (rankedId: number, championId: number, delta: number) => {
+        const riotId = getRiotIdForChampion(championId);
+        const masteryIndex = masteryData.findIndex(m => 
+            m.ranked_id === rankedId && m.champion_id === riotId
+        );
+        
+        if (masteryIndex !== -1) {
+            const currentLevel = masteryData[masteryIndex].champion_level ?? 0;
+            const newLevel = Math.max(0, Math.min(10, currentLevel + delta));
+            masteryData[masteryIndex].champion_level = newLevel;
+            
+            // Force re-render
+            setMasteryUpdateTrigger(prev => prev + 1);
+            
+            // Update essencers total mastery
+            setEssencers(prev => prev.map(e => {
+                const favorites = getEssencerFavorites(e.name);
+                let totalMastery = 0;
+                favorites.forEach(champId => {
+                    const rid = getRiotIdForChampion(champId);
+                    masteryData.forEach(m => {
+                        if (m.champion_id === rid) {
+                            totalMastery += m.champion_level || 0;
+                        }
+                    });
+                });
+                return { ...e, totalMastery };
+            }));
+            
+            // Log updated masteries for the user to copy
+            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number }[]> = {};
+            masteryData.forEach(m => {
+                if (!masteriesByAccount[m.ranked_id]) {
+                    masteriesByAccount[m.ranked_id] = [];
+                }
+                masteriesByAccount[m.ranked_id].push({
+                    champion_id: m.champion_id,
+                    champion_level: m.champion_level ?? 0
+                });
+            });
+            
+            console.log('%c📋 Mastery updated! Copy to public/data/masteries.json:', 'color: #90EE90; font-weight: bold;');
+            console.log(JSON.stringify(masteriesByAccount, null, 2));
+        }
+    };
+
     if (loading) {
         return (
             <div className={styles.page}>
@@ -335,9 +394,9 @@ const Champions: React.FC = () => {
                             </button>
                         </div>
                         
-                        {/* Champions grid in header */}
+                        {/* Champions grid in header - sorted by mastery */}
                         <div className={styles.favorites__grid}>
-                            {currentEssencer.favorites.map(champId => {
+                            {getSortedFavorites().map(champId => {
                                 const stats = getChampionMasteryStats(champId);
                                 const isSelected = selectedChampion === champId;
                                 
@@ -388,6 +447,8 @@ const Champions: React.FC = () => {
                                             totalXP={detail.totalXP}
                                             championNumber={index + 1}
                                             accountName={cleanAccountName(detail.accountName)}
+                                            editable={true}
+                                            onMasteryChange={(delta) => updateMasteryLevel(detail.rankedId, selectedChampion, delta)}
                                         />
                                     ))}
                                     {getChampionMasteryDetails(selectedChampion).length === 0 && (

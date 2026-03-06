@@ -101,6 +101,7 @@
   width: auto;
   height: 100%;
   object-fit: contain;
+  transition: all 0.2s ease;
 }
 
 .crystal__unlocked {
@@ -111,6 +112,15 @@
 .crystal__locked {
   filter: brightness(0.3) saturate(0.2);
   opacity: 1;
+}
+
+.crystal__clickable {
+  cursor: pointer;
+}
+
+.crystal__clickable:hover {
+  transform: scale(1.3);
+  filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 5px rgba(100, 200, 255, 0.8));
 }
 
 // XP container (30% width)
@@ -131,34 +141,32 @@
   text-align: center;
 }
 
-// MASTERY SCORE CONTAINER - 20% width, 100% height
+// MASTERY SCORE CONTAINER
 .mastery__score__container {
-  width: 25%;
+  width: 20%;
   height: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-right: 7%;
-  @include flex-col-between;
-  // background-color: coral;
 }
 
 .mastery__score__badge {
   width: auto;
-  height: 65%;
+  height: 80%;
   object-fit: contain;
-  // background-color: red;
 }
 
 .mastery__badge__small {
-  height: 50% !important;
+  height: 60% !important;
 }
 
 .mastery__score__text {
-  height: 25%;
   color: #cdbe91;
-  font-size: 0.6vw;
-  letter-spacing: 0.1vw;
+  font-size: 0.7vw;
   font-weight: 600;
   text-align: center;
-  // background-color: blue;
-  @include flex-center;
+  min-width: 15px;
 }
+
