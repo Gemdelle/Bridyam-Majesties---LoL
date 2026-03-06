@@ -17,32 +17,56 @@ export type EssencerFavorites = Record<string, number[]>;
 
 // Cache for essencer favorites
 let essencerFavoritesCache: EssencerFavorites | null = null;
+let favoritesLoadedFromFile = false;
 
 /**
- * LOCAL MODE: Load all essencer favorites from localStorage
+ * LOCAL MODE: Load all essencer favorites from JSON file first, then localStorage as backup
  */
 export const loadAllEssencerFavorites = (): EssencerFavorites => {
   if (essencerFavoritesCache) return essencerFavoritesCache;
   
+  // Try localStorage first (has latest local changes)
   const stored = localStorage.getItem('essencer-favorites');
   if (stored) {
     essencerFavoritesCache = JSON.parse(stored);
     return essencerFavoritesCache || {};
   }
   
-  // Default empty favorites for known essencers
-  essencerFavoritesCache = {
-    "peraltadoctor": [],
-    "Gemy": [],
-    "jony_lu": [],
-    "Matutte": [],
-    "Enzyto": [],
-    "Zoro": [],
-    "AegonLucifer": [],
-    "AmNightmare": []
-  };
-  localStorage.setItem('essencer-favorites', JSON.stringify(essencerFavoritesCache));
+  // Default empty - will be loaded async from file
+  essencerFavoritesCache = {};
   return essencerFavoritesCache;
+};
+
+/**
+ * Load favorites from the JSON file (async)
+ */
+export const loadFavoritesFromFile = async (): Promise<EssencerFavorites> => {
+  if (favoritesLoadedFromFile && essencerFavoritesCache) {
+    return essencerFavoritesCache;
+  }
+  
+  try {
+    const response = await fetch('/data/essencer-favorites.json');
+    if (response.ok) {
+      const data = await response.json();
+      essencerFavoritesCache = data;
+      // Sync to localStorage
+      localStorage.setItem('essencer-favorites', JSON.stringify(data));
+      favoritesLoadedFromFile = true;
+      return data;
+    }
+  } catch (error) {
+    console.error('Error loading favorites from file:', error);
+  }
+  
+  // Fallback to localStorage or empty
+  const stored = localStorage.getItem('essencer-favorites');
+  if (stored) {
+    essencerFavoritesCache = JSON.parse(stored);
+    return essencerFavoritesCache || {};
+  }
+  
+  return {};
 };
 
 /**
@@ -55,12 +79,17 @@ export const getEssencerFavorites = (essencerName: string): number[] => {
 
 /**
  * LOCAL MODE: Save favorites for a specific essencer
+ * Also logs the JSON so you can copy it to the file
  */
 export const saveEssencerFavorites = (essencerName: string, favoriteIds: number[]): void => {
   const allFavorites = loadAllEssencerFavorites();
   allFavorites[essencerName] = favoriteIds;
   essencerFavoritesCache = allFavorites;
   localStorage.setItem('essencer-favorites', JSON.stringify(allFavorites));
+  
+  // Log JSON for easy copy to file
+  console.log('%c📋 Copy this to public/data/essencer-favorites.json:', 'color: #90EE90; font-weight: bold;');
+  console.log(JSON.stringify(allFavorites, null, 2));
 };
 
 /**

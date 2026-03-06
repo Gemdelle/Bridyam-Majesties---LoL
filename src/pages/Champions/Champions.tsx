@@ -3,7 +3,7 @@ import styles from './Champions.module.scss';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
 import { type MasteryData } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
-import { getEssencerList, getEssencerFavorites, saveEssencerFavorites, exportFavoritesToFile } from '../../services/favoritesService';
+import { getEssencerList, getEssencerFavorites, saveEssencerFavorites, loadFavoritesFromFile } from '../../services/favoritesService';
 import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
@@ -56,7 +56,8 @@ const Champions: React.FC = () => {
                 const [championsData, masteriesData, essencerNames] = await Promise.all([
                     fetchChampions(),
                     masteryCacheService.getMasteries(),
-                    getEssencerList()
+                    getEssencerList(),
+                    loadFavoritesFromFile() // Load favorites from JSON file
                 ]);
 
                 // Also load rankeds to calculate total mastery
@@ -305,16 +306,6 @@ const Champions: React.FC = () => {
             {viewState === 'list' && (
                 <div className={styles.essencers__container}>
                     <h2 className={styles.section__title}>Select Essencer</h2>
-                    
-                    <button 
-                        className={styles.export__button}
-                        onClick={() => {
-                            playClickSound();
-                            exportFavoritesToFile();
-                        }}
-                    >
-                        Export Favorites
-                    </button>
                     
                     <div className={styles.essencers__grid}>
                         {essencers.map(essencer => (
