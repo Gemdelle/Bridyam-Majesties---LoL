@@ -340,8 +340,22 @@ const Champions: React.FC = () => {
                 });
             });
             
-            console.log('%c📋 Mastery updated! Copy to public/data/masteries.json:', 'color: #90EE90; font-weight: bold;');
-            console.log(JSON.stringify(masteriesByAccount, null, 2));
+            // Save to JSON file via Vite dev server
+            fetch('/api/save-masteries', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(masteriesByAccount)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        console.log('%c✅ Masteries saved to JSON file!', 'color: #90EE90; font-weight: bold;');
+                    } else {
+                        console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
+                    }
+                })
+                .catch(() => {
+                    console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
+                });
         }
     };
 

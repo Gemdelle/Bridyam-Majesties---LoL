@@ -86,10 +86,23 @@ export const saveEssencerFavorites = (essencerName: string, favoriteIds: number[
   allFavorites[essencerName] = favoriteIds;
   essencerFavoritesCache = allFavorites;
   localStorage.setItem('essencer-favorites', JSON.stringify(allFavorites));
-  
-  // Log JSON for easy copy to file
-  console.log('%c📋 Copy this to public/data/essencer-favorites.json:', 'color: #90EE90; font-weight: bold;');
-  console.log(JSON.stringify(allFavorites, null, 2));
+
+  // Save to JSON file via Vite dev server
+  fetch('/api/save-favorites', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(allFavorites)
+  })
+    .then(res => {
+      if (res.ok) {
+        console.log('%c✅ Favorites saved to JSON file!', 'color: #90EE90; font-weight: bold;');
+      } else {
+        console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
+      }
+    })
+    .catch(() => {
+      console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
+    });
 };
 
 /**
