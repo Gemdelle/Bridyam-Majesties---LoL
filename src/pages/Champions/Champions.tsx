@@ -328,23 +328,31 @@ const Champions: React.FC = () => {
                 return { ...e, totalMastery };
             }));
             
-            // Log updated masteries for the user to copy
-            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number }[]> = {};
+// Build masteries in the correct format for the JSON file
+            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number; champion_points: number }[]> = {};
             masteryData.forEach(m => {
                 if (!masteriesByAccount[m.ranked_id]) {
                     masteriesByAccount[m.ranked_id] = [];
                 }
                 masteriesByAccount[m.ranked_id].push({
                     champion_id: m.champion_id,
-                    champion_level: m.champion_level ?? 0
+                    champion_level: m.champion_level ?? 0,
+                    champion_points: m.champion_points ?? 0
                 });
             });
-            
+
+            // Convert to array format matching masteries.json structure
+            const masteriesArray = rankedAccounts.map(account => ({
+                ranked_id: account.id,
+                username: account.username || account.name,
+                masteries: masteriesByAccount[account.id] || []
+            })).filter(acc => acc.masteries.length > 0);
+
             // Save to JSON file via Vite dev server
             fetch('/api/save-masteries', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(masteriesByAccount)
+                body: JSON.stringify(masteriesArray)
             })
                 .then(res => {
                     if (res.ok) {

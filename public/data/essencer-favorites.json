@@ -1,5 +1,15 @@
 {
-  "peraltadoctor": [],
+  "peraltadoctor": [
+    144,
+    57,
+    55,
+    71,
+    136,
+    141,
+    153,
+    58,
+    3
+  ],
   "Gemy": [
     78,
     65,
@@ -14,6 +24,10 @@
   "Matutte": [],
   "Enzyto": [],
   "Zoro": [],
-  "AegonLucifer": [],
+  "AegonLucifer": [
+    74,
+    11,
+    43
+  ],
   "AmNightmare": []
 }
