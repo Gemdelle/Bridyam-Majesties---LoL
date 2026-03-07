@@ -694,6 +694,11 @@
   align-items: center;
   gap: 1rem;
   flex-shrink: 0;
+
+  .search__container {
+    width: 200px;
+    height: 30px;
+  }
 }
 
 .essencer__title {

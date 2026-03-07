@@ -43,6 +43,7 @@ const Champions: React.FC = () => {
     const [selectedEssencer, setSelectedEssencer] = useState<string | null>(null);
     const [selectedChampion, setSelectedChampion] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [accountSearchTerm, setAccountSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [viewState, setViewState] = useState<ViewState>('list');
@@ -243,9 +244,16 @@ const Champions: React.FC = () => {
             );
             
             if (mastery && (mastery.champion_level ?? 0) > 0) {
+                const accountName = cleanAccountName(account.username || account.name);
+                
+                // Filter by account search term
+                if (accountSearchTerm && !accountName.toLowerCase().includes(accountSearchTerm.toLowerCase())) {
+                    return;
+                }
+                
                 details.push({
                     rankedId: account.id,
-                    accountName: cleanAccountName(account.username || account.name),
+                    accountName,
                     masteryLevel: mastery.champion_level || 0,
                     masteryPoints: mastery.champion_points || 0,
                     currentXP: mastery.champion_points_since_last_level || 0,
@@ -392,6 +400,15 @@ const Champions: React.FC = () => {
                             <button className={styles.small__button} onClick={openChampionSelector}>
                                 Champions
                             </button>
+                            <div className={styles.search__container}>
+                                <input
+                                    type="text"
+                                    placeholder="Search accounts..."
+                                    value={accountSearchTerm}
+                                    onChange={(e) => setAccountSearchTerm(e.target.value)}
+                                    className={styles.search__input}
+                                />
+                            </div>
                         </div>
                         
                         {/* Champions grid in header - sorted by mastery */}
