@@ -29,6 +29,7 @@ interface ChampionMasteryDetail {
     masteryPoints: number;
     currentXP: number;
     totalXP: number;
+    isOwned: boolean;
 }
 
 type ViewState = 'list' | 'essencer' | 'selector';
@@ -249,37 +250,43 @@ const Champions: React.FC = () => {
         return cleaned;
     };
 
-    // Get mastery details for a champion across all accounts
+// Get mastery details for a champion across all accounts (including not owned)
     const getChampionMasteryDetails = (champId: number): ChampionMasteryDetail[] => {
         const riotId = getRiotIdForChampion(champId);
         const details: ChampionMasteryDetail[] = [];
 
         rankedAccounts.forEach(account => {
-            const mastery = masteryData.find(m => 
+            const accountName = cleanAccountName(account.username || account.name);
+
+            // Filter by account search term
+            if (accountSearchTerm && !accountName.toLowerCase().includes(accountSearchTerm.toLowerCase())) {
+                return;
+            }
+
+            const mastery = masteryData.find(m =>
                 m.ranked_id === account.id && m.champion_id === riotId
             );
+
+            const isOwned = mastery && (mastery.champion_level ?? -1) >= 0;
             
-            if (mastery && (mastery.champion_level ?? 0) > 0) {
-                const accountName = cleanAccountName(account.username || account.name);
-                
-                // Filter by account search term
-                if (accountSearchTerm && !accountName.toLowerCase().includes(accountSearchTerm.toLowerCase())) {
-                    return;
-                }
-                
-                details.push({
-                    rankedId: account.id,
-                    accountName,
-                    masteryLevel: mastery.champion_level || 0,
-                    masteryPoints: mastery.champion_points || 0,
-                    currentXP: mastery.champion_points_since_last_level || 0,
-                    totalXP: (mastery.champion_points_since_last_level || 0) + (mastery.champion_points_until_next_level || 0)
-                });
-            }
+            details.push({
+                rankedId: account.id,
+                accountName,
+                masteryLevel: mastery?.champion_level ?? 0,
+                masteryPoints: mastery?.champion_points ?? 0,
+                currentXP: mastery?.champion_points_since_last_level ?? 0,
+                totalXP: (mastery?.champion_points_since_last_level ?? 0) + (mastery?.champion_points_until_next_level ?? 0),
+                isOwned: !!isOwned
+            });
         });
 
-        // Sort by mastery level descending
-        return details.sort((a, b) => b.masteryLevel - a.masteryLevel);
+        // Sort: owned first (by mastery level descending), then not owned (alphabetically)
+        return details.sort((a, b) => {
+            if (a.isOwned && !b.isOwned) return -1;
+            if (!a.isOwned && b.isOwned) return 1;
+            if (a.isOwned && b.isOwned) return b.masteryLevel - a.masteryLevel;
+            return a.accountName.localeCompare(b.accountName);
+        });
     };
 
     // Calculate total mastery and max possible for a champion
@@ -315,18 +322,37 @@ const Champions: React.FC = () => {
     };
 
     // Update mastery level for a specific champion and account
-    const updateMasteryLevel = (rankedId: number, championId: number, delta: number) => {
+const updateMasteryLevel = (rankedId: number, championId: number, delta: number) => {
         const riotId = getRiotIdForChampion(championId);
-        const masteryIndex = masteryData.findIndex(m => 
+        const masteryIndex = masteryData.findIndex(m =>
             m.ranked_id === rankedId && m.champion_id === riotId
         );
-        
+
+        let newLevel: number;
+
         if (masteryIndex !== -1) {
             const currentLevel = masteryData[masteryIndex].champion_level ?? 0;
-            const newLevel = Math.max(0, Math.min(10, currentLevel + delta));
+            newLevel = Math.max(0, Math.min(10, currentLevel + delta));
             masteryData[masteryIndex].champion_level = newLevel;
-            
-            // Force re-render
+        } else {
+            // Create new mastery entry if it doesn't exist
+            newLevel = Math.max(0, Math.min(10, delta));
+            const account = rankedAccounts.find(a => a.id === rankedId);
+            masteryData.push({
+                id: null,
+                ranked_id: rankedId,
+                username: account?.username || account?.name || '',
+                champion_id: riotId,
+                champion_level: newLevel,
+                champion_points: 0,
+                champion_points_since_last_level: 0,
+                champion_points_until_next_level: 0,
+                chest_granted: false,
+                last_play_time: new Date().toISOString()
+            });
+        }
+
+// Force re-render
             setMasteryUpdateTrigger(prev => prev + 1);
             
             // Update essencers total mastery
@@ -380,7 +406,6 @@ const Champions: React.FC = () => {
                 .catch(() => {
                     console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
                 });
-        }
     };
 
     if (loading) {
@@ -503,6 +528,7 @@ const Champions: React.FC = () => {
                                             championNumber={index + 1}
                                             accountName={cleanAccountName(detail.accountName)}
                                             editable={true}
+                                            isOwned={detail.isOwned}
                                             onMasteryChange={(delta) => updateMasteryLevel(detail.rankedId, selectedChampion, delta)}
                                         />
                                     ))}

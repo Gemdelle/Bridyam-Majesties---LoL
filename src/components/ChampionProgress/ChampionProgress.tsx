@@ -12,6 +12,7 @@ interface ChampionProgressProps {
     accountName: string;
     onMasteryChange?: (delta: number) => void;
     editable?: boolean;
+    isOwned?: boolean;
 }
 
 const ChampionProgress: React.FC<ChampionProgressProps> = ({
@@ -19,7 +20,8 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     masteryLevel,
     accountName,
     onMasteryChange,
-    editable = false
+    editable = false,
+    isOwned = true
 }) => {
     const masteryBadgeLevel = Math.min(masteryLevel, 10);
 
@@ -43,7 +45,7 @@ const ChampionProgress: React.FC<ChampionProgressProps> = ({
     };
 
     return (
-        <div className={styles.champion__card}>
+        <div className={`${styles.champion__card} ${!isOwned ? styles.not__owned : ''}`}>
             {/* Left side - Champion portrait with frame */}
             <div className={styles.left__container}>
                 <div

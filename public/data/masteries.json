@@ -3223,7 +3223,7 @@
     "masteries": [
       {
         "champion_id": 350,
-        "champion_level": 8,
+        "champion_level": 10,
         "champion_points": 54128
       },
       {
@@ -5253,7 +5253,7 @@
       },
       {
         "champion_id": 350,
-        "champion_level": 9,
+        "champion_level": 10,
         "champion_points": 63641
       },
       {
@@ -11724,7 +11724,7 @@
     "masteries": [
       {
         "champion_id": 350,
-        "champion_level": 7,
+        "champion_level": 10,
         "champion_points": 37972
       },
       {
@@ -15132,7 +15132,7 @@
     "masteries": [
       {
         "champion_id": 350,
-        "champion_level": 6,
+        "champion_level": 7,
         "champion_points": 33220
       },
       {
@@ -16535,6 +16535,11 @@
       {
         "champion_id": 147,
         "champion_level": 2,
+        "champion_points": 0
+      },
+      {
+        "champion_id": 55,
+        "champion_level": 9,
         "champion_points": 0
       }
     ]
