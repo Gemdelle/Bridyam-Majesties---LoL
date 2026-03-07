@@ -17194,6 +17194,21 @@
         "champion_id": 145,
         "champion_level": 0,
         "champion_points": 0
+      },
+      {
+        "champion_id": 136,
+        "champion_level": 5,
+        "champion_points": 0
+      },
+      {
+        "champion_id": 420,
+        "champion_level": 4,
+        "champion_points": 0
+      },
+      {
+        "champion_id": 54,
+        "champion_level": 5,
+        "champion_points": 0
       }
     ]
   },

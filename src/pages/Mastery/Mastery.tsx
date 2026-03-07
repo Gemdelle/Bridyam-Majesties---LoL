@@ -339,24 +339,61 @@ const Mastery: React.FC = () => {
                 };
             }
 
-            console.log('Sending PUT request with mastery:', masteryToUpdate);
+            console.log('Updating mastery locally:', masteryToUpdate);
 
-            // Send PUT request to backend with the ranked_id
-            await updateMasteriesByRankedId(rankedId, [masteryToUpdate]);
+            // Update local state
+            let updatedMasteryData: MasteryData[];
+            if (mastery) {
+                updatedMasteryData = masteryData.map(m => 
+                    m.ranked_id === rankedId && m.champion_id === riotChampionId
+                        ? { ...m, champion_level: newLevel }
+                        : m
+                );
+            } else {
+                updatedMasteryData = [...masteryData, masteryToUpdate];
+            }
+            setMasteryData(updatedMasteryData);
 
-            console.log('PUT request successful, reloading data...');
+            // Build masteries in the correct format for the JSON file
+            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number | null; champion_points: number }[]> = {};
+            updatedMasteryData.forEach(m => {
+                if (!masteriesByAccount[m.ranked_id]) {
+                    masteriesByAccount[m.ranked_id] = [];
+                }
+                masteriesByAccount[m.ranked_id].push({
+                    champion_id: m.champion_id,
+                    champion_level: m.champion_level ?? 0,
+                    champion_points: m.champion_points ?? 0
+                });
+            });
+
+            // Convert to array format matching masteries.json structure
+            const masteriesArray = rankedData.map(account => ({
+                ranked_id: account.id,
+                username: account.username || account.name,
+                masteries: masteriesByAccount[account.id] || []
+            })).filter(acc => acc.masteries.length > 0);
+
+            // Save to JSON file via Vite dev server
+            const saveResponse = await fetch('/api/save-masteries', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(masteriesArray)
+            });
+
+            if (saveResponse.ok) {
+                console.log('%c✅ Masteries saved to JSON file!', 'color: #90EE90; font-weight: bold;');
+            } else {
+                console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
+            }
 
             // Invalidate cache to force fresh data on next request
             masteryCacheService.invalidateCache();
-            
-            // Reload mastery data from backend (will refresh cache)
-            const updatedData = await masteryCacheService.getMasteries();
-            setMasteryData(updatedData);
 
             // Close dropdown
             setActiveMasteryDropdown(null);
 
-            console.log('Data reloaded successfully');
+            console.log('Data updated successfully');
         } catch (error) {
             console.error('Error updating masteries in backend:', error);
             // Optionally, you could show an error message to the user here
