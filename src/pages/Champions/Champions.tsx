@@ -49,62 +49,78 @@ const Champions: React.FC = () => {
     const [viewState, setViewState] = useState<ViewState>('list');
     const [, setMasteryUpdateTrigger] = useState(0); // Force re-render on mastery change
 
-    // Load data on mount
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                setLoading(true);
+    // Load data function (reusable)
+    const loadData = async () => {
+        try {
+            setLoading(true);
 
-                const [championsData, masteriesData, essencerNames] = await Promise.all([
-                    fetchChampions(),
-                    masteryCacheService.getMasteries(),
-                    getEssencerList(),
-                    loadFavoritesFromFile() // Load favorites from JSON file
-                ]);
+            // Invalidate cache to get fresh data
+            masteryCacheService.invalidateCache();
 
-                // Also load rankeds to calculate total mastery
-                const rankedsResponse = await fetch('/data/rankeds.json');
-                const rankedsData: RankedAccount[] = await rankedsResponse.json();
+            const [championsData, masteriesData, essencerNames] = await Promise.all([
+                fetchChampions(),
+                masteryCacheService.getMasteries(),
+                getEssencerList(),
+                loadFavoritesFromFile() // Load favorites from JSON file
+            ]);
 
-                setChampions(championsData);
-                setMasteryData(masteriesData);
-                setRankedAccounts(rankedsData);
+            // Also load rankeds to calculate total mastery
+            const rankedsResponse = await fetch('/data/rankeds.json');
+            const rankedsData: RankedAccount[] = await rankedsResponse.json();
 
-                // Build essencer data with their favorites and total mastery
-                const essencerDataList: EssencerData[] = essencerNames.map(name => {
-                    const favorites = getEssencerFavorites(name);
-                    
-                    // Calculate total mastery from ALL accounts (sum of mastery levels for favorite champions)
-                    let totalMastery = 0;
-                    favorites.forEach(champId => {
-                        const riotId = getRiotIdForChampion(champId);
-                        rankedsData.forEach((ranked: { id: number }) => {
-                            const mastery = masteriesData.find(m => 
-                                m.ranked_id === ranked.id && m.champion_id === riotId
-                            );
-                            if (mastery) {
-                                totalMastery += mastery.champion_level || 0;
-                            }
-                        });
+            setChampions(championsData);
+            setMasteryData(masteriesData);
+            setRankedAccounts(rankedsData);
+
+            // Build essencer data with their favorites and total mastery
+            const essencerDataList: EssencerData[] = essencerNames.map(name => {
+                const favorites = getEssencerFavorites(name);
+                
+                // Calculate total mastery from ALL accounts (sum of mastery levels for favorite champions)
+                let totalMastery = 0;
+                favorites.forEach(champId => {
+                    const riotId = getRiotIdForChampion(champId);
+                    rankedsData.forEach((ranked: { id: number }) => {
+                        const mastery = masteriesData.find(m => 
+                            m.ranked_id === ranked.id && m.champion_id === riotId
+                        );
+                        if (mastery) {
+                            totalMastery += mastery.champion_level || 0;
+                        }
                     });
-
-                    return { name, favorites, totalMastery };
                 });
 
-                // Sort alphabetically
-                essencerDataList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+                return { name, favorites, totalMastery };
+            });
 
-                setEssencers(essencerDataList);
+            // Sort alphabetically
+            essencerDataList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-            } catch (error) {
-                console.error('Error loading data:', error);
-            } finally {
-                setLoading(false);
+            setEssencers(essencerDataList);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error loading data:', error);
+            setLoading(false);
+        }
+    };
+
+    // Load data on mount
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    // Reload data when page becomes visible (coming back from another tab)
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                loadData();
             }
         };
 
-        loadData();
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, []);
+
 
     // Filter champions for selector
     useEffect(() => {
