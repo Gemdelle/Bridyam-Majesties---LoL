@@ -100,7 +100,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4618.png",
     "wins": {
       "totals": 15,
-      "current": 5
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -364,7 +364,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6330.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -452,7 +452,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6893.png",
     "wins": {
       "totals": 15,
-      "current": 13
+      "current": 5
     },
     "missions": {
       "current_act": {
@@ -469,7 +469,7 @@
       "division": 1
     },
     "elo_flex": {
-      "tier": "unranked",
+      "tier": "diamond",
       "division": 4
     },
     "honor": 5,
@@ -672,7 +672,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6331.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 5
     },
     "missions": {
       "current_act": {
@@ -690,7 +690,7 @@
     },
     "elo_flex": {
       "tier": "unranked",
-      "division": 4
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -848,7 +848,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6448.png",
     "wins": {
       "totals": 15,
-      "current": 5
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -936,7 +936,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5579.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -953,8 +953,8 @@
       "division": 2
     },
     "elo_flex": {
-      "tier": "unranked",
-      "division": 2
+      "tier": "platinum",
+      "division": 1
     },
     "honor": 5,
     "rol": {
@@ -1024,7 +1024,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5292.png",
     "wins": {
       "totals": 15,
-      "current": 5
+      "current": 2
     },
     "missions": {
       "current_act": {
@@ -1042,7 +1042,7 @@
     },
     "elo_flex": {
       "tier": "gold",
-      "division": 1
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -1057,7 +1057,7 @@
   },
   {
     "id": 25,
-    "name": "-",
+    "name": "peraltadoctor",
     "username": "GEM Lagrimelle#GEM",
     "bloodline": "Zephiroth",
     "essencer": "-",
@@ -1068,7 +1068,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5640.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -1081,12 +1081,12 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "gold",
+      "division": 2
     },
     "elo_flex": {
-      "tier": "unranked",
-      "division": 3
+      "tier": "platinum",
+      "division": 1
     },
     "honor": 5,
     "rol": {
@@ -1156,7 +1156,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/1384.png",
     "wins": {
       "totals": 15,
-      "current": 5
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -1288,7 +1288,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5636.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -1365,7 +1365,7 @@
   },
   {
     "id": 32,
-    "name": "-",
+    "name": "Gemy",
     "username": "GEM Greedgardell#GEM",
     "bloodline": "Gladasmy",
     "essencer": "-",
@@ -1376,7 +1376,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5639.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -1389,14 +1389,14 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "platinum",
+      "division": 2
     },
     "elo_flex": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "emerald",
+      "division": 3
     },
-    "honor": 3,
+    "honor": 5,
     "rol": {
       "adc": 78,
       "mid": 56,
@@ -1478,11 +1478,11 @@
     },
     "elo_soloq": {
       "tier": "silver",
-      "division": 3
+      "division": 2
     },
     "elo_flex": {
       "tier": "emerald",
-      "division": 4
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -1508,7 +1508,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3836.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -1629,7 +1629,7 @@
   },
   {
     "id": 38,
-    "name": "Matutte",
+    "name": "Gemy",
     "username": "GEM Cierzellant#GEM",
     "bloodline": "Primogenit",
     "essencer": "Matutte",
@@ -1640,7 +1640,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4288.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 6
     },
     "missions": {
       "current_act": {
@@ -1658,7 +1658,7 @@
     },
     "elo_flex": {
       "tier": "diamond",
-      "division": 4
+      "division": 3
     },
     "honor": 5,
     "rol": {
@@ -1684,7 +1684,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5875.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -1728,7 +1728,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6247.png",
     "wins": {
       "totals": 15,
-      "current": 15
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -1961,12 +1961,12 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 0
+      "tier": "gold",
+      "division": 3
     },
     "elo_flex": {
       "tier": "diamond",
-      "division": 4
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -2036,7 +2036,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4.png",
     "wins": {
       "totals": 15,
-      "current": 10
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -2080,7 +2080,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3598.png",
     "wins": {
       "totals": 15,
-      "current": 6
+      "current": 0
     },
     "missions": {
       "current_act": {
@@ -2225,12 +2225,12 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "gold",
+      "division": 2
     },
     "elo_flex": {
       "tier": "platinum",
-      "division": 4
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -2253,7 +2253,7 @@
     "skins": 0,
     "masteries": 0,
     "level": 30,
-    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=�YZ�",
     "wins": {
       "totals": 15,
       "current": 0
@@ -2297,7 +2297,7 @@
     "skins": 0,
     "masteries": 0,
     "level": 33,
-    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=�YZ�",
     "wins": {
       "totals": 15,
       "current": 0
@@ -2341,7 +2341,7 @@
     "skins": 0,
     "masteries": 0,
     "level": 19,
-    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=�YZ�",
     "wins": {
       "totals": 15,
       "current": 0
@@ -2385,7 +2385,7 @@
     "skins": 0,
     "masteries": 0,
     "level": 14,
-    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=🎮",
+    "icon": "https://placehold.co/32x32/4a90e2/ffffff.png?text=�YZ�",
     "wins": {
       "totals": 15,
       "current": 0

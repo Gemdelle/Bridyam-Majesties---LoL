@@ -30,7 +30,14 @@ export interface MasteryResponse {
 // Cache variables for performance optimization
 let cachedMasteryData: MasteryData[] | null = null;
 let cacheTimestamp: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+const CACHE_DURATION = 0; // Disable cache - always read fresh from file
+
+// Function to invalidate cache
+export const invalidateMasteryCache = (): void => {
+    cachedMasteryData = null;
+    cacheTimestamp = 0;
+    console.log('🗑️ Mastery cache invalidated');
+};
 
 // Interface for local mastery JSON structure
 interface LocalMasteryEntry {
@@ -53,7 +60,7 @@ export const fetchMasteryData = async (): Promise<MasteryData[]> => {
 
     try {
         console.log('LOCAL MODE: Fetching mastery data from local JSON');
-        const response = await fetch('/data/masteries.json');
+        const response = await fetch(`/data/masteries.json?t=${Date.now()}`, { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -119,7 +126,7 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
 // LOCAL MODE: Fetch raw mastery data grouped by users from local JSON
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
-        const response = await fetch('/data/masteries.json');
+        const response = await fetch(`/data/masteries.json?t=${Date.now()}`, { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

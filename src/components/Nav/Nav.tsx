@@ -120,7 +120,6 @@ export const Nav = () => {
                         <Link to="/skins" onClick={playClickSound}>{t('nav.skins')}</Link>
                     </li>
                 </ul>
-                <PetDisplay />
                 <ul className={styles.nav__container__links__right}>
                     {canSeeAllNavigation && (
                         <>
@@ -176,6 +175,9 @@ export const Nav = () => {
                     </li>
                     */}
                 </ul>
+            </div>
+            <div className={styles.nav__pet}>
+                <PetDisplay />
             </div>
         </div>
     )

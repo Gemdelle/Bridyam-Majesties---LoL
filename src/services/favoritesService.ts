@@ -46,7 +46,7 @@ export const loadFavoritesFromFile = async (): Promise<EssencerFavorites> => {
   }
   
   try {
-    const response = await fetch('/data/essencer-favorites.json');
+    const response = await fetch(`/data/essencer-favorites.json?t=${Date.now()}`, { cache: 'no-store' });
     if (response.ok) {
       const data = await response.json();
       essencerFavoritesCache = data;

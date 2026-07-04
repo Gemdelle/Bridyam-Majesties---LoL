@@ -514,6 +514,136 @@
   text-shadow: 0 0 10px rgba(200, 155, 60, 0.4);
 }
 
+.list__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.mode__selector {
+  background: linear-gradient(145deg, #1e2328, #0f1419);
+  border: 1px solid #463714;
+  border-radius: 6px;
+  color: #cdbe91;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:hover, &:focus {
+    border-color: #c89b3c;
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.4);
+  }
+
+  option {
+    background: #1e2328;
+    color: #cdbe91;
+  }
+}
+
+.accounts__grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.account__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.4rem;
+  background: linear-gradient(145deg, #1e2328, #0f1419);
+  border: 1px solid #463714;
+  border-radius: 6px;
+  gap: 0.2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #c89b3c;
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+.account__card__name {
+  color: #cdbe91;
+  font-size: 0.55rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.account__card__essencer {
+  color: #8b7355;
+  font-size: 0.45rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.account__card__portrait {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #463714;
+  object-fit: cover;
+}
+
+.account__card__mastery {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.account__card__champions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.top__champion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.top__champion__img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #463714;
+  object-fit: cover;
+}
+
+.top__champion__mastery {
+  color: #c89b3c;
+  font-size: 0.4rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.no__champions {
+  color: #8b7355;
+  font-size: 0.5rem;
+  font-style: italic;
+}
+
 .export__button {
   background: linear-gradient(145deg, #2a5a2a, #1e4a1e);
   border: 1px solid #3a7a3a;

@@ -13,14 +13,28 @@
   left: 0;
   z-index: 10000;
   box-shadow: $shadow-sm;
+  overflow: visible;
   @include flex-center;
 } 
 
 .nav__container {
   width: 98%;
   height: 60%;
+  position: relative;
+  z-index: 1;
   @include flex-between;
   // background-color: $light-color;
+}
+
+.nav__pet {
+  position: absolute;
+  width: 98%;
+  height: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5000;
+  pointer-events: none;
 }
 
 ul {

@@ -54,7 +54,7 @@ export interface RankedResponse {
 // LOCAL MODE: Fetch ranked data from local JSON
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
-        const response = await fetch('/data/rankeds.json');
+        const response = await fetch(`/data/rankeds.json?t=${Date.now()}`, { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -118,16 +118,34 @@ export const getChangedRankedData = (originalData: RankedData[], modifiedData: R
     return changedItems;
 };
 
-// DISABLED - Local mode: Update ranked data via PUT to API
-// To update data, edit public/data/rankeds.json directly
+// LOCAL MODE: Save the full ranked data array to the JSON file via Vite dev server
+const saveRankedDataToFile = async (allData: RankedData[]): Promise<void> => {
+    try {
+        const res = await fetch('/api/save-rankeds', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(allData)
+        });
+        if (res.ok) {
+            console.log('%c✅ Rankeds saved to JSON file!', 'color: #90EE90; font-weight: bold;');
+        } else {
+            console.log('%c⚠️ Could not save rankeds to file (dev server only)', 'color: #FFA500;');
+        }
+    } catch {
+        console.log('%c⚠️ Could not save rankeds to file (dev server only)', 'color: #FFA500;');
+    }
+};
+
+// LOCAL MODE: Persist full ranked data to file
 export const updateRankedData = async (modifiedRankedData: RankedData[]): Promise<RankedData[]> => {
-    console.log('LOCAL MODE: updateRankedData is disabled. Edit public/data/rankeds.json directly.');
+    await saveRankedDataToFile(modifiedRankedData);
     return modifiedRankedData;
 };
 
-// DISABLED - Local mode: Update only changed ranked data
+// LOCAL MODE: Persist changes. The full modified array is written to the file
+// (the dev server overwrites rankeds.json completely with the latest state).
 export const updateChangedRankedData = async (originalData: RankedData[], modifiedData: RankedData[]): Promise<RankedData[]> => {
-    console.log('LOCAL MODE: updateChangedRankedData is disabled. Edit public/data/rankeds.json directly.');
+    await saveRankedDataToFile(modifiedData);
     return modifiedData;
 };
 

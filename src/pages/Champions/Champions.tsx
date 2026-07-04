@@ -14,6 +14,8 @@ interface RankedAccount {
     id: number;
     name: string;
     username: string;
+    essencer?: string;
+    icon?: string;
 }
 
 interface EssencerData {
@@ -33,6 +35,12 @@ interface ChampionMasteryDetail {
 }
 
 type ViewState = 'list' | 'essencer' | 'selector';
+type ListMode = 'essencer' | 'account';
+
+interface TopChampion {
+    championId: number;
+    masteryLevel: number;
+}
 
 const Champions: React.FC = () => {
     const { user } = useAuthContext();
@@ -48,6 +56,7 @@ const Champions: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [viewState, setViewState] = useState<ViewState>('list');
+    const [listMode, setListMode] = useState<ListMode>('account');
     const [, setMasteryUpdateTrigger] = useState(0); // Force re-render on mastery change
 
     // Load data function (reusable)
@@ -55,8 +64,7 @@ const Champions: React.FC = () => {
         try {
             setLoading(true);
 
-            // Invalidate cache to get fresh data
-            masteryCacheService.invalidateCache();
+            // Don't invalidate cache - keep local changes
 
             const [championsData, masteriesData, essencerNames] = await Promise.all([
                 fetchChampions(),
@@ -250,6 +258,38 @@ const Champions: React.FC = () => {
         return cleaned;
     };
 
+    // Get top 3 champions by mastery for an account
+    const getTopChampionsForAccount = (accountId: number): TopChampion[] => {
+        const accountMasteries = masteryData
+            .filter(m => m.ranked_id === accountId && (m.champion_level ?? 0) > 0)
+            .sort((a, b) => (b.champion_level ?? 0) - (a.champion_level ?? 0))
+            .slice(0, 3);
+
+        return accountMasteries.map(m => ({
+            championId: m.champion_id,
+            masteryLevel: m.champion_level ?? 0
+        }));
+    };
+
+    // Get max mastery level for an account
+    const getMaxMasteryLevel = (accountId: number): number => {
+        const accountMasteries = masteryData.filter(m => m.ranked_id === accountId);
+        if (accountMasteries.length === 0) return 0;
+        return Math.max(...accountMasteries.map(m => m.champion_level ?? 0));
+    };
+
+    // Get champion image URL by riot ID
+    const getChampionImageByRiotId = (riotId: number): string => {
+        const champion = champions.find(c => {
+            const champRiotId = getRiotIdForChampion(c.id);
+            return champRiotId === riotId;
+        });
+        if (champion) {
+            return `https://ddragon.leagueoflegends.com/cdn/14.20.1/img/champion/${champion.name.replace(/[^a-zA-Z]/g, '')}.png`;
+        }
+        return '/images/bg/bg.png';
+    };
+
 // Get mastery details for a champion across all accounts (including not owned)
     const getChampionMasteryDetails = (champId: number): ChampionMasteryDetail[] => {
         const riotId = getRiotIdForChampion(champId);
@@ -432,21 +472,97 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                 Achievement
             </button>
 
-            {/* VIEW 1: List of essencers to select */}
+            {/* VIEW 1: List view with mode selector */}
             {viewState === 'list' && (
-                <div className={styles.essencers__container}>
-                    <h2 className={styles.section__title}>Select Essencer</h2>
-                    
-                    <div className={styles.essencers__grid}>
-                        {essencers.map(essencer => (
-                            <div
-                                key={essencer.name}
-                                className={styles.essencer__card}
-                                onClick={() => selectEssencer(essencer.name)}
+                <div className={styles.container}>
+                    <div className={styles.content__top}>
+                        <div className={styles.list__header}>
+                            <select
+                                className={styles.mode__selector}
+                                value={listMode}
+                                onChange={(e) => setListMode(e.target.value as ListMode)}
                             >
-                                <span className={styles.essencer__card__name}>{essencer.name}</span>
+                                <option value="account">Account</option>
+                                <option value="essencer">Essencer</option>
+                            </select>
+                            <h2 className={styles.section__title}>
+                                {listMode === 'essencer' ? 'Select Essencer' : 'Accounts'}
+                            </h2>
+                        </div>
+                    </div>
+                    
+                    <div className={styles.content}>
+                        {/* Essencer mode */}
+                        {listMode === 'essencer' && (
+                            <div className={styles.essencers__grid}>
+                                {essencers.map(essencer => (
+                                    <div
+                                        key={essencer.name}
+                                        className={styles.essencer__card}
+                                        onClick={() => selectEssencer(essencer.name)}
+                                    >
+                                        <span className={styles.essencer__card__name}>{essencer.name}</span>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        )}
+
+                        {/* Account mode */}
+                        {listMode === 'account' && (
+                            <div className={styles.accounts__grid}>
+                                {rankedAccounts.map(account => {
+                                    const topChampions = getTopChampionsForAccount(account.id);
+                                    const maxMastery = getMaxMasteryLevel(account.id);
+                                    return (
+                                        <div key={account.id} className={styles.account__card}>
+                                            <span className={styles.account__card__name}>
+                                                {cleanAccountName(account.username || account.name)}
+                                            </span>
+                                            <span className={styles.account__card__essencer}>
+                                                {account.essencer || '-'}
+                                            </span>
+                                            <img
+                                                src={`/images/portraits/${cleanAccountName(account.username || account.name)}.png`}
+                                                alt="Portrait"
+                                                className={styles.account__card__portrait}
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                                }}
+                                            />
+                                            <img
+                                                src={`/images/masteries/badges/${Math.min(maxMastery, 10)}.png`}
+                                                alt="Mastery"
+                                                className={styles.account__card__mastery}
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = '/images/masteries/badges/0.png';
+                                                }}
+                                            />
+                                            <div className={styles.account__card__champions}>
+                                                {topChampions.length > 0 ? (
+                                                    topChampions.map((champ, idx) => (
+                                                        <div key={idx} className={styles.top__champion}>
+                                                            <img
+                                                                src={getChampionImageByRiotId(champ.championId)}
+                                                                alt="Champion"
+                                                                className={styles.top__champion__img}
+                                                                onError={(e) => {
+                                                                    (e.target as HTMLImageElement).src = '/images/bg/bg.png';
+                                                                }}
+                                                            />
+                                                            <span className={styles.top__champion__mastery}>
+                                                                {champ.masteryLevel}
+                                                            </span>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <span className={styles.no__champions}>-</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
