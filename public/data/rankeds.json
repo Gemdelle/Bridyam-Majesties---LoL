@@ -452,7 +452,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6893.png",
     "wins": {
       "totals": 15,
-      "current": 5
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -470,7 +470,7 @@
     },
     "elo_flex": {
       "tier": "diamond",
-      "division": 4
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -1640,7 +1640,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/4288.png",
     "wins": {
       "totals": 15,
-      "current": 6
+      "current": 12
     },
     "missions": {
       "current_act": {

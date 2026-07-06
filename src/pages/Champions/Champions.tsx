@@ -4,10 +4,8 @@ import { fetchChampions, type Champion, getRiotIdForChampion } from '../../servi
 import { type MasteryData } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
 import { getEssencerList, getEssencerFavorites, saveEssencerFavorites, loadFavoritesFromFile } from '../../services/favoritesService';
-import AchievementPopup from '../../components/AchievementPopup';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
-import { useAuthContext } from '../../contexts/AuthContext';
 import { playClickSound } from '../../utils/soundUtils';
 
 interface RankedAccount {
@@ -42,8 +40,52 @@ interface TopChampion {
     masteryLevel: number;
 }
 
+interface AccountMajestyPortraitProps {
+    portraitSrc: string;
+    profileIcon?: string;
+}
+
+const AccountMajestyPortrait: React.FC<AccountMajestyPortraitProps> = ({ portraitSrc, profileIcon }) => {
+    const [src, setSrc] = useState(portraitSrc);
+    const [isProfile, setIsProfile] = useState(false);
+
+    useEffect(() => {
+        setSrc(portraitSrc);
+        setIsProfile(false);
+    }, [portraitSrc]);
+
+    const handleError = () => {
+        if (!isProfile && profileIcon) {
+            setIsProfile(true);
+            setSrc(profileIcon);
+            return;
+        }
+        setSrc('/images/bg/bg.png');
+    };
+
+    return (
+        <div className={styles.account__card__portrait__wrap}>
+            <div className={`${styles.account__card__portrait__slot} ${isProfile ? styles.account__card__portrait__slot__profile : ''}`}>
+                <img
+                    src={src}
+                    alt="Majesty"
+                    className={styles.account__card__portrait}
+                    onError={handleError}
+                />
+                {isProfile && (
+                    <img
+                        src="/images/frames/account-champion-frame.png"
+                        alt=""
+                        className={styles.account__card__portrait__frame}
+                        aria-hidden="true"
+                    />
+                )}
+            </div>
+        </div>
+    );
+};
+
 const Champions: React.FC = () => {
-    const { user } = useAuthContext();
     const [champions, setChampions] = useState<Champion[]>([]);
     const [filteredChampions, setFilteredChampions] = useState<Champion[]>([]);
     const [masteryData, setMasteryData] = useState<MasteryData[]>([]);
@@ -54,7 +96,6 @@ const Champions: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [accountSearchTerm, setAccountSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
-    const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [viewState, setViewState] = useState<ViewState>('list');
     const [listMode, setListMode] = useState<ListMode>('account');
     const [, setMasteryUpdateTrigger] = useState(0); // Force re-render on mastery change
@@ -258,6 +299,9 @@ const Champions: React.FC = () => {
         return cleaned;
     };
 
+    const getMajestyPortraitSrc = (account: RankedAccount): string =>
+        `/images/portraits/${cleanAccountName(account.username || account.name)}.png`;
+
     // Get top 3 champions by mastery for an account
     const getTopChampionsForAccount = (accountId: number): TopChampion[] => {
         const accountMasteries = masteryData
@@ -269,13 +313,6 @@ const Champions: React.FC = () => {
             championId: m.champion_id,
             masteryLevel: m.champion_level ?? 0
         }));
-    };
-
-    // Get max mastery level for an account
-    const getMaxMasteryLevel = (accountId: number): number => {
-        const accountMasteries = masteryData.filter(m => m.ranked_id === accountId);
-        if (accountMasteries.length === 0) return 0;
-        return Math.max(...accountMasteries.map(m => m.champion_level ?? 0));
     };
 
     // Get champion image URL by riot ID
@@ -462,57 +499,56 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
 
     return (
         <div className={styles.page}>
-            <button
-                className={styles.achievement__button}
-                onClick={() => {
-                    playClickSound();
-                    setShowAchievementPopup(true);
-                }}
-            >
-                Achievement
-            </button>
 
             {/* VIEW 1: List view with mode selector */}
             {viewState === 'list' && (
-                <div className={styles.container}>
-                    <div className={styles.content__top}>
-                        <div className={styles.list__header}>
-                            <select
-                                className={styles.mode__selector}
-                                value={listMode}
-                                onChange={(e) => setListMode(e.target.value as ListMode)}
+                <div className={`${styles.container} ${styles.list__container}`}>
+                    <div className={styles.list__layout}>
+                        <div className={styles.mode__tabs}>
+                            <button
+                                type="button"
+                                className={`${styles.mode__tab} ${listMode === 'account' ? styles.mode__tab__active : ''}`}
+                                onClick={() => {
+                                    playClickSound();
+                                    setListMode('account');
+                                }}
                             >
-                                <option value="account">Account</option>
-                                <option value="essencer">Essencer</option>
-                            </select>
-                            <h2 className={styles.section__title}>
-                                {listMode === 'essencer' ? 'Select Essencer' : 'Accounts'}
-                            </h2>
+                                Account
+                            </button>
+                            <button
+                                type="button"
+                                className={`${styles.mode__tab} ${listMode === 'essencer' ? styles.mode__tab__active : ''}`}
+                                onClick={() => {
+                                    playClickSound();
+                                    setListMode('essencer');
+                                }}
+                            >
+                                Essencer
+                            </button>
                         </div>
-                    </div>
-                    
-                    <div className={styles.content}>
-                        {/* Essencer mode */}
-                        {listMode === 'essencer' && (
-                            <div className={styles.essencers__grid}>
-                                {essencers.map(essencer => (
-                                    <div
-                                        key={essencer.name}
-                                        className={styles.essencer__card}
-                                        onClick={() => selectEssencer(essencer.name)}
-                                    >
-                                        <span className={styles.essencer__card__name}>{essencer.name}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
 
-                        {/* Account mode */}
-                        {listMode === 'account' && (
+                        <div className={`${styles.content} ${styles.list__content}`}>
+                            {listMode === 'essencer' && (
+                                <>
+                                    <h2 className={styles.section__title}>Select Essencer</h2>
+                                    <div className={styles.essencers__grid}>
+                                        {essencers.map(essencer => (
+                                            <div
+                                                key={essencer.name}
+                                                className={styles.essencer__card}
+                                                onClick={() => selectEssencer(essencer.name)}
+                                            >
+                                                <span className={styles.essencer__card__name}>{essencer.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+
+                            {listMode === 'account' && (
                             <div className={styles.accounts__grid}>
                                 {rankedAccounts.map(account => {
                                     const topChampions = getTopChampionsForAccount(account.id);
-                                    const maxMastery = getMaxMasteryLevel(account.id);
                                     return (
                                         <div key={account.id} className={styles.account__card}>
                                             <span className={styles.account__card__name}>
@@ -521,21 +557,9 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                                             <span className={styles.account__card__essencer}>
                                                 {account.essencer || '-'}
                                             </span>
-                                            <img
-                                                src={`/images/portraits/${cleanAccountName(account.username || account.name)}.png`}
-                                                alt="Portrait"
-                                                className={styles.account__card__portrait}
-                                                onError={(e) => {
-                                                    (e.target as HTMLImageElement).src = '/images/bg/bg.png';
-                                                }}
-                                            />
-                                            <img
-                                                src={`/images/masteries/badges/${Math.min(maxMastery, 10)}.png`}
-                                                alt="Mastery"
-                                                className={styles.account__card__mastery}
-                                                onError={(e) => {
-                                                    (e.target as HTMLImageElement).src = '/images/masteries/badges/0.png';
-                                                }}
+                                            <AccountMajestyPortrait
+                                                portraitSrc={getMajestyPortraitSrc(account)}
+                                                profileIcon={account.icon}
                                             />
                                             <div className={styles.account__card__champions}>
                                                 {topChampions.length > 0 ? (
@@ -552,6 +576,14 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                                                             <span className={styles.top__champion__mastery}>
                                                                 {champ.masteryLevel}
                                                             </span>
+                                                            <img
+                                                                src={`/images/masteries/badges/${Math.min(champ.masteryLevel, 10)}.png`}
+                                                                alt={`Mastery ${champ.masteryLevel}`}
+                                                                className={styles.top__champion__badge}
+                                                                onError={(e) => {
+                                                                    (e.target as HTMLImageElement).src = '/images/masteries/badges/0.png';
+                                                                }}
+                                                            />
                                                         </div>
                                                     ))
                                                 ) : (
@@ -563,6 +595,7 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                                 })}
                             </div>
                         )}
+                        </div>
                     </div>
                 </div>
             )}
@@ -735,18 +768,6 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                     </div>
                 </div>
             )}
-
-            <AchievementPopup
-                isOpen={showAchievementPopup}
-                onClose={() => setShowAchievementPopup(false)}
-                category="REDEEM"
-                elo="vesuvianite"
-                progress={3}
-                total={3}
-                petType="1"
-                petStage={1}
-                userName={user?.name || 'beast'}
-            />
 
             <CacheStatus />
         </div>

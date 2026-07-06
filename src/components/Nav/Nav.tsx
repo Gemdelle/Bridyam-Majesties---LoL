@@ -5,16 +5,18 @@ import { useState, useEffect } from 'react'
 import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
+import AchievementPopup from '../AchievementPopup'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 
 export const Nav = () => {
     const location = useLocation()
-    const { logout } = useAuthContext()
+    const { logout, user } = useAuthContext()
     const { canSeeAllNavigation } = usePermissions()
     const { language, setLanguage, t } = useLanguage()
     const [hasNewNotifications, setHasNewNotifications] = useState(false)
     const [lastNotificationCount, setLastNotificationCount] = useState(0)
+    const [showAchievementPopup, setShowAchievementPopup] = useState(false)
 
     const handleLogout = async () => {
         playClickSound();
@@ -158,11 +160,17 @@ export const Nav = () => {
                             </div>
                         )}
                     </li>
-                    <li
-                        className={location.pathname === '/page' ? styles.active : ''}
-                        data-nav="page"
-                    >
-                        <Link to="/page" onClick={playClickSound}>Page</Link>
+                    <li>
+                        <button
+                            type="button"
+                            className={styles.nav__link__button}
+                            onClick={() => {
+                                playClickSound();
+                                setShowAchievementPopup(true);
+                            }}
+                        >
+                            Achievement
+                        </button>
                     </li>
                     {/* DISABLED - Local mode: Logout button is disabled
                     <li>
@@ -179,6 +187,18 @@ export const Nav = () => {
             <div className={styles.nav__pet}>
                 <PetDisplay />
             </div>
+
+            <AchievementPopup
+                isOpen={showAchievementPopup}
+                onClose={() => setShowAchievementPopup(false)}
+                category="REDEEM"
+                elo="vesuvianite"
+                progress={3}
+                total={3}
+                petType="1"
+                petStage={1}
+                userName={user?.name || 'beast'}
+            />
         </div>
     )
 }
