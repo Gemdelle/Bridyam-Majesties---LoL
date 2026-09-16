@@ -1,4 +1,5 @@
 // import { authService } from './authService'; // DISABLED - Local mode
+import { fetchWinsFromSheet, updateWinsInSheet } from './sheetsWinsService';
 
 // Interface for the ranked data structure
 export interface RankedData {
@@ -51,7 +52,7 @@ export interface RankedResponse {
     ranked: RankedData[];
 }
 
-// LOCAL MODE: Fetch ranked data from local JSON
+// LOCAL MODE: Fetch ranked data from local JSON, then overlay wins from Google Sheets
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
         const response = await fetch(`/data/rankeds.json?t=${Date.now()}`, { cache: 'no-store' });
@@ -61,7 +62,30 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
         }
 
         const data: RankedData[] = await response.json();
-        return data;
+
+        // Overlay current wins from Google Sheets (source of truth for wins)
+        try {
+            const sheetWins = await fetchWinsFromSheet();
+            const winsByAccount = new Map(
+                sheetWins.map(row => [row.account.trim().toLowerCase(), row.wins])
+            );
+
+            return data.map(account => {
+                const key = (account.username || account.name || '').trim().toLowerCase();
+                if (!winsByAccount.has(key)) return account;
+
+                return {
+                    ...account,
+                    wins: {
+                        ...account.wins,
+                        current: winsByAccount.get(key) ?? account.wins.current
+                    }
+                };
+            });
+        } catch (sheetError) {
+            console.warn('Could not load wins from Google Sheets, using local JSON:', sheetError);
+            return data;
+        }
     } catch (error) {
         console.error('Error fetching ranked data:', error);
         throw new Error('Failed to fetch ranked data');
@@ -142,9 +166,26 @@ export const updateRankedData = async (modifiedRankedData: RankedData[]): Promis
     return modifiedRankedData;
 };
 
-// LOCAL MODE: Persist changes. The full modified array is written to the file
-// (the dev server overwrites rankeds.json completely with the latest state).
+// Persist changes: wins go to Google Sheets; full snapshot still saved locally in dev.
 export const updateChangedRankedData = async (originalData: RankedData[], modifiedData: RankedData[]): Promise<RankedData[]> => {
+    const changed = getChangedRankedData(originalData, modifiedData);
+
+    // Sync only wins that actually changed to Google Sheets
+    const winsUpdates = changed.filter(item => {
+        const original = originalData.find(o => o.id === item.id);
+        return !original || original.wins.current !== item.wins.current;
+    });
+
+    if (winsUpdates.length > 0) {
+        await Promise.all(
+            winsUpdates.map(item =>
+                updateWinsInSheet(item.username || item.name, item.wins.current)
+            )
+        );
+        console.log('%c✅ Wins saved to Google Sheets!', 'color: #90EE90; font-weight: bold;');
+    }
+
+    // Keep local JSON in sync when running vite dev (no-op on GitHub Pages)
     await saveRankedDataToFile(modifiedData);
     return modifiedData;
 };

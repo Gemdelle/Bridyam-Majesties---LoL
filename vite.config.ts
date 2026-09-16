@@ -82,6 +82,9 @@ function saveJsonPlugin() {
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Repo name must match for GitHub Pages project site:
+  // https://gemdelle.github.io/Bridyam-Majesties---LoL/
+  base: process.env.GITHUB_PAGES === 'true' ? '/Bridyam-Majesties---LoL/' : '/',
   plugins: [react(), saveJsonPlugin()],
   css: {
     preprocessorOptions: {

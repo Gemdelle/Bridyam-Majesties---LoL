@@ -27,7 +27,7 @@ const filterOptions: FilterOption[] = [
 const Ranked: React.FC = () => {
     // --- Hook para permisos ---
     const permissions = usePermissions();
-    const { canEditRankedUsername, isAdmin } = permissions;
+    const { isAdmin } = permissions;
 
     // --- Estados para cada filtro ---
     const [selectedView, setSelectedView] = useState<string>('all');
@@ -539,7 +539,9 @@ const Ranked: React.FC = () => {
                         <div className={styles.progress__container}>
                             <div className={styles.accounts}>
                                 {accounts.map((rankedAccount) => {
-                                    const canEdit = canEditRankedUsername(rankedAccount.username);
+                                    // Login disabled: allow wins editing for everyone (saved to Google Sheets).
+                                    // Essencer editing stays admin-only.
+                                    const canEdit = true;
                                     console.log(`Ranked: ${rankedAccount.username} - canEdit: ${canEdit}, canEditEssencer: ${isAdmin}`);
                                     return (
                                         <RankedAccount
