@@ -227,6 +227,16 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
     );
   }
 
+  if (family.matchMode === 'halloween' || family.name === 'HALLOWEEN') {
+    return (
+      lineHits.some((l) =>
+        /bewitching|fright night|trick-or-treat|trick or treat|zombies vs slayers/.test(l)
+      ) ||
+      keys.some((k) => skinName.includes(k)) ||
+      /bewitching|fright night|pumpkin|franken|batnivia|underworld/.test(skinName)
+    );
+  }
+
   if (family.matchMode === 'royal' || family.name === 'ROYAL') {
     if (/king of clubs|queen of diamonds|jack of hearts|ace of spades|mecha kingdoms|battle queen/.test(skinName)) {
       return false;
@@ -549,10 +559,11 @@ export const FAMILY_SPLASH_CHAMP: Record<string, string[]> = {
   'CRYSTAL ROSE': ['janna'],
   NIGHTBRINGER: ['aphelios'],
   'HIGH STAKES': ['syndra'],
-  CHRISTMAS: ["kog'maw", 'kogmaw'],
   MARAUDER: ['alistar'],
   'SPIRIT BLOSSOM': ['akali'],
   HEARTBREAKERS: ['ashe'],
+  HALLOWEEN: ['anivia'],
+  CHRISTMAS: ["kog'maw", 'kogmaw'],
 };
 
 /** Prefer a splash of a skin we actually own for this family. */
@@ -599,3 +610,6 @@ export const FEATURED_PRIORITY_ORDER = [
   'STAR GUARDIAN',
   'BATTLE QUEENS',
 ];
+
+/** Always show these last among featured families. */
+export const FEATURED_TRAILING_ORDER = ['HEARTBREAKERS', 'HALLOWEEN', 'CHRISTMAS'];

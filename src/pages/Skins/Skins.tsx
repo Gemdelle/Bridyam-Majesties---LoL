@@ -15,6 +15,7 @@ import {
   firstAvailableSkin,
   getOwnedSplashForFamily,
   FEATURED_PRIORITY_ORDER,
+  FEATURED_TRAILING_ORDER,
   type SkinFamily,
   type AccountSkins,
   type RoleTeamColumn,
@@ -326,17 +327,24 @@ const Skins: React.FC = () => {
       const i = FEATURED_PRIORITY_ORDER.indexOf(name);
       return i === -1 ? 1000 : i;
     };
+    const trailingIdx = (name: string) => {
+      const i = FEATURED_TRAILING_ORDER.indexOf(name);
+      return i === -1 ? 1000 : i;
+    };
     const pinned = featured
       .filter((f) => priorityIdx(f.name) < 1000)
       .sort((a, b) => priorityIdx(a.name) - priorityIdx(b.name));
+    const trailing = featured
+      .filter((f) => trailingIdx(f.name) < 1000)
+      .sort((a, b) => trailingIdx(a.name) - trailingIdx(b.name));
     const rest = featured
-      .filter((f) => priorityIdx(f.name) === 1000)
+      .filter((f) => priorityIdx(f.name) === 1000 && trailingIdx(f.name) === 1000)
       .sort((a, b) => {
         const ca = getAccountsForFamily(a, accountSkins, rankedLookup).length;
         const cb = getAccountsForFamily(b, accountSkins, rankedLookup).length;
         return cb - ca || a.name.localeCompare(b.name);
       });
-    return [...pinned, ...rest];
+    return [...pinned, ...rest, ...trailing];
   }, [families, accountSkins, rankedLookup]);
 
   const otherFamilies = useMemo(() => {
