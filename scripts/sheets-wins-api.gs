@@ -1,19 +1,13 @@
 /**
- * Bridyam Majesties - Google Sheets Wins/Essencer API
+ * Bridyam Majesties - Google Sheets Accounts API
  *
- * Paste into: Extensions → Apps Script → replace all → Save
- * Then MUST publish a new version:
- *   Deploy → Manage deployments → pencil → Version: New version → Deploy
+ * Tab: ACCOUNTS
+ * Columns: ACCOUNT | LV | ESSENCER | WINS | HONOR | SOLO | FLEX
  *
- * Sheet layout:
- *   Row1: ACCOUNT | SPLIT 2026 | (empty) | WINS
- *   Row2:         | Essenceer  | ESSENCER |
- *
- * ONLY the ESSENCER column counts as claimed owner.
- * SPLIT 2026 is ignored (old/legacy values like Emmy/Gemy there).
+ * Paste into Apps Script → Save → Deploy → Manage → New version → Deploy
  */
 
-const SHEET_NAME = 'Hoja 1'; // change if you rename the tab
+const SHEET_NAME = 'ACCOUNTS';
 
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -67,19 +61,15 @@ function readRows_() {
 
   const headers = buildHeaders_(values);
   const accountIdx = findCol_(headers, ['ACCOUNT'], ['ACCOUNT']);
+  const lvIdx = findCol_(headers, ['LV', 'LEVEL'], ['LV', 'LEVEL']);
+  const essencerIdx = findCol_(headers, ['ESSENCER'], ['ESSENCER']);
   const winsIdx = findCol_(headers, ['WINS'], ['WIN']);
-  // ONLY the real ESSENCER column (not SPLIT / Essenceer)
-  let essencerIdx = headers.indexOf('ESSENCER');
-  if (essencerIdx === -1) {
-    // fallback: column whose header is exactly ESSENCER after merge
-    essencerIdx = findCol_(headers, ['ESSENCER'], null);
-  }
+  const honorIdx = findCol_(headers, ['HONOR'], ['HONOR']);
+  const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
+  const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
 
-  if (accountIdx === -1 || winsIdx === -1) {
-    throw new Error('Missing ACCOUNT or WINS. Headers: ' + headers.join(' | '));
-  }
-  if (essencerIdx === -1) {
-    throw new Error('Missing ESSENCER column. Headers: ' + headers.join(' | '));
+  if (accountIdx === -1) {
+    throw new Error('Missing ACCOUNT column. Headers: ' + headers.join(' | '));
   }
 
   let start = 1;
@@ -92,12 +82,17 @@ function readRows_() {
     const account = String(values[i][accountIdx] || '').trim();
     if (!account || !isAccountRow_(account) || account.toUpperCase() === 'GEM') continue;
 
-    const rawEssencer = String(values[i][essencerIdx] || '').trim();
+    const rawEssencer = essencerIdx >= 0 ? String(values[i][essencerIdx] || '').trim() : '';
+
     rows.push({
       row: i + 1,
       account,
+      lv: lvIdx >= 0 ? Number(values[i][lvIdx]) || 0 : 0,
       essencer: isClaimed_(rawEssencer) ? rawEssencer : '-',
-      wins: Number(values[i][winsIdx]) || 0
+      wins: winsIdx >= 0 ? Number(values[i][winsIdx]) || 0 : 0,
+      honor: honorIdx >= 0 ? Number(values[i][honorIdx]) || 0 : 0,
+      solo: soloIdx >= 0 ? String(values[i][soloIdx] || '').trim() : 'unranked',
+      flex: flexIdx >= 0 ? String(values[i][flexIdx] || '').trim() : 'unranked'
     });
   }
   return rows;
@@ -119,11 +114,9 @@ function doPost(e) {
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
     const account = String(body.account || '').trim();
-    const wins = Number(body.wins);
-
-    if (!account || Number.isNaN(wins)) {
+    if (!account) {
       return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: 'account y wins requeridos' }))
+        .createTextOutput(JSON.stringify({ ok: false, error: 'account requerido' }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -132,23 +125,40 @@ function doPost(e) {
     const headers = buildHeaders_(values);
     const accountIdx = findCol_(headers, ['ACCOUNT'], ['ACCOUNT']);
     const winsIdx = findCol_(headers, ['WINS'], ['WIN']);
+    const lvIdx = findCol_(headers, ['LV', 'LEVEL'], ['LV', 'LEVEL']);
+    const honorIdx = findCol_(headers, ['HONOR'], ['HONOR']);
+    const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
+    const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
+    const essencerIdx = findCol_(headers, ['ESSENCER'], ['ESSENCER']);
 
     let found = false;
     for (let i = 1; i < values.length; i++) {
-      if (String(values[i][accountIdx] || '').trim() === account) {
-        sheet.getRange(i + 1, winsIdx + 1).setValue(wins);
-        found = true;
-        break;
+      if (String(values[i][accountIdx] || '').trim() !== account) continue;
+
+      if (body.wins !== undefined && winsIdx >= 0) {
+        sheet.getRange(i + 1, winsIdx + 1).setValue(Number(body.wins) || 0);
       }
+      if (body.lv !== undefined && lvIdx >= 0) {
+        sheet.getRange(i + 1, lvIdx + 1).setValue(Number(body.lv) || 0);
+      }
+      if (body.honor !== undefined && honorIdx >= 0) {
+        sheet.getRange(i + 1, honorIdx + 1).setValue(Number(body.honor) || 0);
+      }
+      if (body.solo !== undefined && soloIdx >= 0) {
+        sheet.getRange(i + 1, soloIdx + 1).setValue(String(body.solo));
+      }
+      if (body.flex !== undefined && flexIdx >= 0) {
+        sheet.getRange(i + 1, flexIdx + 1).setValue(String(body.flex));
+      }
+      if (body.essencer !== undefined && essencerIdx >= 0) {
+        sheet.getRange(i + 1, essencerIdx + 1).setValue(String(body.essencer));
+      }
+      found = true;
+      break;
     }
 
     return ContentService
-      .createTextOutput(JSON.stringify({
-        ok: found,
-        error: found ? null : 'cuenta no encontrada',
-        account,
-        wins
-      }))
+      .createTextOutput(JSON.stringify({ ok: found, error: found ? null : 'cuenta no encontrada', account }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService

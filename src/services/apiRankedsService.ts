@@ -1,5 +1,5 @@
 // import { authService } from './authService'; // DISABLED - Local mode
-import { fetchWinsFromSheet, updateWinsInSheet, normalizeSheetEssencer } from './sheetsWinsService';
+import { fetchWinsFromSheet, updateWinsInSheet, normalizeSheetEssencer, parseEloFromSheet, formatEloForSheet, updateAccountInSheet } from './sheetsWinsService';
 import { assetUrl } from '../utils/assetUrl';
 
 // Interface for the ranked data structure
@@ -64,7 +64,7 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
 
         const data: RankedData[] = await response.json();
 
-        // Overlay wins + essencer from Google Sheets (source of truth for claimed accounts)
+        // Overlay ranked fields from Google Sheets ACCOUNTS tab (source of truth)
         try {
             const sheetRows = await fetchWinsFromSheet();
             const sheetByAccount = new Map(
@@ -75,7 +75,7 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
                 const key = (account.username || '').trim().toLowerCase();
                 const sheetRow = sheetByAccount.get(key);
 
-                // Not in sheet yet: clear old local essencer so UI doesn't show stale claims
+                // Not in sheet yet: clear claimable ranked fields
                 if (!sheetRow) {
                     return {
                         ...account,
@@ -89,16 +89,21 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
                 }
 
                 const sheetEssencer = normalizeSheetEssencer(sheetRow.essencer);
+                const solo = parseEloFromSheet(sheetRow.solo);
+                const flex = parseEloFromSheet(sheetRow.flex);
 
                 return {
                     ...account,
-                    // Ranked UI uses `name` as the essencer label
                     name: sheetEssencer,
                     essencer: sheetEssencer,
+                    level: sheetRow.lv !== undefined && sheetRow.lv !== null ? Number(sheetRow.lv) || account.level : account.level,
+                    honor: sheetRow.honor !== undefined && sheetRow.honor !== null ? Number(sheetRow.honor) || account.honor : account.honor,
                     wins: {
                         ...account.wins,
                         current: Number(sheetRow.wins) || 0
-                    }
+                    },
+                    elo_soloq: sheetRow.solo !== undefined ? solo : account.elo_soloq,
+                    elo_flex: sheetRow.flex !== undefined ? flex : account.elo_flex
                 };
             });
         } catch (sheetError) {
@@ -185,23 +190,40 @@ export const updateRankedData = async (modifiedRankedData: RankedData[]): Promis
     return modifiedRankedData;
 };
 
-// Persist changes: wins go to Google Sheets; full snapshot still saved locally in dev.
+// Persist changes to Google Sheets ACCOUNTS; full snapshot still saved locally in dev.
 export const updateChangedRankedData = async (originalData: RankedData[], modifiedData: RankedData[]): Promise<RankedData[]> => {
     const changed = getChangedRankedData(originalData, modifiedData);
 
-    // Sync only wins that actually changed to Google Sheets
-    const winsUpdates = changed.filter(item => {
+    const sheetUpdates = changed.filter(item => {
         const original = originalData.find(o => o.id === item.id);
-        return !original || original.wins.current !== item.wins.current;
+        if (!original) return true;
+        return (
+            original.wins.current !== item.wins.current ||
+            original.level !== item.level ||
+            original.honor !== item.honor ||
+            original.name !== item.name ||
+            original.essencer !== item.essencer ||
+            original.elo_soloq.tier !== item.elo_soloq.tier ||
+            original.elo_soloq.division !== item.elo_soloq.division ||
+            original.elo_flex.tier !== item.elo_flex.tier ||
+            original.elo_flex.division !== item.elo_flex.division
+        );
     });
 
-    if (winsUpdates.length > 0) {
+    if (sheetUpdates.length > 0) {
         await Promise.all(
-            winsUpdates.map(item =>
-                updateWinsInSheet(item.username || item.name, item.wins.current)
+            sheetUpdates.map(item =>
+                updateAccountInSheet(item.username || item.name, {
+                    wins: item.wins.current,
+                    lv: item.level,
+                    honor: item.honor,
+                    essencer: item.name || item.essencer || '-',
+                    solo: formatEloForSheet(item.elo_soloq),
+                    flex: formatEloForSheet(item.elo_flex)
+                })
             )
         );
-        console.log('%c✅ Wins saved to Google Sheets!', 'color: #90EE90; font-weight: bold;');
+        console.log('%c✅ Ranked fields saved to Google Sheets!', 'color: #90EE90; font-weight: bold;');
     }
 
     // Keep local JSON in sync when running vite dev (no-op on GitHub Pages)
