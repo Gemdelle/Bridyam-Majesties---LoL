@@ -18,7 +18,10 @@
     "sync:masteries": "node scripts/sync-masteries-riot.mjs",
     "sync:masteries:depurallire": "node scripts/sync-masteries-riot.mjs --ranked-id=51",
     "sync:masteries:depurallire:mc": "node scripts/sync-masteries-masterychart.mjs --ranked-id=51",
-    "sync:masteries:check-key": "node scripts/sync-masteries-riot.mjs --check-key"
+    "sync:masteries:check-key": "node scripts/sync-masteries-riot.mjs --check-key",
+    "build:skin-lines": "node scripts/build-skin-lines.mjs",
+    "sync:skins": "node scripts/sync-skins-loldb.mjs",
+    "sync:skins:all": "node scripts/sync-skins-loldb.mjs --all"
   },
   "dependencies": {
     "react": "^19.1.0",

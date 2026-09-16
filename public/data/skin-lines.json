@@ -1,0 +1,5031 @@
+{
+  "updatedAt": "2026-09-16T07:51:11.680Z",
+  "source": "communitydragon",
+  "families": [
+    {
+      "id": 1,
+      "name": "PROJECT",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_2.jpg",
+      "cdragonIds": [
+        18
+      ],
+      "cdragonNames": [
+        "PROJECT"
+      ],
+      "matchKeys": [
+        "project"
+      ],
+      "skinCount": 33,
+      "skins": [
+        {
+          "id": 39017,
+          "name": "Prestige PROJECT: Irelia",
+          "championId": 39,
+          "skinNum": 17,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 39036,
+          "name": "Prestige PROJECT: Irelia (2022)",
+          "championId": 39,
+          "skinNum": 36,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 517014,
+          "name": "Prestige PROJECT: Sylas",
+          "championId": 517,
+          "skinNum": 14,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 238030,
+          "name": "Prestige PROJECT: Zed",
+          "championId": 238,
+          "skinNum": 30,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 84014,
+          "name": "PROJECT: Akali",
+          "championId": 84,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 22008,
+          "name": "PROJECT: Ashe",
+          "championId": 22,
+          "skinNum": 8,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 11116,
+          "name": "PROJECT: Command Line Yi",
+          "championId": 11,
+          "skinNum": 116,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 245003,
+          "name": "PROJECT: Ekko",
+          "championId": 245,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 114004,
+          "name": "PROJECT: Fiora",
+          "championId": 114,
+          "skinNum": 4,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 41033,
+          "name": "PROJECT: Gangplank",
+          "championId": 41,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 39016,
+          "name": "PROJECT: Irelia",
+          "championId": 39,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 24033,
+          "name": "PROJECT: Jax",
+          "championId": 24,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 202004,
+          "name": "PROJECT: Jhin",
+          "championId": 202,
+          "skinNum": 4,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 222020,
+          "name": "PROJECT: Jinx",
+          "championId": 222,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 55009,
+          "name": "PROJECT: Katarina",
+          "championId": 55,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 89008,
+          "name": "PROJECT: Leona",
+          "championId": 89,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 236006,
+          "name": "PROJECT: Lucian",
+          "championId": 236,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 82013,
+          "name": "PROJECT: Mordekaiser",
+          "championId": 82,
+          "skinNum": 13,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 950011,
+          "name": "PROJECT: Naafiri",
+          "championId": 950,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 555016,
+          "name": "PROJECT: Pyke",
+          "championId": 555,
+          "skinNum": 16,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 133024,
+          "name": "PROJECT: Quinn",
+          "championId": 133,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 58026,
+          "name": "PROJECT: Renekton",
+          "championId": 58,
+          "skinNum": 26,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 113016,
+          "name": "PROJECT: Sejuani",
+          "championId": 113,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 235016,
+          "name": "PROJECT: Senna",
+          "championId": 235,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 15072,
+          "name": "PROJECT: Sivir",
+          "championId": 15,
+          "skinNum": 72,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 517013,
+          "name": "PROJECT: Sylas",
+          "championId": 517,
+          "skinNum": 13,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 110016,
+          "name": "PROJECT: Varus",
+          "championId": 110,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 67011,
+          "name": "PROJECT: Vayne",
+          "championId": 67,
+          "skinNum": 11,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 254011,
+          "name": "PROJECT: Vi",
+          "championId": 254,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 19016,
+          "name": "PROJECT: Warwick",
+          "championId": 19,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 157002,
+          "name": "PROJECT: Yasuo",
+          "championId": 157,
+          "skinNum": 2,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 11009,
+          "name": "PROJECT: Yi",
+          "championId": 11,
+          "skinNum": 9,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            18
+          ]
+        },
+        {
+          "id": 238003,
+          "name": "PROJECT: Zed",
+          "championId": 238,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "STAR GUARDIAN",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_7.jpg",
+      "cdragonIds": [
+        19,
+        20,
+        119,
+        161
+      ],
+      "cdragonNames": [
+        "Star Guardian Season 1",
+        "Star Guardian Season 2",
+        "Star Guardian Season 3",
+        "Star Guardian Season 4"
+      ],
+      "matchKeys": [
+        "star guardian",
+        "star guardian season 1",
+        "star guardian season 2",
+        "star guardian season 3",
+        "star guardian season 4"
+      ],
+      "skinCount": 39,
+      "skins": [
+        {
+          "id": 81020,
+          "name": "Pajama Guardian Ezreal",
+          "championId": 81,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 117015,
+          "name": "Pajama Guardian Lulu",
+          "championId": 117,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 99014,
+          "name": "Pajama Guardian Lux",
+          "championId": 99,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 21017,
+          "name": "Pajama Guardian Miss Fortune",
+          "championId": 21,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 16008,
+          "name": "Pajama Guardian Soraka",
+          "championId": 16,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 245046,
+          "name": "Prestige Star Guardian Ekko",
+          "championId": 245,
+          "skinNum": 46,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 518011,
+          "name": "Prestige Star Guardian Neeko",
+          "championId": 518,
+          "skinNum": 11,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 518021,
+          "name": "Prestige Star Guardian Neeko (2022)",
+          "championId": 518,
+          "skinNum": 21,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 16017,
+          "name": "Prestige Star Guardian Soraka",
+          "championId": 16,
+          "skinNum": 17,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 134034,
+          "name": "Prestige Star Guardian Syndra",
+          "championId": 134,
+          "skinNum": 34,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 497036,
+          "name": "Redeemed Star Guardian Rakan",
+          "championId": 497,
+          "skinNum": 36,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 498038,
+          "name": "Redeemed Star Guardian Xayah",
+          "championId": 498,
+          "skinNum": 38,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 103014,
+          "name": "Star Guardian Ahri",
+          "championId": 103,
+          "skinNum": 14,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 84061,
+          "name": "Star Guardian Akali",
+          "championId": 84,
+          "skinNum": 61,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 245045,
+          "name": "Star Guardian Ekko",
+          "championId": 245,
+          "skinNum": 45,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 81018,
+          "name": "Star Guardian Ezreal",
+          "championId": 81,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 40007,
+          "name": "Star Guardian Janna",
+          "championId": 40,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 222004,
+          "name": "Star Guardian Jinx",
+          "championId": 222,
+          "skinNum": 4,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 145040,
+          "name": "Star Guardian Kai'Sa",
+          "championId": 145,
+          "skinNum": 40,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 117006,
+          "name": "Star Guardian Lulu",
+          "championId": 117,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 99006,
+          "name": "Star Guardian Lux",
+          "championId": 99,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 21015,
+          "name": "Star Guardian Miss Fortune",
+          "championId": 21,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 518010,
+          "name": "Star Guardian Neeko",
+          "championId": 518,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 895001,
+          "name": "Star Guardian Nilah",
+          "championId": 895,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 61029,
+          "name": "Star Guardian Orianna",
+          "championId": 61,
+          "skinNum": 29,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 78007,
+          "name": "Star Guardian Poppy",
+          "championId": 78,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            19
+          ]
+        },
+        {
+          "id": 133014,
+          "name": "Star Guardian Quinn",
+          "championId": 133,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 497005,
+          "name": "Star Guardian Rakan",
+          "championId": 497,
+          "skinNum": 5,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 526010,
+          "name": "Star Guardian Rell",
+          "championId": 526,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 235046,
+          "name": "Star Guardian Senna",
+          "championId": 235,
+          "skinNum": 46,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 147034,
+          "name": "Star Guardian Seraphine",
+          "championId": 147,
+          "skinNum": 34,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 37035,
+          "name": "Star Guardian Sona",
+          "championId": 37,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 16007,
+          "name": "Star Guardian Soraka",
+          "championId": 16,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 134006,
+          "name": "Star Guardian Syndra",
+          "championId": 134,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            20
+          ]
+        },
+        {
+          "id": 163011,
+          "name": "Star Guardian Taliyah",
+          "championId": 163,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 498004,
+          "name": "Star Guardian Xayah",
+          "championId": 498,
+          "skinNum": 4,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 142009,
+          "name": "Star Guardian Zoe",
+          "championId": 142,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            119
+          ]
+        },
+        {
+          "id": 9027,
+          "name": "Star Nemesis Fiddlesticks",
+          "championId": 9,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        },
+        {
+          "id": 25050,
+          "name": "Star Nemesis Morgana",
+          "championId": 25,
+          "skinNum": 50,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            161
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "K/DA",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_14.jpg",
+      "cdragonIds": [
+        91
+      ],
+      "cdragonNames": [
+        "K/DA"
+      ],
+      "matchKeys": [
+        "k/da"
+      ],
+      "skinCount": 18,
+      "skins": [
+        {
+          "id": 103015,
+          "name": "K/DA Ahri",
+          "championId": 103,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 84009,
+          "name": "K/DA Akali",
+          "championId": 84,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 103028,
+          "name": "K/DA ALL OUT Ahri",
+          "championId": 103,
+          "skinNum": 28,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 84032,
+          "name": "K/DA ALL OUT Akali",
+          "championId": 84,
+          "skinNum": 32,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 28015,
+          "name": "K/DA ALL OUT Evelynn",
+          "championId": 28,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 145026,
+          "name": "K/DA ALL OUT Kai'Sa",
+          "championId": 145,
+          "skinNum": 26,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 147001,
+          "name": "K/DA ALL OUT Seraphine Indie",
+          "championId": 147,
+          "skinNum": 1,
+          "rarity": "kUltimate",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 28006,
+          "name": "K/DA Evelynn",
+          "championId": 28,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 145014,
+          "name": "K/DA Kai'Sa",
+          "championId": 145,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 103016,
+          "name": "Prestige K/DA Ahri",
+          "championId": 103,
+          "skinNum": 16,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 103065,
+          "name": "Prestige K/DA Ahri (2022)",
+          "championId": 103,
+          "skinNum": 65,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 84013,
+          "name": "Prestige K/DA Akali",
+          "championId": 84,
+          "skinNum": 13,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 84060,
+          "name": "Prestige K/DA Akali (2022)",
+          "championId": 84,
+          "skinNum": 60,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 145027,
+          "name": "Prestige K/DA ALL OUT Kai'Sa",
+          "championId": 145,
+          "skinNum": 27,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 28007,
+          "name": "Prestige K/DA Evelynn",
+          "championId": 28,
+          "skinNum": 7,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 28031,
+          "name": "Prestige K/DA Evelynn (2022)",
+          "championId": 28,
+          "skinNum": 31,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 145015,
+          "name": "Prestige K/DA Kai'Sa",
+          "championId": 145,
+          "skinNum": 15,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        },
+        {
+          "id": 145039,
+          "name": "Prestige K/DA Kai'Sa (2022)",
+          "championId": 145,
+          "skinNum": 39,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            91
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "DARK STAR",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_5.jpg",
+      "cdragonIds": [
+        54
+      ],
+      "cdragonNames": [
+        "Lunar Revel: Firecracker"
+      ],
+      "matchKeys": [
+        "dark star",
+        "lunar revel: firecracker"
+      ],
+      "skinCount": 19,
+      "skins": [
+        {
+          "id": 42006,
+          "name": "Dragonwing Corki",
+          "championId": 42,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 22084,
+          "name": "Firecracker Ashe",
+          "championId": 22,
+          "skinNum": 84,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 51054,
+          "name": "Firecracker Caitlyn",
+          "championId": 51,
+          "skinNum": 54,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 131037,
+          "name": "Firecracker Diana",
+          "championId": 131,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 222002,
+          "name": "Firecracker Jinx",
+          "championId": 222,
+          "skinNum": 2,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 78042,
+          "name": "Firecracker Poppy",
+          "championId": 78,
+          "skinNum": 42,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 113008,
+          "name": "Firecracker Sejuani",
+          "championId": 113,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 147059,
+          "name": "Firecracker Seraphine",
+          "championId": 147,
+          "skinNum": 59,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 875019,
+          "name": "Firecracker Sett",
+          "championId": 875,
+          "skinNum": 19,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 17037,
+          "name": "Firecracker Teemo",
+          "championId": 17,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 18041,
+          "name": "Firecracker Tristana",
+          "championId": 18,
+          "skinNum": 41,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 67012,
+          "name": "Firecracker Vayne",
+          "championId": 67,
+          "skinNum": 12,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 5036,
+          "name": "Firecracker Xin Zhao",
+          "championId": 5,
+          "skinNum": 36,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 350070,
+          "name": "Firecracker Yuumi",
+          "championId": 350,
+          "skinNum": 70,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 115043,
+          "name": "Firecracker Ziggs",
+          "championId": 115,
+          "skinNum": 43,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 96005,
+          "name": "Lion Dance Kog'Maw",
+          "championId": 96,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 1008,
+          "name": "Panda Annie",
+          "championId": 1,
+          "skinNum": 8,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 67013,
+          "name": "Prestige Firecracker Vayne",
+          "championId": 67,
+          "skinNum": 13,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            54
+          ]
+        },
+        {
+          "id": 67033,
+          "name": "Prestige Firecracker Vayne (2022)",
+          "championId": 67,
+          "skinNum": 33,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "BLOOD MOON",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_7.jpg",
+      "cdragonIds": [
+        12
+      ],
+      "cdragonNames": [
+        "Blood Moon"
+      ],
+      "matchKeys": [
+        "blood moon"
+      ],
+      "skinCount": 25,
+      "skins": [
+        {
+          "id": 266007,
+          "name": "Blood Moon Aatrox",
+          "championId": 266,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 84005,
+          "name": "Blood Moon Akali",
+          "championId": 84,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 131011,
+          "name": "Blood Moon Diana",
+          "championId": 131,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 60003,
+          "name": "Blood Moon Elise",
+          "championId": 60,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 28005,
+          "name": "Blood Moon Evelynn",
+          "championId": 28,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 9037,
+          "name": "Blood Moon Fiddlesticks",
+          "championId": 9,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 202002,
+          "name": "Blood Moon Jhin",
+          "championId": 202,
+          "skinNum": 2,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 429001,
+          "name": "Blood Moon Kalista",
+          "championId": 429,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 55021,
+          "name": "Blood Moon Katarina",
+          "championId": 55,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 85006,
+          "name": "Blood Moon Kennen",
+          "championId": 85,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 11024,
+          "name": "Blood Moon Master Yi",
+          "championId": 11,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 555009,
+          "name": "Blood Moon Pyke",
+          "championId": 555,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 13029,
+          "name": "Blood Moon Ryze",
+          "championId": 13,
+          "skinNum": 29,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 98004,
+          "name": "Blood Moon Shen",
+          "championId": 98,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 15016,
+          "name": "Blood Moon Sivir",
+          "championId": 15,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 91005,
+          "name": "Blood Moon Talon",
+          "championId": 91,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 412003,
+          "name": "Blood Moon Thresh",
+          "championId": 412,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 23010,
+          "name": "Blood Moon Tryndamere",
+          "championId": 23,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 4010,
+          "name": "Blood Moon Twisted Fate",
+          "championId": 4,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 157003,
+          "name": "Blood Moon Yasuo",
+          "championId": 157,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 238058,
+          "name": "Blood Moon Zed",
+          "championId": 238,
+          "skinNum": 58,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 26005,
+          "name": "Blood Moon Zilean",
+          "championId": 26,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 143055,
+          "name": "Blood Moon Zyra",
+          "championId": 143,
+          "skinNum": 55,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 266008,
+          "name": "Prestige Blood Moon Aatrox",
+          "championId": 266,
+          "skinNum": 8,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            12
+          ]
+        },
+        {
+          "id": 266020,
+          "name": "Prestige Blood Moon Aatrox (2022)",
+          "championId": 266,
+          "skinNum": 20,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "HIGH NOON",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lucian_8.jpg",
+      "cdragonIds": [
+        39
+      ],
+      "cdragonNames": [
+        "High Noon"
+      ],
+      "matchKeys": [
+        "high noon"
+      ],
+      "skinCount": 38,
+      "skins": [
+        {
+          "id": 9003,
+          "name": "Bandito Fiddlesticks",
+          "championId": 9,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 21001,
+          "name": "Cowgirl Miss Fortune",
+          "championId": 21,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 69001,
+          "name": "Desperada Cassiopeia",
+          "championId": 69,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 166021,
+          "name": "High Noon Akshan",
+          "championId": 166,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 22017,
+          "name": "High Noon Ashe",
+          "championId": 22,
+          "skinNum": 17,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 122016,
+          "name": "High Noon Darius",
+          "championId": 122,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 28052,
+          "name": "High Noon Evelynn",
+          "championId": 28,
+          "skinNum": 52,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 79029,
+          "name": "High Noon Gragas",
+          "championId": 79,
+          "skinNum": 29,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 120008,
+          "name": "High Noon Hecarim",
+          "championId": 120,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 39018,
+          "name": "High Noon Irelia",
+          "championId": 39,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 202001,
+          "name": "High Noon Jhin",
+          "championId": 202,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 55037,
+          "name": "High Noon Katarina",
+          "championId": 55,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 89034,
+          "name": "High Noon Leona",
+          "championId": 89,
+          "skinNum": 34,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 805001,
+          "name": "High Noon Locke",
+          "championId": 805,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 236008,
+          "name": "High Noon Lucian",
+          "championId": 236,
+          "skinNum": 8,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 82032,
+          "name": "High Noon Mordekaiser",
+          "championId": 82,
+          "skinNum": 32,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 526020,
+          "name": "High Noon Rell",
+          "championId": 526,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 360020,
+          "name": "High Noon Samira",
+          "championId": 360,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 235010,
+          "name": "High Noon Senna",
+          "championId": 235,
+          "skinNum": 10,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 14030,
+          "name": "High Noon Sion",
+          "championId": 14,
+          "skinNum": 30,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 223020,
+          "name": "High Noon Tahm Kench",
+          "championId": 223,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 91038,
+          "name": "High Noon Talon",
+          "championId": 91,
+          "skinNum": 38,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 412006,
+          "name": "High Noon Thresh",
+          "championId": 412,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 4005,
+          "name": "High Noon Twisted Fate",
+          "championId": 4,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 29045,
+          "name": "High Noon Twitch",
+          "championId": 29,
+          "skinNum": 45,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 6009,
+          "name": "High Noon Urgot",
+          "championId": 6,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 110034,
+          "name": "High Noon Varus",
+          "championId": 110,
+          "skinNum": 34,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 112014,
+          "name": "High Noon Viktor",
+          "championId": 112,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 157001,
+          "name": "High Noon Yasuo",
+          "championId": 157,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 777055,
+          "name": "High Noon Yone",
+          "championId": 777,
+          "skinNum": 55,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 83050,
+          "name": "High Noon Yorick",
+          "championId": 83,
+          "skinNum": 50,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 12004,
+          "name": "Longhorn Alistar",
+          "championId": 12,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 777058,
+          "name": "Peacemaker High Noon Yone",
+          "championId": 777,
+          "skinNum": 58,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 28053,
+          "name": "Prestige High Noon Evelynn",
+          "championId": 28,
+          "skinNum": 53,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 91039,
+          "name": "Prestige High Noon Talon",
+          "championId": 91,
+          "skinNum": 39,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 72001,
+          "name": "Sandscourge Skarner",
+          "championId": 72,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 51002,
+          "name": "Sheriff Caitlyn",
+          "championId": 51,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        },
+        {
+          "id": 96002,
+          "name": "Sonoran Kog'Maw",
+          "championId": 96,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "PENTAKILL",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Karthus_3.jpg",
+      "cdragonIds": [
+        16,
+        151
+      ],
+      "cdragonNames": [
+        "Pentakill",
+        "Pentakill III: The Lost Chapter"
+      ],
+      "matchKeys": [
+        "pentakill",
+        "pentakill iii: the lost chapter"
+      ],
+      "skinCount": 13,
+      "skins": [
+        {
+          "id": 234010,
+          "name": "Dissonance of Pentakill Viego",
+          "championId": 234,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 30017,
+          "name": "Pentakill III: Lost Chapter Karthus",
+          "championId": 30,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 10033,
+          "name": "Pentakill III: Lost Chapter Kayle",
+          "championId": 10,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 82023,
+          "name": "Pentakill III: Lost Chapter Mordekaiser",
+          "championId": 82,
+          "skinNum": 23,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 2035,
+          "name": "Pentakill III: Lost Chapter Olaf",
+          "championId": 2,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 37026,
+          "name": "Pentakill III: Lost Chapter Sona",
+          "championId": 37,
+          "skinNum": 26,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 83021,
+          "name": "Pentakill III: Lost Chapter Yorick",
+          "championId": 83,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            151
+          ]
+        },
+        {
+          "id": 30004,
+          "name": "Pentakill Karthus",
+          "championId": 30,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            16
+          ]
+        },
+        {
+          "id": 10009,
+          "name": "Pentakill Kayle",
+          "championId": 10,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            16
+          ]
+        },
+        {
+          "id": 82003,
+          "name": "Pentakill Mordekaiser",
+          "championId": 82,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            16
+          ]
+        },
+        {
+          "id": 2004,
+          "name": "Pentakill Olaf",
+          "championId": 2,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            16
+          ]
+        },
+        {
+          "id": 37002,
+          "name": "Pentakill Sona",
+          "championId": 37,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            16
+          ]
+        },
+        {
+          "id": 83002,
+          "name": "Pentakill Yorick",
+          "championId": 83,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "ARCADE",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Corki_6.jpg",
+      "cdragonIds": [
+        10,
+        11
+      ],
+      "cdragonNames": [
+        "Arcade: Heroes",
+        "Arcade: Battle Bosses"
+      ],
+      "matchKeys": [
+        "arcade",
+        "arcade: heroes",
+        "arcade: battle bosses"
+      ],
+      "skinCount": 19,
+      "skins": [
+        {
+          "id": 103007,
+          "name": "Arcade Ahri",
+          "championId": 103,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 51019,
+          "name": "Arcade Caitlyn",
+          "championId": 51,
+          "skinNum": 19,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 42008,
+          "name": "Arcade Corki",
+          "championId": 42,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 81009,
+          "name": "Arcade Ezreal",
+          "championId": 81,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 120004,
+          "name": "Arcade Hecarim",
+          "championId": 120,
+          "skinNum": 4,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 145017,
+          "name": "Arcade Kai'Sa",
+          "championId": 145,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 21007,
+          "name": "Arcade Miss Fortune",
+          "championId": 21,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 92006,
+          "name": "Arcade Riven",
+          "championId": 92,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 37005,
+          "name": "Arcade Sona",
+          "championId": 37,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 200001,
+          "name": "Battle Boss Bel'Veth",
+          "championId": 200,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 53011,
+          "name": "Battle Boss Blitzcrank",
+          "championId": 53,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 63006,
+          "name": "Battle Boss Brand",
+          "championId": 63,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 90006,
+          "name": "Battle Boss Malzahar",
+          "championId": 90,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 246001,
+          "name": "Battle Boss Qiyana",
+          "championId": 246,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 157017,
+          "name": "Battle Boss Yasuo",
+          "championId": 157,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 115006,
+          "name": "Battle Boss Ziggs",
+          "championId": 115,
+          "skinNum": 6,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 45008,
+          "name": "Final Boss Veigar",
+          "championId": 45,
+          "skinNum": 8,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            11
+          ]
+        },
+        {
+          "id": 51020,
+          "name": "Prestige Arcade Caitlyn",
+          "championId": 51,
+          "skinNum": 20,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            10
+          ]
+        },
+        {
+          "id": 51029,
+          "name": "Prestige Arcade Caitlyn (2022)",
+          "championId": 51,
+          "skinNum": 29,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "PULSEFIRE",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_5.jpg",
+      "cdragonIds": [
+        36
+      ],
+      "cdragonNames": [
+        "Pulsefire"
+      ],
+      "matchKeys": [
+        "pulsefire"
+      ],
+      "skinCount": 13,
+      "skins": [
+        {
+          "id": 236019,
+          "name": "Prestige Pulsefire Lucian",
+          "championId": 236,
+          "skinNum": 19,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 412014,
+          "name": "Prestige Pulsefire Thresh",
+          "championId": 412,
+          "skinNum": 14,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 412038,
+          "name": "Prestige Pulsefire Thresh (2022)",
+          "championId": 412,
+          "skinNum": 38,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 51011,
+          "name": "Pulsefire Caitlyn",
+          "championId": 51,
+          "skinNum": 11,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 245028,
+          "name": "Pulsefire Ekko",
+          "championId": 245,
+          "skinNum": 28,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 81005,
+          "name": "Pulsefire Ezreal",
+          "championId": 81,
+          "skinNum": 5,
+          "rarity": "kUltimate",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 114041,
+          "name": "Pulsefire Fiora",
+          "championId": 114,
+          "skinNum": 41,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 236018,
+          "name": "Pulsefire Lucian",
+          "championId": 236,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 80016,
+          "name": "Pulsefire Pantheon",
+          "championId": 80,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 92018,
+          "name": "Pulsefire Riven",
+          "championId": 92,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 98015,
+          "name": "Pulsefire Shen",
+          "championId": 98,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 412013,
+          "name": "Pulsefire Thresh",
+          "championId": 412,
+          "skinNum": 13,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        },
+        {
+          "id": 4011,
+          "name": "Pulsefire Twisted Fate",
+          "championId": 4,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            36
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "WORLDBREAKER",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malphite_7.jpg",
+      "cdragonIds": [
+        29
+      ],
+      "cdragonNames": [
+        "Worldbreaker"
+      ],
+      "matchKeys": [
+        "worldbreaker"
+      ],
+      "skinCount": 9,
+      "skins": [
+        {
+          "id": 63005,
+          "name": "Spirit Fire Brand",
+          "championId": 63,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 43001,
+          "name": "Sun Goddess Karma",
+          "championId": 43,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 120006,
+          "name": "Worldbreaker Hecarim",
+          "championId": 120,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 90009,
+          "name": "Worldbreaker Malzahar",
+          "championId": 90,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 57016,
+          "name": "Worldbreaker Maokai",
+          "championId": 57,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 75010,
+          "name": "Worldbreaker Nasus",
+          "championId": 75,
+          "skinNum": 10,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 111005,
+          "name": "Worldbreaker Nautilus",
+          "championId": 111,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 14014,
+          "name": "Worldbreaker Sion",
+          "championId": 14,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            29
+          ]
+        },
+        {
+          "id": 48005,
+          "name": "Worldbreaker Trundle",
+          "championId": 48,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            29
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "COSMIC",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_15.jpg",
+      "cdragonIds": [
+        43
+      ],
+      "cdragonNames": [
+        "Cosmic"
+      ],
+      "matchKeys": [
+        "cosmic"
+      ],
+      "skinCount": 20,
+      "skins": [
+        {
+          "id": 11010,
+          "name": "Cosmic Blade Master Yi",
+          "championId": 11,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 120014,
+          "name": "Cosmic Charger Hecarim",
+          "championId": 120,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 497001,
+          "name": "Cosmic Dawn Rakan",
+          "championId": 497,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 5020,
+          "name": "Cosmic Defender Xin Zhao",
+          "championId": 5,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 267024,
+          "name": "Cosmic Destiny Nami",
+          "championId": 267,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 8021,
+          "name": "Cosmic Devourer Vladimir",
+          "championId": 8,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 498001,
+          "name": "Cosmic Dusk Xayah",
+          "championId": 498,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 117014,
+          "name": "Cosmic Enchantress Lulu",
+          "championId": 117,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 34017,
+          "name": "Cosmic Flight Anivia",
+          "championId": 34,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 110017,
+          "name": "Cosmic Hunter Varus",
+          "championId": 110,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 76018,
+          "name": "Cosmic Huntress Nidalee",
+          "championId": 76,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 420010,
+          "name": "Cosmic Invoker Illaoi",
+          "championId": 420,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 99018,
+          "name": "Cosmic Lux",
+          "championId": 99,
+          "skinNum": 18,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 200010,
+          "name": "Cosmic Matriarch Bel'Veth",
+          "championId": 200,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 111027,
+          "name": "Cosmic Paladin Nautilus",
+          "championId": 111,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 14040,
+          "name": "Cosmic Paladin Sion",
+          "championId": 14,
+          "skinNum": 40,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 20035,
+          "name": "Cosmic Paladins Nunu & Willump",
+          "championId": 20,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 22011,
+          "name": "Cosmic Queen Ashe",
+          "championId": 22,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 38005,
+          "name": "Cosmic Reaver Kassadin",
+          "championId": 38,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        },
+        {
+          "id": 72005,
+          "name": "Cosmic Sting Skarner",
+          "championId": 72,
+          "skinNum": 5,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            43
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "BATTLECAST",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Velkoz_3.jpg",
+      "cdragonIds": [
+        25
+      ],
+      "cdragonNames": [
+        "Battlecast"
+      ],
+      "matchKeys": [
+        "battlecast"
+      ],
+      "skinCount": 14,
+      "skins": [
+        {
+          "id": 72003,
+          "name": "Battlecast Alpha Skarner",
+          "championId": 72,
+          "skinNum": 3,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 96008,
+          "name": "Battlecast Kog'Maw",
+          "championId": 96,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 75016,
+          "name": "Battlecast Nasus",
+          "championId": 75,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 31005,
+          "name": "Battlecast Prime Cho'Gath",
+          "championId": 31,
+          "skinNum": 5,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 6003,
+          "name": "Battlecast Urgot",
+          "championId": 6,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 161001,
+          "name": "Battlecast Vel'Koz",
+          "championId": 161,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 101002,
+          "name": "Battlecast Xerath",
+          "championId": 101,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 154007,
+          "name": "Battlecast Zac",
+          "championId": 154,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 112003,
+          "name": "Creator Viktor",
+          "championId": 112,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 51001,
+          "name": "Resistance Caitlyn",
+          "championId": 51,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 420002,
+          "name": "Resistance Illaoi",
+          "championId": 420,
+          "skinNum": 2,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 126015,
+          "name": "Resistance Jayce",
+          "championId": 126,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 27010,
+          "name": "Resistance Singed",
+          "championId": 27,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        },
+        {
+          "id": 83012,
+          "name": "Resistance Yorick",
+          "championId": 83,
+          "skinNum": 12,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "ODYSSEY",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_13.jpg",
+      "cdragonIds": [
+        73
+      ],
+      "cdragonNames": [
+        "Odyssey"
+      ],
+      "matchKeys": [
+        "odyssey"
+      ],
+      "skinCount": 13,
+      "skins": [
+        {
+          "id": 238013,
+          "name": "Galaxy Slayer Zed",
+          "championId": 238,
+          "skinNum": 13,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 266011,
+          "name": "Odyssey Aatrox",
+          "championId": 266,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 222013,
+          "name": "Odyssey Jinx",
+          "championId": 222,
+          "skinNum": 13,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 43026,
+          "name": "Odyssey Karma",
+          "championId": 43,
+          "skinNum": 26,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 141002,
+          "name": "Odyssey Kayn",
+          "championId": 141,
+          "skinNum": 2,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 121060,
+          "name": "Odyssey Kha'Zix",
+          "championId": 121,
+          "skinNum": 60,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 54016,
+          "name": "Odyssey Malphite",
+          "championId": 54,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 15025,
+          "name": "Odyssey Sivir",
+          "championId": 15,
+          "skinNum": 25,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 37009,
+          "name": "Odyssey Sona",
+          "championId": 37,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 4013,
+          "name": "Odyssey Twisted Fate",
+          "championId": 4,
+          "skinNum": 13,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 157010,
+          "name": "Odyssey Yasuo",
+          "championId": 157,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 115007,
+          "name": "Odyssey Ziggs",
+          "championId": 115,
+          "skinNum": 7,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            73
+          ]
+        },
+        {
+          "id": 238068,
+          "name": "Quantum Galaxy Slayer Zed",
+          "championId": 238,
+          "skinNum": 68,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            73
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "BATTLE ACADEMIA",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_19.jpg",
+      "cdragonIds": [
+        94
+      ],
+      "cdragonNames": [
+        "Astronauts"
+      ],
+      "matchKeys": [
+        "battle academia",
+        "astronauts"
+      ],
+      "skinCount": 14,
+      "skins": [
+        {
+          "id": 432008,
+          "name": "Astronaut Bard",
+          "championId": 432,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 42026,
+          "name": "Astronaut Corki",
+          "championId": 42,
+          "skinNum": 26,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 105026,
+          "name": "Astronaut Fizz",
+          "championId": 105,
+          "skinNum": 26,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 150015,
+          "name": "Astronaut Gnar",
+          "championId": 150,
+          "skinNum": 15,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 427020,
+          "name": "Astronaut Ivern",
+          "championId": 427,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 85025,
+          "name": "Astronaut Kennen",
+          "championId": 85,
+          "skinNum": 25,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 57024,
+          "name": "Astronaut Maokai",
+          "championId": 57,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 78016,
+          "name": "Astronaut Poppy",
+          "championId": 78,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 33017,
+          "name": "Astronaut Rammus",
+          "championId": 33,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 27019,
+          "name": "Astronaut Singed",
+          "championId": 27,
+          "skinNum": 19,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 17004,
+          "name": "Astronaut Teemo",
+          "championId": 17,
+          "skinNum": 4,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 45032,
+          "name": "Astronaut Veigar",
+          "championId": 45,
+          "skinNum": 32,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 101021,
+          "name": "Astronaut Xerath",
+          "championId": 101,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        },
+        {
+          "id": 111003,
+          "name": "AstroNautilus",
+          "championId": 111,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            94
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "SPIRIT BLOSSOM",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_27.jpg",
+      "cdragonIds": [
+        171,
+        218
+      ],
+      "cdragonNames": [
+        "Spirit Blossom",
+        "Spirit Blossom Springs"
+      ],
+      "matchKeys": [
+        "spirit blossom",
+        "spirit blossom springs"
+      ],
+      "skinCount": 43,
+      "skins": [
+        {
+          "id": 103089,
+          "name": "After Hours Spirit Blossom Springs Ahri",
+          "championId": 103,
+          "skinNum": 89,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 99070,
+          "name": "Prestige Spirit Blossom Lux",
+          "championId": 99,
+          "skinNum": 70,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 11053,
+          "name": "Prestige Spirit Blossom Master Yi",
+          "championId": 11,
+          "skinNum": 53,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 523040,
+          "name": "Prestige Spirit Blossom Springs Aphelios",
+          "championId": 523,
+          "skinNum": 40,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 17027,
+          "name": "Prestige Spirit Blossom Teemo",
+          "championId": 17,
+          "skinNum": 27,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 238069,
+          "name": "Prestige Spirit Blossom Zed",
+          "championId": 238,
+          "skinNum": 69,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 103027,
+          "name": "Spirit Blossom Ahri",
+          "championId": 103,
+          "skinNum": 27,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 84092,
+          "name": "Spirit Blossom Akali",
+          "championId": 84,
+          "skinNum": 92,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 523020,
+          "name": "Spirit Blossom Aphelios",
+          "championId": 523,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 22076,
+          "name": "Spirit Blossom Ashe",
+          "championId": 22,
+          "skinNum": 76,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 432037,
+          "name": "Spirit Blossom Bard",
+          "championId": 432,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 69009,
+          "name": "Spirit Blossom Cassiopeia",
+          "championId": 69,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 122043,
+          "name": "Spirit Blossom Darius",
+          "championId": 122,
+          "skinNum": 43,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 28032,
+          "name": "Spirit Blossom Evelynn",
+          "championId": 28,
+          "skinNum": 32,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 910011,
+          "name": "Spirit Blossom Hwei",
+          "championId": 910,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 39055,
+          "name": "Spirit Blossom Irelia",
+          "championId": 39,
+          "skinNum": 55,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 427030,
+          "name": "Spirit Blossom Ivern",
+          "championId": 427,
+          "skinNum": 30,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 43070,
+          "name": "Spirit Blossom Karma",
+          "championId": 43,
+          "skinNum": 70,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 10078,
+          "name": "Spirit Blossom Kayle",
+          "championId": 10,
+          "skinNum": 78,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 203003,
+          "name": "Spirit Blossom Kindred",
+          "championId": 203,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 876001,
+          "name": "Spirit Blossom Lillia",
+          "championId": 876,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 11052,
+          "name": "Spirit Blossom Master Yi",
+          "championId": 11,
+          "skinNum": 52,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 25080,
+          "name": "Spirit Blossom Morgana",
+          "championId": 25,
+          "skinNum": 80,
+          "rarity": "kExalted",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 76058,
+          "name": "Spirit Blossom Nidalee",
+          "championId": 76,
+          "skinNum": 58,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 92023,
+          "name": "Spirit Blossom Riven",
+          "championId": 92,
+          "skinNum": 23,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 875038,
+          "name": "Spirit Blossom Sett",
+          "championId": 875,
+          "skinNum": 38,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 16027,
+          "name": "Spirit Blossom Soraka",
+          "championId": 16,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 103088,
+          "name": "Spirit Blossom Springs Ahri",
+          "championId": 103,
+          "skinNum": 88,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 875067,
+          "name": "Spirit Blossom Springs Sett",
+          "championId": 875,
+          "skinNum": 67,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 37066,
+          "name": "Spirit Blossom Springs Sona",
+          "championId": 37,
+          "skinNum": 66,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 17054,
+          "name": "Spirit Blossom Springs Teemo",
+          "championId": 17,
+          "skinNum": 54,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 106029,
+          "name": "Spirit Blossom Springs Volibear",
+          "championId": 106,
+          "skinNum": 29,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 804001,
+          "name": "Spirit Blossom Springs Yunara",
+          "championId": 804,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            218
+          ]
+        },
+        {
+          "id": 134044,
+          "name": "Spirit Blossom Syndra",
+          "championId": 134,
+          "skinNum": 44,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 17025,
+          "name": "Spirit Blossom Teemo",
+          "championId": 17,
+          "skinNum": 25,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 412017,
+          "name": "Spirit Blossom Thresh",
+          "championId": 412,
+          "skinNum": 17,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 18051,
+          "name": "Spirit Blossom Tristana",
+          "championId": 18,
+          "skinNum": 51,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 110060,
+          "name": "Spirit Blossom Varus",
+          "championId": 110,
+          "skinNum": 60,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 67014,
+          "name": "Spirit Blossom Vayne",
+          "championId": 67,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 157036,
+          "name": "Spirit Blossom Yasuo",
+          "championId": 157,
+          "skinNum": 36,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 777001,
+          "name": "Spirit Blossom Yone",
+          "championId": 777,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 83030,
+          "name": "Spirit Blossom Yorick",
+          "championId": 83,
+          "skinNum": 30,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        },
+        {
+          "id": 143064,
+          "name": "Spirit Blossom Zyra",
+          "championId": 143,
+          "skinNum": 64,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            171
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "CRIME CITY",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Twitch_8.jpg",
+      "cdragonIds": [
+        51,
+        149
+      ],
+      "cdragonNames": [
+        "Crime City",
+        "Crime City Nightmare"
+      ],
+      "matchKeys": [
+        "crime city",
+        "crime city nightmare"
+      ],
+      "skinCount": 12,
+      "skins": [
+        {
+          "id": 201011,
+          "name": "Crime City Braum",
+          "championId": 201,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 104003,
+          "name": "Crime City Graves",
+          "championId": 104,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 222001,
+          "name": "Crime City Jinx",
+          "championId": 222,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 21006,
+          "name": "Crime City Miss Fortune",
+          "championId": 21,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 84050,
+          "name": "Crime City Nightmare Akali",
+          "championId": 84,
+          "skinNum": 50,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            149
+          ]
+        },
+        {
+          "id": 122033,
+          "name": "Crime City Nightmare Darius",
+          "championId": 122,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            149
+          ]
+        },
+        {
+          "id": 35023,
+          "name": "Crime City Nightmare Shaco",
+          "championId": 35,
+          "skinNum": 23,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            149
+          ]
+        },
+        {
+          "id": 4025,
+          "name": "Crime City Nightmare Twisted Fate",
+          "championId": 4,
+          "skinNum": 25,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            149
+          ]
+        },
+        {
+          "id": 143016,
+          "name": "Crime City Nightmare Zyra",
+          "championId": 143,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            149
+          ]
+        },
+        {
+          "id": 29004,
+          "name": "Crime City Twitch",
+          "championId": 29,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 79004,
+          "name": "Gragas, Esq.",
+          "championId": 79,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            51
+          ]
+        },
+        {
+          "id": 64010,
+          "name": "Knockout Lee Sin",
+          "championId": 64,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            51
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "DEBONAIR",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jayce_2.jpg",
+      "cdragonIds": [
+        23
+      ],
+      "cdragonNames": [
+        "Debonair"
+      ],
+      "matchKeys": [
+        "debonair"
+      ],
+      "skinCount": 12,
+      "skins": [
+        {
+          "id": 63021,
+          "name": "Debonair Brand",
+          "championId": 63,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 119029,
+          "name": "Debonair Draven",
+          "championId": 119,
+          "skinNum": 29,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 81007,
+          "name": "Debonair Ezreal",
+          "championId": 81,
+          "skinNum": 7,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 3005,
+          "name": "Debonair Galio",
+          "championId": 3,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 126002,
+          "name": "Debonair Jayce",
+          "championId": 126,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 7035,
+          "name": "Debonair LeBlanc",
+          "championId": 7,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 89033,
+          "name": "Debonair Leona",
+          "championId": 89,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 90028,
+          "name": "Debonair Malzahar",
+          "championId": 90,
+          "skinNum": 28,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 11042,
+          "name": "Debonair Master Yi",
+          "championId": 11,
+          "skinNum": 42,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 254003,
+          "name": "Debonair Vi",
+          "championId": 254,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 238031,
+          "name": "Debonair Zed",
+          "championId": 238,
+          "skinNum": 31,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            23
+          ]
+        },
+        {
+          "id": 63022,
+          "name": "Prestige Debonair Brand",
+          "championId": 63,
+          "skinNum": 22,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "INFERNAL",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Brand_3.jpg",
+      "cdragonIds": [
+        86
+      ],
+      "cdragonNames": [
+        "Infernal"
+      ],
+      "matchKeys": [
+        "infernal"
+      ],
+      "skinCount": 26,
+      "skins": [
+        {
+          "id": 136001,
+          "name": "Ashen Lord Aurelion Sol",
+          "championId": 136,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 57001,
+          "name": "Charred Maokai",
+          "championId": 57,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 19006,
+          "name": "Firefang Warwick",
+          "championId": 19,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 103003,
+          "name": "Foxfire Ahri",
+          "championId": 103,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 84002,
+          "name": "Infernal Akali",
+          "championId": 84,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 12006,
+          "name": "Infernal Alistar",
+          "championId": 12,
+          "skinNum": 6,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 32017,
+          "name": "Infernal Amumu",
+          "championId": 32,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 22067,
+          "name": "Infernal Ashe",
+          "championId": 22,
+          "skinNum": 67,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 131003,
+          "name": "Infernal Diana",
+          "championId": 131,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 3013,
+          "name": "Infernal Galio",
+          "championId": 3,
+          "skinNum": 13,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 43061,
+          "name": "Infernal Karma",
+          "championId": 43,
+          "skinNum": 61,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 30010,
+          "name": "Infernal Karthus",
+          "championId": 30,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 85008,
+          "name": "Infernal Kennen",
+          "championId": 85,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 82002,
+          "name": "Infernal Mordekaiser",
+          "championId": 82,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 75005,
+          "name": "Infernal Nasus",
+          "championId": 75,
+          "skinNum": 5,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 2044,
+          "name": "Infernal Olaf",
+          "championId": 2,
+          "skinNum": 44,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 98016,
+          "name": "Infernal Shen",
+          "championId": 98,
+          "skinNum": 16,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 110009,
+          "name": "Infernal Varus",
+          "championId": 110,
+          "skinNum": 9,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 161004,
+          "name": "Infernal Vel'Koz",
+          "championId": 161,
+          "skinNum": 4,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 33003,
+          "name": "Molten Rammus",
+          "championId": 33,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 54004,
+          "name": "Obsidian Malphite",
+          "championId": 54,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 58005,
+          "name": "Scorched Earth Renekton",
+          "championId": 58,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 101003,
+          "name": "Scorched Earth Xerath",
+          "championId": 101,
+          "skinNum": 3,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 203001,
+          "name": "Shadowfire Kindred",
+          "championId": 203,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 62001,
+          "name": "Volcanic Wukong",
+          "championId": 62,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        },
+        {
+          "id": 143001,
+          "name": "Wildfire Zyra",
+          "championId": 143,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            86
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "ARCANA",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Riven_23.jpg",
+      "cdragonIds": [
+        146
+      ],
+      "cdragonNames": [
+        "Arcana"
+      ],
+      "matchKeys": [
+        "arcana"
+      ],
+      "skinCount": 14,
+      "skins": [
+        {
+          "id": 103066,
+          "name": "Arcana Ahri",
+          "championId": 103,
+          "skinNum": 66,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 893011,
+          "name": "Arcana Aurora",
+          "championId": 893,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 164011,
+          "name": "Arcana Camille",
+          "championId": 164,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 120022,
+          "name": "Arcana Hecarim",
+          "championId": 120,
+          "skinNum": 22,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 202055,
+          "name": "Arcana Jhin",
+          "championId": 202,
+          "skinNum": 55,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 30035,
+          "name": "Arcana Karthus",
+          "championId": 30,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 236031,
+          "name": "Arcana Lucian",
+          "championId": 236,
+          "skinNum": 31,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 117055,
+          "name": "Arcana Lulu",
+          "championId": 117,
+          "skinNum": 55,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 497018,
+          "name": "Arcana Rakan",
+          "championId": 497,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 13020,
+          "name": "Arcana Ryze",
+          "championId": 13,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 223011,
+          "name": "Arcana Tahm Kench",
+          "championId": 223,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 498028,
+          "name": "Arcana Xayah",
+          "championId": 498,
+          "skinNum": 28,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 101012,
+          "name": "Arcana Xerath",
+          "championId": 101,
+          "skinNum": 12,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        },
+        {
+          "id": 26024,
+          "name": "Arcana Zilean",
+          "championId": 26,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            146
+          ]
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "DAWNBRINGER",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Riven_16.jpg",
+      "cdragonIds": [
+        124,
+        193
+      ],
+      "cdragonNames": [
+        "Dawnbringer",
+        "Nightbringer and Dawnbringer"
+      ],
+      "matchKeys": [
+        "dawnbringer",
+        "nightbringer and dawnbringer"
+      ],
+      "skinCount": 28,
+      "skins": [
+        {
+          "id": 40066,
+          "name": "Dawnbringer Janna",
+          "championId": 40,
+          "skinNum": 66,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 429024,
+          "name": "Dawnbringer Kalista",
+          "championId": 429,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 43019,
+          "name": "Dawnbringer Karma",
+          "championId": 43,
+          "skinNum": 19,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 25039,
+          "name": "Dawnbringer Morgana",
+          "championId": 25,
+          "skinNum": 39,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 76011,
+          "name": "Dawnbringer Nidalee",
+          "championId": 76,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 58033,
+          "name": "Dawnbringer Renekton",
+          "championId": 58,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 92016,
+          "name": "Dawnbringer Riven",
+          "championId": 92,
+          "skinNum": 16,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 16015,
+          "name": "Dawnbringer Soraka",
+          "championId": 16,
+          "skinNum": 15,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 67044,
+          "name": "Dawnbringer Vayne",
+          "championId": 67,
+          "skinNum": 44,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 711001,
+          "name": "Dawnbringer Vex",
+          "championId": 711,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 777019,
+          "name": "Dawnbringer Yone",
+          "championId": 777,
+          "skinNum": 19,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 157087,
+          "name": "Genesis Nightbringer Yasuo",
+          "championId": 157,
+          "skinNum": 87,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 523001,
+          "name": "Nightbringer Aphelios",
+          "championId": 523,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 28064,
+          "name": "Nightbringer Evelynn",
+          "championId": 28,
+          "skinNum": 64,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 120041,
+          "name": "Nightbringer Hecarim",
+          "championId": 120,
+          "skinNum": 41,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 59035,
+          "name": "Nightbringer Jarvan IV",
+          "championId": 59,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 141008,
+          "name": "Nightbringer Kayn",
+          "championId": 141,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64027,
+          "name": "Nightbringer Lee Sin",
+          "championId": 64,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 876010,
+          "name": "Nightbringer Lillia",
+          "championId": 876,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 75045,
+          "name": "Nightbringer Nasus",
+          "championId": 75,
+          "skinNum": 45,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 16016,
+          "name": "Nightbringer Soraka",
+          "championId": 16,
+          "skinNum": 16,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 23018,
+          "name": "Nightbringer Tryndamere",
+          "championId": 23,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 8014,
+          "name": "Nightbringer Vladimir",
+          "championId": 8,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 157009,
+          "name": "Nightbringer Yasuo",
+          "championId": 157,
+          "skinNum": 9,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 350061,
+          "name": "Nightbringer Yuumi",
+          "championId": 350,
+          "skinNum": 61,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 141009,
+          "name": "Prestige Nightbringer Kayn",
+          "championId": 141,
+          "skinNum": 9,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64028,
+          "name": "Prestige Nightbringer Lee Sin",
+          "championId": 64,
+          "skinNum": 28,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64039,
+          "name": "Prestige Nightbringer Lee Sin (2022)",
+          "championId": 64,
+          "skinNum": 39,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "NIGHTBRINGER",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_9.jpg",
+      "cdragonIds": [
+        125,
+        193
+      ],
+      "cdragonNames": [
+        "Nightbringer",
+        "Nightbringer and Dawnbringer"
+      ],
+      "matchKeys": [
+        "nightbringer",
+        "nightbringer and dawnbringer"
+      ],
+      "skinCount": 28,
+      "skins": [
+        {
+          "id": 40066,
+          "name": "Dawnbringer Janna",
+          "championId": 40,
+          "skinNum": 66,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 429024,
+          "name": "Dawnbringer Kalista",
+          "championId": 429,
+          "skinNum": 24,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 43019,
+          "name": "Dawnbringer Karma",
+          "championId": 43,
+          "skinNum": 19,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 25039,
+          "name": "Dawnbringer Morgana",
+          "championId": 25,
+          "skinNum": 39,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 76011,
+          "name": "Dawnbringer Nidalee",
+          "championId": 76,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 58033,
+          "name": "Dawnbringer Renekton",
+          "championId": 58,
+          "skinNum": 33,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 92016,
+          "name": "Dawnbringer Riven",
+          "championId": 92,
+          "skinNum": 16,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 16015,
+          "name": "Dawnbringer Soraka",
+          "championId": 16,
+          "skinNum": 15,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 67044,
+          "name": "Dawnbringer Vayne",
+          "championId": 67,
+          "skinNum": 44,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 711001,
+          "name": "Dawnbringer Vex",
+          "championId": 711,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 777019,
+          "name": "Dawnbringer Yone",
+          "championId": 777,
+          "skinNum": 19,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 157087,
+          "name": "Genesis Nightbringer Yasuo",
+          "championId": 157,
+          "skinNum": 87,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 523001,
+          "name": "Nightbringer Aphelios",
+          "championId": 523,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 28064,
+          "name": "Nightbringer Evelynn",
+          "championId": 28,
+          "skinNum": 64,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 120041,
+          "name": "Nightbringer Hecarim",
+          "championId": 120,
+          "skinNum": 41,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 59035,
+          "name": "Nightbringer Jarvan IV",
+          "championId": 59,
+          "skinNum": 35,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 141008,
+          "name": "Nightbringer Kayn",
+          "championId": 141,
+          "skinNum": 8,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64027,
+          "name": "Nightbringer Lee Sin",
+          "championId": 64,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 876010,
+          "name": "Nightbringer Lillia",
+          "championId": 876,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 75045,
+          "name": "Nightbringer Nasus",
+          "championId": 75,
+          "skinNum": 45,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 16016,
+          "name": "Nightbringer Soraka",
+          "championId": 16,
+          "skinNum": 16,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 23018,
+          "name": "Nightbringer Tryndamere",
+          "championId": 23,
+          "skinNum": 18,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 8014,
+          "name": "Nightbringer Vladimir",
+          "championId": 8,
+          "skinNum": 14,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 157009,
+          "name": "Nightbringer Yasuo",
+          "championId": 157,
+          "skinNum": 9,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 350061,
+          "name": "Nightbringer Yuumi",
+          "championId": 350,
+          "skinNum": 61,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 141009,
+          "name": "Prestige Nightbringer Kayn",
+          "championId": 141,
+          "skinNum": 9,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64028,
+          "name": "Prestige Nightbringer Lee Sin",
+          "championId": 64,
+          "skinNum": 28,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        },
+        {
+          "id": 64039,
+          "name": "Prestige Nightbringer Lee Sin (2022)",
+          "championId": 64,
+          "skinNum": 39,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            193
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "SOUL FIGHTER",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sett_10.jpg",
+      "cdragonIds": [
+        196
+      ],
+      "cdragonNames": [
+        "Soul Fighter"
+      ],
+      "matchKeys": [
+        "soul fighter"
+      ],
+      "skinCount": 12,
+      "skins": [
+        {
+          "id": 555054,
+          "name": "Prestige Soul Fighter Pyke",
+          "championId": 555,
+          "skinNum": 54,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 35044,
+          "name": "Prestige Soul Fighter Shaco",
+          "championId": 35,
+          "skinNum": 44,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 28042,
+          "name": "Soul Fighter Evelynn",
+          "championId": 28,
+          "skinNum": 42,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 887020,
+          "name": "Soul Fighter Gwen",
+          "championId": 887,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 202036,
+          "name": "Soul Fighter Jhin",
+          "championId": 202,
+          "skinNum": 36,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 99038,
+          "name": "Soul Fighter Lux",
+          "championId": 99,
+          "skinNum": 38,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 950001,
+          "name": "Soul Fighter Naafiri",
+          "championId": 950,
+          "skinNum": 1,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 555053,
+          "name": "Soul Fighter Pyke",
+          "championId": 555,
+          "skinNum": 53,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 360030,
+          "name": "Soul Fighter Samira",
+          "championId": 360,
+          "skinNum": 30,
+          "rarity": "kUltimate",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 875045,
+          "name": "Soul Fighter Sett",
+          "championId": 875,
+          "skinNum": 45,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 35043,
+          "name": "Soul Fighter Shaco",
+          "championId": 35,
+          "skinNum": 43,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            196
+          ]
+        },
+        {
+          "id": 234030,
+          "name": "Soul Fighter Viego",
+          "championId": 234,
+          "skinNum": 30,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            196
+          ]
+        }
+      ]
+    }
+  ]
+}
