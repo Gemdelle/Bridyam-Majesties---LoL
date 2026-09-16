@@ -3,6 +3,37 @@ import react from '@vitejs/plugin-react'
 import fs from 'fs'
 import path from 'path'
 
+const isGitHubPages = process.env.GITHUB_PAGES === 'true'
+const pagesBase = '/Bridyam-Majesties---LoL/'
+
+/** Rewrite absolute /images and /data paths so they work under the Pages subpath. */
+function pagesPublicPathRewrite() {
+  if (!isGitHubPages) return null
+
+  const base = pagesBase.replace(/\/$/, '')
+  return {
+    name: 'pages-public-path-rewrite',
+    enforce: 'pre' as const,
+    transform(code: string, id: string) {
+      if (id.includes('node_modules')) return null
+      if (!/\.(tsx?|jsx?|scss|sass|css)$/.test(id)) return null
+
+      const next = code
+        .replaceAll('"/images/', `"${base}/images/`)
+        .replaceAll("'/images/", `'${base}/images/`)
+        .replaceAll('`/images/', `\`${base}/images/`)
+        .replaceAll('"/data/', `"${base}/data/`)
+        .replaceAll("'/data/", `'${base}/data/`)
+        .replaceAll('`/data/', `\`${base}/data/`)
+        .replaceAll('url(/images/', `url(${base}/images/`)
+        .replaceAll("url('/images/", `url('${base}/images/`)
+        .replaceAll('url("/images/', `url("${base}/images/`)
+
+      return next === code ? null : next
+    }
+  }
+}
+
 // Plugin to save JSON files from the browser
 function saveJsonPlugin() {
   return {
@@ -84,8 +115,8 @@ function saveJsonPlugin() {
 export default defineConfig({
   // Repo name must match for GitHub Pages project site:
   // https://gemdelle.github.io/Bridyam-Majesties---LoL/
-  base: process.env.GITHUB_PAGES === 'true' ? '/Bridyam-Majesties---LoL/' : '/',
-  plugins: [react(), saveJsonPlugin()],
+  base: isGitHubPages ? pagesBase : '/',
+  plugins: [pagesPublicPathRewrite(), react(), saveJsonPlugin()],
   css: {
     preprocessorOptions: {
       scss: {

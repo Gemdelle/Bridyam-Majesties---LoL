@@ -1,5 +1,6 @@
 // import { authService } from './authService'; // DISABLED - Local mode
 import { fetchWinsFromSheet, updateWinsInSheet } from './sheetsWinsService';
+import { assetUrl } from '../utils/assetUrl';
 
 // Interface for the ranked data structure
 export interface RankedData {
@@ -55,7 +56,7 @@ export interface RankedResponse {
 // LOCAL MODE: Fetch ranked data from local JSON, then overlay wins from Google Sheets
 export const fetchRankedData = async (): Promise<RankedData[]> => {
     try {
-        const response = await fetch(`/data/rankeds.json?t=${Date.now()}`, { cache: 'no-store' });
+        const response = await fetch(`${assetUrl('data/rankeds.json')}?t=${Date.now()}`, { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
