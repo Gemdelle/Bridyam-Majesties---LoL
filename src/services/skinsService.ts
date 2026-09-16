@@ -238,6 +238,16 @@ export const getWinterSkinPriority = (skin: OwnedSkin): number => {
   return 4;
 };
 
+/** Star Guardian > Pajama Guardian */
+export const getStarGuardianPriority = (skin: OwnedSkin): number => {
+  const name = normalize(skin.name);
+  const lines = (skin.skinLines || []).map(normalize).join(' ');
+  const hay = `${name} ${lines}`;
+  if (hay.includes('pajama')) return 1;
+  if (hay.includes('star guardian')) return 0;
+  return 2;
+};
+
 export const sortSkinsForFamily = (
   skins: OwnedSkin[],
   family: SkinFamily,
@@ -245,13 +255,18 @@ export const sortSkinsForFamily = (
 ): OwnedSkin[] => {
   const copy = skins.slice();
   copy.sort((a, b) => {
-    if (role) {
-      const pr = champRolePriority(role, a.champName) - champRolePriority(role, b.champName);
-      if (pr !== 0) return pr;
-    }
+    // Family theme priority first (winterblessed / star guardian), then role champ priority
     if (family.matchMode === 'winter' || family.name === 'WINTER') {
       const wp = getWinterSkinPriority(a) - getWinterSkinPriority(b);
       if (wp !== 0) return wp;
+    }
+    if (family.name === 'STAR GUARDIAN') {
+      const sp = getStarGuardianPriority(a) - getStarGuardianPriority(b);
+      if (sp !== 0) return sp;
+    }
+    if (role) {
+      const pr = champRolePriority(role, a.champName) - champRolePriority(role, b.champName);
+      if (pr !== 0) return pr;
     }
     return a.name.localeCompare(b.name);
   });
@@ -339,6 +354,16 @@ export const getRoleTeamForFamily = (
         skins: sortSkinsForFamily(acc.skins, family, lane.id),
       }))
       .sort((a, b) => {
+        if (family.matchMode === 'winter' || family.name === 'WINTER') {
+          const wa = Math.min(...a.skins.map((s) => getWinterSkinPriority(s)));
+          const wb = Math.min(...b.skins.map((s) => getWinterSkinPriority(s)));
+          if (wa !== wb) return wa - wb;
+        }
+        if (family.name === 'STAR GUARDIAN') {
+          const sa = Math.min(...a.skins.map((s) => getStarGuardianPriority(s)));
+          const sb = Math.min(...b.skins.map((s) => getStarGuardianPriority(s)));
+          if (sa !== sb) return sa - sb;
+        }
         const bestA = Math.min(...a.skins.map((s) => champRolePriority(lane.id, s.champName)));
         const bestB = Math.min(...b.skins.map((s) => champRolePriority(lane.id, s.champName)));
         return bestA - bestB || a.username.localeCompare(b.username);
@@ -463,3 +488,14 @@ export const cleanAccountName = (username: string): string =>
 
 export const canFormFullTeam = (columns: RoleTeamColumn[]): boolean =>
   columns.every((col) => col.accounts.length > 0);
+
+/** How many of the 5 lanes can be filled for this family. */
+export const countCoveredRoles = (
+  family: SkinFamily,
+  accountSkins: AccountSkins[],
+  rankedLookup: Map<number, { username: string; essencer?: string }>,
+  rolesData: ChampionRolesFile
+): number => {
+  const team = getRoleTeamForFamily(family, accountSkins, rankedLookup, rolesData);
+  return team.filter((col) => col.accounts.length > 0).length;
+};
