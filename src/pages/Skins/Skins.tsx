@@ -13,7 +13,6 @@ import {
   reconcileUniqueSelections,
   getBlockedChampions,
   firstAvailableSkin,
-  getOwnedSplashForFamily,
   FEATURED_PRIORITY_ORDER,
   FEATURED_TRAILING_ORDER,
   type SkinFamily,
@@ -35,8 +34,8 @@ interface SplashFit {
   scale: number;
 }
 
-const SPLASH_FIT_KEY = 'bridyam-skin-splash-fit-v2';
-const DEFAULT_FIT: SplashFit = { x: 50, y: 35, scale: 1.2 };
+const SPLASH_FIT_KEY = 'bridyam-skin-splash-fit-v3';
+const DEFAULT_FIT: SplashFit = { x: 50, y: 28, scale: 1.65 };
 
 const prettyAccountName = (username: string): string => {
   const cleaned = cleanAccountName(username);
@@ -309,11 +308,15 @@ const Skins: React.FC = () => {
             fileFits = {};
           }
         }
-        // File is source of truth for published fits; local edits (v2, name-keyed) overlay.
-        const local = loadSplashFits();
-        const merged = { ...fileFits, ...local };
-        setSplashFits(merged);
-        saveSplashFits(merged);
+        // Published file wins; drop stale local ID-based caches.
+        try {
+          localStorage.removeItem('bridyam-skin-splash-fit');
+          localStorage.removeItem('bridyam-skin-splash-fit-v2');
+        } catch {
+          /* ignore */
+        }
+        setSplashFits(fileFits);
+        saveSplashFits(fileFits);
       } catch (error) {
         console.error('Error loading skins data:', error);
       } finally {
@@ -462,7 +465,7 @@ const Skins: React.FC = () => {
     const gemN = Math.max(1, Math.min(5, covered || 1));
     const fit = getFit(family);
     const isEditing = editSplash && editingFamilyId === family.id;
-    const splashSrc = getOwnedSplashForFamily(family, accountSkins);
+    const splashSrc = family.splashart;
     const imgStyle: React.CSSProperties = {
       objectPosition: `${fit.x}% ${fit.y}%`,
       // Origin follows focus point so ↑/↓ actually pans while zoomed
