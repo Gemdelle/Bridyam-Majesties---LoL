@@ -3540,6 +3540,16 @@
           "skinLines": [
             "nightbringer and dawnbringer"
           ]
+        },
+        {
+          "name": "Reindeer Kog'Maw",
+          "champName": "Kog'Maw",
+          "rarity": "kLegacy",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/kogmaw/skins/skin04/images/kogmaw_splash_tile_4.jpg",
+          "skinLines": [
+            "snowdown showdown",
+            "snowdown"
+          ]
         }
       ]
     },
@@ -5673,6 +5683,16 @@
           "skinLines": [
             "dragonmancers"
           ]
+        },
+        {
+          "name": "Reindeer Kog'Maw",
+          "champName": "Kog'Maw",
+          "rarity": "kLegacy",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/kogmaw/skins/skin04/images/kogmaw_splash_tile_4.jpg",
+          "skinLines": [
+            "snowdown showdown",
+            "snowdown"
+          ]
         }
       ]
     },
@@ -5864,6 +5884,16 @@
           "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/xayah/skins/skin47/images/xayah_splash_tile_47.jpg",
           "skinLines": [
             "anima squad"
+          ]
+        },
+        {
+          "name": "Reindeer Kog'Maw",
+          "champName": "Kog'Maw",
+          "rarity": "kLegacy",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/kogmaw/skins/skin04/images/kogmaw_splash_tile_4.jpg",
+          "skinLines": [
+            "snowdown showdown",
+            "snowdown"
           ]
         }
       ]

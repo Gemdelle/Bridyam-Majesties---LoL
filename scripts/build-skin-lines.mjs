@@ -48,7 +48,7 @@ const FEATURED = [
   {
     key: 'STAR GUARDIAN',
     cdragonIds: [19, 20, 119, 161],
-    splash: 'Lux_6',
+    splash: 'Quinn_14',
     matchMode: 'lines',
   },
   {
@@ -84,19 +84,19 @@ const FEATURED = [
   {
     key: 'SPIRIT BLOSSOM',
     cdragonIds: [171, 218],
-    splash: 'Ahri_27',
+    splash: 'Yunara_1', // Spirit Blossom Springs (latest)
     matchMode: 'lines',
   },
   {
     key: 'VICTORIOUS',
     cdragonIds: [7],
-    splash: 'Aatrox_9',
+    splash: 'KogMaw_55',
     matchMode: 'lines',
   },
   {
     key: 'BATTLE QUEENS',
     cdragonIds: [137],
-    splash: 'Diana_25',
+    splash: 'Fiora_89',
     matchMode: 'lines',
   },
   {
@@ -108,7 +108,7 @@ const FEATURED = [
   {
     key: 'WARDEN',
     cdragonIds: [50],
-    splash: 'Jax_12',
+    splash: 'Quinn_5',
     matchMode: 'lines',
   },
   {
@@ -120,41 +120,41 @@ const FEATURED = [
   {
     key: 'COVEN',
     cdragonIds: [92],
-    splash: 'Ahri_42',
+    splash: 'Syndra_54',
     matchMode: 'coven',
     extraMatchKeys: ['coven'],
   },
   {
     key: 'BROKEN COVENANT',
     cdragonIds: [190],
-    splash: 'MissFortune_41',
+    splash: 'Chogath_23',
     matchMode: 'broken-covenant',
     extraMatchKeys: ['broken covenant'],
   },
   {
     key: 'NIGHTBRINGER',
     cdragonIds: [193],
-    splash: 'Yasuo_9',
+    splash: 'LeeSin_27',
     matchMode: 'nightbringer',
     extraMatchKeys: ['nightbringer'],
   },
   {
     key: 'DAWNBRINGER',
     cdragonIds: [193],
-    splash: 'Riven_16',
+    splash: 'Janna_66',
     matchMode: 'dawnbringer',
     extraMatchKeys: ['dawnbringer'],
   },
   {
     key: 'HIGH STAKES',
     cdragonIds: [41],
-    splash: 'Ezreal_8',
+    splash: 'Syndra_3',
     matchMode: 'lines',
   },
   {
     key: 'MARAUDER',
     cdragonIds: [45],
-    splash: 'Alistar_8',
+    splash: 'Kalista_5',
     matchMode: 'lines',
     extraMatchKeys: ['marauder', 'forajido'],
   },
@@ -254,6 +254,7 @@ function isRoyalSkinName(name) {
   // Card-deck High Stakes skins are not "royal"
   if (/king of clubs|queen of diamonds|jack of hearts|ace of spades/i.test(n)) return false;
   if (/mecha kingdoms|battle queen/i.test(n)) return false;
+  if (/lancer paragon/i.test(n)) return true;
   return /^(royal|imperial|golden|lord|king|queen)\b/i.test(n)
     || /\bbattle regalia\b/i.test(n)
     || /\broyal guard\b/i.test(n)
@@ -351,8 +352,10 @@ async function main() {
   });
 
   // All remaining named skinlines (skip shared NB/DB line — covered by featured splits)
+  // Also hide Lancer entirely (Paragon Blitz lives under ROYAL)
+  const hideOtherIds = new Set([69]);
   const remaining = lines
-    .filter((l) => !featuredIds.has(l.id))
+    .filter((l) => !featuredIds.has(l.id) && !hideOtherIds.has(l.id))
     .sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
   remaining.forEach((line) => {

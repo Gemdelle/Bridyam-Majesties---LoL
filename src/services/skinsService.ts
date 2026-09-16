@@ -230,6 +230,7 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
     if (/king of clubs|queen of diamonds|jack of hearts|ace of spades|mecha kingdoms|battle queen/.test(skinName)) {
       return false;
     }
+    if (skinName.includes('lancer paragon')) return true;
     return (
       /^(royal|imperial|golden|lord|king|queen)\b/.test(skinName) ||
       skinName.includes('battle regalia') ||

@@ -398,10 +398,17 @@ const Skins: React.FC = () => {
 
   const updateFit = (family: SkinFamily, patch: Partial<SplashFit>) => {
     const key = String(family.id);
-    const next = {
-      ...splashFits,
-      [key]: { ...getFit(family), ...patch },
+    const current = getFit(family);
+    const nextFit: SplashFit = {
+      x: Number(patch.x ?? current.x),
+      y: Number(patch.y ?? current.y),
+      scale: Number(patch.scale ?? current.scale),
     };
+    // Allow panning past 0–100 so ↑/↓ always move the crop
+    nextFit.x = Math.max(-40, Math.min(140, nextFit.x));
+    nextFit.y = Math.max(-40, Math.min(140, nextFit.y));
+    nextFit.scale = Math.max(1, Math.min(2.8, nextFit.scale));
+    const next = { ...splashFits, [key]: nextFit };
     setSplashFits(next);
     saveSplashFits(next);
   };
@@ -520,27 +527,39 @@ const Skins: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
           >
-            <button type="button" onClick={() => updateFit(family, { x: fit.x - 4 })}>
+            <button type="button" onClick={() => updateFit(family, { x: fit.x - 6 })}>
               ←
             </button>
-            <button type="button" onClick={() => updateFit(family, { y: fit.y - 4 })}>
+            <button
+              type="button"
+              title="Move crop up (see lower part of splash)"
+              onClick={() => updateFit(family, { y: Number(fit.y) + 6 })}
+            >
               ↑
             </button>
-            <button type="button" onClick={() => updateFit(family, { y: fit.y + 4 })}>
+            <button
+              type="button"
+              title="Move crop down (see upper part of splash)"
+              onClick={() => updateFit(family, { y: Number(fit.y) - 6 })}
+            >
               ↓
             </button>
-            <button type="button" onClick={() => updateFit(family, { x: fit.x + 4 })}>
+            <button type="button" onClick={() => updateFit(family, { x: fit.x + 6 })}>
               →
             </button>
             <button
               type="button"
-              onClick={() => updateFit(family, { scale: Math.max(1, +(fit.scale - 0.05).toFixed(2)) })}
+              onClick={() =>
+                updateFit(family, { scale: Math.max(1, +(Number(fit.scale) - 0.08).toFixed(2)) })
+              }
             >
               −
             </button>
             <button
               type="button"
-              onClick={() => updateFit(family, { scale: Math.min(2.5, +(fit.scale + 0.05).toFixed(2)) })}
+              onClick={() =>
+                updateFit(family, { scale: Math.min(2.8, +(Number(fit.scale) + 0.08).toFixed(2)) })
+              }
             >
               +
             </button>
@@ -551,6 +570,9 @@ const Skins: React.FC = () => {
             >
               ↺
             </button>
+            <span className={styles.splash__edit__meta}>
+              y:{Math.round(Number(fit.y))} z:{Number(fit.scale).toFixed(2)}
+            </span>
           </div>
         )}
       </div>
