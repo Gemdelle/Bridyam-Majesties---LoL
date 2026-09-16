@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-16T07:57:44.399Z",
+  "updatedAt": "2026-09-16T08:24:26.312Z",
   "source": "loldb",
   "accounts": [
     {
@@ -1934,6 +1934,15 @@
           "skinLines": [
             "cyber pop"
           ]
+        },
+        {
+          "name": "Ice King Twitch",
+          "champName": "Twitch",
+          "rarity": "kEpic",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/twitch/skins/skin12/images/twitch_splash_tile_12.jpg",
+          "skinLines": [
+            "winter wonder"
+          ]
         }
       ]
     },
@@ -3740,6 +3749,15 @@
           "skinLines": [
             "spirit blossom"
           ]
+        },
+        {
+          "name": "Ice King Twitch",
+          "champName": "Twitch",
+          "rarity": "kEpic",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/twitch/skins/skin12/images/twitch_splash_tile_12.jpg",
+          "skinLines": [
+            "winter wonder"
+          ]
         }
       ]
     },
@@ -4897,6 +4915,15 @@
           "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/xerath/skins/skin05/images/xerath_splash_tile_5.jpg",
           "skinLines": [
             "dark star"
+          ]
+        },
+        {
+          "name": "Ice King Twitch",
+          "champName": "Twitch",
+          "rarity": "kEpic",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/twitch/skins/skin12/images/twitch_splash_tile_12.jpg",
+          "skinLines": [
+            "winter wonder"
           ]
         }
       ]
@@ -6400,6 +6427,15 @@
           "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/poppy/skins/skin05/images/poppy_splash_tile_5.jpg",
           "skinLines": [
             "legacy"
+          ]
+        },
+        {
+          "name": "Ice King Twitch",
+          "champName": "Twitch",
+          "rarity": "kEpic",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/twitch/skins/skin12/images/twitch_splash_tile_12.jpg",
+          "skinLines": [
+            "winter wonder"
           ]
         }
       ]

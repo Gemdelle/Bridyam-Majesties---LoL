@@ -37,11 +37,13 @@ export interface SkinLineSkin {
   skinNum: number;
   rarity: string;
   cdragonLineIds: number[];
+  tileUrl?: string;
 }
 
 export interface SkinFamily {
   id: number;
   sortOrder?: number;
+  featured?: boolean;
   name: string;
   splashart: string;
   description?: string;
@@ -67,19 +69,18 @@ export interface AccountSkins {
   skins: OwnedSkin[];
 }
 
-export interface FamilySkinOption {
+export interface RoleAccountOption {
   rankedId: number;
   username: string;
   essencer?: string;
-  skin: OwnedSkin;
-  role: LaneRole;
+  skins: OwnedSkin[];
 }
 
 export interface RoleTeamColumn {
   role: LaneRole;
   label: string;
   icon: string;
-  options: FamilySkinOption[];
+  accounts: RoleAccountOption[];
 }
 
 interface SkinLinesFile {
@@ -92,22 +93,24 @@ interface AccountSkinsFile {
 
 interface ChampionRolesFile {
   byName: Record<string, LaneRole>;
+  byNameAll?: Record<string, LaneRole[]>;
 }
 
 let familiesCache: SkinFamily[] | null = null;
 let ownershipCache: AccountSkins[] | null = null;
-let rolesCache: Record<string, LaneRole> | null = null;
+let rolesCache: ChampionRolesFile | null = null;
 
 export const fetchSkinFamilies = async (): Promise<SkinFamily[]> => {
   if (familiesCache) return familiesCache;
   const res = await fetch(assetUrl(`data/skin-lines.json?t=${Date.now()}`), { cache: 'no-store' });
   if (!res.ok) throw new Error(`skin-lines.json ${res.status}`);
   const data: SkinLinesFile = await res.json();
-  familiesCache = (data.families || []).slice().sort((a, b) => (a.sortOrder || a.id) - (b.sortOrder || b.id));
+  familiesCache = (data.families || [])
+    .slice()
+    .sort((a, b) => (a.sortOrder || a.id) - (b.sortOrder || b.id));
   return familiesCache;
 };
 
-/** @deprecated alias */
 export type SkinLine = SkinFamily;
 export const fetchSkinLines = fetchSkinFamilies;
 
@@ -128,19 +131,18 @@ export const fetchAccountSkins = async (): Promise<AccountSkins[]> => {
   }
 };
 
-export const fetchChampionRoles = async (): Promise<Record<string, LaneRole>> => {
+export const fetchChampionRoles = async (): Promise<ChampionRolesFile> => {
   if (rolesCache) return rolesCache;
   try {
     const res = await fetch(assetUrl(`data/champion-roles.json?t=${Date.now()}`), { cache: 'no-store' });
     if (!res.ok) {
-      rolesCache = {};
+      rolesCache = { byName: {}, byNameAll: {} };
       return rolesCache;
     }
-    const data: ChampionRolesFile = await res.json();
-    rolesCache = data.byName || {};
+    rolesCache = await res.json();
     return rolesCache;
   } catch {
-    rolesCache = {};
+    rolesCache = { byName: {}, byNameAll: {} };
     return rolesCache;
   }
 };
@@ -163,8 +165,7 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
   const lineHits = (skin.skinLines || []).map(normalize);
   const skinName = normalize(skin.name);
 
-  // Strict families: require key in skinLines or exact name prefix
-  if (family.name === 'WINTERBLESSED') {
+  if (family.matchMode === 'winterblessed' || family.name === 'WINTERBLESSED') {
     return lineHits.some((l) => l.includes('winterblessed')) || skinName.includes('winterblessed');
   }
 
@@ -175,12 +176,15 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
   return keys.some((k) => k.length >= 4 && (skinName.startsWith(k) || skinName.includes(k)));
 };
 
-export const getRoleForChampionName = (
+export const getRolesForChampionName = (
   champName: string,
-  rolesByName: Record<string, LaneRole>
-): LaneRole => {
+  rolesData: ChampionRolesFile
+): LaneRole[] => {
   const key = normalize(champName);
-  return rolesByName[key] || rolesByName[champName.toLowerCase()] || 'mid';
+  const all = rolesData.byNameAll?.[key] || rolesData.byNameAll?.[champName.toLowerCase()];
+  if (all?.length) return all;
+  const primary = rolesData.byName?.[key] || rolesData.byName?.[champName.toLowerCase()];
+  return primary ? [primary] : ['mid'];
 };
 
 export interface FamilyAccountOwnership {
@@ -197,7 +201,6 @@ export const getAccountsForFamily = (
   rankedLookup: Map<number, { username: string; essencer?: string }>
 ): FamilyAccountOwnership[] => {
   const rows: FamilyAccountOwnership[] = [];
-
   for (const account of accountSkins) {
     const owned = (account.skins || []).filter((s) => skinBelongsToFamily(s, family));
     if (owned.length === 0) continue;
@@ -210,47 +213,53 @@ export const getAccountsForFamily = (
       ownedSkins: owned,
     });
   }
-
   return rows.sort(
     (a, b) => b.ownedCount - a.ownedCount || a.username.localeCompare(b.username)
   );
 };
 
-/** Build TOP/JG/MID/ADC/SUPP columns with skin+account options for a family. */
+/** Group owned family skins by lane, then by account (for dropdowns). */
 export const getRoleTeamForFamily = (
   family: SkinFamily,
   accountSkins: AccountSkins[],
   rankedLookup: Map<number, { username: string; essencer?: string }>,
-  rolesByName: Record<string, LaneRole>
+  rolesData: ChampionRolesFile
 ): RoleTeamColumn[] => {
-  const options: FamilySkinOption[] = [];
-
-  for (const account of accountSkins) {
-    for (const skin of account.skins || []) {
-      if (!skinBelongsToFamily(skin, family)) continue;
-      const role = getRoleForChampionName(skin.champName, rolesByName);
-      const ranked = rankedLookup.get(account.ranked_id);
-      options.push({
-        rankedId: account.ranked_id,
-        username: account.username || ranked?.username || `Account ${account.ranked_id}`,
-        essencer: ranked?.essencer,
-        skin,
-        role,
-      });
-    }
-  }
-
   return LANE_ROLES.map((lane) => {
-    const roleOptions = options
-      .filter((o) => o.role === lane.id)
-      // Prefer unique accounts first, keep multiple skins visible
-      .sort((a, b) => a.username.localeCompare(b.username) || a.skin.name.localeCompare(b.skin.name));
+    const byAccount = new Map<number, RoleAccountOption>();
+
+    for (const account of accountSkins) {
+      for (const skin of account.skins || []) {
+        if (!skinBelongsToFamily(skin, family)) continue;
+        const roles = getRolesForChampionName(skin.champName, rolesData);
+        if (!roles.includes(lane.id)) continue;
+
+        const ranked = rankedLookup.get(account.ranked_id);
+        const existing = byAccount.get(account.ranked_id);
+        if (existing) {
+          if (!existing.skins.some((s) => s.name === skin.name)) {
+            existing.skins.push(skin);
+          }
+        } else {
+          byAccount.set(account.ranked_id, {
+            rankedId: account.ranked_id,
+            username: account.username || ranked?.username || `Account ${account.ranked_id}`,
+            essencer: ranked?.essencer,
+            skins: [skin],
+          });
+        }
+      }
+    }
+
+    const accounts = [...byAccount.values()].sort((a, b) =>
+      a.username.localeCompare(b.username)
+    );
 
     return {
       role: lane.id,
       label: lane.label,
       icon: lane.icon,
-      options: roleOptions,
+      accounts,
     };
   });
 };
@@ -262,4 +271,4 @@ export const cleanAccountName = (username: string): string =>
     .trim();
 
 export const canFormFullTeam = (columns: RoleTeamColumn[]): boolean =>
-  columns.every((col) => col.options.length > 0);
+  columns.every((col) => col.accounts.length > 0);
