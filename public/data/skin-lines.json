@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-16T08:48:31.756Z",
+  "updatedAt": "2026-09-16T09:09:56.722Z",
   "source": "communitydragon",
-  "featuredCount": 20,
+  "featuredCount": 22,
   "families": [
     {
       "id": 1,
@@ -3725,130 +3725,17 @@
       "name": "COVEN",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_42.jpg",
       "cdragonIds": [
-        92,
-        190
+        92
       ],
       "cdragonNames": [
-        "Coven",
-        "Broken Covenant"
+        "Coven"
       ],
       "matchKeys": [
-        "coven",
-        "broken covenant"
+        "coven"
       ],
-      "matchMode": "lines",
-      "skinCount": 34,
+      "matchMode": "coven",
+      "skinCount": 18,
       "skins": [
-        {
-          "id": 893020,
-          "name": "Broken Covenant Aurora",
-          "championId": 893,
-          "skinNum": 20,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/aurora/skins/skin20/images/aurora_splash_tile_20.skins_aurora_skin20.jpg"
-        },
-        {
-          "id": 31023,
-          "name": "Broken Covenant Cho'Gath",
-          "championId": 31,
-          "skinNum": 23,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/chogath/skins/skin23/images/chogath_splash_tile_23.jpg"
-        },
-        {
-          "id": 202064,
-          "name": "Broken Covenant Jhin",
-          "championId": 202,
-          "skinNum": 64,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/jhin/skins/skin64/images/jhin_splash_tile_64.skins_jhin_skin64.jpg"
-        },
-        {
-          "id": 21040,
-          "name": "Broken Covenant Miss Fortune",
-          "championId": 21,
-          "skinNum": 40,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/missfortune/skins/skin40/images/missfortune_splash_tile_40.jpg"
-        },
-        {
-          "id": 56017,
-          "name": "Broken Covenant Nocturne",
-          "championId": 56,
-          "skinNum": 17,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/nocturne/skins/skin17/images/nocturne_splash_tile_17.jpg"
-        },
-        {
-          "id": 497027,
-          "name": "Broken Covenant Rakan",
-          "championId": 497,
-          "skinNum": 27,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/rakan/skins/skin27/images/rakan_splash_tile_27.jpg"
-        },
-        {
-          "id": 92055,
-          "name": "Broken Covenant Riven",
-          "championId": 92,
-          "skinNum": 55,
-          "rarity": "kLegendary",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/riven/skins/skin55/images/riven_splash_tile_55.jpg"
-        },
-        {
-          "id": 98054,
-          "name": "Broken Covenant Shen",
-          "championId": 98,
-          "skinNum": 54,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/shen/skins/skin54/images/shen_splash_tile_54.skins_shen_skin54.jpg"
-        },
-        {
-          "id": 8039,
-          "name": "Broken Covenant Vladimir",
-          "championId": 8,
-          "skinNum": 39,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/vladimir/skins/skin39/images/vladimir_splash_tile_39.jpg"
-        },
-        {
-          "id": 498037,
-          "name": "Broken Covenant Xayah",
-          "championId": 498,
-          "skinNum": 37,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/xayah/skins/skin37/images/xayah_splash_tile_37.jpg"
-        },
         {
           "id": 103042,
           "name": "Coven Ahri",
@@ -4004,73 +3891,6 @@
           "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/zyra/skins/skin05/images/zyra_splash_tile_5.jpg"
         },
         {
-          "id": 427011,
-          "name": "Old God Ivern",
-          "championId": 427,
-          "skinNum": 11,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            92
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/ivern/skins/skin11/images/ivern_splash_tile_11.jpg"
-        },
-        {
-          "id": 54027,
-          "name": "Old God Malphite",
-          "championId": 54,
-          "skinNum": 27,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            92
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/malphite/skins/skin27/images/malphite_splash_tile_27.jpg"
-        },
-        {
-          "id": 82044,
-          "name": "Old God Mordekaiser",
-          "championId": 82,
-          "skinNum": 44,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            92
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/mordekaiser/skins/skin44/images/mordekaiser_splash_tile_44.jpg"
-        },
-        {
-          "id": 56007,
-          "name": "Old God Nocturne",
-          "championId": 56,
-          "skinNum": 7,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            58,
-            92
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/nocturne/skins/skin07/images/nocturne_splash_tile_7.jpg"
-        },
-        {
-          "id": 19035,
-          "name": "Old God Warwick",
-          "championId": 19,
-          "skinNum": 35,
-          "rarity": "kEpic",
-          "cdragonLineIds": [
-            92
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/warwick/skins/skin35/images/warwick_splash_tile_35.jpg"
-        },
-        {
-          "id": 21041,
-          "name": "Prestige Broken Covenant Miss Fortune",
-          "championId": 21,
-          "skinNum": 41,
-          "rarity": "kMythic",
-          "cdragonLineIds": [
-            190
-          ],
-          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/missfortune/skins/skin41/images/missfortune_splash_tile_41.jpg"
-        },
-        {
           "id": 84071,
           "name": "Prestige Coven Akali",
           "championId": 84,
@@ -4119,6 +3939,147 @@
     {
       "id": 17,
       "sortOrder": 17,
+      "featured": true,
+      "name": "BROKEN COVENANT",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MissFortune_41.jpg",
+      "cdragonIds": [
+        190
+      ],
+      "cdragonNames": [
+        "Broken Covenant"
+      ],
+      "matchKeys": [
+        "broken covenant"
+      ],
+      "matchMode": "lines",
+      "skinCount": 11,
+      "skins": [
+        {
+          "id": 893020,
+          "name": "Broken Covenant Aurora",
+          "championId": 893,
+          "skinNum": 20,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/aurora/skins/skin20/images/aurora_splash_tile_20.skins_aurora_skin20.jpg"
+        },
+        {
+          "id": 31023,
+          "name": "Broken Covenant Cho'Gath",
+          "championId": 31,
+          "skinNum": 23,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/chogath/skins/skin23/images/chogath_splash_tile_23.jpg"
+        },
+        {
+          "id": 202064,
+          "name": "Broken Covenant Jhin",
+          "championId": 202,
+          "skinNum": 64,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/jhin/skins/skin64/images/jhin_splash_tile_64.skins_jhin_skin64.jpg"
+        },
+        {
+          "id": 21040,
+          "name": "Broken Covenant Miss Fortune",
+          "championId": 21,
+          "skinNum": 40,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/missfortune/skins/skin40/images/missfortune_splash_tile_40.jpg"
+        },
+        {
+          "id": 56017,
+          "name": "Broken Covenant Nocturne",
+          "championId": 56,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/nocturne/skins/skin17/images/nocturne_splash_tile_17.jpg"
+        },
+        {
+          "id": 497027,
+          "name": "Broken Covenant Rakan",
+          "championId": 497,
+          "skinNum": 27,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/rakan/skins/skin27/images/rakan_splash_tile_27.jpg"
+        },
+        {
+          "id": 92055,
+          "name": "Broken Covenant Riven",
+          "championId": 92,
+          "skinNum": 55,
+          "rarity": "kLegendary",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/riven/skins/skin55/images/riven_splash_tile_55.jpg"
+        },
+        {
+          "id": 98054,
+          "name": "Broken Covenant Shen",
+          "championId": 98,
+          "skinNum": 54,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/shen/skins/skin54/images/shen_splash_tile_54.skins_shen_skin54.jpg"
+        },
+        {
+          "id": 8039,
+          "name": "Broken Covenant Vladimir",
+          "championId": 8,
+          "skinNum": 39,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/vladimir/skins/skin39/images/vladimir_splash_tile_39.jpg"
+        },
+        {
+          "id": 498037,
+          "name": "Broken Covenant Xayah",
+          "championId": 498,
+          "skinNum": 37,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/xayah/skins/skin37/images/xayah_splash_tile_37.jpg"
+        },
+        {
+          "id": 21041,
+          "name": "Prestige Broken Covenant Miss Fortune",
+          "championId": 21,
+          "skinNum": 41,
+          "rarity": "kMythic",
+          "cdragonLineIds": [
+            190
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/missfortune/skins/skin41/images/missfortune_splash_tile_41.jpg"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "sortOrder": 18,
       "featured": true,
       "name": "NIGHTBRINGER",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_9.jpg",
@@ -4325,8 +4286,8 @@
       ]
     },
     {
-      "id": 18,
-      "sortOrder": 18,
+      "id": 19,
+      "sortOrder": 19,
       "featured": true,
       "name": "DAWNBRINGER",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Riven_16.jpg",
@@ -4467,8 +4428,8 @@
       ]
     },
     {
-      "id": 19,
-      "sortOrder": 19,
+      "id": 20,
+      "sortOrder": 20,
       "featured": true,
       "name": "HIGHSTAKES",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_8.jpg",
@@ -4542,10 +4503,10 @@
       ]
     },
     {
-      "id": 20,
-      "sortOrder": 20,
+      "id": 21,
+      "sortOrder": 21,
       "featured": true,
-      "name": "MARAUDER",
+      "name": "FORAJIDO",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Alistar_8.jpg",
       "cdragonIds": [
         45
@@ -4554,6 +4515,7 @@
         "Marauder"
       ],
       "matchKeys": [
+        "forajido",
         "marauder"
       ],
       "matchMode": "lines",
@@ -4639,7 +4601,255 @@
       ]
     },
     {
-      "id": 21,
+      "id": 22,
+      "sortOrder": 22,
+      "featured": true,
+      "name": "NAVIDAD",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/KogMaw_4.jpg",
+      "cdragonIds": [
+        48
+      ],
+      "cdragonNames": [
+        "Snowdown Showdown"
+      ],
+      "matchKeys": [
+        "navidad",
+        "snowdown",
+        "snowdown showdown",
+        "santa",
+        "reindeer",
+        "mistletoe",
+        "happy elf",
+        "candy cane",
+        "bad santa"
+      ],
+      "matchMode": "navidad",
+      "skinCount": 20,
+      "skins": [
+        {
+          "id": 222012,
+          "name": "Ambitious Elf Jinx",
+          "championId": 222,
+          "skinNum": 12,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/jinx/skins/skin12/images/jinx_splash_tile_12.jpg"
+        },
+        {
+          "id": 45007,
+          "name": "Bad Santa Veigar",
+          "championId": 45,
+          "skinNum": 7,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/veigar/skins/skin07/images/veigar_splash_tile_7.jpg"
+        },
+        {
+          "id": 21004,
+          "name": "Candy Cane Miss Fortune",
+          "championId": 21,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/missfortune/skins/skin04/images/missfortune_splash_tile_4.jpg"
+        },
+        {
+          "id": 18002,
+          "name": "Earnest Elf Tristana",
+          "championId": 18,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/tristana/skins/skin02/images/tristana_splash_tile_2.jpg"
+        },
+        {
+          "id": 57003,
+          "name": "Festive Maokai",
+          "championId": 57,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/maokai/skins/skin03/images/maokai_splash_tile_3.jpg"
+        },
+        {
+          "id": 17001,
+          "name": "Happy Elf Teemo",
+          "championId": 17,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/teemo/skins/skin01/images/teemo_splash_tile_1.jpg"
+        },
+        {
+          "id": 7003,
+          "name": "Mistletoe LeBlanc",
+          "championId": 7,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/leblanc/skins/skin03/images/leblanc_splash_tile_3.jpg"
+        },
+        {
+          "id": 35003,
+          "name": "Nutcracko",
+          "championId": 35,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/shaco/skins/skin03/images/shaco_splash_tile_3.jpg"
+        },
+        {
+          "id": 26001,
+          "name": "Old Saint Zilean",
+          "championId": 26,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/zilean/skins/skin01/images/zilean_splash_tile_1.jpg"
+        },
+        {
+          "id": 32004,
+          "name": "Re-Gifted Amumu",
+          "championId": 32,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/amumu/skins/skin04/images/amumu_splash_tile_4.jpg"
+        },
+        {
+          "id": 96004,
+          "name": "Reindeer Kog'Maw",
+          "championId": 96,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/kogmaw/skins/skin04/images/kogmaw_splash_tile_4.jpg"
+        },
+        {
+          "id": 901011,
+          "name": "Reindeer Smolder",
+          "championId": 901,
+          "skinNum": 11,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/smolder/skins/skin11/images/smolder_splash_tile_11.jpg"
+        },
+        {
+          "id": 201010,
+          "name": "Santa Braum",
+          "championId": 201,
+          "skinNum": 10,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/braum/skins/skin10/images/braum_splash_tile_10.jpg"
+        },
+        {
+          "id": 119012,
+          "name": "Santa Draven",
+          "championId": 119,
+          "skinNum": 12,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/draven/skins/skin12/images/draven_splash_tile_12.jpg"
+        },
+        {
+          "id": 79003,
+          "name": "Santa Gragas",
+          "championId": 79,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/gragas/skins/skin03/images/gragas_splash_tile_3.jpg"
+        },
+        {
+          "id": 37003,
+          "name": "Silent Night Sona",
+          "championId": 37,
+          "skinNum": 3,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/sona/skins/skin03/images/sona_splash_tile_3.jpg"
+        },
+        {
+          "id": 55007,
+          "name": "Slay Belle Katarina",
+          "championId": 55,
+          "skinNum": 7,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/katarina/skins/skin07/images/katarina_splash_tile_7.jpg"
+        },
+        {
+          "id": 76001,
+          "name": "Snow Bunny Nidalee",
+          "championId": 76,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/nidalee/skins/skin01/images/nidalee_splash_tile_1.jpg"
+        },
+        {
+          "id": 74004,
+          "name": "Snowmerdinger",
+          "championId": 74,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/heimerdinger/skins/skin04/images/heimerdinger_splash_tile_4.jpg"
+        },
+        {
+          "id": 20002,
+          "name": "Workshop Nunu & Willump",
+          "championId": 20,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            48
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/nunu/skins/skin02/images/nunu_splash_tile_2.jpg"
+        }
+      ]
+    },
+    {
+      "id": 23,
       "sortOrder": 1022,
       "featured": false,
       "name": "ACADEMY",
@@ -4726,7 +4936,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 24,
       "sortOrder": 1226,
       "featured": false,
       "name": "AEGIS FRAME",
@@ -4769,7 +4979,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 25,
       "sortOrder": 1097,
       "featured": false,
       "name": "ALBION",
@@ -4834,7 +5044,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 26,
       "sortOrder": 1156,
       "featured": false,
       "name": "ANIMA SQUAD",
@@ -5042,7 +5252,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 27,
       "sortOrder": 1011,
       "featured": false,
       "name": "ARCADE: BATTLE BOSSES",
@@ -5151,7 +5361,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 28,
       "sortOrder": 1010,
       "featured": false,
       "name": "ARCADE: HEROES",
@@ -5293,7 +5503,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 29,
       "sortOrder": 1152,
       "featured": false,
       "name": "ARCANE",
@@ -5490,7 +5700,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 30,
       "sortOrder": 1095,
       "featured": false,
       "name": "ARCANISTS",
@@ -5577,7 +5787,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 31,
       "sortOrder": 1024,
       "featured": false,
       "name": "ARCLIGHT",
@@ -5653,7 +5863,7 @@
       ]
     },
     {
-      "id": 30,
+      "id": 32,
       "sortOrder": 1063,
       "featured": false,
       "name": "ARCTICOPS",
@@ -5740,7 +5950,7 @@
       ]
     },
     {
-      "id": 31,
+      "id": 33,
       "sortOrder": 1157,
       "featured": false,
       "name": "ASHEN KNIGHTS",
@@ -5816,7 +6026,7 @@
       ]
     },
     {
-      "id": 32,
+      "id": 34,
       "sortOrder": 1094,
       "featured": false,
       "name": "ASTRONAUTS",
@@ -5991,7 +6201,7 @@
       ]
     },
     {
-      "id": 33,
+      "id": 35,
       "sortOrder": 1113,
       "featured": false,
       "name": "BATTLE ACADEMIA",
@@ -6232,7 +6442,7 @@
       ]
     },
     {
-      "id": 34,
+      "id": 36,
       "sortOrder": 1078,
       "featured": false,
       "name": "BATTLE OF THE GOD-KINGS",
@@ -6297,7 +6507,7 @@
       ]
     },
     {
-      "id": 35,
+      "id": 37,
       "sortOrder": 1025,
       "featured": false,
       "name": "BATTLECAST",
@@ -6472,7 +6682,7 @@
       ]
     },
     {
-      "id": 36,
+      "id": 38,
       "sortOrder": 1143,
       "featured": false,
       "name": "BEES!",
@@ -6636,7 +6846,7 @@
       ]
     },
     {
-      "id": 37,
+      "id": 39,
       "sortOrder": 1182,
       "featured": false,
       "name": "BETA",
@@ -6668,7 +6878,7 @@
       ]
     },
     {
-      "id": 38,
+      "id": 40,
       "sortOrder": 1172,
       "featured": false,
       "name": "BEWITCHING",
@@ -6898,7 +7108,7 @@
       ]
     },
     {
-      "id": 39,
+      "id": 41,
       "sortOrder": 1049,
       "featured": false,
       "name": "BILGEWATER: BURNING TIDES",
@@ -7084,7 +7294,7 @@
       ]
     },
     {
-      "id": 40,
+      "id": 42,
       "sortOrder": 1074,
       "featured": false,
       "name": "BILGEWATER: CURSE OF THE DROWNED",
@@ -7138,7 +7348,7 @@
       ]
     },
     {
-      "id": 41,
+      "id": 43,
       "sortOrder": 1177,
       "featured": false,
       "name": "BILGEWATER: MERCS",
@@ -7170,7 +7380,7 @@
       ]
     },
     {
-      "id": 42,
+      "id": 44,
       "sortOrder": 1134,
       "featured": false,
       "name": "BLACK ROSE GROUP",
@@ -7246,7 +7456,7 @@
       ]
     },
     {
-      "id": 43,
+      "id": 45,
       "sortOrder": 1012,
       "featured": false,
       "name": "BLOOD MOON",
@@ -7542,7 +7752,7 @@
       ]
     },
     {
-      "id": 44,
+      "id": 46,
       "sortOrder": 1126,
       "featured": false,
       "name": "BLOODSTONE",
@@ -7640,7 +7850,7 @@
       ]
     },
     {
-      "id": 45,
+      "id": 47,
       "sortOrder": 1098,
       "featured": false,
       "name": "CATS VERSUS DOGS",
@@ -7804,7 +8014,7 @@
       ]
     },
     {
-      "id": 46,
+      "id": 48,
       "sortOrder": 1009,
       "featured": false,
       "name": "CHALLENGER",
@@ -7847,7 +8057,7 @@
       ]
     },
     {
-      "id": 47,
+      "id": 49,
       "sortOrder": 1209,
       "featured": false,
       "name": "CHOSEN OF THE WOLF",
@@ -7934,7 +8144,7 @@
       ]
     },
     {
-      "id": 48,
+      "id": 50,
       "sortOrder": 1178,
       "featured": false,
       "name": "CHRONICLE",
@@ -8021,7 +8231,7 @@
       ]
     },
     {
-      "id": 49,
+      "id": 51,
       "sortOrder": 1083,
       "featured": false,
       "name": "COLLECTOR'S EDITION",
@@ -8097,7 +8307,7 @@
       ]
     },
     {
-      "id": 50,
+      "id": 52,
       "sortOrder": 1104,
       "featured": false,
       "name": "COMMANDO",
@@ -8195,7 +8405,7 @@
       ]
     },
     {
-      "id": 51,
+      "id": 53,
       "sortOrder": 1109,
       "featured": false,
       "name": "CONQUEROR",
@@ -8282,7 +8492,7 @@
       ]
     },
     {
-      "id": 52,
+      "id": 54,
       "sortOrder": 1121,
       "featured": false,
       "name": "COPS AND ROBBERS",
@@ -8391,7 +8601,7 @@
       ]
     },
     {
-      "id": 53,
+      "id": 55,
       "sortOrder": 1043,
       "featured": false,
       "name": "COSMIC",
@@ -8632,7 +8842,7 @@
       ]
     },
     {
-      "id": 54,
+      "id": 56,
       "sortOrder": 1056,
       "featured": false,
       "name": "COTTONTAIL",
@@ -8675,7 +8885,7 @@
       ]
     },
     {
-      "id": 55,
+      "id": 57,
       "sortOrder": 1051,
       "featured": false,
       "name": "CRIME CITY",
@@ -8773,7 +8983,7 @@
       ]
     },
     {
-      "id": 56,
+      "id": 58,
       "sortOrder": 1149,
       "featured": false,
       "name": "CRIME CITY NIGHTMARE",
@@ -8849,7 +9059,7 @@
       ]
     },
     {
-      "id": 57,
+      "id": 59,
       "sortOrder": 1122,
       "featured": false,
       "name": "CRIMSON ELITE",
@@ -8892,7 +9102,7 @@
       ]
     },
     {
-      "id": 58,
+      "id": 60,
       "sortOrder": 1202,
       "featured": false,
       "name": "CRYSTALIS INDOMITUS",
@@ -8946,7 +9156,7 @@
       ]
     },
     {
-      "id": 59,
+      "id": 61,
       "sortOrder": 1195,
       "featured": false,
       "name": "CRYSTALIS MOTUS",
@@ -9000,7 +9210,7 @@
       ]
     },
     {
-      "id": 60,
+      "id": 62,
       "sortOrder": 1026,
       "featured": false,
       "name": "CULINARY MASTERS",
@@ -9109,7 +9319,7 @@
       ]
     },
     {
-      "id": 61,
+      "id": 63,
       "sortOrder": 1179,
       "featured": false,
       "name": "CURSE OF THE VOID",
@@ -9174,7 +9384,7 @@
       ]
     },
     {
-      "id": 62,
+      "id": 64,
       "sortOrder": 1148,
       "featured": false,
       "name": "CYBER POP",
@@ -9217,7 +9427,7 @@
       ]
     },
     {
-      "id": 63,
+      "id": 65,
       "sortOrder": 1044,
       "featured": false,
       "name": "DARK STAR",
@@ -9480,7 +9690,7 @@
       ]
     },
     {
-      "id": 64,
+      "id": 66,
       "sortOrder": 1100,
       "featured": false,
       "name": "DAY JOB",
@@ -9875,7 +10085,7 @@
       ]
     },
     {
-      "id": 65,
+      "id": 67,
       "sortOrder": 1062,
       "featured": false,
       "name": "DEATH BLOSSOM",
@@ -9918,7 +10128,7 @@
       ]
     },
     {
-      "id": 66,
+      "id": 68,
       "sortOrder": 1087,
       "featured": false,
       "name": "DEATH SWORN",
@@ -10049,7 +10259,7 @@
       ]
     },
     {
-      "id": 67,
+      "id": 69,
       "sortOrder": 1023,
       "featured": false,
       "name": "DEBONAIR",
@@ -10202,7 +10412,7 @@
       ]
     },
     {
-      "id": 68,
+      "id": 70,
       "sortOrder": 1101,
       "featured": false,
       "name": "DEFINITELY NOT",
@@ -10311,7 +10521,7 @@
       ]
     },
     {
-      "id": 69,
+      "id": 71,
       "sortOrder": 1117,
       "featured": false,
       "name": "DEMACIA VICE",
@@ -10376,7 +10586,7 @@
       ]
     },
     {
-      "id": 70,
+      "id": 72,
       "sortOrder": 1116,
       "featured": false,
       "name": "DEMONIC",
@@ -10452,7 +10662,7 @@
       ]
     },
     {
-      "id": 71,
+      "id": 73,
       "sortOrder": 1173,
       "featured": false,
       "name": "DJ",
@@ -10484,7 +10694,7 @@
       ]
     },
     {
-      "id": 72,
+      "id": 74,
       "sortOrder": 1013,
       "featured": false,
       "name": "DRAGON WORLD",
@@ -10714,7 +10924,7 @@
       ]
     },
     {
-      "id": 73,
+      "id": 75,
       "sortOrder": 1135,
       "featured": false,
       "name": "DRAGONMANCERS",
@@ -10933,7 +11143,7 @@
       ]
     },
     {
-      "id": 74,
+      "id": 76,
       "sortOrder": 1123,
       "featured": false,
       "name": "DREADKNIGHTS",
@@ -10976,7 +11186,7 @@
       ]
     },
     {
-      "id": 75,
+      "id": 77,
       "sortOrder": 1076,
       "featured": false,
       "name": "DREADNOVA",
@@ -11019,7 +11229,7 @@
       ]
     },
     {
-      "id": 76,
+      "id": 78,
       "sortOrder": 1213,
       "featured": false,
       "name": "DUMPLING DARLINGS",
@@ -11073,7 +11283,7 @@
       ]
     },
     {
-      "id": 77,
+      "id": 79,
       "sortOrder": 1103,
       "featured": false,
       "name": "DUNKMASTER",
@@ -11116,7 +11326,7 @@
       ]
     },
     {
-      "id": 78,
+      "id": 80,
       "sortOrder": 1093,
       "featured": false,
       "name": "ECLIPSE",
@@ -11225,7 +11435,7 @@
       ]
     },
     {
-      "id": 79,
+      "id": 81,
       "sortOrder": 1058,
       "featured": false,
       "name": "ELDERWOOD",
@@ -11434,7 +11644,7 @@
       ]
     },
     {
-      "id": 80,
+      "id": 82,
       "sortOrder": 1166,
       "featured": false,
       "name": "ELEMENTALIST",
@@ -11466,7 +11676,7 @@
       ]
     },
     {
-      "id": 81,
+      "id": 83,
       "sortOrder": 1186,
       "featured": false,
       "name": "EMPYREAN",
@@ -11663,7 +11873,7 @@
       ]
     },
     {
-      "id": 82,
+      "id": 84,
       "sortOrder": 1059,
       "featured": false,
       "name": "ETERNUM",
@@ -11717,7 +11927,7 @@
       ]
     },
     {
-      "id": 83,
+      "id": 85,
       "sortOrder": 1072,
       "featured": false,
       "name": "FABLES",
@@ -11892,7 +12102,7 @@
       ]
     },
     {
-      "id": 84,
+      "id": 86,
       "sortOrder": 1216,
       "featured": false,
       "name": "FATEMAKERS AND FATEBREAKERS",
@@ -11946,7 +12156,7 @@
       ]
     },
     {
-      "id": 85,
+      "id": 87,
       "sortOrder": 1208,
       "featured": false,
       "name": "FIST BUMPS AND FESTIVITIES",
@@ -11978,7 +12188,7 @@
       ]
     },
     {
-      "id": 86,
+      "id": 88,
       "sortOrder": 1221,
       "featured": false,
       "name": "FLORA FATALIS",
@@ -12032,7 +12242,7 @@
       ]
     },
     {
-      "id": 87,
+      "id": 89,
       "sortOrder": 1203,
       "featured": false,
       "name": "FOOD FIGHT",
@@ -12108,7 +12318,7 @@
       ]
     },
     {
-      "id": 88,
+      "id": 90,
       "sortOrder": 1108,
       "featured": false,
       "name": "FORGOTTEN DEPTHS",
@@ -12217,7 +12427,7 @@
       ]
     },
     {
-      "id": 89,
+      "id": 91,
       "sortOrder": 1170,
       "featured": false,
       "name": "FRIGHT NIGHT",
@@ -12370,7 +12580,7 @@
       ]
     },
     {
-      "id": 90,
+      "id": 92,
       "sortOrder": 1136,
       "featured": false,
       "name": "GALACTIC",
@@ -12424,7 +12634,7 @@
       ]
     },
     {
-      "id": 91,
+      "id": 93,
       "sortOrder": 1112,
       "featured": false,
       "name": "GLACIAL",
@@ -12489,7 +12699,7 @@
       ]
     },
     {
-      "id": 92,
+      "id": 94,
       "sortOrder": 1110,
       "featured": false,
       "name": "GOTH",
@@ -12554,7 +12764,7 @@
       ]
     },
     {
-      "id": 93,
+      "id": 95,
       "sortOrder": 1215,
       "featured": false,
       "name": "GRAND RECKONING",
@@ -12630,7 +12840,7 @@
       ]
     },
     {
-      "id": 94,
+      "id": 96,
       "sortOrder": 1066,
       "featured": false,
       "name": "GUARDIAN OF THE SANDS",
@@ -12772,7 +12982,7 @@
       ]
     },
     {
-      "id": 95,
+      "id": 97,
       "sortOrder": 1030,
       "featured": false,
       "name": "HEADHUNTER",
@@ -12848,7 +13058,7 @@
       ]
     },
     {
-      "id": 96,
+      "id": 98,
       "sortOrder": 1233,
       "featured": false,
       "name": "HEARTSONG",
@@ -12880,7 +13090,7 @@
       ]
     },
     {
-      "id": 97,
+      "id": 99,
       "sortOrder": 1199,
       "featured": false,
       "name": "HEARTSTEEL",
@@ -12978,7 +13188,7 @@
       ]
     },
     {
-      "id": 98,
+      "id": 100,
       "sortOrder": 1189,
       "featured": false,
       "name": "HEARTTHROBS AND HEARTACHES",
@@ -13032,7 +13242,7 @@
       ]
     },
     {
-      "id": 99,
+      "id": 101,
       "sortOrder": 1201,
       "featured": false,
       "name": "HEAVENSCALE",
@@ -13152,7 +13362,7 @@
       ]
     },
     {
-      "id": 100,
+      "id": 102,
       "sortOrder": 1118,
       "featured": false,
       "name": "HEAVY METAL",
@@ -13228,7 +13438,7 @@
       ]
     },
     {
-      "id": 101,
+      "id": 103,
       "sortOrder": 1040,
       "featured": false,
       "name": "HEXTECH",
@@ -13469,7 +13679,7 @@
       ]
     },
     {
-      "id": 102,
+      "id": 104,
       "sortOrder": 1039,
       "featured": false,
       "name": "HIGH NOON",
@@ -13908,7 +14118,7 @@
       ]
     },
     {
-      "id": 103,
+      "id": 105,
       "sortOrder": 1102,
       "featured": false,
       "name": "HIGH SOCIETY",
@@ -14017,7 +14227,7 @@
       ]
     },
     {
-      "id": 104,
+      "id": 106,
       "sortOrder": 1081,
       "featured": false,
       "name": "IMMORTAL JOURNEY",
@@ -14258,7 +14468,7 @@
       ]
     },
     {
-      "id": 105,
+      "id": 107,
       "sortOrder": 1086,
       "featured": false,
       "name": "INFERNAL",
@@ -14565,7 +14775,7 @@
       ]
     },
     {
-      "id": 106,
+      "id": 108,
       "sortOrder": 1192,
       "featured": false,
       "name": "INKSHADOW",
@@ -14718,7 +14928,7 @@
       ]
     },
     {
-      "id": 107,
+      "id": 109,
       "sortOrder": 1105,
       "featured": false,
       "name": "INVADERS",
@@ -14761,7 +14971,7 @@
       ]
     },
     {
-      "id": 108,
+      "id": 110,
       "sortOrder": 1033,
       "featured": false,
       "name": "JUSTICAR",
@@ -14804,7 +15014,7 @@
       ]
     },
     {
-      "id": 109,
+      "id": 111,
       "sortOrder": 1091,
       "featured": false,
       "name": "K/DA",
@@ -15023,7 +15233,7 @@
       ]
     },
     {
-      "id": 110,
+      "id": 112,
       "sortOrder": 1079,
       "featured": false,
       "name": "KAIJU",
@@ -15055,7 +15265,7 @@
       ]
     },
     {
-      "id": 111,
+      "id": 113,
       "sortOrder": 1198,
       "featured": false,
       "name": "LA ILUSIÓN",
@@ -15153,7 +15363,7 @@
       ]
     },
     {
-      "id": 112,
+      "id": 114,
       "sortOrder": 1069,
       "featured": false,
       "name": "LANCER",
@@ -15218,7 +15428,7 @@
       ]
     },
     {
-      "id": 113,
+      "id": 115,
       "sortOrder": 1167,
       "featured": false,
       "name": "LEGACY",
@@ -16141,7 +16351,7 @@
       ]
     },
     {
-      "id": 114,
+      "id": 116,
       "sortOrder": 1034,
       "featured": false,
       "name": "LUCHADOR",
@@ -16206,7 +16416,7 @@
       ]
     },
     {
-      "id": 115,
+      "id": 117,
       "sortOrder": 1142,
       "featured": false,
       "name": "LUNAR BEAST",
@@ -16315,7 +16525,7 @@
       ]
     },
     {
-      "id": 116,
+      "id": 118,
       "sortOrder": 1055,
       "featured": false,
       "name": "LUNAR REVEL",
@@ -16534,7 +16744,7 @@
       ]
     },
     {
-      "id": 117,
+      "id": 119,
       "sortOrder": 1054,
       "featured": false,
       "name": "LUNAR REVEL: FIRECRACKER",
@@ -16764,7 +16974,7 @@
       ]
     },
     {
-      "id": 118,
+      "id": 120,
       "sortOrder": 1053,
       "featured": false,
       "name": "LUNAR REVEL: WARRING KINGDOMS",
@@ -16895,7 +17105,7 @@
       ]
     },
     {
-      "id": 119,
+      "id": 121,
       "sortOrder": 1106,
       "featured": false,
       "name": "MAD SCIENTISTS",
@@ -16971,7 +17181,7 @@
       ]
     },
     {
-      "id": 120,
+      "id": 122,
       "sortOrder": 1231,
       "featured": false,
       "name": "MAGMA CHAMBER",
@@ -17014,7 +17224,7 @@
       ]
     },
     {
-      "id": 121,
+      "id": 123,
       "sortOrder": 1214,
       "featured": false,
       "name": "MASKED JUSTICE",
@@ -17068,7 +17278,7 @@
       ]
     },
     {
-      "id": 122,
+      "id": 124,
       "sortOrder": 1211,
       "featured": false,
       "name": "MASQUE OF THE BLACK ROSE",
@@ -17155,7 +17365,7 @@
       ]
     },
     {
-      "id": 123,
+      "id": 125,
       "sortOrder": 1035,
       "featured": false,
       "name": "MECHA",
@@ -17242,7 +17452,7 @@
       ]
     },
     {
-      "id": 124,
+      "id": 126,
       "sortOrder": 1127,
       "featured": false,
       "name": "MECHA KINGDOMS",
@@ -17362,7 +17572,7 @@
       ]
     },
     {
-      "id": 125,
+      "id": 127,
       "sortOrder": 1114,
       "featured": false,
       "name": "MEDIEVAL",
@@ -17471,7 +17681,7 @@
       ]
     },
     {
-      "id": 126,
+      "id": 128,
       "sortOrder": 1212,
       "featured": false,
       "name": "MODERN MYTHOS",
@@ -17503,7 +17713,7 @@
       ]
     },
     {
-      "id": 127,
+      "id": 129,
       "sortOrder": 1162,
       "featured": false,
       "name": "MONSTER TAMERS",
@@ -17557,7 +17767,7 @@
       ]
     },
     {
-      "id": 128,
+      "id": 130,
       "sortOrder": 1188,
       "featured": false,
       "name": "MYTHMAKER",
@@ -17688,7 +17898,7 @@
       ]
     },
     {
-      "id": 129,
+      "id": 131,
       "sortOrder": 1159,
       "featured": false,
       "name": "OCEAN SONG",
@@ -17797,7 +18007,7 @@
       ]
     },
     {
-      "id": 130,
+      "id": 132,
       "sortOrder": 1073,
       "featured": false,
       "name": "ODYSSEY",
@@ -17961,7 +18171,7 @@
       ]
     },
     {
-      "id": 131,
+      "id": 133,
       "sortOrder": 1014,
       "featured": false,
       "name": "OMEGA SQUAD",
@@ -18037,7 +18247,7 @@
       ]
     },
     {
-      "id": 132,
+      "id": 134,
       "sortOrder": 1080,
       "featured": false,
       "name": "OMEN OF THE DARK",
@@ -18146,7 +18356,7 @@
       ]
     },
     {
-      "id": 133,
+      "id": 135,
       "sortOrder": 1060,
       "featured": false,
       "name": "ORDER OF THE LOTUS",
@@ -18189,7 +18399,7 @@
       ]
     },
     {
-      "id": 134,
+      "id": 136,
       "sortOrder": 1180,
       "featured": false,
       "name": "OTHERROADS",
@@ -18320,7 +18530,7 @@
       ]
     },
     {
-      "id": 135,
+      "id": 137,
       "sortOrder": 1229,
       "featured": false,
       "name": "PANDEMONIUM",
@@ -18385,7 +18595,7 @@
       ]
     },
     {
-      "id": 136,
+      "id": 138,
       "sortOrder": 1096,
       "featured": false,
       "name": "PAPERCRAFT",
@@ -18428,7 +18638,7 @@
       ]
     },
     {
-      "id": 137,
+      "id": 139,
       "sortOrder": 1084,
       "featured": false,
       "name": "PAX",
@@ -18504,7 +18714,7 @@
       ]
     },
     {
-      "id": 138,
+      "id": 140,
       "sortOrder": 1016,
       "featured": false,
       "name": "PENTAKILL",
@@ -18591,7 +18801,7 @@
       ]
     },
     {
-      "id": 139,
+      "id": 141,
       "sortOrder": 1151,
       "featured": false,
       "name": "PENTAKILL III: THE LOST CHAPTER",
@@ -18689,7 +18899,7 @@
       ]
     },
     {
-      "id": 140,
+      "id": 142,
       "sortOrder": 1225,
       "featured": false,
       "name": "PETALS OF SPRING",
@@ -18765,7 +18975,7 @@
       ]
     },
     {
-      "id": 141,
+      "id": 143,
       "sortOrder": 1067,
       "featured": false,
       "name": "PHARAOH",
@@ -18819,7 +19029,7 @@
       ]
     },
     {
-      "id": 142,
+      "id": 144,
       "sortOrder": 1150,
       "featured": false,
       "name": "PHOENIXMANCERS",
@@ -18884,7 +19094,7 @@
       ]
     },
     {
-      "id": 143,
+      "id": 145,
       "sortOrder": 1042,
       "featured": false,
       "name": "PILTOVER CUSTOMS",
@@ -18938,7 +19148,7 @@
       ]
     },
     {
-      "id": 144,
+      "id": 146,
       "sortOrder": 1015,
       "featured": false,
       "name": "POOL PARTY",
@@ -19245,7 +19455,7 @@
       ]
     },
     {
-      "id": 145,
+      "id": 147,
       "sortOrder": 1174,
       "featured": false,
       "name": "POPSTAR",
@@ -19277,7 +19487,7 @@
       ]
     },
     {
-      "id": 146,
+      "id": 148,
       "sortOrder": 1090,
       "featured": false,
       "name": "PRAETORIAN",
@@ -19320,7 +19530,7 @@
       ]
     },
     {
-      "id": 147,
+      "id": 149,
       "sortOrder": 1032,
       "featured": false,
       "name": "PREHISTORIC HUNTERS",
@@ -19462,7 +19672,7 @@
       ]
     },
     {
-      "id": 148,
+      "id": 150,
       "sortOrder": 1200,
       "featured": false,
       "name": "PRIMAL AMBUSH",
@@ -19527,7 +19737,7 @@
       ]
     },
     {
-      "id": 149,
+      "id": 151,
       "sortOrder": 1206,
       "featured": false,
       "name": "PRIMORDIAN",
@@ -19581,7 +19791,7 @@
       ]
     },
     {
-      "id": 150,
+      "id": 152,
       "sortOrder": 1017,
       "featured": false,
       "name": "PROGRAM",
@@ -19668,7 +19878,7 @@
       ]
     },
     {
-      "id": 151,
+      "id": 153,
       "sortOrder": 1018,
       "featured": false,
       "name": "PROJECT",
@@ -20052,7 +20262,7 @@
       ]
     },
     {
-      "id": 152,
+      "id": 154,
       "sortOrder": 1133,
       "featured": false,
       "name": "PSYOPS",
@@ -20150,7 +20360,7 @@
       ]
     },
     {
-      "id": 153,
+      "id": 155,
       "sortOrder": 1036,
       "featured": false,
       "name": "PULSEFIRE",
@@ -20314,7 +20524,7 @@
       ]
     },
     {
-      "id": 154,
+      "id": 156,
       "sortOrder": 1205,
       "featured": false,
       "name": "RAIN SHEPHERD",
@@ -20390,7 +20600,7 @@
       ]
     },
     {
-      "id": 155,
+      "id": 157,
       "sortOrder": 1227,
       "featured": false,
       "name": "REVENANT REIGN",
@@ -20422,7 +20632,7 @@
       ]
     },
     {
-      "id": 156,
+      "id": 158,
       "sortOrder": 1115,
       "featured": false,
       "name": "RIFT HOSPITAL",
@@ -20476,7 +20686,7 @@
       ]
     },
     {
-      "id": 157,
+      "id": 159,
       "sortOrder": 1038,
       "featured": false,
       "name": "RIFT QUEST",
@@ -20717,7 +20927,7 @@
       ]
     },
     {
-      "id": 158,
+      "id": 160,
       "sortOrder": 1037,
       "featured": false,
       "name": "RIOT",
@@ -20804,7 +21014,7 @@
       ]
     },
     {
-      "id": 159,
+      "id": 161,
       "sortOrder": 1204,
       "featured": false,
       "name": "RISEN LEGENDS",
@@ -20891,7 +21101,7 @@
       ]
     },
     {
-      "id": 160,
+      "id": 162,
       "sortOrder": 1070,
       "featured": false,
       "name": "ROAD WARRIOR",
@@ -21000,7 +21210,7 @@
       ]
     },
     {
-      "id": 161,
+      "id": 163,
       "sortOrder": 1164,
       "featured": false,
       "name": "RUINATION",
@@ -21032,7 +21242,7 @@
       ]
     },
     {
-      "id": 162,
+      "id": 164,
       "sortOrder": 1138,
       "featured": false,
       "name": "RUINED",
@@ -21152,7 +21362,7 @@
       ]
     },
     {
-      "id": 163,
+      "id": 165,
       "sortOrder": 1147,
       "featured": false,
       "name": "SENTINELS OF LIGHT",
@@ -21261,7 +21471,7 @@
       ]
     },
     {
-      "id": 164,
+      "id": 166,
       "sortOrder": 1139,
       "featured": false,
       "name": "SHAN HAI SCROLLS",
@@ -21370,7 +21580,7 @@
       ]
     },
     {
-      "id": 165,
+      "id": 167,
       "sortOrder": 1155,
       "featured": false,
       "name": "SHOCKBLADE",
@@ -21435,7 +21645,7 @@
       ]
     },
     {
-      "id": 166,
+      "id": 168,
       "sortOrder": 1111,
       "featured": false,
       "name": "SILVER AGE",
@@ -21610,7 +21820,7 @@
       ]
     },
     {
-      "id": 167,
+      "id": 169,
       "sortOrder": 1230,
       "featured": false,
       "name": "SINFUL SHORES",
@@ -21664,7 +21874,7 @@
       ]
     },
     {
-      "id": 168,
+      "id": 170,
       "sortOrder": 1031,
       "featured": false,
       "name": "SOCCER CUP",
@@ -21806,7 +22016,7 @@
       ]
     },
     {
-      "id": 169,
+      "id": 171,
       "sortOrder": 1196,
       "featured": false,
       "name": "SOUL FIGHTER",
@@ -21959,7 +22169,7 @@
       ]
     },
     {
-      "id": 170,
+      "id": 172,
       "sortOrder": 1183,
       "featured": false,
       "name": "SOULSTEALER",
@@ -22002,7 +22212,7 @@
       ]
     },
     {
-      "id": 171,
+      "id": 173,
       "sortOrder": 1144,
       "featured": false,
       "name": "SPACE GROOVE",
@@ -22221,7 +22431,7 @@
       ]
     },
     {
-      "id": 172,
+      "id": 174,
       "sortOrder": 1163,
       "featured": false,
       "name": "SPIRIT GUARD",
@@ -22253,7 +22463,7 @@
       ]
     },
     {
-      "id": 173,
+      "id": 175,
       "sortOrder": 1217,
       "featured": false,
       "name": "STARGAZER",
@@ -22285,7 +22495,7 @@
       ]
     },
     {
-      "id": 174,
+      "id": 176,
       "sortOrder": 1085,
       "featured": false,
       "name": "STEEL LEGION",
@@ -22328,7 +22538,7 @@
       ]
     },
     {
-      "id": 175,
+      "id": 177,
       "sortOrder": 1065,
       "featured": false,
       "name": "STEEL VALKYRIES",
@@ -22459,7 +22669,7 @@
       ]
     },
     {
-      "id": 176,
+      "id": 178,
       "sortOrder": 1071,
       "featured": false,
       "name": "STORYBOOK",
@@ -22546,7 +22756,7 @@
       ]
     },
     {
-      "id": 177,
+      "id": 179,
       "sortOrder": 1197,
       "featured": false,
       "name": "STREET DEMONS",
@@ -22633,7 +22843,7 @@
       ]
     },
     {
-      "id": 178,
+      "id": 180,
       "sortOrder": 1057,
       "featured": false,
       "name": "SUGAR RUSH",
@@ -22742,7 +22952,7 @@
       ]
     },
     {
-      "id": 179,
+      "id": 181,
       "sortOrder": 1223,
       "featured": false,
       "name": "SUNKEN SHADOWS",
@@ -22785,7 +22995,7 @@
       ]
     },
     {
-      "id": 180,
+      "id": 182,
       "sortOrder": 1021,
       "featured": false,
       "name": "SUPER GALAXY",
@@ -22894,7 +23104,7 @@
       ]
     },
     {
-      "id": 181,
+      "id": 183,
       "sortOrder": 1210,
       "featured": false,
       "name": "SUPERFANS",
@@ -22959,7 +23169,7 @@
       ]
     },
     {
-      "id": 182,
+      "id": 184,
       "sortOrder": 1169,
       "featured": false,
       "name": "SURPRISE PARTY",
@@ -23024,7 +23234,7 @@
       ]
     },
     {
-      "id": 183,
+      "id": 185,
       "sortOrder": 1222,
       "featured": false,
       "name": "THE ETERNAL ASPECTS",
@@ -23089,7 +23299,7 @@
       ]
     },
     {
-      "id": 184,
+      "id": 186,
       "sortOrder": 1224,
       "featured": false,
       "name": "THE LAWS OF STONE",
@@ -23165,7 +23375,7 @@
       ]
     },
     {
-      "id": 185,
+      "id": 187,
       "sortOrder": 1176,
       "featured": false,
       "name": "THREE HONORS",
@@ -23219,7 +23429,7 @@
       ]
     },
     {
-      "id": 186,
+      "id": 188,
       "sortOrder": 1052,
       "featured": false,
       "name": "THUNDER LORD",
@@ -23262,7 +23472,7 @@
       ]
     },
     {
-      "id": 187,
+      "id": 189,
       "sortOrder": 1061,
       "featured": false,
       "name": "TOY BOX",
@@ -23415,7 +23625,7 @@
       ]
     },
     {
-      "id": 188,
+      "id": 190,
       "sortOrder": 1082,
       "featured": false,
       "name": "TRADITIONAL",
@@ -23491,7 +23701,7 @@
       ]
     },
     {
-      "id": 189,
+      "id": 191,
       "sortOrder": 1088,
       "featured": false,
       "name": "TRICK-OR-TREAT",
@@ -23754,7 +23964,7 @@
       ]
     },
     {
-      "id": 190,
+      "id": 192,
       "sortOrder": 1184,
       "featured": false,
       "name": "TRIUMPHANT",
@@ -23786,7 +23996,7 @@
       ]
     },
     {
-      "id": 191,
+      "id": 193,
       "sortOrder": 1120,
       "featured": false,
       "name": "TRUE DAMAGE",
@@ -23917,7 +24127,7 @@
       ]
     },
     {
-      "id": 192,
+      "id": 194,
       "sortOrder": 1168,
       "featured": false,
       "name": "URF THE MANATEE",
@@ -23993,7 +24203,7 @@
       ]
     },
     {
-      "id": 193,
+      "id": 195,
       "sortOrder": 1027,
       "featured": false,
       "name": "VANDAL",
@@ -24080,7 +24290,7 @@
       ]
     },
     {
-      "id": 194,
+      "id": 196,
       "sortOrder": 1219,
       "featured": false,
       "name": "VISIONS OF THE FALLEN",
@@ -24134,7 +24344,7 @@
       ]
     },
     {
-      "id": 195,
+      "id": 197,
       "sortOrder": 1228,
       "featured": false,
       "name": "WARHOUNDS",
@@ -24188,7 +24398,7 @@
       ]
     },
     {
-      "id": 196,
+      "id": 198,
       "sortOrder": 1068,
       "featured": false,
       "name": "WOAD",
@@ -24264,7 +24474,7 @@
       ]
     },
     {
-      "id": 197,
+      "id": 199,
       "sortOrder": 1099,
       "featured": false,
       "name": "WONDERS OF THE WORLD",
@@ -24494,7 +24704,7 @@
       ]
     },
     {
-      "id": 198,
+      "id": 200,
       "sortOrder": 1001,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2011",
@@ -24570,7 +24780,7 @@
       ]
     },
     {
-      "id": 199,
+      "id": 201,
       "sortOrder": 1002,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2012",
@@ -24646,7 +24856,7 @@
       ]
     },
     {
-      "id": 200,
+      "id": 202,
       "sortOrder": 1003,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2013",
@@ -24722,7 +24932,7 @@
       ]
     },
     {
-      "id": 201,
+      "id": 203,
       "sortOrder": 1004,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2014",
@@ -24798,7 +25008,7 @@
       ]
     },
     {
-      "id": 202,
+      "id": 204,
       "sortOrder": 1005,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2015",
@@ -24885,7 +25095,7 @@
       ]
     },
     {
-      "id": 203,
+      "id": 205,
       "sortOrder": 1006,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2016",
@@ -24972,7 +25182,7 @@
       ]
     },
     {
-      "id": 204,
+      "id": 206,
       "sortOrder": 1075,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2017",
@@ -25059,7 +25269,7 @@
       ]
     },
     {
-      "id": 205,
+      "id": 207,
       "sortOrder": 1107,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2018",
@@ -25146,7 +25356,7 @@
       ]
     },
     {
-      "id": 206,
+      "id": 208,
       "sortOrder": 1130,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2019",
@@ -25222,7 +25432,7 @@
       ]
     },
     {
-      "id": 207,
+      "id": 209,
       "sortOrder": 1145,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2020",
@@ -25298,7 +25508,7 @@
       ]
     },
     {
-      "id": 208,
+      "id": 210,
       "sortOrder": 1158,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2021",
@@ -25374,7 +25584,7 @@
       ]
     },
     {
-      "id": 209,
+      "id": 211,
       "sortOrder": 1194,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2022",
@@ -25472,7 +25682,7 @@
       ]
     },
     {
-      "id": 210,
+      "id": 212,
       "sortOrder": 1207,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2023",
@@ -25559,7 +25769,7 @@
       ]
     },
     {
-      "id": 211,
+      "id": 213,
       "sortOrder": 1220,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2024",
@@ -25646,7 +25856,7 @@
       ]
     },
     {
-      "id": 212,
+      "id": 214,
       "sortOrder": 1232,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2025",
@@ -25733,7 +25943,7 @@
       ]
     },
     {
-      "id": 213,
+      "id": 215,
       "sortOrder": 1008,
       "featured": false,
       "name": "WORLD CHAMPIONSHIP",
@@ -25908,7 +26118,7 @@
       ]
     },
     {
-      "id": 214,
+      "id": 216,
       "sortOrder": 1029,
       "featured": false,
       "name": "WORLDBREAKER",
@@ -26028,7 +26238,7 @@
       ]
     },
     {
-      "id": 215,
+      "id": 217,
       "sortOrder": 1165,
       "featured": false,
       "name": "ZENITH GAMES",
@@ -26082,7 +26292,7 @@
       ]
     },
     {
-      "id": 216,
+      "id": 218,
       "sortOrder": 1089,
       "featured": false,
       "name": "ZOMBIES VS SLAYERS",

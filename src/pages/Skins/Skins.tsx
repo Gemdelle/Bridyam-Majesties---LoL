@@ -107,6 +107,56 @@ const RoleSlot: React.FC<{
         <span className={styles.role__label}>{column.label}</span>
       </div>
 
+      {availableAccounts.length === 0 ? (
+        <div className={styles.role__account__empty}>No account</div>
+      ) : (
+        <div className={styles.role__account__dropdown}>
+          <button
+            type="button"
+            className={styles.role__account__trigger}
+            onClick={() => {
+              setAccountOpen((v) => !v);
+              setSkinPickerOpen(false);
+            }}
+          >
+            <span>
+              {cleanAccountName(selectedAccount?.username || '')}
+              {selectedAccount && selectedAccount.skins.length > 1
+                ? ` (${selectedAccount.skins.length})`
+                : ''}
+            </span>
+            <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
+              ▾
+            </span>
+          </button>
+          {accountOpen && (
+            <div className={styles.role__account__menu}>
+              {availableAccounts.map((acc) => (
+                <button
+                  key={acc.rankedId}
+                  type="button"
+                  className={`${styles.role__account__option} ${
+                    acc.rankedId === selectedAccount?.rankedId
+                      ? styles.role__account__option__active
+                      : ''
+                  }`}
+                  onClick={() => {
+                    const skin =
+                      firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
+                    if (!skin) return;
+                    onSelect({ rankedId: acc.rankedId, skinName: skin.name });
+                    setAccountOpen(false);
+                  }}
+                >
+                  {cleanAccountName(acc.username)}
+                  {acc.skins.length > 1 ? ` (${acc.skins.length})` : ''}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className={styles.role__skin__wrap}>
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
@@ -162,56 +212,6 @@ const RoleSlot: React.FC<{
       </div>
 
       <div className={styles.role__skin__caption}>{selectedSkin?.name || 'No skin'}</div>
-
-      {availableAccounts.length === 0 ? (
-        <div className={styles.role__account__empty}>No account</div>
-      ) : (
-        <div className={styles.role__account__dropdown}>
-          <button
-            type="button"
-            className={styles.role__account__trigger}
-            onClick={() => {
-              setAccountOpen((v) => !v);
-              setSkinPickerOpen(false);
-            }}
-          >
-            <span>
-              {cleanAccountName(selectedAccount?.username || '')}
-              {selectedAccount && selectedAccount.skins.length > 1
-                ? ` (${selectedAccount.skins.length})`
-                : ''}
-            </span>
-            <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
-              ▾
-            </span>
-          </button>
-          {accountOpen && (
-            <div className={styles.role__account__menu}>
-              {availableAccounts.map((acc) => (
-                <button
-                  key={acc.rankedId}
-                  type="button"
-                  className={`${styles.role__account__option} ${
-                    acc.rankedId === selectedAccount?.rankedId
-                      ? styles.role__account__option__active
-                      : ''
-                  }`}
-                  onClick={() => {
-                    const skin =
-                      firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
-                    if (!skin) return;
-                    onSelect({ rankedId: acc.rankedId, skinName: skin.name });
-                    setAccountOpen(false);
-                  }}
-                >
-                  {cleanAccountName(acc.username)}
-                  {acc.skins.length > 1 ? ` (${acc.skins.length})` : ''}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };

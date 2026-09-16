@@ -119,10 +119,17 @@ const FEATURED = [
   },
   {
     key: 'COVEN',
-    cdragonIds: [92, 190],
+    cdragonIds: [92],
     splash: 'Ahri_42',
+    matchMode: 'coven',
+    extraMatchKeys: ['coven'],
+  },
+  {
+    key: 'BROKEN COVENANT',
+    cdragonIds: [190],
+    splash: 'MissFortune_41',
     matchMode: 'lines',
-    extraMatchKeys: ['coven', 'broken covenant'],
+    extraMatchKeys: ['broken covenant'],
   },
   {
     key: 'NIGHTBRINGER',
@@ -145,10 +152,27 @@ const FEATURED = [
     matchMode: 'lines',
   },
   {
-    key: 'MARAUDER',
+    key: 'FORAJIDO',
     cdragonIds: [45],
     splash: 'Alistar_8',
     matchMode: 'lines',
+    extraMatchKeys: ['marauder', 'forajido'],
+  },
+  {
+    key: 'NAVIDAD',
+    cdragonIds: [48],
+    splash: 'KogMaw_4',
+    matchMode: 'navidad',
+    extraMatchKeys: [
+      'snowdown',
+      'snowdown showdown',
+      'santa',
+      'reindeer',
+      'mistletoe',
+      'happy elf',
+      'candy cane',
+      'bad santa',
+    ],
   },
 ];
 
@@ -216,6 +240,13 @@ function skinsForLineIds(skins, ids, matchMode) {
       }
       if (matchMode === 'dawnbringer') {
         return /dawnbringer/i.test(s.name);
+      }
+      // Coven line only — exclude Old God (same CDragon line, different theme)
+      if (matchMode === 'coven') {
+        return /^(prestige\s+)?coven\b/i.test(s.name) || /^the thousand-pierced bear$/i.test(s.name);
+      }
+      if (matchMode === 'navidad') {
+        return true; // Snowdown Showdown christmas set
       }
       return true;
     })

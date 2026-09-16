@@ -160,6 +160,22 @@ const normalize = (s: string) =>
     .replace(/[\u0300-\u036f]/g, '')
     .trim();
 
+export const ROLE_CHAMP_PRIORITY: Partial<Record<LaneRole, string[]>> = {
+  adc: ['twitch', 'miss fortune', 'jinx', "kog'maw", 'kogmaw'],
+  support: ['thresh', 'leona', 'rell', 'nautilus'],
+};
+
+export const champRolePriority = (role: LaneRole, champName: string): number => {
+  const list = ROLE_CHAMP_PRIORITY[role];
+  if (!list?.length) return 100;
+  const key = normalize(champName).replace(/\s+/g, ' ');
+  const idx = list.findIndex((c) => {
+    const n = normalize(c);
+    return key === n || key.replace(/'/g, '') === n.replace(/'/g, '');
+  });
+  return idx === -1 ? 100 : idx;
+};
+
 export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolean => {
   const keys = family.matchKeys.map(normalize);
   const lineHits = (skin.skinLines || []).map(normalize);
@@ -175,6 +191,25 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
 
   if (family.matchMode === 'dawnbringer' || family.name === 'DAWNBRINGER') {
     return skinName.includes('dawnbringer') || lineHits.some((l) => l.includes('dawnbringer'));
+  }
+
+  // Pure Coven only — not Old God, not Broken Covenant
+  if (family.matchMode === 'coven' || family.name === 'COVEN') {
+    if (skinName.includes('old god') || skinName.includes('broken covenant')) return false;
+    if (lineHits.some((l) => l.includes('broken covenant'))) return false;
+    return (
+      /^(prestige\s+)?coven\b/.test(skinName) ||
+      skinName === 'the thousand-pierced bear' ||
+      (lineHits.some((l) => l === 'coven') && skinName.includes('coven'))
+    );
+  }
+
+  if (family.matchMode === 'navidad' || family.name === 'NAVIDAD') {
+    return (
+      lineHits.some((l) => l.includes('snowdown')) ||
+      keys.some((k) => skinName.includes(k)) ||
+      /santa|reindeer|mistletoe|happy elf|candy cane|bad santa/.test(skinName)
+    );
   }
 
   if (lineHits.some((line) => keys.some((k) => line === k || line.includes(k) || k.includes(line)))) {
@@ -203,16 +238,24 @@ export const getWinterSkinPriority = (skin: OwnedSkin): number => {
   return 4;
 };
 
-export const sortSkinsForFamily = (skins: OwnedSkin[], family: SkinFamily): OwnedSkin[] => {
+export const sortSkinsForFamily = (
+  skins: OwnedSkin[],
+  family: SkinFamily,
+  role?: LaneRole
+): OwnedSkin[] => {
   const copy = skins.slice();
-  if (family.matchMode === 'winter' || family.name === 'WINTER') {
-    copy.sort(
-      (a, b) =>
-        getWinterSkinPriority(a) - getWinterSkinPriority(b) || a.name.localeCompare(b.name)
-    );
-    return copy;
-  }
-  return copy.sort((a, b) => a.name.localeCompare(b.name));
+  copy.sort((a, b) => {
+    if (role) {
+      const pr = champRolePriority(role, a.champName) - champRolePriority(role, b.champName);
+      if (pr !== 0) return pr;
+    }
+    if (family.matchMode === 'winter' || family.name === 'WINTER') {
+      const wp = getWinterSkinPriority(a) - getWinterSkinPriority(b);
+      if (wp !== 0) return wp;
+    }
+    return a.name.localeCompare(b.name);
+  });
+  return copy;
 };
 
 export const getRolesForChampionName = (
@@ -293,9 +336,13 @@ export const getRoleTeamForFamily = (
     const accounts = [...byAccount.values()]
       .map((acc) => ({
         ...acc,
-        skins: sortSkinsForFamily(acc.skins, family),
+        skins: sortSkinsForFamily(acc.skins, family, lane.id),
       }))
-      .sort((a, b) => a.username.localeCompare(b.username));
+      .sort((a, b) => {
+        const bestA = Math.min(...a.skins.map((s) => champRolePriority(lane.id, s.champName)));
+        const bestB = Math.min(...b.skins.map((s) => champRolePriority(lane.id, s.champName)));
+        return bestA - bestB || a.username.localeCompare(b.username);
+      });
 
     return {
       role: lane.id,

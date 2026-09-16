@@ -1943,6 +1943,16 @@
           "skinLines": [
             "winter wonder"
           ]
+        },
+        {
+          "name": "Reindeer Kog'Maw",
+          "champName": "Kog'Maw",
+          "rarity": "kLegacy",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/kogmaw/skins/skin04/images/kogmaw_splash_tile_4.jpg",
+          "skinLines": [
+            "snowdown showdown",
+            "snowdown"
+          ]
         }
       ]
     },
