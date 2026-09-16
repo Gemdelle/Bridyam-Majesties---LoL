@@ -143,6 +143,7 @@ export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressR
         });
 
         const ranking: RankingEntry[] = Object.values(essencerStats)
+            .filter(e => e.totalWins > 0)
             .map(e => {
                 const winsScore = e.totalWins * SCORING.wins;
                 const petConfig = essencers[e.name];
@@ -208,6 +209,7 @@ export const fetchRankingByBloodline = async (bloodline: string, limit: number =
         });
 
         const ranking: RankingEntry[] = Object.values(essencerStats)
+            .filter(e => e.totalWins > 0)
             .map(e => {
                 const winsScore = e.totalWins * SCORING.wins;
                 const petConfig = essencers[e.name];
