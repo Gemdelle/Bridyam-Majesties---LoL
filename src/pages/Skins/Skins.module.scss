@@ -12,42 +12,38 @@
 }
 
 .container {
-  width: 92%;
-  height: 80%;
-  margin-top: 5%;
+  width: 94%;
+  height: 82%;
+  margin-top: 4%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: stretch;
+  justify-content: flex-start;
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 1%;
+  padding: 1% 1.2%;
   border-radius: 15px;
   position: relative;
+  min-height: 0;
+}
+
+.list__container {
+  overflow: hidden;
 }
 
 .content__top {
   width: 100%;
-  height: 8%;
+  height: 7%;
+  min-height: 2.4vw;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1vw;
-  // background-color: red;
-}
-
-.filters {
-  width: 15%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 9999;
+  margin-bottom: 0.6vw;
+  flex-shrink: 0;
 }
 
 .search__container {
-  width: 25%;
-  height: 50%;
+  width: 22%;
+  height: 70%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,11 +57,10 @@
   border: 1px solid #463714;
   border-radius: 6px;
   color: #cdbe91;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 0 1rem;
+  padding: 0 0.8rem;
   outline: none;
-  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -73,7 +68,6 @@
 .search__input::placeholder {
   color: #8b7355;
   text-transform: none;
-  letter-spacing: 0.05vw;
   font-style: italic;
   font-weight: 400;
 }
@@ -81,166 +75,145 @@
 .search__input:focus {
   border-color: #c89b3c;
   box-shadow: 0 0 10px rgba(200, 155, 60, 0.4);
-  background: linear-gradient(145deg, #2a2d35, #1a1f26);
-}
-
-.search__input:hover {
-  border-color: #8b7355;
-  box-shadow: 0 0 5px rgba(200, 155, 60, 0.2);
 }
 
 .search__clear {
   position: absolute;
-  right: 0.5rem;
+  right: 0.4rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: #cdbe91;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.1rem;
   cursor: pointer;
-  padding: 0.2rem;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.search__clear:hover {
-  background: rgba(200, 155, 60, 0.2);
-  color: #c89b3c;
 }
 
 .content {
   width: 100%;
-  height: 90%;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   color: #cdbe91;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding-top: 0.5vw;
-  // background-color: blue;
 }
 
-.champions__grid {
+.list__content {
+  overflow: hidden;
+}
+
+.families__grid {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: space-between;
-  justify-content: space-between;
-  gap: 1.2vw;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.55vw 0.5vw;
+  align-content: stretch;
 }
 
-.champion__card {
-  position: abs($number: 0);
-  width: 12%;
-  height: 38%;
+.family__card {
   position: relative;
-  transition: all 0.3s ease;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   cursor: pointer;
   @include flex-col;
   justify-content: flex-start;
-  // background-color: purple;
+  transition: transform 0.2s ease;
 }
 
-.champion__frame {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 90%;
-  z-index: 2;
-  // background-color: red;
-}
+.family__card:hover {
+  transform: translateY(-3px);
 
-.account__champion__frame {
-  position: absolute;
-  bottom: 5%;
-  width: 3.5vw;
-  height: 3.5vw;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url("/images/frames/skin-number-frame.png");
-  @include flex-center;
-  @include background;
-}
+  .family__card__frame {
+    filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.75));
+  }
 
-.account__champion__number {
-  position: relative;
-  color: #e7c67a;
-  font-size: 1vw;
-  font-weight: bold;
-  margin-top: 15%;
-}
-
-.champion__card:hover {
-  transform: translateY(-5px);
-
-  .champion__frame {
-    filter: drop-shadow(0 0px 10px rgba(200, 155, 60, 0.8));
+  .family__card__image img {
+    filter: saturate(1);
+    transform: scale(1.04);
   }
 }
 
-.champion__image {
-  position: absolute;
-  bottom: 0;
-  height: 65%;
-  width: 80%;
-  z-index: 1;
-  margin-bottom: 18%;
-}
-
-.champion__image img {
+.family__card__name {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  filter: saturate(0.5) brightness(0.7);
-}
-
-.champion__card:hover .champion__image img {
-  transform: scale(1.05);
-  filter: saturate(1);
-}
-
-.champion__info {
-  text-align: center;
-  position: relative;
-}
-
-.champion__name {
-  width: 100%;
-  font-size: 0.9vw;
-  margin-top: 1%;
+  margin: 0;
+  font-size: clamp(8px, 0.62vw, 12px);
   font-weight: bolder;
   color: #e7c67a;
   text-transform: uppercase;
-  letter-spacing: 0.15vw;
-  z-index: 9999;
-  // background-color: red;
+  letter-spacing: 0.04vw;
+  text-align: center;
+  z-index: 4;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.family__owned__badge {
+.family__card__frame {
   position: absolute;
-  top: 18%;
-  right: 4%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 88%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.family__card__count {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: 2.2vw;
+  height: 2.2vw;
+  min-width: 22px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/frames/skin-number-frame.png');
+  @include background;
+  color: #e7c67a;
+  font-size: clamp(8px, 0.7vw, 12px);
+  font-weight: bold;
+  padding-top: 12%;
+}
+
+.family__card__acct {
+  position: absolute;
+  top: 16%;
+  right: 2%;
   z-index: 4;
   background: rgba(10, 12, 16, 0.85);
   border: 1px solid #463714;
   color: #cdbe91;
-  font-size: 0.65vw;
-  padding: 0.15vw 0.4vw;
+  font-size: clamp(7px, 0.55vw, 10px);
+  padding: 0.1vw 0.3vw;
   text-transform: uppercase;
-  letter-spacing: 0.04vw;
+}
+
+.family__card__image {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 58%;
+  width: 78%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.family__card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.55) brightness(0.72);
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .no__results {
@@ -250,28 +223,30 @@
   color: #8b7355;
 }
 
-.family__container {
-  justify-content: flex-start;
-  gap: 1vw;
+/* ===== Family team view ===== */
+.team__container {
+  gap: 0.8vw;
+  overflow: hidden;
 }
 
 .family__header {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 1.2vw;
+  gap: 1vw;
+  flex-shrink: 0;
 }
 
 .back__button {
   background: linear-gradient(145deg, #1e2328, #0f1419);
   border: 1px solid #463714;
   color: #cdbe91;
-  padding: 0.5vw 1vw;
+  padding: 0.45vw 0.9vw;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08vw;
   font-weight: 700;
-  font-size: 0.85vw;
+  font-size: 0.8vw;
 }
 
 .back__button:hover {
@@ -282,163 +257,175 @@
 .family__title__block {
   display: flex;
   flex-direction: column;
-  gap: 0.2vw;
+  gap: 0.15vw;
 }
 
 .family__title {
   margin: 0;
   color: #e7c67a;
-  font-size: 1.4vw;
-  letter-spacing: 0.12vw;
+  font-size: 1.25vw;
+  letter-spacing: 0.1vw;
   text-transform: uppercase;
 }
 
 .family__meta {
   margin: 0;
   color: #8b7355;
-  font-size: 0.85vw;
-}
-
-.family__layout {
-  width: 100%;
-  height: calc(100% - 4vw);
-  display: grid;
-  grid-template-columns: 32% 1fr;
-  gap: 1.5vw;
-  min-height: 0;
-}
-
-.family__hero {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border: 1px solid #463714;
-}
-
-.family__hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.85);
-}
-
-.family__accounts {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8vw;
-}
-
-.section__title {
-  margin: 0;
-  color: #e7c67a;
-  text-transform: uppercase;
-  letter-spacing: 0.1vw;
-  font-size: 1vw;
-}
-
-.empty__hint {
-  color: #8b7355;
-  font-size: 0.9vw;
-  line-height: 1.5;
-}
-
-.accounts__list {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45vw;
-  padding-right: 0.4vw;
-  scrollbar-width: thin;
-}
-
-.account__row {
-  border: 1px solid #463714;
-  background: rgba(15, 18, 22, 0.75);
-}
-
-.account__row__main {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1.4fr 0.8fr 0.4fr;
-  gap: 0.6vw;
-  align-items: center;
-  background: transparent;
-  border: none;
-  color: #cdbe91;
-  padding: 0.7vw 0.9vw;
-  cursor: pointer;
-  text-align: left;
-}
-
-.account__row__main:hover {
-  background: rgba(200, 155, 60, 0.08);
-}
-
-.account__row__name {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05vw;
-  color: #e7c67a;
-}
-
-.account__row__essencer {
-  color: #8b7355;
-  text-transform: uppercase;
   font-size: 0.8vw;
 }
 
-.account__row__count {
-  justify-self: end;
-  color: #c89b3c;
-  font-weight: 700;
+.team__ready {
+  color: #a3e635;
 }
 
-.owned__skins {
+.team__missing {
+  color: #f59e0b;
+}
+
+.team__board {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.7vw;
+}
+
+.role__column {
+  min-height: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5vw;
-  padding: 0 0.9vw 0.8vw;
+  flex-direction: column;
+  border: 1px solid #463714;
+  background: rgba(12, 14, 18, 0.72);
+  padding: 0.45vw;
 }
 
-.owned__skin {
+.role__header {
   display: flex;
   align-items: center;
-  gap: 0.4vw;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid #2a2d35;
-  padding: 0.25vw 0.45vw;
-  color: #cdbe91;
+  gap: 0.35vw;
+  margin-bottom: 0.45vw;
+  flex-shrink: 0;
+}
+
+.role__icon {
+  width: 1.5vw;
+  height: 1.5vw;
+  min-width: 18px;
+  min-height: 18px;
+  object-fit: contain;
+}
+
+.role__label {
+  color: #e7c67a;
+  font-weight: 800;
+  letter-spacing: 0.08vw;
+  font-size: 0.85vw;
+}
+
+.role__count {
+  margin-left: auto;
+  color: #8b7355;
   font-size: 0.75vw;
 }
 
-.owned__skin img {
-  width: 2.2vw;
-  height: 2.2vw;
+.role__options {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55vw;
+  padding-right: 0.15vw;
+  scrollbar-width: thin;
+}
+
+.role__option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2vw;
+  text-align: center;
+}
+
+.role__skin {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  overflow: hidden;
+  border: 1px solid #2f3540;
+  background: #0a0c10;
+}
+
+.role__skin img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-@media (max-width: 900px) {
-  .family__layout {
-    grid-template-columns: 1fr;
+.role__skin__name {
+  color: #cdbe91;
+  font-size: clamp(8px, 0.62vw, 11px);
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.role__account {
+  color: #c89b3c;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04vw;
+  font-size: clamp(8px, 0.68vw, 12px);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3vw;
+  color: #5c5346;
+  font-size: 0.75vw;
+}
+
+.role__empty__box {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  border: 1px dashed #463714;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5c5346;
+  font-size: 1.4vw;
+}
+
+@media (max-width: 1100px) {
+  .families__grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     overflow-y: auto;
   }
 
-  .family__hero {
-    height: 28vh;
+  .team__board {
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .families__grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 28vw;
+    overflow-y: auto;
   }
 
-  .champion__name,
-  .family__title,
-  .family__meta,
-  .section__title,
-  .account__row__name,
-  .account__row__essencer,
-  .account__row__count,
-  .owned__skin,
-  .back__button,
-  .family__owned__badge {
-    font-size: 12px;
+  .team__board {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
   }
 }

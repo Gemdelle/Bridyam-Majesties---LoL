@@ -3,14 +3,17 @@ import styles from './Skins.module.scss';
 import {
   fetchSkinFamilies,
   fetchAccountSkins,
+  fetchChampionRoles,
+  getRoleTeamForFamily,
   getAccountsForFamily,
   cleanAccountName,
+  canFormFullTeam,
   type SkinFamily,
   type AccountSkins,
-  type FamilyAccountOwnership,
+  type RoleTeamColumn,
+  type LaneRole,
 } from '../../services/skinsService';
 import { fetchRankedData } from '../../services/apiRankedsService';
-import Filter, { type FilterOption } from '../../components/Filter/Filter';
 import { assetUrl } from '../../utils/assetUrl';
 
 type ViewState = 'list' | 'family';
@@ -19,32 +22,29 @@ const Skins: React.FC = () => {
   const [families, setFamilies] = useState<SkinFamily[]>([]);
   const [filteredFamilies, setFilteredFamilies] = useState<SkinFamily[]>([]);
   const [accountSkins, setAccountSkins] = useState<AccountSkins[]>([]);
+  const [rolesByName, setRolesByName] = useState<Record<string, LaneRole>>({});
   const [rankedLookup, setRankedLookup] = useState<
     Map<number, { username: string; essencer?: string }>
   >(new Map());
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [viewState, setViewState] = useState<ViewState>('list');
   const [selectedFamily, setSelectedFamily] = useState<SkinFamily | null>(null);
-  const [familyAccounts, setFamilyAccounts] = useState<FamilyAccountOwnership[]>([]);
-  const [expandedAccountId, setExpandedAccountId] = useState<number | null>(null);
-
-  const categoryOptions: FilterOption[] = [
-    { id: 'all', label: 'All Families' },
-  ];
+  const [roleTeam, setRoleTeam] = useState<RoleTeamColumn[]>([]);
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
-        const [familiesData, ownership, rankeds] = await Promise.all([
+        const [familiesData, ownership, rankeds, roles] = await Promise.all([
           fetchSkinFamilies(),
           fetchAccountSkins(),
           fetchRankedData(),
+          fetchChampionRoles(),
         ]);
         setFamilies(familiesData);
         setAccountSkins(ownership);
+        setRolesByName(roles);
         const lookup = new Map<number, { username: string; essencer?: string }>();
         rankeds.forEach((r) => {
           lookup.set(r.id, { username: r.username, essencer: r.essencer || r.name });
@@ -70,23 +70,21 @@ const Skins: React.FC = () => {
       );
     }
     setFilteredFamilies(filtered);
-  }, [families, selectedCategories, searchTerm]);
+  }, [families, searchTerm]);
 
   const openFamily = (family: SkinFamily) => {
     setSelectedFamily(family);
-    setFamilyAccounts(getAccountsForFamily(family, accountSkins, rankedLookup));
-    setExpandedAccountId(null);
+    setRoleTeam(getRoleTeamForFamily(family, accountSkins, rankedLookup, rolesByName));
     setViewState('family');
   };
 
   const backToList = () => {
     setViewState('list');
     setSelectedFamily(null);
-    setFamilyAccounts([]);
-    setExpandedAccountId(null);
+    setRoleTeam([]);
   };
 
-  const ownedCountForFamily = (family: SkinFamily): number =>
+  const accountsWithTheme = (family: SkinFamily): number =>
     getAccountsForFamily(family, accountSkins, rankedLookup).length;
 
   if (loading) {
@@ -101,19 +99,13 @@ const Skins: React.FC = () => {
     );
   }
 
+  const fullTeamReady = canFormFullTeam(roleTeam);
+
   return (
     <div className={styles.page}>
       {viewState === 'list' && (
-        <div className={styles.container}>
+        <div className={`${styles.container} ${styles.list__container}`}>
           <div className={styles.content__top}>
-            <div className={styles.filters}>
-              <Filter
-                title="FILTER"
-                options={categoryOptions}
-                selectedOptions={selectedCategories}
-                onSelectionChange={setSelectedCategories}
-              />
-            </div>
             <div className={styles.search__container}>
               <input
                 type="text"
@@ -134,14 +126,14 @@ const Skins: React.FC = () => {
             </div>
           </div>
 
-          <div className={styles.content}>
-            <div className={styles.champions__grid}>
+          <div className={`${styles.content} ${styles.list__content}`}>
+            <div className={styles.families__grid}>
               {filteredFamilies.map((family) => {
-                const accountsWithSkin = ownedCountForFamily(family);
+                const acctCount = accountsWithTheme(family);
                 return (
                   <div
                     key={family.id}
-                    className={styles.champion__card}
+                    className={styles.family__card}
                     onClick={() => openFamily(family)}
                     role="button"
                     tabIndex={0}
@@ -149,19 +141,15 @@ const Skins: React.FC = () => {
                       if (e.key === 'Enter' || e.key === ' ') openFamily(family);
                     }}
                   >
-                    <h3 className={styles.champion__name}>{family.name}</h3>
+                    <h3 className={styles.family__card__name}>{family.name}</h3>
                     <img
                       src={assetUrl('images/frames/skin-frame.png')}
                       alt=""
-                      className={styles.champion__frame}
+                      className={styles.family__card__frame}
                     />
-                    <div className={styles.account__champion__frame}>
-                      <span className={styles.account__champion__number}>{family.skinCount}</span>
-                    </div>
-                    <div className={styles.family__owned__badge}>
-                      {accountsWithSkin} acct
-                    </div>
-                    <div className={styles.champion__image}>
+                    <div className={styles.family__card__count}>{family.skinCount}</div>
+                    <div className={styles.family__card__acct}>{acctCount} acct</div>
+                    <div className={styles.family__card__image}>
                       <img
                         src={family.splashart}
                         alt={family.name}
@@ -184,7 +172,7 @@ const Skins: React.FC = () => {
       )}
 
       {viewState === 'family' && selectedFamily && (
-        <div className={`${styles.container} ${styles.family__container}`}>
+        <div className={`${styles.container} ${styles.team__container}`}>
           <div className={styles.family__header}>
             <button type="button" className={styles.back__button} onClick={backToList}>
               ← Families
@@ -192,71 +180,53 @@ const Skins: React.FC = () => {
             <div className={styles.family__title__block}>
               <h2 className={styles.family__title}>{selectedFamily.name}</h2>
               <p className={styles.family__meta}>
-                {selectedFamily.skinCount} skins in line · {familyAccounts.length} accounts own at
-                least one
+                {selectedFamily.skinCount} skins in line ·{' '}
+                <span className={fullTeamReady ? styles.team__ready : styles.team__missing}>
+                  {fullTeamReady ? 'Full team possible' : 'Missing roles'}
+                </span>
               </p>
             </div>
           </div>
 
-          <div className={styles.family__layout}>
-            <div className={styles.family__hero}>
-              <img
-                src={selectedFamily.splashart}
-                alt={selectedFamily.name}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = assetUrl('images/bg/bg.png');
-                }}
-              />
-            </div>
-
-            <div className={styles.family__accounts}>
-              <h3 className={styles.section__title}>Accounts with this theme</h3>
-              {familyAccounts.length === 0 ? (
-                <p className={styles.empty__hint}>
-                  No accounts have skins from this family yet. Run the weekly LoLDB sync to populate
-                  ownership.
-                </p>
-              ) : (
-                <div className={styles.accounts__list}>
-                  {familyAccounts.map((row) => {
-                    const open = expandedAccountId === row.rankedId;
-                    return (
-                      <div key={row.rankedId} className={styles.account__row}>
-                        <button
-                          type="button"
-                          className={styles.account__row__main}
-                          onClick={() =>
-                            setExpandedAccountId(open ? null : row.rankedId)
-                          }
-                        >
-                          <span className={styles.account__row__name}>
-                            {cleanAccountName(row.username)}
-                          </span>
-                          <span className={styles.account__row__essencer}>
-                            {row.essencer && row.essencer !== '-' ? row.essencer : '—'}
-                          </span>
-                          <span className={styles.account__row__count}>
-                            {row.ownedCount}/{selectedFamily.skinCount}
-                          </span>
-                        </button>
-                        {open && (
-                          <div className={styles.owned__skins}>
-                            {row.ownedSkins.map((skin) => (
-                              <div key={`${row.rankedId}-${skin.name}`} className={styles.owned__skin}>
-                                {skin.imageUrl ? (
-                                  <img src={skin.imageUrl} alt={skin.name} />
-                                ) : null}
-                                <span>{skin.name}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+          <div className={styles.team__board}>
+            {roleTeam.map((col) => (
+              <div key={col.role} className={styles.role__column}>
+                <div className={styles.role__header}>
+                  <img src={col.icon} alt={col.label} className={styles.role__icon} />
+                  <span className={styles.role__label}>{col.label}</span>
+                  <span className={styles.role__count}>{col.options.length}</span>
                 </div>
-              )}
-            </div>
+
+                <div className={styles.role__options}>
+                  {col.options.length === 0 ? (
+                    <div className={styles.role__empty}>
+                      <div className={styles.role__empty__box}>—</div>
+                      <span>No skin</span>
+                    </div>
+                  ) : (
+                    col.options.map((opt) => (
+                      <div
+                        key={`${col.role}-${opt.rankedId}-${opt.skin.name}`}
+                        className={styles.role__option}
+                        title={`${opt.skin.name} · ${opt.username}`}
+                      >
+                        <div className={styles.role__skin}>
+                          {opt.skin.imageUrl ? (
+                            <img src={opt.skin.imageUrl} alt={opt.skin.name} />
+                          ) : (
+                            <div className={styles.role__empty__box}>?</div>
+                          )}
+                        </div>
+                        <span className={styles.role__skin__name}>{opt.skin.name}</span>
+                        <span className={styles.role__account}>
+                          {cleanAccountName(opt.username)}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
