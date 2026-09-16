@@ -128,7 +128,7 @@ const FEATURED = [
     key: 'BROKEN COVENANT',
     cdragonIds: [190],
     splash: 'MissFortune_41',
-    matchMode: 'lines',
+    matchMode: 'broken-covenant',
     extraMatchKeys: ['broken covenant'],
   },
   {
@@ -280,6 +280,9 @@ function skinsForLineIds(skins, ids, matchMode) {
       // Coven line only — exclude Old God (same CDragon line, different theme)
       if (matchMode === 'coven') {
         return /^(prestige\s+)?coven\b/i.test(s.name) || /^the thousand-pierced bear$/i.test(s.name);
+      }
+      if (matchMode === 'broken-covenant') {
+        return /broken covenant/i.test(s.name);
       }
       if (matchMode === 'christmas' || matchMode === 'navidad') {
         return true; // Snowdown Showdown christmas set

@@ -205,6 +205,14 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
     );
   }
 
+  // Broken Covenant only — never pull plain Coven (substring trap: "broken covenant" contains "coven")
+  if (family.matchMode === 'broken-covenant' || family.name === 'BROKEN COVENANT') {
+    return (
+      skinName.includes('broken covenant') ||
+      lineHits.some((l) => l.includes('broken covenant'))
+    );
+  }
+
   if (
     family.matchMode === 'christmas' ||
     family.matchMode === 'navidad' ||

@@ -175,10 +175,10 @@ const RoleSlot: React.FC<{
             }}
           >
             <span className={styles.role__account__trigger__text}>
-              {selectedSkin?.champName || prettyAccountName(selectedAccount?.username || '')}
+              {prettyAccountName(selectedAccount?.username || '')}
             </span>
             <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
-              ▾
+              ›
             </span>
           </button>
           {accountOpen && (
@@ -224,7 +224,7 @@ const RoleSlot: React.FC<{
           )}
         </div>
         <img
-          src={assetUrl('images/frames/skin-frame.png')}
+          src={assetUrl('images/frames/skin-frame-long.png')}
           alt=""
           className={styles.role__skin__frame}
         />
@@ -232,6 +232,10 @@ const RoleSlot: React.FC<{
         <span className={styles.role__sparkle} data-pos="tr" aria-hidden />
         <span className={styles.role__sparkle} data-pos="bl" aria-hidden />
         <span className={styles.role__sparkle} data-pos="br" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="tm" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="ml" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="mr" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="bm" aria-hidden />
 
         {extraSkins > 1 && (
           <button
@@ -461,13 +465,15 @@ const Skins: React.FC = () => {
             <img
               src={assetUrl('images/frames/ring-gems-1.png')}
               alt=""
-              className={styles.family__card__gems__img}
+              className={`${styles.family__card__gems__img} ${styles.gem__bob} ${styles.gem__bob__a}`}
             />
-            <span className={styles.family__card__gems__count}>{covered}</span>
+            <span className={`${styles.family__card__gems__count} ${styles.gem__bob} ${styles.gem__bob__b}`}>
+              {covered}
+            </span>
             <img
               src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
               alt=""
-              className={styles.family__card__gems__img}
+              className={`${styles.family__card__gems__img} ${styles.gem__bob} ${styles.gem__bob__c}`}
             />
           </div>
         </div>
@@ -486,10 +492,18 @@ const Skins: React.FC = () => {
             />
           </div>
           <img
-            src={assetUrl('images/frames/skin-frame-long.png')}
+            src={assetUrl('images/frames/skin-frame.png')}
             alt=""
             className={styles.family__card__frame}
           />
+          <span className={styles.card__sparkle} data-pos="tl" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="tr" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="bl" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="br" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="tm" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="ml" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="mr" aria-hidden />
+          <span className={styles.card__sparkle} data-pos="bm" aria-hidden />
           <div className={styles.family__card__count}>
             <img
               src={assetUrl('images/frames/skin-number-frame.png')}

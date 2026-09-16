@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-16T09:41:08.445Z",
+  "updatedAt": "2026-09-16T10:00:55.036Z",
   "source": "communitydragon",
   "featuredCount": 23,
   "families": [
@@ -3951,7 +3951,7 @@
       "matchKeys": [
         "broken covenant"
       ],
-      "matchMode": "lines",
+      "matchMode": "broken-covenant",
       "skinCount": 11,
       "skins": [
         {
