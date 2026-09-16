@@ -4,6 +4,7 @@ import Filter, { type FilterOption } from '../../components/Filter';
 import RankedAccount from '../../components/RankedAccount/RankedAccount';
 import RankingTable from '../../components/RankingTable/RankingTable';
 import { fetchRankedData, updateChangedRankedData, type RankedData, fetchRankingConfig, type RankingConfig } from '../../services/apiRankedsService';
+import { isClaimedEssencer } from '../../services/sheetsWinsService';
 import { usePermissions } from '../../hooks/usePermissions';
 import RankingAchievement from '../../components/RankingAchievement/RankingAchievement';
 
@@ -98,10 +99,14 @@ const Ranked: React.FC = () => {
             });
         }
 
-        // Extract unique essencers from filtered data
-        const uniqueEssencers = [...new Set(filteredData.map(account => account.name))];
+        // Only claimed essencers from the Sheet (name is overlaid from Sheets on load)
+        const uniqueEssencers = [...new Set(
+            filteredData
+                .map(account => (account.name || account.essencer || '').trim())
+                .filter(isClaimedEssencer)
+        )];
         return uniqueEssencers
-            .sort((a, b) => a.localeCompare(b)) // Ordenar alfabéticamente
+            .sort((a, b) => a.localeCompare(b))
             .map(essencer => ({
                 id: essencer.toLowerCase(),
                 label: essencer
@@ -229,12 +234,11 @@ const Ranked: React.FC = () => {
             });
         }
 
-        // Apply essencer filters
+        // Apply essencer filters (match claimed essencer name from Sheet)
         if (selectedEssencers.length > 0) {
             filteredData = filteredData.filter(data => {
-                return selectedEssencers.some(essencer =>
-                    data.name.toLowerCase() === essencer
-                );
+                const essencerName = (data.name || data.essencer || '').trim().toLowerCase();
+                return isClaimedEssencer(essencerName) && selectedEssencers.includes(essencerName);
             });
         }
 

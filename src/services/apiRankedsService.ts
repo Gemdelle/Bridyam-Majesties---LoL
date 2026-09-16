@@ -1,5 +1,5 @@
 // import { authService } from './authService'; // DISABLED - Local mode
-import { fetchWinsFromSheet, updateWinsInSheet } from './sheetsWinsService';
+import { fetchWinsFromSheet, updateWinsInSheet, normalizeSheetEssencer } from './sheetsWinsService';
 import { assetUrl } from '../utils/assetUrl';
 
 // Interface for the ranked data structure
@@ -64,27 +64,45 @@ export const fetchRankedData = async (): Promise<RankedData[]> => {
 
         const data: RankedData[] = await response.json();
 
-        // Overlay current wins from Google Sheets (source of truth for wins)
+        // Overlay wins + essencer from Google Sheets (source of truth for claimed accounts)
         try {
-            const sheetWins = await fetchWinsFromSheet();
-            const winsByAccount = new Map(
-                sheetWins.map(row => [row.account.trim().toLowerCase(), row.wins])
+            const sheetRows = await fetchWinsFromSheet();
+            const sheetByAccount = new Map(
+                sheetRows.map(row => [row.account.trim().toLowerCase(), row])
             );
 
             return data.map(account => {
-                const key = (account.username || account.name || '').trim().toLowerCase();
-                if (!winsByAccount.has(key)) return account;
+                const key = (account.username || '').trim().toLowerCase();
+                const sheetRow = sheetByAccount.get(key);
+
+                // Not in sheet yet: clear old local essencer so UI doesn't show stale claims
+                if (!sheetRow) {
+                    return {
+                        ...account,
+                        name: '-',
+                        essencer: '-',
+                        wins: {
+                            ...account.wins,
+                            current: 0
+                        }
+                    };
+                }
+
+                const sheetEssencer = normalizeSheetEssencer(sheetRow.essencer);
 
                 return {
                     ...account,
+                    // Ranked UI uses `name` as the essencer label
+                    name: sheetEssencer,
+                    essencer: sheetEssencer,
                     wins: {
                         ...account.wins,
-                        current: winsByAccount.get(key) ?? account.wins.current
+                        current: Number(sheetRow.wins) || 0
                     }
                 };
             });
         } catch (sheetError) {
-            console.warn('Could not load wins from Google Sheets, using local JSON:', sheetError);
+            console.warn('Could not load ranked fields from Google Sheets, using local JSON:', sheetError);
             return data;
         }
     } catch (error) {
