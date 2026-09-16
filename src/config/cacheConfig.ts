@@ -14,8 +14,7 @@
  */
 
 export const CACHE_CONFIG = {
-    // TTL de la caché de masteries en milisegundos
-    // Configurado a 3 horas para máximo ahorro
-    MASTERY_CACHE_TTL: 3 * 60 * 60 * 1000, // 3 horas
+    // Short TTL so local/MasteryChart syncs show up quickly after refresh
+    MASTERY_CACHE_TTL: 30 * 1000, // 30 seconds
 };
 

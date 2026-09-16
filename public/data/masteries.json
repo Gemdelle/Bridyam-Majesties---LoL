@@ -3102,7 +3102,7 @@
       },
       {
         "champion_id": 29,
-        "champion_level": 1,
+        "champion_level": 4,
         "champion_points": 916
       },
       {
@@ -5248,7 +5248,7 @@
     "masteries": [
       {
         "champion_id": 29,
-        "champion_level": 9,
+        "champion_level": 10,
         "champion_points": 84139
       },
       {
@@ -17540,8 +17540,48 @@
     "masteries": [
       {
         "champion_id": 526,
-        "champion_level": 9,
-        "champion_points": 17691
+        "champion_level": 10,
+        "champion_points": 75628
+      },
+      {
+        "champion_id": 29,
+        "champion_level": 8,
+        "champion_points": 63722
+      },
+      {
+        "champion_id": 222,
+        "champion_level": 5,
+        "champion_points": 25049
+      },
+      {
+        "champion_id": 350,
+        "champion_level": 4,
+        "champion_points": 15537
+      },
+      {
+        "champion_id": 21,
+        "champion_level": 4,
+        "champion_points": 14523
+      },
+      {
+        "champion_id": 111,
+        "champion_level": 3,
+        "champion_points": 8835
+      },
+      {
+        "champion_id": 19,
+        "champion_level": 3,
+        "champion_points": 7440
+      },
+      {
+        "champion_id": 267,
+        "champion_level": 3,
+        "champion_points": 6629
+      },
+      {
+        "champion_id": 96,
+        "champion_level": 2,
+        "champion_points": 5840
       },
       {
         "champion_id": 223,
@@ -17549,9 +17589,44 @@
         "champion_points": 5198
       },
       {
+        "champion_id": 22,
+        "champion_level": 2,
+        "champion_points": 4380
+      },
+      {
         "champion_id": 32,
         "champion_level": 2,
         "champion_points": 3663
+      },
+      {
+        "champion_id": 12,
+        "champion_level": 2,
+        "champion_points": 3585
+      },
+      {
+        "champion_id": 360,
+        "champion_level": 2,
+        "champion_points": 3398
+      },
+      {
+        "champion_id": 90,
+        "champion_level": 2,
+        "champion_points": 3281
+      },
+      {
+        "champion_id": 89,
+        "champion_level": 2,
+        "champion_points": 2446
+      },
+      {
+        "champion_id": 110,
+        "champion_level": 2,
+        "champion_points": 2346
+      },
+      {
+        "champion_id": 145,
+        "champion_level": 2,
+        "champion_points": 2342
       },
       {
         "champion_id": 60,
@@ -17559,9 +17634,69 @@
         "champion_points": 1899
       },
       {
+        "champion_id": 16,
+        "champion_level": 1,
+        "champion_points": 1864
+      },
+      {
+        "champion_id": 75,
+        "champion_level": 1,
+        "champion_points": 1748
+      },
+      {
+        "champion_id": 150,
+        "champion_level": 1,
+        "champion_points": 1740
+      },
+      {
+        "champion_id": 235,
+        "champion_level": 1,
+        "champion_points": 1682
+      },
+      {
+        "champion_id": 117,
+        "champion_level": 1,
+        "champion_points": 1583
+      },
+      {
         "champion_id": 893,
         "champion_level": 1,
         "champion_points": 1580
+      },
+      {
+        "champion_id": 5,
+        "champion_level": 1,
+        "champion_points": 1565
+      },
+      {
+        "champion_id": 904,
+        "champion_level": 1,
+        "champion_points": 1549
+      },
+      {
+        "champion_id": 54,
+        "champion_level": 1,
+        "champion_points": 1528
+      },
+      {
+        "champion_id": 99,
+        "champion_level": 1,
+        "champion_points": 1508
+      },
+      {
+        "champion_id": 15,
+        "champion_level": 1,
+        "champion_points": 1433
+      },
+      {
+        "champion_id": 902,
+        "champion_level": 1,
+        "champion_points": 1388
+      },
+      {
+        "champion_id": 61,
+        "champion_level": 1,
+        "champion_points": 1377
       },
       {
         "champion_id": 53,
@@ -17569,9 +17704,34 @@
         "champion_points": 1129
       },
       {
+        "champion_id": 31,
+        "champion_level": 1,
+        "champion_points": 1116
+      },
+      {
+        "champion_id": 412,
+        "champion_level": 1,
+        "champion_points": 1114
+      },
+      {
         "champion_id": 203,
         "champion_level": 1,
         "champion_points": 1104
+      },
+      {
+        "champion_id": 497,
+        "champion_level": 1,
+        "champion_points": 1026
+      },
+      {
+        "champion_id": 77,
+        "champion_level": 1,
+        "champion_points": 971
+      },
+      {
+        "champion_id": 113,
+        "champion_level": 1,
+        "champion_points": 961
       },
       {
         "champion_id": 51,
@@ -17579,14 +17739,29 @@
         "champion_points": 959
       },
       {
+        "champion_id": 245,
+        "champion_level": 1,
+        "champion_points": 872
+      },
+      {
         "champion_id": 80,
         "champion_level": 1,
         "champion_points": 866
       },
       {
-        "champion_id": 61,
+        "champion_id": 236,
         "champion_level": 1,
-        "champion_points": 674
+        "champion_points": 719
+      },
+      {
+        "champion_id": 141,
+        "champion_level": 1,
+        "champion_points": 716
+      },
+      {
+        "champion_id": 518,
+        "champion_level": 1,
+        "champion_points": 689
       },
       {
         "champion_id": 134,
@@ -17594,9 +17769,24 @@
         "champion_points": 622
       },
       {
+        "champion_id": 1,
+        "champion_level": 1,
+        "champion_points": 572
+      },
+      {
         "champion_id": 876,
         "champion_level": 1,
         "champion_points": 454
+      },
+      {
+        "champion_id": 67,
+        "champion_level": 1,
+        "champion_points": 444
+      },
+      {
+        "champion_id": 105,
+        "champion_level": 1,
+        "champion_points": 438
       },
       {
         "champion_id": 78,
@@ -17604,274 +17794,9 @@
         "champion_points": 421
       },
       {
-        "champion_id": 115,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 350,
-        "champion_level": 2,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 12,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 34,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 1,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 429,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 360,
-        "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 22,
-        "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 63,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 164,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 31,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 122,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 131,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 36,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 28,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 81,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 9,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 105,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
         "champion_id": 86,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 40,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 24,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 202,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 89,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 117,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 99,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 54,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 11,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 267,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 20,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 92,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 113,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 15,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 37,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 16,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 17,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 412,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 29,
-        "champion_level": 8,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 67,
         "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 19,
-        "champion_level": 2,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 96,
-        "champion_level": 2,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 145,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 236,
-        "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 222,
-        "champion_level": 3,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 21,
-        "champion_level": 3,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 59,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 950,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 42,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 147,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 84,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 103,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 110,
-        "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 497,
-        "champion_level": 1,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 25,
-        "champion_level": 0,
-        "champion_points": 0
-      },
-      {
-        "champion_id": 56,
-        "champion_level": 0,
-        "champion_points": 0
+        "champion_points": 403
       }
     ]
   },

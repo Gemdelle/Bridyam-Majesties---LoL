@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Secrets / local sync backups
+.env
+.env.*
+!.env.example
+public/data/backups/

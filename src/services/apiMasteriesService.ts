@@ -1,5 +1,6 @@
 // import { authService } from './authService'; // DISABLED - Local mode
 import { purchasedChampionsService } from './purchasedChampionsService';
+import { assetUrl } from '../utils/assetUrl';
 
 // Interface for the individual mastery data structure
 export interface MasteryData {
@@ -60,7 +61,7 @@ export const fetchMasteryData = async (): Promise<MasteryData[]> => {
 
     try {
         console.log('LOCAL MODE: Fetching mastery data from local JSON');
-        const response = await fetch(`/data/masteries.json?t=${Date.now()}`, { cache: 'no-store' });
+        const response = await fetch(assetUrl(`data/masteries.json?t=${Date.now()}`), { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -126,7 +127,7 @@ export const getMasteryData = async (rankedId: number, championId: number): Prom
 // LOCAL MODE: Fetch raw mastery data grouped by users from local JSON
 export const fetchGroupedMasteryData = async (): Promise<UserMasteryData[]> => {
     try {
-        const response = await fetch(`/data/masteries.json?t=${Date.now()}`, { cache: 'no-store' });
+        const response = await fetch(assetUrl(`data/masteries.json?t=${Date.now()}`), { cache: 'no-store' });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

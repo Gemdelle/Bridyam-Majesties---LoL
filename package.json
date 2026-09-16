@@ -14,7 +14,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "create-page": "powershell -ExecutionPolicy Bypass -File scripts/create-page.ps1",
-    "create-component": "powershell -ExecutionPolicy Bypass -File scripts/create-component.ps1"
+    "create-component": "powershell -ExecutionPolicy Bypass -File scripts/create-component.ps1",
+    "sync:masteries": "node scripts/sync-masteries-riot.mjs",
+    "sync:masteries:depurallire": "node scripts/sync-masteries-riot.mjs --ranked-id=51",
+    "sync:masteries:depurallire:mc": "node scripts/sync-masteries-masterychart.mjs --ranked-id=51",
+    "sync:masteries:check-key": "node scripts/sync-masteries-riot.mjs --check-key"
   },
   "dependencies": {
     "react": "^19.1.0",
