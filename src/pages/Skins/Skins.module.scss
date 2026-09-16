@@ -351,13 +351,13 @@
 .family__card__count {
   position: absolute;
   left: 50%;
-  bottom: 2%;
+  bottom: 5.5%;
   transform: translateX(-50%);
   z-index: 3;
-  width: 2.1vw;
-  height: 2.1vw;
-  min-width: 22px;
-  min-height: 22px;
+  width: 2.75vw;
+  height: 2.75vw;
+  min-width: 28px;
+  min-height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -376,7 +376,7 @@
   position: relative;
   z-index: 1;
   color: #e7c67a;
-  font-size: clamp(8px, 0.65vw, 12px);
+  font-size: clamp(9px, 0.78vw, 14px);
   font-weight: bold;
   margin-top: 18%;
 }
