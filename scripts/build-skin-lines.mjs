@@ -15,7 +15,7 @@ const ROLES_OUT = path.join(__dirname, '..', 'public', 'data', 'champion-roles.j
 const FEATURED = [
   {
     key: 'WINTER',
-    cdragonIds: [187, 47, 28, 46, 48, 160, 129],
+    cdragonIds: [187, 47, 28, 46, 48, 160, 129, 128],
     splash: 'Twitch_12', // Ice King Twitch
     matchMode: 'winter',
     extraMatchKeys: [
@@ -29,6 +29,7 @@ const FEATURED = [
       'blackfrost',
       'frosted',
       'ice king',
+      'freljord',
     ],
   },
   {
@@ -84,6 +85,69 @@ const FEATURED = [
     key: 'SPIRIT BLOSSOM',
     cdragonIds: [171, 218],
     splash: 'Ahri_27',
+    matchMode: 'lines',
+  },
+  {
+    key: 'VICTORIOUS',
+    cdragonIds: [7],
+    splash: 'Aatrox_9',
+    matchMode: 'lines',
+  },
+  {
+    key: 'BATTLE QUEENS',
+    cdragonIds: [137],
+    splash: 'Diana_25',
+    matchMode: 'lines',
+  },
+  {
+    key: 'FRELJORD',
+    cdragonIds: [128],
+    splash: 'Ashe_1',
+    matchMode: 'lines',
+  },
+  {
+    key: 'WARDEN',
+    cdragonIds: [50],
+    splash: 'Jax_12',
+    matchMode: 'lines',
+  },
+  {
+    key: 'HEARTBREAKERS',
+    cdragonIds: [64],
+    splash: 'Ashe_6',
+    matchMode: 'lines',
+  },
+  {
+    key: 'COVEN',
+    cdragonIds: [92, 190],
+    splash: 'Ahri_42',
+    matchMode: 'lines',
+    extraMatchKeys: ['coven', 'broken covenant'],
+  },
+  {
+    key: 'NIGHTBRINGER',
+    cdragonIds: [193],
+    splash: 'Yasuo_9',
+    matchMode: 'nightbringer',
+    extraMatchKeys: ['nightbringer'],
+  },
+  {
+    key: 'DAWNBRINGER',
+    cdragonIds: [193],
+    splash: 'Riven_16',
+    matchMode: 'dawnbringer',
+    extraMatchKeys: ['dawnbringer'],
+  },
+  {
+    key: 'HIGHSTAKES',
+    cdragonIds: [41],
+    splash: 'Ezreal_8',
+    matchMode: 'lines',
+  },
+  {
+    key: 'MARAUDER',
+    cdragonIds: [45],
+    splash: 'Alistar_8',
     matchMode: 'lines',
   },
 ];
@@ -142,9 +206,19 @@ async function buildChampionRoles() {
   return payload;
 }
 
-function skinsForLineIds(skins, ids) {
+function skinsForLineIds(skins, ids, matchMode) {
   return skins
-    .filter((s) => !s.isBase && (s.skinLines || []).some((sl) => ids.includes(sl.id)))
+    .filter((s) => {
+      if (s.isBase) return false;
+      if (!(s.skinLines || []).some((sl) => ids.includes(sl.id))) return false;
+      if (matchMode === 'nightbringer') {
+        return /nightbringer/i.test(s.name);
+      }
+      if (matchMode === 'dawnbringer') {
+        return /dawnbringer/i.test(s.name);
+      }
+      return true;
+    })
     .map((s) => ({
       id: s.id,
       name: s.name,
@@ -178,7 +252,7 @@ async function main() {
 
   FEATURED.forEach((fam, index) => {
     const cdragonNames = fam.cdragonIds.map((id) => lineById.get(id)?.name).filter(Boolean);
-    const familySkins = skinsForLineIds(skins, fam.cdragonIds);
+    const familySkins = skinsForLineIds(skins, fam.cdragonIds, fam.matchMode);
     const matchKeys = [
       fam.key.toLowerCase(),
       ...(fam.extraMatchKeys || []),
@@ -206,7 +280,7 @@ async function main() {
     });
   });
 
-  // All remaining named skinlines
+  // All remaining named skinlines (skip shared NB/DB line — covered by featured splits)
   const remaining = lines
     .filter((l) => !featuredIds.has(l.id))
     .sort((a, b) => String(a.name).localeCompare(String(b.name)));

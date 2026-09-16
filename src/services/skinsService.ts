@@ -169,11 +169,50 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
     return lineHits.some((l) => l.includes('winterblessed')) || skinName.includes('winterblessed');
   }
 
+  if (family.matchMode === 'nightbringer' || family.name === 'NIGHTBRINGER') {
+    return skinName.includes('nightbringer') || lineHits.some((l) => l.includes('nightbringer'));
+  }
+
+  if (family.matchMode === 'dawnbringer' || family.name === 'DAWNBRINGER') {
+    return skinName.includes('dawnbringer') || lineHits.some((l) => l.includes('dawnbringer'));
+  }
+
   if (lineHits.some((line) => keys.some((k) => line === k || line.includes(k) || k.includes(line)))) {
     return true;
   }
 
   return keys.some((k) => k.length >= 4 && (skinName.startsWith(k) || skinName.includes(k)));
+};
+
+/** Winter theme priority: winterblessed > winter wonder > freljord > winter/... */
+export const getWinterSkinPriority = (skin: OwnedSkin): number => {
+  const name = normalize(skin.name);
+  const lines = (skin.skinLines || []).map(normalize).join(' ');
+  const hay = `${name} ${lines}`;
+  if (hay.includes('winterblessed')) return 0;
+  if (hay.includes('winter wonder')) return 1;
+  if (hay.includes('freljord')) return 2;
+  if (
+    hay.includes('winter') ||
+    hay.includes('snow') ||
+    hay.includes('frost') ||
+    hay.includes('ice king')
+  ) {
+    return 3;
+  }
+  return 4;
+};
+
+export const sortSkinsForFamily = (skins: OwnedSkin[], family: SkinFamily): OwnedSkin[] => {
+  const copy = skins.slice();
+  if (family.matchMode === 'winter' || family.name === 'WINTER') {
+    copy.sort(
+      (a, b) =>
+        getWinterSkinPriority(a) - getWinterSkinPriority(b) || a.name.localeCompare(b.name)
+    );
+    return copy;
+  }
+  return copy.sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export const getRolesForChampionName = (
@@ -251,9 +290,12 @@ export const getRoleTeamForFamily = (
       }
     }
 
-    const accounts = [...byAccount.values()].sort((a, b) =>
-      a.username.localeCompare(b.username)
-    );
+    const accounts = [...byAccount.values()]
+      .map((acc) => ({
+        ...acc,
+        skins: sortSkinsForFamily(acc.skins, family),
+      }))
+      .sort((a, b) => a.username.localeCompare(b.username));
 
     return {
       role: lane.id,
@@ -262,6 +304,108 @@ export const getRoleTeamForFamily = (
       accounts,
     };
   });
+};
+
+export interface RoleSelection {
+  rankedId: number;
+  skinName: string;
+}
+
+const champKey = (name: string) => normalize(name);
+
+/** Resolve owned skin for a selection. */
+export const resolveSelectedSkin = (
+  column: RoleTeamColumn,
+  selection: RoleSelection | null | undefined
+): OwnedSkin | null => {
+  if (!column.accounts.length) return null;
+  const acc =
+    column.accounts.find((a) => a.rankedId === selection?.rankedId) || column.accounts[0];
+  if (!acc) return null;
+  return acc.skins.find((s) => s.name === selection?.skinName) || acc.skins[0] || null;
+};
+
+/** Champions already taken by other roles in the current team. */
+export const getBlockedChampions = (
+  columns: RoleTeamColumn[],
+  selections: Partial<Record<LaneRole, RoleSelection>>,
+  exceptRole?: LaneRole
+): Set<string> => {
+  const blocked = new Set<string>();
+  for (const col of columns) {
+    if (col.role === exceptRole) continue;
+    const skin = resolveSelectedSkin(col, selections[col.role]);
+    if (skin?.champName) blocked.add(champKey(skin.champName));
+  }
+  return blocked;
+};
+
+/** Pick first skin for an account whose champion is not blocked. */
+export const firstAvailableSkin = (
+  skins: OwnedSkin[],
+  blocked: Set<string>
+): OwnedSkin | null => skins.find((s) => !blocked.has(champKey(s.champName))) || null;
+
+/**
+ * Build initial role selections with unique champions across the 5 lanes
+ * (same champ can't play two roles in one game).
+ */
+export const pickUniqueRoleSelections = (
+  columns: RoleTeamColumn[]
+): Partial<Record<LaneRole, RoleSelection>> => {
+  const used = new Set<string>();
+  const result: Partial<Record<LaneRole, RoleSelection>> = {};
+
+  for (const col of columns) {
+    let picked: RoleSelection | null = null;
+    for (const acc of col.accounts) {
+      const skin = firstAvailableSkin(acc.skins, used);
+      if (skin) {
+        used.add(champKey(skin.champName));
+        picked = { rankedId: acc.rankedId, skinName: skin.name };
+        break;
+      }
+    }
+    if (picked) result[col.role] = picked;
+  }
+
+  return result;
+};
+
+/**
+ * After a role change, re-pick any other roles that now share a champion.
+ */
+export const reconcileUniqueSelections = (
+  columns: RoleTeamColumn[],
+  selections: Partial<Record<LaneRole, RoleSelection>>,
+  changedRole: LaneRole
+): Partial<Record<LaneRole, RoleSelection>> => {
+  const next = { ...selections };
+  const changedSkin = resolveSelectedSkin(
+    columns.find((c) => c.role === changedRole)!,
+    next[changedRole]
+  );
+  const changedChamp = changedSkin ? champKey(changedSkin.champName) : '';
+
+  for (const col of columns) {
+    if (col.role === changedRole) continue;
+    const skin = resolveSelectedSkin(col, next[col.role]);
+    if (!skin || !changedChamp || champKey(skin.champName) !== changedChamp) continue;
+
+    const blocked = getBlockedChampions(columns, next, col.role);
+    let replaced: RoleSelection | null = null;
+    for (const acc of col.accounts) {
+      const alt = firstAvailableSkin(acc.skins, blocked);
+      if (alt) {
+        replaced = { rankedId: acc.rankedId, skinName: alt.name };
+        break;
+      }
+    }
+    if (replaced) next[col.role] = replaced;
+    else delete next[col.role];
+  }
+
+  return next;
 };
 
 export const cleanAccountName = (username: string): string =>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styles from './Skins.module.scss';
 import {
   fetchSkinFamilies,
@@ -8,89 +8,140 @@ import {
   getAccountsForFamily,
   cleanAccountName,
   canFormFullTeam,
+  pickUniqueRoleSelections,
+  reconcileUniqueSelections,
+  getBlockedChampions,
+  firstAvailableSkin,
   type SkinFamily,
   type AccountSkins,
   type RoleTeamColumn,
   type RoleAccountOption,
   type OwnedSkin,
   type LaneRole,
+  type RoleSelection,
 } from '../../services/skinsService';
 import { fetchRankedData } from '../../services/apiRankedsService';
 import { assetUrl } from '../../utils/assetUrl';
 
 type ViewState = 'featured' | 'other' | 'family';
 
-interface RoleSelection {
-  rankedId: number;
-  skinName: string;
-}
+const champKey = (name: string) =>
+  String(name || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
 
 const RoleSlot: React.FC<{
   column: RoleTeamColumn;
   selection: RoleSelection | null;
+  blockedChampions: Set<string>;
   onSelect: (next: RoleSelection) => void;
-}> = ({ column, selection, onSelect }) => {
+}> = ({ column, selection, blockedChampions, onSelect }) => {
   const [skinPickerOpen, setSkinPickerOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  const availableAccounts = useMemo(() => {
+    return column.accounts.filter((acc) => {
+      if (selection?.rankedId === acc.rankedId) return true;
+      return acc.skins.some((s) => !blockedChampions.has(champKey(s.champName)));
+    });
+  }, [column.accounts, blockedChampions, selection?.rankedId]);
 
   const selectedAccount: RoleAccountOption | null = useMemo(() => {
-    if (!column.accounts.length) return null;
+    if (!availableAccounts.length) return null;
     return (
-      column.accounts.find((a) => a.rankedId === selection?.rankedId) || column.accounts[0]
+      availableAccounts.find((a) => a.rankedId === selection?.rankedId) || availableAccounts[0]
     );
-  }, [column.accounts, selection]);
+  }, [availableAccounts, selection]);
+
+  const availableSkins = useMemo(() => {
+    if (!selectedAccount) return [] as OwnedSkin[];
+    return selectedAccount.skins.filter((s) => {
+      if (selection?.skinName === s.name) return true;
+      return !blockedChampions.has(champKey(s.champName));
+    });
+  }, [selectedAccount, blockedChampions, selection?.skinName]);
 
   const selectedSkin: OwnedSkin | null = useMemo(() => {
     if (!selectedAccount) return null;
     return (
-      selectedAccount.skins.find((s) => s.name === selection?.skinName) ||
-      selectedAccount.skins[0] ||
-      null
+      availableSkins.find((s) => s.name === selection?.skinName) || availableSkins[0] || null
     );
-  }, [selectedAccount, selection]);
+  }, [selectedAccount, availableSkins, selection]);
 
   useEffect(() => {
     if (!column.accounts.length) return;
     if (selection) {
-      const exists = column.accounts.some((a) => a.rankedId === selection.rankedId);
-      if (exists) return;
+      const acc = column.accounts.find((a) => a.rankedId === selection.rankedId);
+      if (acc?.skins.some((s) => s.name === selection.skinName)) return;
     }
-    const first = column.accounts[0];
-    if (first?.skins[0]) {
-      onSelect({ rankedId: first.rankedId, skinName: first.skins[0].name });
+    for (const acc of column.accounts) {
+      const skin = firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
+      if (skin) {
+        onSelect({ rankedId: acc.rankedId, skinName: skin.name });
+        return;
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [column.role, column.accounts]);
+  }, [column.role, column.accounts, selection?.rankedId, selection?.skinName]);
 
-  const extraSkins = selectedAccount ? selectedAccount.skins.length : 0;
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) {
+        setAccountOpen(false);
+        setSkinPickerOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
+  }, []);
+
+  const extraSkins = availableSkins.length;
 
   return (
-    <div className={styles.role__column}>
+    <div className={styles.role__column} ref={rootRef}>
       <div className={styles.role__header}>
         <img src={column.icon} alt={column.label} className={styles.role__icon} />
         <span className={styles.role__label}>{column.label}</span>
       </div>
 
       <div className={styles.role__skin__wrap}>
-        {selectedSkin?.imageUrl ? (
-          <img src={selectedSkin.imageUrl} alt={selectedSkin.name} className={styles.role__skin__img} />
-        ) : (
-          <div className={styles.role__empty__box}>—</div>
-        )}
+        <div className={styles.role__skin__image}>
+          {selectedSkin?.imageUrl ? (
+            <img src={selectedSkin.imageUrl} alt={selectedSkin.name} className={styles.role__skin__img} />
+          ) : (
+            <div className={styles.role__empty__box}>—</div>
+          )}
+        </div>
+        <img
+          src={assetUrl('images/frames/skin-frame.png')}
+          alt=""
+          className={styles.role__skin__frame}
+        />
+        <span className={styles.role__sparkle} data-pos="tl" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="tr" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="bl" aria-hidden />
+        <span className={styles.role__sparkle} data-pos="br" aria-hidden />
 
         {extraSkins > 1 && (
           <button
             type="button"
             className={styles.skin__count__badge}
-            onClick={() => setSkinPickerOpen((v) => !v)}
+            onClick={() => {
+              setSkinPickerOpen((v) => !v);
+              setAccountOpen(false);
+            }}
             title={`${extraSkins} skins`}
           >
             {extraSkins}
           </button>
         )}
 
-        {skinPickerOpen && selectedAccount && selectedAccount.skins.length > 1 && (
+        {skinPickerOpen && availableSkins.length > 1 && selectedAccount && (
           <div className={styles.skin__picker}>
-            {selectedAccount.skins.map((skin) => (
+            {availableSkins.map((skin) => (
               <button
                 key={skin.name}
                 type="button"
@@ -112,27 +163,54 @@ const RoleSlot: React.FC<{
 
       <div className={styles.role__skin__caption}>{selectedSkin?.name || 'No skin'}</div>
 
-      {column.accounts.length === 0 ? (
+      {availableAccounts.length === 0 ? (
         <div className={styles.role__account__empty}>No account</div>
       ) : (
-        <select
-          className={styles.role__account__select}
-          value={selectedAccount?.rankedId ?? ''}
-          onChange={(e) => {
-            const rankedId = Number(e.target.value);
-            const acc = column.accounts.find((a) => a.rankedId === rankedId);
-            if (!acc) return;
-            onSelect({ rankedId, skinName: acc.skins[0]?.name || '' });
-            setSkinPickerOpen(false);
-          }}
-        >
-          {column.accounts.map((acc) => (
-            <option key={acc.rankedId} value={acc.rankedId}>
-              {cleanAccountName(acc.username)}
-              {acc.skins.length > 1 ? ` (${acc.skins.length})` : ''}
-            </option>
-          ))}
-        </select>
+        <div className={styles.role__account__dropdown}>
+          <button
+            type="button"
+            className={styles.role__account__trigger}
+            onClick={() => {
+              setAccountOpen((v) => !v);
+              setSkinPickerOpen(false);
+            }}
+          >
+            <span>
+              {cleanAccountName(selectedAccount?.username || '')}
+              {selectedAccount && selectedAccount.skins.length > 1
+                ? ` (${selectedAccount.skins.length})`
+                : ''}
+            </span>
+            <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
+              ▾
+            </span>
+          </button>
+          {accountOpen && (
+            <div className={styles.role__account__menu}>
+              {availableAccounts.map((acc) => (
+                <button
+                  key={acc.rankedId}
+                  type="button"
+                  className={`${styles.role__account__option} ${
+                    acc.rankedId === selectedAccount?.rankedId
+                      ? styles.role__account__option__active
+                      : ''
+                  }`}
+                  onClick={() => {
+                    const skin =
+                      firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
+                    if (!skin) return;
+                    onSelect({ rankedId: acc.rankedId, skinName: skin.name });
+                    setAccountOpen(false);
+                  }}
+                >
+                  {cleanAccountName(acc.username)}
+                  {acc.skins.length > 1 ? ` (${acc.skins.length})` : ''}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -202,23 +280,12 @@ const Skins: React.FC = () => {
     return list;
   }, [families, searchTerm]);
 
-  const openFamily = (family: SkinFamily, from: ViewState = 'featured') => {
+  const openFamily = (family: SkinFamily) => {
     const team = getRoleTeamForFamily(family, accountSkins, rankedLookup, rolesData);
-    const initial: Partial<Record<LaneRole, RoleSelection>> = {};
-    team.forEach((col) => {
-      if (col.accounts[0]?.skins[0]) {
-        initial[col.role] = {
-          rankedId: col.accounts[0].rankedId,
-          skinName: col.accounts[0].skins[0].name,
-        };
-      }
-    });
     setSelectedFamily(family);
     setRoleTeam(team);
-    setRoleSelections(initial);
+    setRoleSelections(pickUniqueRoleSelections(team));
     setViewState('family');
-    // remember where we came from via selectedFamily only; back goes to featured/other by checking featured flag
-    void from;
   };
 
   const backToList = () => {
@@ -227,6 +294,13 @@ const Skins: React.FC = () => {
     setSelectedFamily(null);
     setRoleTeam([]);
     setRoleSelections({});
+  };
+
+  const handleRoleSelect = (role: LaneRole, next: RoleSelection) => {
+    setRoleSelections((prev) => {
+      const merged = { ...prev, [role]: next };
+      return reconcileUniqueSelections(roleTeam, merged, role);
+    });
   };
 
   const accountsWithTheme = (family: SkinFamily): number =>
@@ -281,9 +355,8 @@ const Skins: React.FC = () => {
               alt=""
               className={styles.family__card__count__frame}
             />
-            <span>{family.skinCount}</span>
+            <span>{acctCount}</span>
           </div>
-          <div className={styles.family__card__acct}>{acctCount} acct</div>
         </div>
       </div>
     );
@@ -351,7 +424,7 @@ const Skins: React.FC = () => {
             <div className={styles.family__title__block}>
               <h2 className={styles.family__title}>{selectedFamily.name}</h2>
               <p className={styles.family__meta}>
-                {selectedFamily.skinCount} skins ·{' '}
+                {accountsWithTheme(selectedFamily)} accounts ·{' '}
                 <span className={fullTeamReady ? styles.team__ready : styles.team__missing}>
                   {fullTeamReady ? 'Full team possible' : 'Missing roles'}
                 </span>
@@ -365,12 +438,8 @@ const Skins: React.FC = () => {
                 key={col.role}
                 column={col}
                 selection={roleSelections[col.role] || null}
-                onSelect={(next) =>
-                  setRoleSelections((prev) => ({
-                    ...prev,
-                    [col.role]: next,
-                  }))
-                }
+                blockedChampions={getBlockedChampions(roleTeam, roleSelections, col.role)}
+                onSelect={(next) => handleRoleSelect(col.role, next)}
               />
             ))}
           </div>
