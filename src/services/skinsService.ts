@@ -585,19 +585,6 @@ export const getOwnedSplashForFamily = (
   return family.splashart;
 };
 
-/** Team-slot art: catalog splash if present, else owned URL (never rewrite paths). */
-export const getTeamSkinImageUrl = (
-  skin: OwnedSkin,
-  family?: SkinFamily | null
-): string => {
-  if (family?.skins?.length) {
-    const catalog = family.skins.find((s) => s.name === skin.name);
-    if (catalog?.splashUrl) return catalog.splashUrl;
-    if (catalog?.tileUrl) return catalog.tileUrl;
-  }
-  return skin.imageUrl;
-};
-
 export const FEATURED_PRIORITY_ORDER = [
   'WINTER',
   'WINTERBLESSED',
