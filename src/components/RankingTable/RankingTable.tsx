@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './RankingTable.module.scss';
 import { fetchGlobalRanking, type RankingEntry } from '../../services/progressRankingService';
+import { assetUrl } from '../../utils/assetUrl';
 
 const RankingTable: React.FC = () => {
     const [ranking, setRanking] = useState<RankingEntry[]>([]);
@@ -37,7 +38,7 @@ const RankingTable: React.FC = () => {
             return null; // No mostrar pet si la etapa no es válida
         }
 
-        return `/images/pets/pet-${petType}-${petStage}.png`;
+        return assetUrl(`images/pets/pet-${petType}-${petStage}.png`);
     };
 
     // Thresholds for each category based on elo values

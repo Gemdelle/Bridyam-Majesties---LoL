@@ -1,5 +1,12 @@
 // LOCAL MODE: Progress ranking functionality disabled (no backend)
-import { fetchWinsFromSheet, isClaimedEssencer, normalizeSheetEssencer } from './sheetsWinsService';
+import {
+    fetchWinsFromSheet,
+    fetchEssencerPetMap,
+    isClaimedEssencer,
+    normalizeSheetEssencer,
+    getPetTypeFromSpecies,
+    getPetStageFromLevel
+} from './sheetsWinsService';
 import { assetUrl } from '../utils/assetUrl';
 
 export interface RankingEntry {
@@ -119,9 +126,9 @@ const SCORING = {
  */
 export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
-        const [sheetRows, essencers] = await Promise.all([
+        const [sheetRows, essencerPetMap] = await Promise.all([
             fetchWinsFromSheet(),
-            loadEssencersConfig()
+            fetchEssencerPetMap()
         ]);
 
         const essencerStats: Record<string, { name: string; totalWins: number; accountCount: number }> = {};
@@ -146,15 +153,17 @@ export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressR
             .filter(e => e.totalWins > 0)
             .map(e => {
                 const winsScore = e.totalWins * SCORING.wins;
-                const petConfig = essencers[e.name];
+                const petRow = essencerPetMap.get(e.name.toLowerCase());
+                const petType = getPetTypeFromSpecies(petRow?.pet);
+                const petStage = petType ? getPetStageFromLevel(petRow?.level ?? 1) : null;
 
                 return {
                     rank: 0,
                     rankedId: 0,
                     rankedName: e.name,
                     userId: `sheet-${e.name.toLowerCase()}`,
-                    petType: petConfig?.petType || '1',
-                    petStage: petConfig?.petStage || 2,
+                    petType,
+                    petStage,
                     totalProgressScore: winsScore,
                     levelGained: 0,
                     honorGained: 0,
@@ -190,8 +199,10 @@ export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressR
 export const fetchRankingByBloodline = async (bloodline: string, limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
         const { fetchRankedData } = await import('./apiRankedsService');
-        const rankeds = await fetchRankedData();
-        const essencers = await loadEssencersConfig();
+        const [rankeds, essencerPetMap] = await Promise.all([
+            fetchRankedData(),
+            fetchEssencerPetMap()
+        ]);
 
         const filtered = rankeds.filter(r =>
             r.bloodline.toLowerCase() === bloodline.toLowerCase() &&
@@ -212,14 +223,16 @@ export const fetchRankingByBloodline = async (bloodline: string, limit: number =
             .filter(e => e.totalWins > 0)
             .map(e => {
                 const winsScore = e.totalWins * SCORING.wins;
-                const petConfig = essencers[e.name];
+                const petRow = essencerPetMap.get(e.name.toLowerCase());
+                const petType = getPetTypeFromSpecies(petRow?.pet);
+                const petStage = petType ? getPetStageFromLevel(petRow?.level ?? 1) : null;
                 return {
                     rank: 0,
                     rankedId: 0,
                     rankedName: e.name,
                     userId: `sheet-${e.name.toLowerCase()}`,
-                    petType: petConfig?.petType || '1',
-                    petStage: petConfig?.petStage || 2,
+                    petType,
+                    petStage,
                     totalProgressScore: winsScore,
                     levelGained: 0,
                     honorGained: 0,

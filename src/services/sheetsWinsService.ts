@@ -16,12 +16,41 @@ export interface SheetAccountRow {
 /** @deprecated use SheetAccountRow */
 export type SheetWinsRow = SheetAccountRow;
 
+export interface SheetEssencerRow {
+    row: number;
+    essencer: string;
+    pet: string;
+    level: number;
+}
+
 interface SheetAccountsResponse {
     ok: boolean;
     data?: SheetAccountRow[];
+    essencers?: SheetEssencerRow[];
     error?: string | null;
     account?: string;
 }
+
+/** Map pet species name → image id (1-4) */
+export const PET_SPECIES: Record<string, { id: string; type: string }> = {
+    flarnit: { id: '1', type: 'fighter' },
+    pettlewyn: { id: '2', type: 'venom' },
+    peewee: { id: '3', type: 'water' },
+    vindeloon: { id: '4', type: 'psychic' }
+};
+
+export const getPetTypeFromSpecies = (species: string | undefined | null): string | null => {
+    const key = String(species || '').trim().toLowerCase();
+    if (!key) return null;
+    return PET_SPECIES[key]?.id ?? null;
+};
+
+export const getPetStageFromLevel = (level: number | undefined | null): number => {
+    const lv = Number(level) || 1;
+    if (lv >= 3) return 3;
+    if (lv >= 2) return 2;
+    return 1;
+};
 
 export const isClaimedEssencer = (essencer: string | undefined | null): boolean => {
     const value = (essencer || '').trim();
@@ -60,6 +89,20 @@ export const formatEloForSheet = (elo: { tier: string; division: number } | unde
 
 /** Fetch all account rows from Google Sheets */
 export const fetchWinsFromSheet = async (): Promise<SheetAccountRow[]> => {
+    const payload = await fetchSheetPayload();
+    return payload.data.filter(row => {
+        const account = (row.account || '').trim();
+        return account !== '' && account.toUpperCase() !== 'GEM';
+    });
+};
+
+/** Fetch essencer pet rows from Google Sheets ESSENCERS tab */
+export const fetchEssencersFromSheet = async (): Promise<SheetEssencerRow[]> => {
+    const payload = await fetchSheetPayload();
+    return (payload.essencers || []).filter(row => isClaimedEssencer(row.essencer));
+};
+
+const fetchSheetPayload = async (): Promise<SheetAccountsResponse> => {
     const response = await fetch(`${SHEETS_WINS_URL}?t=${Date.now()}`, { cache: 'no-store' });
     if (!response.ok) {
         throw new Error(`Sheets GET failed: ${response.status}`);
@@ -69,14 +112,30 @@ export const fetchWinsFromSheet = async (): Promise<SheetAccountRow[]> => {
     if (!payload.ok || !payload.data) {
         throw new Error(payload.error || 'Sheets GET returned no data');
     }
-
-    return payload.data.filter(row => {
-        const account = (row.account || '').trim();
-        return account !== '' && account.toUpperCase() !== 'GEM';
-    });
+    return payload;
 };
 
 export const fetchAccountsFromSheet = fetchWinsFromSheet;
+
+/**
+ * Build essencer → pet lookup from ESSENCERS tab.
+ * Keys are lowercase essencer names.
+ */
+export const fetchEssencerPetMap = async (): Promise<Map<string, SheetEssencerRow>> => {
+    const rows = await fetchEssencersFromSheet();
+    const map = new Map<string, SheetEssencerRow>();
+    rows.forEach(row => {
+        const key = row.essencer.trim().toLowerCase();
+        const existing = map.get(key);
+        const rowPet = String(row.pet || '').trim();
+        const existingPet = String(existing?.pet || '').trim();
+        // Prefer row with a pet assigned when the sheet has duplicate essencer names
+        if (!existing || (!existingPet && rowPet)) {
+            map.set(key, row);
+        }
+    });
+    return map;
+};
 
 /**
  * Update one account in Google Sheets.
