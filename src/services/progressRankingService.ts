@@ -1,4 +1,6 @@
 // LOCAL MODE: Progress ranking functionality disabled (no backend)
+import { fetchWinsFromSheet, isClaimedEssencer, normalizeSheetEssencer } from './sheetsWinsService';
+import { assetUrl } from '../utils/assetUrl';
 
 export interface RankingEntry {
     rank: number;
@@ -88,7 +90,7 @@ const loadEssencersConfig = async (): Promise<Record<string, EssencerConfig>> =>
     if (essencersConfig) return essencersConfig;
 
     try {
-        const response = await fetch('/data/essencers.json');
+        const response = await fetch(assetUrl('data/essencers.json'));
         if (response.ok) {
             const data = await response.json();
             essencersConfig = data.essencers;
@@ -112,145 +114,133 @@ const SCORING = {
 };
 
 /**
- * LOCAL MODE: Calcula el ranking dinámicamente desde rankeds.json
- * Solo incluye essencers con wins > 0
+ * Ranking from Google Sheets only: group claimed essencers by name and sum wins.
+ * Old local essencer names are ignored.
  */
 export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
-        const [rankedsResponse, essencers] = await Promise.all([
-            fetch('/data/rankeds.json'),
+        const [sheetRows, essencers] = await Promise.all([
+            fetchWinsFromSheet(),
             loadEssencersConfig()
         ]);
 
-        if (!rankedsResponse.ok) {
-            throw new Error(`HTTP error! status: ${rankedsResponse.status}`);
-        }
-        const rankeds: RankedAccount[] = await rankedsResponse.json();
+        const essencerStats: Record<string, { name: string; totalWins: number; accountCount: number }> = {};
 
-        // Group accounts by essencer and sum their stats
-        const essencerStats: Record<string, {
-            name: string;
-            totalWins: number;
-            totalLevel: number;
-            totalHonor: number;
-            totalMastery: number;
-            totalEloSoloq: number;
-            totalEloFlex: number;
-            accountCount: number;
-        }> = {};
+        sheetRows.forEach(row => {
+            const essencer = normalizeSheetEssencer(row.essencer);
+            if (!isClaimedEssencer(essencer)) return;
 
-        const eloPoints: Record<string, number> = {
-            'challenger': 1000, 'grandmaster': 900, 'master': 800,
-            'diamond': 700, 'emerald': 600, 'platinum': 500,
-            'gold': 400, 'silver': 300, 'bronze': 200, 'iron': 100, 'unranked': 0
-        };
-
-        rankeds.forEach(r => {
-            if (r.essencer === '-') return;
-
-            if (!essencerStats[r.essencer]) {
-                essencerStats[r.essencer] = {
-                    name: r.essencer,
+            if (!essencerStats[essencer]) {
+                essencerStats[essencer] = {
+                    name: essencer,
                     totalWins: 0,
-                    totalLevel: 0,
-                    totalHonor: 0,
-                    totalMastery: 0,
-                    totalEloSoloq: 0,
-                    totalEloFlex: 0,
                     accountCount: 0
                 };
             }
 
-            const soloqPoints = (eloPoints[r.elo_soloq.tier.toLowerCase()] || 0) + (5 - r.elo_soloq.division) * 20;
-            const flexPoints = (eloPoints[r.elo_flex.tier.toLowerCase()] || 0) + (5 - r.elo_flex.division) * 20;
-
-            essencerStats[r.essencer].totalWins += r.wins.current;
-            essencerStats[r.essencer].totalLevel += r.level;
-            essencerStats[r.essencer].totalHonor += r.honor;
-            essencerStats[r.essencer].totalMastery += r.masteries;
-            essencerStats[r.essencer].totalEloSoloq += soloqPoints;
-            essencerStats[r.essencer].totalEloFlex += flexPoints;
-            essencerStats[r.essencer].accountCount += 1;
+            essencerStats[essencer].totalWins += Number(row.wins) || 0;
+            essencerStats[essencer].accountCount += 1;
         });
 
-        // Build ranking - only include essencers with wins > 0
         const ranking: RankingEntry[] = Object.values(essencerStats)
-            .filter(e => e.totalWins > 0)
             .map(e => {
                 const winsScore = e.totalWins * SCORING.wins;
-                const eloScore = Math.floor((e.totalEloSoloq + e.totalEloFlex) / 4) * (SCORING.elo > 0 ? 1 : 0);
-                const honorScore = e.totalHonor * SCORING.honor;
-                const levelScore = e.totalLevel * SCORING.level;
-                const masteryScore = e.totalMastery * SCORING.mastery;
-                const totalScore = winsScore + eloScore + honorScore + levelScore + masteryScore;
-
-                // Get pet info from essencers config
                 const petConfig = essencers[e.name];
 
                 return {
                     rank: 0,
                     rankedId: 0,
                     rankedName: e.name,
-                    userId: 'local-user',
+                    userId: `sheet-${e.name.toLowerCase()}`,
                     petType: petConfig?.petType || '1',
                     petStage: petConfig?.petStage || 2,
-                    totalProgressScore: totalScore,
-                    levelGained: e.totalLevel,
-                    honorGained: e.totalHonor,
+                    totalProgressScore: winsScore,
+                    levelGained: 0,
+                    honorGained: 0,
                     winsGained: e.totalWins,
-                    soloqProgress: e.totalEloSoloq,
-                    flexProgress: e.totalEloFlex,
-                    masteryLevelsGained: e.totalMastery,
+                    soloqProgress: 0,
+                    flexProgress: 0,
+                    masteryLevelsGained: 0,
                     level30BonusCount: 0,
                     eloDivisionsGained: 0,
                     winsScore,
-                    masteryScore,
-                    honorScore,
-                    levelScore,
+                    masteryScore: 0,
+                    honorScore: 0,
+                    levelScore: 0,
                     memberScore: 0,
-                    eloScore,
+                    eloScore: 0,
                     redeemCount: 0,
                     redeemScore: 0
                 };
             })
-            .sort((a, b) => b.totalProgressScore - a.totalProgressScore)
+            .sort((a, b) => b.totalProgressScore - a.totalProgressScore || a.rankedName.localeCompare(b.rankedName))
             .map((entry, index) => ({ ...entry, rank: index + 1 }));
 
         return { ranking: ranking.slice(0, limit), totalCount: ranking.length };
     } catch (error) {
-        console.error('Error calculating ranking:', error);
+        console.error('Error calculating ranking from Google Sheets:', error);
         return { ranking: [], totalCount: 0 };
     }
 };
 
 /**
- * LOCAL MODE: Obtiene el ranking de progreso por bloodline
+ * Bloodline ranking: uses Sheet-overlaid ranked data (essencer/wins from Excel).
  */
 export const fetchRankingByBloodline = async (bloodline: string, limit: number = 100): Promise<ProgressRankingResponse> => {
     try {
-        const response = await fetch('/data/rankeds.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const rankeds: RankedAccount[] = await response.json();
+        const { fetchRankedData } = await import('./apiRankedsService');
+        const rankeds = await fetchRankedData();
+        const essencers = await loadEssencersConfig();
 
-        // Filter by bloodline first, then group by essencer
-        const filteredRankeds = rankeds.filter(r =>
-            r.bloodline.toLowerCase() === bloodline.toLowerCase()
+        const filtered = rankeds.filter(r =>
+            r.bloodline.toLowerCase() === bloodline.toLowerCase() &&
+            isClaimedEssencer(r.name || r.essencer)
         );
 
-        // Use same logic as global ranking but with filtered data
-        const { ranking } = await fetchGlobalRanking(1000);
+        const essencerStats: Record<string, { name: string; totalWins: number }> = {};
+        filtered.forEach(r => {
+            const essencer = normalizeSheetEssencer(r.name || r.essencer);
+            if (!isClaimedEssencer(essencer)) return;
+            if (!essencerStats[essencer]) {
+                essencerStats[essencer] = { name: essencer, totalWins: 0 };
+            }
+            essencerStats[essencer].totalWins += r.wins?.current || 0;
+        });
 
-        // Get essencers that have accounts in this bloodline
-        const bloodlineEssencers = new Set(
-            filteredRankeds.filter(r => r.essencer !== '-').map(r => r.essencer)
-        );
+        const ranking: RankingEntry[] = Object.values(essencerStats)
+            .map(e => {
+                const winsScore = e.totalWins * SCORING.wins;
+                const petConfig = essencers[e.name];
+                return {
+                    rank: 0,
+                    rankedId: 0,
+                    rankedName: e.name,
+                    userId: `sheet-${e.name.toLowerCase()}`,
+                    petType: petConfig?.petType || '1',
+                    petStage: petConfig?.petStage || 2,
+                    totalProgressScore: winsScore,
+                    levelGained: 0,
+                    honorGained: 0,
+                    winsGained: e.totalWins,
+                    soloqProgress: 0,
+                    flexProgress: 0,
+                    masteryLevelsGained: 0,
+                    level30BonusCount: 0,
+                    eloDivisionsGained: 0,
+                    winsScore,
+                    masteryScore: 0,
+                    honorScore: 0,
+                    levelScore: 0,
+                    memberScore: 0,
+                    eloScore: 0,
+                    redeemCount: 0,
+                    redeemScore: 0
+                };
+            })
+            .sort((a, b) => b.totalProgressScore - a.totalProgressScore || a.rankedName.localeCompare(b.rankedName))
+            .map((entry, index) => ({ ...entry, rank: index + 1 }));
 
-        const filtered = ranking.filter(entry => bloodlineEssencers.has(entry.rankedName));
-        const reranked = filtered.map((entry, index) => ({ ...entry, rank: index + 1 }));
-
-        return { ranking: reranked.slice(0, limit), totalCount: reranked.length };
+        return { ranking: ranking.slice(0, limit), totalCount: ranking.length };
     } catch (error) {
         console.error('Error fetching bloodline ranking:', error);
         return { ranking: [], totalCount: 0 };
