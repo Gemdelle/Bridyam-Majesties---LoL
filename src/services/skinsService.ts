@@ -38,6 +38,7 @@ export interface SkinLineSkin {
   rarity: string;
   cdragonLineIds: number[];
   tileUrl?: string;
+  splashUrl?: string;
 }
 
 export interface SkinFamily {
@@ -526,3 +527,48 @@ export const countCoveredRoles = (
   const team = getRoleTeamForFamily(family, accountSkins, rankedLookup, rolesData);
   return team.filter((col) => col.accounts.length > 0).length;
 };
+
+/** Prefer a splash of a skin we actually own for this family. */
+export const getOwnedSplashForFamily = (
+  family: SkinFamily,
+  accountSkins: AccountSkins[]
+): string => {
+  const owned: OwnedSkin[] = [];
+  for (const account of accountSkins) {
+    for (const skin of account.skins || []) {
+      if (skinBelongsToFamily(skin, family)) owned.push(skin);
+    }
+  }
+  if (!owned.length) return family.splashart;
+
+  const priority = ['twitch', 'miss fortune', 'jinx', "kog'maw", 'kogmaw', 'ahri', 'lux'];
+  owned.sort((a, b) => {
+    const pa = priority.findIndex((p) => normalize(a.champName).includes(p));
+    const pb = priority.findIndex((p) => normalize(b.champName).includes(p));
+    return (pa === -1 ? 99 : pa) - (pb === -1 ? 99 : pb) || a.name.localeCompare(b.name);
+  });
+
+  const pick = owned[0];
+  const catalog = family.skins?.find((s) => s.name === pick.name);
+  if (catalog?.splashUrl) return catalog.splashUrl;
+  if (catalog?.tileUrl) return catalog.tileUrl;
+  return toFullSplashUrl(pick.imageUrl) || family.splashart;
+};
+
+/** Team view: full splash art when possible (less face-zoom than tiles). */
+export const toFullSplashUrl = (url: string): string => {
+  if (!url) return url;
+  return url
+    .replace(/_splash_tile_/gi, '_splash_')
+    .replace(/_splash_centered_/gi, '_splash_')
+    .replace(/\/images\//gi, '/');
+};
+
+export const FEATURED_PRIORITY_ORDER = [
+  'WINTER',
+  'WINTERBLESSED',
+  'FRELJORD',
+  'VICTORIOUS',
+  'STAR GUARDIAN',
+  'BATTLE QUEENS',
+];

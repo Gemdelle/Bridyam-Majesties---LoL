@@ -12,11 +12,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(__dirname, '..', 'public', 'data', 'skin-lines.json');
 const ROLES_OUT = path.join(__dirname, '..', 'public', 'data', 'champion-roles.json');
 
+/** Fixed lead order; remaining featured keep relative order and are sorted by ownership at runtime. */
 const FEATURED = [
   {
     key: 'WINTER',
     cdragonIds: [187, 47, 28, 46, 48, 160, 129, 128],
-    splash: 'Twitch_12', // Ice King Twitch
+    splash: 'Twitch_12',
     matchMode: 'winter',
     extraMatchKeys: [
       'winter',
@@ -40,15 +41,33 @@ const FEATURED = [
     extraMatchKeys: ['winterblessed'],
   },
   {
-    key: 'CAFE CUTIES',
-    cdragonIds: [153],
-    splash: 'Annie_22',
+    key: 'FRELJORD',
+    cdragonIds: [128],
+    splash: 'Ashe_1',
+    matchMode: 'lines',
+  },
+  {
+    key: 'VICTORIOUS',
+    cdragonIds: [7],
+    splash: 'KogMaw_55',
     matchMode: 'lines',
   },
   {
     key: 'STAR GUARDIAN',
     cdragonIds: [19, 20, 119, 161],
     splash: 'Quinn_14',
+    matchMode: 'lines',
+  },
+  {
+    key: 'BATTLE QUEENS',
+    cdragonIds: [137],
+    splash: 'Fiora_89',
+    matchMode: 'lines',
+  },
+  {
+    key: 'CAFE CUTIES',
+    cdragonIds: [153],
+    splash: 'Annie_22',
     matchMode: 'lines',
   },
   {
@@ -84,25 +103,7 @@ const FEATURED = [
   {
     key: 'SPIRIT BLOSSOM',
     cdragonIds: [171, 218],
-    splash: 'Yunara_1', // Spirit Blossom Springs (latest)
-    matchMode: 'lines',
-  },
-  {
-    key: 'VICTORIOUS',
-    cdragonIds: [7],
-    splash: 'KogMaw_55',
-    matchMode: 'lines',
-  },
-  {
-    key: 'BATTLE QUEENS',
-    cdragonIds: [137],
-    splash: 'Fiora_89',
-    matchMode: 'lines',
-  },
-  {
-    key: 'FRELJORD',
-    cdragonIds: [128],
-    splash: 'Ashe_1',
+    splash: 'Yunara_1',
     matchMode: 'lines',
   },
   {
@@ -230,7 +231,6 @@ async function buildChampionRoles() {
     const roles = positions
       .map((p) => POSITION_TO_ROLE[p])
       .filter(Boolean);
-    // Prefer top for Camille even if Meraki lists support first
     if (String(champ.name).toLowerCase() === 'camille') {
       if (!roles.includes('top')) roles.unshift('top');
       else {
@@ -251,14 +251,15 @@ async function buildChampionRoles() {
 
 function isRoyalSkinName(name) {
   const n = String(name || '');
-  // Card-deck High Stakes skins are not "royal"
   if (/king of clubs|queen of diamonds|jack of hearts|ace of spades/i.test(n)) return false;
   if (/mecha kingdoms|battle queen/i.test(n)) return false;
   if (/lancer paragon/i.test(n)) return true;
-  return /^(royal|imperial|golden|lord|king|queen)\b/i.test(n)
-    || /\bbattle regalia\b/i.test(n)
-    || /\broyal guard\b/i.test(n)
-    || /\bmajestic empress\b/i.test(n);
+  return (
+    /^(royal|imperial|golden|lord|king|queen)\b/i.test(n) ||
+    /\bbattle regalia\b/i.test(n) ||
+    /\broyal guard\b/i.test(n) ||
+    /\bmajestic empress\b/i.test(n)
+  );
 }
 
 function skinsForLineIds(skins, ids, matchMode) {
@@ -278,7 +279,6 @@ function skinsForLineIds(skins, ids, matchMode) {
       if (matchMode === 'dawnbringer') {
         return /dawnbringer/i.test(s.name);
       }
-      // Coven line only — exclude Old God (same CDragon line, different theme)
       if (matchMode === 'coven') {
         return /^(prestige\s+)?coven\b/i.test(s.name) || /^the thousand-pierced bear$/i.test(s.name);
       }
@@ -286,7 +286,7 @@ function skinsForLineIds(skins, ids, matchMode) {
         return /broken covenant/i.test(s.name);
       }
       if (matchMode === 'christmas' || matchMode === 'navidad') {
-        return true; // Snowdown Showdown christmas set
+        return true;
       }
       return true;
     })
@@ -298,6 +298,7 @@ function skinsForLineIds(skins, ids, matchMode) {
       rarity: s.rarity || '',
       cdragonLineIds: (s.skinLines || []).map((sl) => sl.id),
       tileUrl: cdragonSplashUrl(s.tilePath || s.splashPath),
+      splashUrl: cdragonSplashUrl(s.splashPath || s.tilePath),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
@@ -351,8 +352,6 @@ async function main() {
     });
   });
 
-  // All remaining named skinlines (skip shared NB/DB line — covered by featured splits)
-  // Also hide Lancer entirely (Paragon Blitz lives under ROYAL)
   const hideOtherIds = new Set([69]);
   const remaining = lines
     .filter((l) => !featuredIds.has(l.id) && !hideOtherIds.has(l.id))
@@ -361,9 +360,7 @@ async function main() {
   remaining.forEach((line) => {
     const familySkins = skinsForLineIds(skins, [line.id]);
     if (familySkins.length === 0) return;
-    const splashart =
-      familySkins[0]?.tileUrl ||
-      ddragonSplash('Aatrox_0');
+    const splashart = familySkins[0]?.tileUrl || ddragonSplash('Aatrox_0');
     families.push({
       id: idCounter++,
       sortOrder: 1000 + line.id,

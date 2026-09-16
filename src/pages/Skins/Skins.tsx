@@ -13,6 +13,9 @@ import {
   reconcileUniqueSelections,
   getBlockedChampions,
   firstAvailableSkin,
+  getOwnedSplashForFamily,
+  toFullSplashUrl,
+  FEATURED_PRIORITY_ORDER,
   type SkinFamily,
   type AccountSkins,
   type RoleTeamColumn,
@@ -84,8 +87,7 @@ const RoleSlot: React.FC<{
   selection: RoleSelection | null;
   blockedChampions: Set<string>;
   onSelect: (next: RoleSelection) => void;
-  imageFit: SplashFit;
-}> = ({ column, selection, blockedChampions, onSelect, imageFit }) => {
+}> = ({ column, selection, blockedChampions, onSelect }) => {
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -157,8 +159,9 @@ const RoleSlot: React.FC<{
   };
 
   const imgStyle: React.CSSProperties = {
-    objectPosition: `${imageFit.x}% ${imageFit.y}%`,
-    transform: `scale(${imageFit.scale})`,
+    objectFit: 'contain',
+    objectPosition: 'center center',
+    transform: 'none',
   };
 
   return (
@@ -214,7 +217,7 @@ const RoleSlot: React.FC<{
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
             <img
-              src={selectedSkin.imageUrl}
+              src={toFullSplashUrl(selectedSkin.imageUrl)}
               alt={selectedSkin.name}
               className={styles.role__skin__img}
               style={imgStyle}
@@ -325,10 +328,24 @@ const Skins: React.FC = () => {
     load();
   }, []);
 
-  const featuredFamilies = useMemo(
-    () => families.filter((f) => f.featured === true),
-    [families]
-  );
+  const featuredFamilies = useMemo(() => {
+    const featured = families.filter((f) => f.featured === true);
+    const priorityIdx = (name: string) => {
+      const i = FEATURED_PRIORITY_ORDER.indexOf(name);
+      return i === -1 ? 1000 : i;
+    };
+    const pinned = featured
+      .filter((f) => priorityIdx(f.name) < 1000)
+      .sort((a, b) => priorityIdx(a.name) - priorityIdx(b.name));
+    const rest = featured
+      .filter((f) => priorityIdx(f.name) === 1000)
+      .sort((a, b) => {
+        const ca = getAccountsForFamily(a, accountSkins, rankedLookup).length;
+        const cb = getAccountsForFamily(b, accountSkins, rankedLookup).length;
+        return cb - ca || a.name.localeCompare(b.name);
+      });
+    return [...pinned, ...rest];
+  }, [families, accountSkins, rankedLookup]);
 
   const otherFamilies = useMemo(() => {
     let list = families.filter((f) => f.featured === false);
@@ -404,9 +421,8 @@ const Skins: React.FC = () => {
       y: Number(patch.y ?? current.y),
       scale: Number(patch.scale ?? current.scale),
     };
-    // Allow panning past 0–100 so ↑/↓ always move the crop
-    nextFit.x = Math.max(-40, Math.min(140, nextFit.x));
-    nextFit.y = Math.max(-40, Math.min(140, nextFit.y));
+    nextFit.x = Math.max(-80, Math.min(180, nextFit.x));
+    nextFit.y = Math.max(-80, Math.min(180, nextFit.y));
     nextFit.scale = Math.max(1, Math.min(2.8, nextFit.scale));
     const next = { ...splashFits, [key]: nextFit };
     setSplashFits(next);
@@ -437,7 +453,6 @@ const Skins: React.FC = () => {
   }
 
   const fullTeamReady = canFormFullTeam(roleTeam);
-  const teamImageFit = selectedFamily ? getFit(selectedFamily) : DEFAULT_FIT;
 
   const renderFamilyCard = (family: SkinFamily) => {
     const acctCount = accountsWithTheme(family);
@@ -445,6 +460,13 @@ const Skins: React.FC = () => {
     const gemN = Math.max(1, Math.min(5, covered || 1));
     const fit = getFit(family);
     const isEditing = editSplash && editingFamilyId === family.id;
+    const splashSrc = getOwnedSplashForFamily(family, accountSkins);
+    const imgStyle: React.CSSProperties = {
+      objectPosition: `${fit.x}% ${fit.y}%`,
+      // Origin follows focus point so ↑/↓ actually pans while zoomed
+      transform: `scale(${fit.scale})`,
+      transformOrigin: `${fit.x}% ${fit.y}%`,
+    };
 
     return (
       <div
@@ -474,7 +496,7 @@ const Skins: React.FC = () => {
               alt=""
               className={`${styles.family__card__gems__img} ${styles.gem__bob} ${styles.gem__bob__a}`}
             />
-            <span className={`${styles.family__card__gems__count} ${styles.gem__bob} ${styles.gem__bob__b}`}>
+            <span className={`${styles.family__card__gems__count}`}>
               {covered}
             </span>
             <img
@@ -487,14 +509,13 @@ const Skins: React.FC = () => {
         <div className={styles.family__card__stage}>
           <div className={styles.family__card__image}>
             <img
-              src={family.splashart}
+              src={splashSrc}
               alt={family.name}
-              style={{
-                objectPosition: `${fit.x}% ${fit.y}%`,
-                transform: `scale(${fit.scale})`,
-              }}
+              style={imgStyle}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = assetUrl('images/bg/bg.png');
+                const el = e.target as HTMLImageElement;
+                if (el.src !== family.splashart) el.src = family.splashart;
+                else el.src = assetUrl('images/bg/bg.png');
               }}
             />
           </div>
@@ -532,15 +553,15 @@ const Skins: React.FC = () => {
             </button>
             <button
               type="button"
-              title="Move crop up (see lower part of splash)"
-              onClick={() => updateFit(family, { y: Number(fit.y) + 6 })}
+              title="Pan up (reveal lower part / push image up)"
+              onClick={() => updateFit(family, { y: Number(fit.y) - 8 })}
             >
               ↑
             </button>
             <button
               type="button"
-              title="Move crop down (see upper part of splash)"
-              onClick={() => updateFit(family, { y: Number(fit.y) - 6 })}
+              title="Pan down (reveal heads / push image down)"
+              onClick={() => updateFit(family, { y: Number(fit.y) + 8 })}
             >
               ↓
             </button>
@@ -709,7 +730,6 @@ const Skins: React.FC = () => {
                 selection={roleSelections[col.role] || null}
                 blockedChampions={getBlockedChampions(roleTeam, roleSelections, col.role)}
                 onSelect={(next) => handleRoleSelect(col.role, next)}
-                imageFit={teamImageFit}
               />
             ))}
           </div>

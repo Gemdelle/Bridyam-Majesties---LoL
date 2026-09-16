@@ -201,6 +201,7 @@
   text-shadow: 0 1px 2px #000;
   min-width: 0.7em;
   text-align: center;
+  /* number stays still — only gem images bob */
 }
 
 .gem__bob {
@@ -553,12 +554,6 @@
   font-family: 'Pixel', sans-serif;
 }
 
-/*
- * EDITAR — alto del frame DENTRO de la family (team view):
- * - `.role__skin__wrap`: subí `flex` / bajá `min-height` si querés más alto.
- * - `.role__skin__image` top/bottom: controla cuánto del frame largo llena el splash.
- *   Si queda negro abajo, bajá `bottom` (ej. 10% → 4%).
- */
 .role__skin__wrap {
   position: relative;
   width: 100%;
@@ -572,22 +567,23 @@
 
 .role__skin__image {
   position: absolute;
-  left: 10%;
-  right: 10%;
+  left: 12%;
+  right: 12%;
   top: 4%;
-  bottom: 6%;
+  bottom: 10%;
   z-index: 1;
   overflow: hidden;
   border-radius: 2px;
   background: #0a0c10;
 }
 
+/* EDITAR — team splash: contain = splash entero; cover = más zoom a la cara */
 .role__skin__img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 35%;
-  transform-origin: center center;
+  object-fit: contain;
+  object-position: center center;
+  transform: none;
   display: block;
 }
 
