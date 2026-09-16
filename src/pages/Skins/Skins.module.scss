@@ -153,58 +153,54 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35vw;
+  gap: 0.4vw;
   margin: 0 0 0.2vw;
   flex-shrink: 0;
   min-height: 1.2em;
 }
 
 .family__card__name {
-  margin: 0;
+  margin-bottom: -13px;
   padding: 0;
-  max-width: calc(100% - 2vw);
-  font-size: clamp(9px, 0.72vw, 13px);
+  max-width: calc(100% - 3.5vw);
+  font-size: 17px;
   font-weight: 800;
   color: #e7c67a;
   text-transform: uppercase;
-  letter-spacing: 0.04vw;
+  letter-spacing: 0.06vw;
   text-align: center;
-  line-height: 1.05;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .family__card__gems {
-  position: relative;
-  width: 1.35vw;
-  height: 1.35vw;
-  min-width: 16px;
-  min-height: 16px;
-  margin: 0;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.2vw;
+  margin-bottom: -13px;
+  flex-shrink: 0;
 }
 
 .family__card__gems__img {
-  width: 100%;
-  height: 100%;
+  width: 1.1vw;
+  height: 1.1vw;
+  min-width: 14px;
+  min-height: 14px;
   object-fit: contain;
   pointer-events: none;
 }
 
 .family__card__gems__count {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: static;
   color: #f5e6b8;
-  font-size: clamp(7px, 0.5vw, 9px);
+  font-size: 14px;
   font-weight: 800;
+  line-height: 1;
   text-shadow: 0 1px 2px #000;
+  min-width: 0.7em;
+  text-align: center;
 }
 
 .family__card__stage {
@@ -214,21 +210,14 @@
   min-height: 0;
 }
 
-/*
- * EDITAR — ventana del splash art dentro del skin-frame (family cards):
- * Si ves un "agujero negro" abajo, BAJÁ el valor de `bottom` (ej. 8% → 4%).
- * Si se sale de los costados, SUBÍ left/right (ej. 12% → 14%).
- * top controla el margen superior del recorte.
- */
 .family__card__image {
   position: absolute;
   left: 12%;
   right: 12%;
   top: 7%;
-  bottom: 7%;
+  bottom: 17%;
   z-index: 1;
   overflow: hidden;
-  border-radius: 2px;
   background: #0a0c10;
 }
 
@@ -458,16 +447,12 @@
   overflow: visible;
 }
 
-/*
- * EDITAR — ventana del splash en team view:
- * Mismo criterio que .family__card__image. Bajá `bottom` si queda negro abajo.
- */
 .role__skin__image {
   position: absolute;
   left: 12%;
   right: 12%;
   top: 7%;
-  bottom: 7%;
+  bottom: 17%;
   z-index: 1;
   overflow: hidden;
   border-radius: 2px;
@@ -579,19 +564,18 @@
 
 .skin__next__arrow {
   position: absolute;
-  right: -0.15vw;
+  right: 0.15vw;
   top: 42%;
   transform: translateY(-50%);
   z-index: 6;
-  width: 1.8vw;
-  height: 2.6vw;
-  min-width: 22px;
-  min-height: 32px;
-  border: 1px solid #c89b3c;
-  border-radius: 4px;
-  background: rgba(10, 12, 16, 0.88);
+  width: 1.6vw;
+  height: 2.4vw;
+  min-width: 20px;
+  min-height: 28px;
+  border: none;
+  background: transparent;
   color: #e7c67a;
-  font-size: 1.6vw;
+  font-size: 1.8vw;
   font-weight: 800;
   cursor: pointer;
   padding: 0;
@@ -599,37 +583,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: 0 0 6px rgba(231, 198, 122, 0.95), 0 0 12px rgba(200, 155, 60, 0.7);
+  animation: arrowNudge 1.8s ease-in-out infinite;
 }
 
 .skin__next__arrow:hover {
-  color: #f5e6b8;
-  background: rgba(30, 24, 10, 0.95);
-  border-color: #e7c67a;
+  color: #fff1b8;
+  text-shadow: 0 0 8px rgba(255, 241, 184, 1), 0 0 16px rgba(231, 198, 122, 0.9);
 }
 
-.skin__cycle__inline {
-  flex-shrink: 0;
-  width: 1.7vw;
-  height: 2.2vw;
-  min-width: 22px;
-  min-height: 28px;
-  border: 1px solid #c89b3c;
-  border-radius: 4px;
-  background: rgba(10, 12, 16, 0.88);
-  color: #e7c67a;
-  font-size: 1.35vw;
-  font-weight: 800;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.skin__cycle__inline:hover {
-  color: #f5e6b8;
-  border-color: #e7c67a;
+@keyframes arrowNudge {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-50%) translateX(0.28vw);
+  }
 }
 
 .skin__picker {
@@ -701,16 +671,8 @@
   z-index: 25;
 }
 
-.role__account__row {
-  display: flex;
-  align-items: stretch;
-  gap: 0.35vw;
-  width: 100%;
-}
-
 .role__account__trigger {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -86,7 +86,6 @@ const RoleSlot: React.FC<{
   onSelect: (next: RoleSelection) => void;
   imageFit: SplashFit;
 }> = ({ column, selection, blockedChampions, onSelect, imageFit }) => {
-  const [skinPickerOpen, setSkinPickerOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -139,7 +138,6 @@ const RoleSlot: React.FC<{
     const onDoc = (e: MouseEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) {
         setAccountOpen(false);
-        setSkinPickerOpen(false);
       }
     };
     document.addEventListener('mousedown', onDoc);
@@ -169,33 +167,20 @@ const RoleSlot: React.FC<{
         <div className={styles.role__account__empty}>No account</div>
       ) : (
         <div className={styles.role__account__dropdown}>
-          <div className={styles.role__account__row}>
-            <button
-              type="button"
-              className={styles.role__account__trigger}
-              onClick={() => {
-                setAccountOpen((v) => !v);
-                setSkinPickerOpen(false);
-              }}
-            >
-              <span className={styles.role__account__trigger__text}>
-                {prettyAccountName(selectedAccount?.username || '')}
-              </span>
-              <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
-                ▾
-              </span>
-            </button>
-            {extraSkins > 1 && (
-              <button
-                type="button"
-                className={styles.skin__cycle__inline}
-                onClick={() => cycleSkin(1)}
-                title={`${extraSkins} skins — next`}
-              >
-                ›
-              </button>
-            )}
-          </div>
+          <button
+            type="button"
+            className={styles.role__account__trigger}
+            onClick={() => {
+              setAccountOpen((v) => !v);
+            }}
+          >
+            <span className={styles.role__account__trigger__text}>
+              {selectedSkin?.champName || prettyAccountName(selectedAccount?.username || '')}
+            </span>
+            <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
+              ▾
+            </span>
+          </button>
           {accountOpen && (
             <div className={styles.role__account__menu}>
               {availableAccounts.map((acc) => (
@@ -226,7 +211,6 @@ const RoleSlot: React.FC<{
       )}
 
       <div className={styles.role__skin__wrap}>
-        {/* EDITAR: ventana del splash dentro del frame (team). Si queda agujero negro, bajar `bottom` en .role__skin__image */}
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
             <img
@@ -250,48 +234,14 @@ const RoleSlot: React.FC<{
         <span className={styles.role__sparkle} data-pos="br" aria-hidden />
 
         {extraSkins > 1 && (
-          <>
-            <button
-              type="button"
-              className={styles.skin__count__badge}
-              onClick={() => {
-                setSkinPickerOpen((v) => !v);
-                setAccountOpen(false);
-              }}
-              title={`${extraSkins} skins`}
-            >
-              {extraSkins}
-            </button>
-            <button
-              type="button"
-              className={styles.skin__next__arrow}
-              onClick={() => cycleSkin(1)}
-              title="Next skin"
-            >
-              ›
-            </button>
-          </>
-        )}
-
-        {skinPickerOpen && availableSkins.length > 1 && selectedAccount && (
-          <div className={styles.skin__picker}>
-            {availableSkins.map((skin) => (
-              <button
-                key={skin.name}
-                type="button"
-                className={`${styles.skin__picker__item} ${
-                  skin.name === selectedSkin?.name ? styles.skin__picker__item__active : ''
-                }`}
-                onClick={() => {
-                  onSelect({ rankedId: selectedAccount.rankedId, skinName: skin.name });
-                  setSkinPickerOpen(false);
-                }}
-              >
-                {skin.imageUrl ? <img src={skin.imageUrl} alt={skin.name} /> : null}
-                <span>{skin.name}</span>
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            className={styles.skin__next__arrow}
+            onClick={() => cycleSkin(1)}
+            title="Next skin"
+          >
+            ›
+          </button>
         )}
       </div>
 
@@ -509,16 +459,19 @@ const Skins: React.FC = () => {
           <h3 className={styles.family__card__name}>{family.name}</h3>
           <div className={styles.family__card__gems} title={`${covered}/5 roles covered`}>
             <img
-              src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
-              alt={`${covered} roles`}
+              src={assetUrl('images/frames/ring-gems-1.png')}
+              alt=""
               className={styles.family__card__gems__img}
             />
             <span className={styles.family__card__gems__count}>{covered}</span>
+            <img
+              src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
+              alt=""
+              className={styles.family__card__gems__img}
+            />
           </div>
         </div>
         <div className={styles.family__card__stage}>
-          {/* EDITAR: ventana del splash en cards. El agujero negro aparece si `bottom` es muy alto.
-              Ajustá left/right/top/bottom de .family__card__image en Skins.module.scss */}
           <div className={styles.family__card__image}>
             <img
               src={family.splashart}
@@ -533,7 +486,7 @@ const Skins: React.FC = () => {
             />
           </div>
           <img
-            src={assetUrl('images/frames/skin-frame.png')}
+            src={assetUrl('images/frames/skin-frame-long.png')}
             alt=""
             className={styles.family__card__frame}
           />
