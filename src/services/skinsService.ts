@@ -528,6 +528,33 @@ export const countCoveredRoles = (
   return team.filter((col) => col.accounts.length > 0).length;
 };
 
+/** Preferred champion for catalog splash (prefer owned skin of that champ when available). */
+export const FAMILY_SPLASH_CHAMP: Record<string, string[]> = {
+  WINTER: ['twitch'],
+  WINTERBLESSED: ['hecarim'],
+  FRELJORD: ['taliyah'],
+  VICTORIOUS: ["kog'maw", 'kogmaw'],
+  'STAR GUARDIAN': ["kai'sa", 'kaisa'],
+  'BATTLE QUEENS': ['fiora'],
+  'FAERIE COURT': ['lillia'],
+  'CAFE CUTIES': ['annie'],
+  COVEN: ['akali'],
+  'WITHERED ROSE': ['syndra'],
+  WARDEN: ['quinn'],
+  PORCELAIN: ['amumu'],
+  ARCANA: ['camille'],
+  'BROKEN COVENANT': ["cho'gath", 'chogath'],
+  DAWNBRINGER: ['janna'],
+  ROYAL: ['poppy'],
+  'CRYSTAL ROSE': ['janna'],
+  NIGHTBRINGER: ['lee sin'],
+  'HIGH STAKES': ['syndra'],
+  CHRISTMAS: ["kog'maw", 'kogmaw'],
+  MARAUDER: ['kalista'],
+  'SPIRIT BLOSSOM': ['aphelios'],
+  HEARTBREAKERS: ['ashe'],
+};
+
 /** Prefer a splash of a skin we actually own for this family. */
 export const getOwnedSplashForFamily = (
   family: SkinFamily,
@@ -539,29 +566,36 @@ export const getOwnedSplashForFamily = (
       if (skinBelongsToFamily(skin, family)) owned.push(skin);
     }
   }
-  if (!owned.length) return family.splashart;
 
-  const priority = ['twitch', 'miss fortune', 'jinx', "kog'maw", 'kogmaw', 'ahri', 'lux'];
-  owned.sort((a, b) => {
-    const pa = priority.findIndex((p) => normalize(a.champName).includes(p));
-    const pb = priority.findIndex((p) => normalize(b.champName).includes(p));
+  const preferred = FAMILY_SPLASH_CHAMP[family.name] || [];
+  const ranked = owned.slice().sort((a, b) => {
+    const pa = preferred.findIndex((p) => normalize(a.champName).includes(p));
+    const pb = preferred.findIndex((p) => normalize(b.champName).includes(p));
     return (pa === -1 ? 99 : pa) - (pb === -1 ? 99 : pb) || a.name.localeCompare(b.name);
   });
 
-  const pick = owned[0];
-  const catalog = family.skins?.find((s) => s.name === pick.name);
-  if (catalog?.splashUrl) return catalog.splashUrl;
-  if (catalog?.tileUrl) return catalog.tileUrl;
-  return toFullSplashUrl(pick.imageUrl) || family.splashart;
+  const pick = ranked[0];
+  if (pick) {
+    const catalog = family.skins?.find((s) => s.name === pick.name);
+    if (catalog?.splashUrl) return catalog.splashUrl;
+    if (pick.imageUrl) return pick.imageUrl;
+    if (catalog?.tileUrl) return catalog.tileUrl;
+  }
+
+  return family.splashart;
 };
 
-/** Team view: full splash art when possible (less face-zoom than tiles). */
-export const toFullSplashUrl = (url: string): string => {
-  if (!url) return url;
-  return url
-    .replace(/_splash_tile_/gi, '_splash_')
-    .replace(/_splash_centered_/gi, '_splash_')
-    .replace(/\/images\//gi, '/');
+/** Team-slot art: catalog splash if present, else owned URL (never rewrite paths). */
+export const getTeamSkinImageUrl = (
+  skin: OwnedSkin,
+  family?: SkinFamily | null
+): string => {
+  if (family?.skins?.length) {
+    const catalog = family.skins.find((s) => s.name === skin.name);
+    if (catalog?.splashUrl) return catalog.splashUrl;
+    if (catalog?.tileUrl) return catalog.tileUrl;
+  }
+  return skin.imageUrl;
 };
 
 export const FEATURED_PRIORITY_ORDER = [

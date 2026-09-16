@@ -14,7 +14,7 @@ import {
   getBlockedChampions,
   firstAvailableSkin,
   getOwnedSplashForFamily,
-  toFullSplashUrl,
+  getTeamSkinImageUrl,
   FEATURED_PRIORITY_ORDER,
   type SkinFamily,
   type AccountSkins,
@@ -87,7 +87,8 @@ const RoleSlot: React.FC<{
   selection: RoleSelection | null;
   blockedChampions: Set<string>;
   onSelect: (next: RoleSelection) => void;
-}> = ({ column, selection, blockedChampions, onSelect }) => {
+  family: SkinFamily | null;
+}> = ({ column, selection, blockedChampions, onSelect, family }) => {
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -161,7 +162,6 @@ const RoleSlot: React.FC<{
   const imgStyle: React.CSSProperties = {
     objectFit: 'contain',
     objectPosition: 'center center',
-    transform: 'none',
   };
 
   return (
@@ -217,10 +217,16 @@ const RoleSlot: React.FC<{
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
             <img
-              src={toFullSplashUrl(selectedSkin.imageUrl)}
+              src={getTeamSkinImageUrl(selectedSkin, family)}
               alt={selectedSkin.name}
               className={styles.role__skin__img}
               style={imgStyle}
+              onError={(e) => {
+                const el = e.target as HTMLImageElement;
+                if (selectedSkin.imageUrl && el.src !== selectedSkin.imageUrl) {
+                  el.src = selectedSkin.imageUrl;
+                }
+              }}
             />
           ) : (
             <div className={styles.role__empty__box}>—</div>
@@ -730,6 +736,7 @@ const Skins: React.FC = () => {
                 selection={roleSelections[col.role] || null}
                 blockedChampions={getBlockedChampions(roleTeam, roleSelections, col.role)}
                 onSelect={(next) => handleRoleSelect(col.role, next)}
+                family={selectedFamily}
               />
             ))}
           </div>
