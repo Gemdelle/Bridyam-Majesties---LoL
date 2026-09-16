@@ -61,7 +61,7 @@ const FEATURED = [
   {
     key: 'BATTLE QUEENS',
     cdragonIds: [137],
-    splash: 'Fiora_89',
+    splash: 'Annie_50',
     matchMode: 'lines',
   },
   {
@@ -147,7 +147,7 @@ const FEATURED = [
   {
     key: 'NIGHTBRINGER',
     cdragonIds: [193],
-    splash: 'LeeSin_27',
+    splash: 'Aphelios_1',
     matchMode: 'nightbringer',
     extraMatchKeys: ['nightbringer'],
   },
@@ -178,7 +178,7 @@ const FEATURED = [
   {
     key: 'MARAUDER',
     cdragonIds: [45],
-    splash: 'Kalista_5',
+    splash: 'Alistar_8',
     matchMode: 'lines',
     extraMatchKeys: ['marauder', 'forajido'],
   },
