@@ -73,13 +73,13 @@ const FEATURED = [
   {
     key: 'CAFE CUTIES',
     cdragonIds: [153],
-    splash: 'Annie_22',
+    splash: 'Bard_17',
     matchMode: 'lines',
   },
   {
     key: 'COVEN',
     cdragonIds: [92],
-    splash: 'Akali_70',
+    splash: 'Syndra_54',
     matchMode: 'coven',
     extraMatchKeys: ['coven'],
   },
@@ -104,7 +104,7 @@ const FEATURED = [
   {
     key: 'ARCANA',
     cdragonIds: [146],
-    splash: 'Camille_11',
+    splash: 'TahmKench_11',
     matchMode: 'lines',
   },
   {
@@ -185,7 +185,7 @@ const FEATURED = [
   {
     key: 'SPIRIT BLOSSOM',
     cdragonIds: [171, 218],
-    splash: 'Aphelios_20',
+    splash: 'Akali_92',
     matchMode: 'lines',
   },
   {

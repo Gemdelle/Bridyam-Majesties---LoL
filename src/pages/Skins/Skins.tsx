@@ -14,7 +14,6 @@ import {
   getBlockedChampions,
   firstAvailableSkin,
   getOwnedSplashForFamily,
-  getTeamSkinImageUrl,
   FEATURED_PRIORITY_ORDER,
   type SkinFamily,
   type AccountSkins,
@@ -87,8 +86,7 @@ const RoleSlot: React.FC<{
   selection: RoleSelection | null;
   blockedChampions: Set<string>;
   onSelect: (next: RoleSelection) => void;
-  family: SkinFamily | null;
-}> = ({ column, selection, blockedChampions, onSelect, family }) => {
+}> = ({ column, selection, blockedChampions, onSelect }) => {
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -159,11 +157,6 @@ const RoleSlot: React.FC<{
     onSelect({ rankedId: selectedAccount.rankedId, skinName: next.name });
   };
 
-  const imgStyle: React.CSSProperties = {
-    objectFit: 'contain',
-    objectPosition: 'center center',
-  };
-
   return (
     <div className={styles.role__column} ref={rootRef}>
       {availableAccounts.length === 0 ? (
@@ -217,16 +210,9 @@ const RoleSlot: React.FC<{
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
             <img
-              src={getTeamSkinImageUrl(selectedSkin, family)}
+              src={selectedSkin.imageUrl}
               alt={selectedSkin.name}
               className={styles.role__skin__img}
-              style={imgStyle}
-              onError={(e) => {
-                const el = e.target as HTMLImageElement;
-                if (selectedSkin.imageUrl && el.src !== selectedSkin.imageUrl) {
-                  el.src = selectedSkin.imageUrl;
-                }
-              }}
             />
           ) : (
             <div className={styles.role__empty__box}>—</div>
@@ -736,7 +722,6 @@ const Skins: React.FC = () => {
                 selection={roleSelections[col.role] || null}
                 blockedChampions={getBlockedChampions(roleTeam, roleSelections, col.role)}
                 onSelect={(next) => handleRoleSelect(col.role, next)}
-                family={selectedFamily}
               />
             ))}
           </div>

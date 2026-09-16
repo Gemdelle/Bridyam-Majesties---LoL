@@ -577,13 +577,12 @@
   background: #0a0c10;
 }
 
-/* EDITAR — team splash: contain = splash entero; cover = más zoom a la cara */
+/* Team view: owned tile images with cover crop */
 .role__skin__img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  transform: none;
+  object-fit: cover;
+  object-position: center 20%;
   display: block;
 }
 
