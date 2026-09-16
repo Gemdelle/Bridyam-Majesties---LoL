@@ -576,10 +576,16 @@ export const getOwnedSplashForFamily = (
 
   const pick = ranked[0];
   if (pick) {
-    const catalog = family.skins?.find((s) => s.name === pick.name);
-    if (catalog?.splashUrl) return catalog.splashUrl;
-    if (pick.imageUrl) return pick.imageUrl;
-    if (catalog?.tileUrl) return catalog.tileUrl;
+    const matchesPreferred =
+      preferred.length === 0 ||
+      preferred.some((p) => normalize(pick.champName).includes(p));
+    // If a preferred champ is set but we don't own it, keep the curated catalog splash.
+    if (matchesPreferred) {
+      const catalog = family.skins?.find((s) => s.name === pick.name);
+      if (catalog?.splashUrl) return catalog.splashUrl;
+      if (pick.imageUrl) return pick.imageUrl;
+      if (catalog?.tileUrl) return catalog.tileUrl;
+    }
   }
 
   return family.splashart;
