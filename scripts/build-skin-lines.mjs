@@ -146,23 +146,23 @@ const FEATURED = [
     extraMatchKeys: ['dawnbringer'],
   },
   {
-    key: 'HIGHSTAKES',
+    key: 'HIGH STAKES',
     cdragonIds: [41],
     splash: 'Ezreal_8',
     matchMode: 'lines',
   },
   {
-    key: 'FORAJIDO',
+    key: 'MARAUDER',
     cdragonIds: [45],
     splash: 'Alistar_8',
     matchMode: 'lines',
     extraMatchKeys: ['marauder', 'forajido'],
   },
   {
-    key: 'NAVIDAD',
+    key: 'CHRISTMAS',
     cdragonIds: [48],
     splash: 'KogMaw_4',
-    matchMode: 'navidad',
+    matchMode: 'christmas',
     extraMatchKeys: [
       'snowdown',
       'snowdown showdown',
@@ -172,6 +172,25 @@ const FEATURED = [
       'happy elf',
       'candy cane',
       'bad santa',
+      'christmas',
+      'navidad',
+    ],
+  },
+  {
+    key: 'ROYAL',
+    cdragonIds: [],
+    splash: 'Poppy_5',
+    matchMode: 'royal',
+    extraMatchKeys: [
+      'royal',
+      'battle regalia',
+      'royal guard',
+      'king ',
+      'queen ',
+      'imperial',
+      'lord ',
+      'majestic empress',
+      'golden ',
     ],
   },
 ];
@@ -230,11 +249,28 @@ async function buildChampionRoles() {
   return payload;
 }
 
+function isRoyalSkinName(name) {
+  const n = String(name || '');
+  // Card-deck High Stakes skins are not "royal"
+  if (/king of clubs|queen of diamonds|jack of hearts|ace of spades/i.test(n)) return false;
+  if (/mecha kingdoms|battle queen/i.test(n)) return false;
+  return /^(royal|imperial|golden|lord|king|queen)\b/i.test(n)
+    || /\bbattle regalia\b/i.test(n)
+    || /\broyal guard\b/i.test(n)
+    || /\bmajestic empress\b/i.test(n);
+}
+
 function skinsForLineIds(skins, ids, matchMode) {
   return skins
     .filter((s) => {
       if (s.isBase) return false;
-      if (!(s.skinLines || []).some((sl) => ids.includes(sl.id))) return false;
+
+      if (matchMode === 'royal') {
+        return isRoyalSkinName(s.name);
+      }
+
+      if (ids.length && !(s.skinLines || []).some((sl) => ids.includes(sl.id))) return false;
+
       if (matchMode === 'nightbringer') {
         return /nightbringer/i.test(s.name);
       }
@@ -245,7 +281,7 @@ function skinsForLineIds(skins, ids, matchMode) {
       if (matchMode === 'coven') {
         return /^(prestige\s+)?coven\b/i.test(s.name) || /^the thousand-pierced bear$/i.test(s.name);
       }
-      if (matchMode === 'navidad') {
+      if (matchMode === 'christmas' || matchMode === 'navidad') {
         return true; // Snowdown Showdown christmas set
       }
       return true;

@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-16T09:09:56.722Z",
+  "updatedAt": "2026-09-16T09:41:08.445Z",
   "source": "communitydragon",
-  "featuredCount": 22,
+  "featuredCount": 23,
   "families": [
     {
       "id": 1,
@@ -4431,7 +4431,7 @@
       "id": 20,
       "sortOrder": 20,
       "featured": true,
-      "name": "HIGHSTAKES",
+      "name": "HIGH STAKES",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_8.jpg",
       "cdragonIds": [
         41
@@ -4440,6 +4440,7 @@
         "Highstakes"
       ],
       "matchKeys": [
+        "high stakes",
         "highstakes"
       ],
       "matchMode": "lines",
@@ -4506,7 +4507,7 @@
       "id": 21,
       "sortOrder": 21,
       "featured": true,
-      "name": "FORAJIDO",
+      "name": "MARAUDER",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Alistar_8.jpg",
       "cdragonIds": [
         45
@@ -4515,8 +4516,8 @@
         "Marauder"
       ],
       "matchKeys": [
-        "forajido",
-        "marauder"
+        "marauder",
+        "forajido"
       ],
       "matchMode": "lines",
       "skinCount": 7,
@@ -4604,7 +4605,7 @@
       "id": 22,
       "sortOrder": 22,
       "featured": true,
-      "name": "NAVIDAD",
+      "name": "CHRISTMAS",
       "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/KogMaw_4.jpg",
       "cdragonIds": [
         48
@@ -4613,7 +4614,7 @@
         "Snowdown Showdown"
       ],
       "matchKeys": [
-        "navidad",
+        "christmas",
         "snowdown",
         "snowdown showdown",
         "santa",
@@ -4621,9 +4622,10 @@
         "mistletoe",
         "happy elf",
         "candy cane",
-        "bad santa"
+        "bad santa",
+        "navidad"
       ],
-      "matchMode": "navidad",
+      "matchMode": "christmas",
       "skinCount": 20,
       "skins": [
         {
@@ -4850,6 +4852,184 @@
     },
     {
       "id": 23,
+      "sortOrder": 23,
+      "featured": true,
+      "name": "ROYAL",
+      "splashart": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Poppy_5.jpg",
+      "cdragonIds": [],
+      "cdragonNames": [],
+      "matchKeys": [
+        "royal",
+        "battle regalia",
+        "royal guard",
+        "king ",
+        "queen ",
+        "imperial",
+        "lord ",
+        "majestic empress",
+        "golden "
+      ],
+      "matchMode": "royal",
+      "skinCount": 14,
+      "skins": [
+        {
+          "id": 78005,
+          "name": "Battle Regalia Poppy",
+          "championId": 78,
+          "skinNum": 5,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            167
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/poppy/skins/skin05/images/poppy_splash_tile_5.jpg"
+        },
+        {
+          "id": 12002,
+          "name": "Golden Alistar",
+          "championId": 12,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            167
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/alistar/skins/skin02/images/alistar_splash_tile_2.jpg"
+        },
+        {
+          "id": 99004,
+          "name": "Imperial Lux",
+          "championId": 99,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            167
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/lux/skins/skin04/images/lux_splash_tile_4.jpg"
+        },
+        {
+          "id": 5002,
+          "name": "Imperial Xin Zhao",
+          "championId": 5,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            167
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/xinzhao/skins/skin02/images/xinzhao_splash_tile_2.jpg"
+        },
+        {
+          "id": 45051,
+          "name": "King Beegar",
+          "championId": 45,
+          "skinNum": 51,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            143
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/veigar/skins/skin51/images/veigar_splash_tile_51.jpg"
+        },
+        {
+          "id": 33001,
+          "name": "King Rammus",
+          "championId": 33,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            182
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/rammus/skins/skin01/images/rammus_splash_tile_1.jpg"
+        },
+        {
+          "id": 23002,
+          "name": "King Tryndamere",
+          "championId": 23,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            114
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/tryndamere/skins/skin02/images/tryndamere_splash_tile_2.jpg"
+        },
+        {
+          "id": 234021,
+          "name": "King Viego",
+          "championId": 234,
+          "skinNum": 21,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            164
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/viego/skins/skin21/images/viego_splash_tile_21.jpg"
+        },
+        {
+          "id": 122001,
+          "name": "Lord Darius",
+          "championId": 122,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            38
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/darius/skins/skin01/images/darius_splash_tile_1.jpg"
+        },
+        {
+          "id": 82004,
+          "name": "Lord Mordekaiser",
+          "championId": 82,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            38
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/mordekaiser/skins/skin04/images/mordekaiser_splash_tile_4.jpg"
+        },
+        {
+          "id": 25017,
+          "name": "Majestic Empress Morgana",
+          "championId": 25,
+          "skinNum": 17,
+          "rarity": "kEpic",
+          "cdragonLineIds": [
+            81
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/morgana/skins/skin17/images/morgana_splash_tile_17.jpg"
+        },
+        {
+          "id": 22004,
+          "name": "Queen Ashe",
+          "championId": 22,
+          "skinNum": 4,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            114
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/ashe/skins/skin04/images/ashe_splash_tile_4.jpg"
+        },
+        {
+          "id": 114001,
+          "name": "Royal Guard Fiora",
+          "championId": 114,
+          "skinNum": 1,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            72
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/fiora/skins/skin01/images/fiora_splash_tile_1.jpg"
+        },
+        {
+          "id": 35002,
+          "name": "Royal Shaco",
+          "championId": 35,
+          "skinNum": 2,
+          "rarity": "kNoRarity",
+          "cdragonLineIds": [
+            167
+          ],
+          "tileUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/shaco/skins/skin02/images/shaco_splash_tile_2.jpg"
+        }
+      ]
+    },
+    {
+      "id": 24,
       "sortOrder": 1022,
       "featured": false,
       "name": "ACADEMY",
@@ -4936,7 +5116,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 25,
       "sortOrder": 1226,
       "featured": false,
       "name": "AEGIS FRAME",
@@ -4979,7 +5159,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 26,
       "sortOrder": 1097,
       "featured": false,
       "name": "ALBION",
@@ -5044,7 +5224,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 27,
       "sortOrder": 1156,
       "featured": false,
       "name": "ANIMA SQUAD",
@@ -5252,7 +5432,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 28,
       "sortOrder": 1011,
       "featured": false,
       "name": "ARCADE: BATTLE BOSSES",
@@ -5361,7 +5541,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 29,
       "sortOrder": 1010,
       "featured": false,
       "name": "ARCADE: HEROES",
@@ -5503,7 +5683,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 30,
       "sortOrder": 1152,
       "featured": false,
       "name": "ARCANE",
@@ -5700,7 +5880,7 @@
       ]
     },
     {
-      "id": 30,
+      "id": 31,
       "sortOrder": 1095,
       "featured": false,
       "name": "ARCANISTS",
@@ -5787,7 +5967,7 @@
       ]
     },
     {
-      "id": 31,
+      "id": 32,
       "sortOrder": 1024,
       "featured": false,
       "name": "ARCLIGHT",
@@ -5863,7 +6043,7 @@
       ]
     },
     {
-      "id": 32,
+      "id": 33,
       "sortOrder": 1063,
       "featured": false,
       "name": "ARCTICOPS",
@@ -5950,7 +6130,7 @@
       ]
     },
     {
-      "id": 33,
+      "id": 34,
       "sortOrder": 1157,
       "featured": false,
       "name": "ASHEN KNIGHTS",
@@ -6026,7 +6206,7 @@
       ]
     },
     {
-      "id": 34,
+      "id": 35,
       "sortOrder": 1094,
       "featured": false,
       "name": "ASTRONAUTS",
@@ -6201,7 +6381,7 @@
       ]
     },
     {
-      "id": 35,
+      "id": 36,
       "sortOrder": 1113,
       "featured": false,
       "name": "BATTLE ACADEMIA",
@@ -6442,7 +6622,7 @@
       ]
     },
     {
-      "id": 36,
+      "id": 37,
       "sortOrder": 1078,
       "featured": false,
       "name": "BATTLE OF THE GOD-KINGS",
@@ -6507,7 +6687,7 @@
       ]
     },
     {
-      "id": 37,
+      "id": 38,
       "sortOrder": 1025,
       "featured": false,
       "name": "BATTLECAST",
@@ -6682,7 +6862,7 @@
       ]
     },
     {
-      "id": 38,
+      "id": 39,
       "sortOrder": 1143,
       "featured": false,
       "name": "BEES!",
@@ -6846,7 +7026,7 @@
       ]
     },
     {
-      "id": 39,
+      "id": 40,
       "sortOrder": 1182,
       "featured": false,
       "name": "BETA",
@@ -6878,7 +7058,7 @@
       ]
     },
     {
-      "id": 40,
+      "id": 41,
       "sortOrder": 1172,
       "featured": false,
       "name": "BEWITCHING",
@@ -7108,7 +7288,7 @@
       ]
     },
     {
-      "id": 41,
+      "id": 42,
       "sortOrder": 1049,
       "featured": false,
       "name": "BILGEWATER: BURNING TIDES",
@@ -7294,7 +7474,7 @@
       ]
     },
     {
-      "id": 42,
+      "id": 43,
       "sortOrder": 1074,
       "featured": false,
       "name": "BILGEWATER: CURSE OF THE DROWNED",
@@ -7348,7 +7528,7 @@
       ]
     },
     {
-      "id": 43,
+      "id": 44,
       "sortOrder": 1177,
       "featured": false,
       "name": "BILGEWATER: MERCS",
@@ -7380,7 +7560,7 @@
       ]
     },
     {
-      "id": 44,
+      "id": 45,
       "sortOrder": 1134,
       "featured": false,
       "name": "BLACK ROSE GROUP",
@@ -7456,7 +7636,7 @@
       ]
     },
     {
-      "id": 45,
+      "id": 46,
       "sortOrder": 1012,
       "featured": false,
       "name": "BLOOD MOON",
@@ -7752,7 +7932,7 @@
       ]
     },
     {
-      "id": 46,
+      "id": 47,
       "sortOrder": 1126,
       "featured": false,
       "name": "BLOODSTONE",
@@ -7850,7 +8030,7 @@
       ]
     },
     {
-      "id": 47,
+      "id": 48,
       "sortOrder": 1098,
       "featured": false,
       "name": "CATS VERSUS DOGS",
@@ -8014,7 +8194,7 @@
       ]
     },
     {
-      "id": 48,
+      "id": 49,
       "sortOrder": 1009,
       "featured": false,
       "name": "CHALLENGER",
@@ -8057,7 +8237,7 @@
       ]
     },
     {
-      "id": 49,
+      "id": 50,
       "sortOrder": 1209,
       "featured": false,
       "name": "CHOSEN OF THE WOLF",
@@ -8144,7 +8324,7 @@
       ]
     },
     {
-      "id": 50,
+      "id": 51,
       "sortOrder": 1178,
       "featured": false,
       "name": "CHRONICLE",
@@ -8231,7 +8411,7 @@
       ]
     },
     {
-      "id": 51,
+      "id": 52,
       "sortOrder": 1083,
       "featured": false,
       "name": "COLLECTOR'S EDITION",
@@ -8307,7 +8487,7 @@
       ]
     },
     {
-      "id": 52,
+      "id": 53,
       "sortOrder": 1104,
       "featured": false,
       "name": "COMMANDO",
@@ -8405,7 +8585,7 @@
       ]
     },
     {
-      "id": 53,
+      "id": 54,
       "sortOrder": 1109,
       "featured": false,
       "name": "CONQUEROR",
@@ -8492,7 +8672,7 @@
       ]
     },
     {
-      "id": 54,
+      "id": 55,
       "sortOrder": 1121,
       "featured": false,
       "name": "COPS AND ROBBERS",
@@ -8601,7 +8781,7 @@
       ]
     },
     {
-      "id": 55,
+      "id": 56,
       "sortOrder": 1043,
       "featured": false,
       "name": "COSMIC",
@@ -8842,7 +9022,7 @@
       ]
     },
     {
-      "id": 56,
+      "id": 57,
       "sortOrder": 1056,
       "featured": false,
       "name": "COTTONTAIL",
@@ -8885,7 +9065,7 @@
       ]
     },
     {
-      "id": 57,
+      "id": 58,
       "sortOrder": 1051,
       "featured": false,
       "name": "CRIME CITY",
@@ -8983,7 +9163,7 @@
       ]
     },
     {
-      "id": 58,
+      "id": 59,
       "sortOrder": 1149,
       "featured": false,
       "name": "CRIME CITY NIGHTMARE",
@@ -9059,7 +9239,7 @@
       ]
     },
     {
-      "id": 59,
+      "id": 60,
       "sortOrder": 1122,
       "featured": false,
       "name": "CRIMSON ELITE",
@@ -9102,7 +9282,7 @@
       ]
     },
     {
-      "id": 60,
+      "id": 61,
       "sortOrder": 1202,
       "featured": false,
       "name": "CRYSTALIS INDOMITUS",
@@ -9156,7 +9336,7 @@
       ]
     },
     {
-      "id": 61,
+      "id": 62,
       "sortOrder": 1195,
       "featured": false,
       "name": "CRYSTALIS MOTUS",
@@ -9210,7 +9390,7 @@
       ]
     },
     {
-      "id": 62,
+      "id": 63,
       "sortOrder": 1026,
       "featured": false,
       "name": "CULINARY MASTERS",
@@ -9319,7 +9499,7 @@
       ]
     },
     {
-      "id": 63,
+      "id": 64,
       "sortOrder": 1179,
       "featured": false,
       "name": "CURSE OF THE VOID",
@@ -9384,7 +9564,7 @@
       ]
     },
     {
-      "id": 64,
+      "id": 65,
       "sortOrder": 1148,
       "featured": false,
       "name": "CYBER POP",
@@ -9427,7 +9607,7 @@
       ]
     },
     {
-      "id": 65,
+      "id": 66,
       "sortOrder": 1044,
       "featured": false,
       "name": "DARK STAR",
@@ -9690,7 +9870,7 @@
       ]
     },
     {
-      "id": 66,
+      "id": 67,
       "sortOrder": 1100,
       "featured": false,
       "name": "DAY JOB",
@@ -10085,7 +10265,7 @@
       ]
     },
     {
-      "id": 67,
+      "id": 68,
       "sortOrder": 1062,
       "featured": false,
       "name": "DEATH BLOSSOM",
@@ -10128,7 +10308,7 @@
       ]
     },
     {
-      "id": 68,
+      "id": 69,
       "sortOrder": 1087,
       "featured": false,
       "name": "DEATH SWORN",
@@ -10259,7 +10439,7 @@
       ]
     },
     {
-      "id": 69,
+      "id": 70,
       "sortOrder": 1023,
       "featured": false,
       "name": "DEBONAIR",
@@ -10412,7 +10592,7 @@
       ]
     },
     {
-      "id": 70,
+      "id": 71,
       "sortOrder": 1101,
       "featured": false,
       "name": "DEFINITELY NOT",
@@ -10521,7 +10701,7 @@
       ]
     },
     {
-      "id": 71,
+      "id": 72,
       "sortOrder": 1117,
       "featured": false,
       "name": "DEMACIA VICE",
@@ -10586,7 +10766,7 @@
       ]
     },
     {
-      "id": 72,
+      "id": 73,
       "sortOrder": 1116,
       "featured": false,
       "name": "DEMONIC",
@@ -10662,7 +10842,7 @@
       ]
     },
     {
-      "id": 73,
+      "id": 74,
       "sortOrder": 1173,
       "featured": false,
       "name": "DJ",
@@ -10694,7 +10874,7 @@
       ]
     },
     {
-      "id": 74,
+      "id": 75,
       "sortOrder": 1013,
       "featured": false,
       "name": "DRAGON WORLD",
@@ -10924,7 +11104,7 @@
       ]
     },
     {
-      "id": 75,
+      "id": 76,
       "sortOrder": 1135,
       "featured": false,
       "name": "DRAGONMANCERS",
@@ -11143,7 +11323,7 @@
       ]
     },
     {
-      "id": 76,
+      "id": 77,
       "sortOrder": 1123,
       "featured": false,
       "name": "DREADKNIGHTS",
@@ -11186,7 +11366,7 @@
       ]
     },
     {
-      "id": 77,
+      "id": 78,
       "sortOrder": 1076,
       "featured": false,
       "name": "DREADNOVA",
@@ -11229,7 +11409,7 @@
       ]
     },
     {
-      "id": 78,
+      "id": 79,
       "sortOrder": 1213,
       "featured": false,
       "name": "DUMPLING DARLINGS",
@@ -11283,7 +11463,7 @@
       ]
     },
     {
-      "id": 79,
+      "id": 80,
       "sortOrder": 1103,
       "featured": false,
       "name": "DUNKMASTER",
@@ -11326,7 +11506,7 @@
       ]
     },
     {
-      "id": 80,
+      "id": 81,
       "sortOrder": 1093,
       "featured": false,
       "name": "ECLIPSE",
@@ -11435,7 +11615,7 @@
       ]
     },
     {
-      "id": 81,
+      "id": 82,
       "sortOrder": 1058,
       "featured": false,
       "name": "ELDERWOOD",
@@ -11644,7 +11824,7 @@
       ]
     },
     {
-      "id": 82,
+      "id": 83,
       "sortOrder": 1166,
       "featured": false,
       "name": "ELEMENTALIST",
@@ -11676,7 +11856,7 @@
       ]
     },
     {
-      "id": 83,
+      "id": 84,
       "sortOrder": 1186,
       "featured": false,
       "name": "EMPYREAN",
@@ -11873,7 +12053,7 @@
       ]
     },
     {
-      "id": 84,
+      "id": 85,
       "sortOrder": 1059,
       "featured": false,
       "name": "ETERNUM",
@@ -11927,7 +12107,7 @@
       ]
     },
     {
-      "id": 85,
+      "id": 86,
       "sortOrder": 1072,
       "featured": false,
       "name": "FABLES",
@@ -12102,7 +12282,7 @@
       ]
     },
     {
-      "id": 86,
+      "id": 87,
       "sortOrder": 1216,
       "featured": false,
       "name": "FATEMAKERS AND FATEBREAKERS",
@@ -12156,7 +12336,7 @@
       ]
     },
     {
-      "id": 87,
+      "id": 88,
       "sortOrder": 1208,
       "featured": false,
       "name": "FIST BUMPS AND FESTIVITIES",
@@ -12188,7 +12368,7 @@
       ]
     },
     {
-      "id": 88,
+      "id": 89,
       "sortOrder": 1221,
       "featured": false,
       "name": "FLORA FATALIS",
@@ -12242,7 +12422,7 @@
       ]
     },
     {
-      "id": 89,
+      "id": 90,
       "sortOrder": 1203,
       "featured": false,
       "name": "FOOD FIGHT",
@@ -12318,7 +12498,7 @@
       ]
     },
     {
-      "id": 90,
+      "id": 91,
       "sortOrder": 1108,
       "featured": false,
       "name": "FORGOTTEN DEPTHS",
@@ -12427,7 +12607,7 @@
       ]
     },
     {
-      "id": 91,
+      "id": 92,
       "sortOrder": 1170,
       "featured": false,
       "name": "FRIGHT NIGHT",
@@ -12580,7 +12760,7 @@
       ]
     },
     {
-      "id": 92,
+      "id": 93,
       "sortOrder": 1136,
       "featured": false,
       "name": "GALACTIC",
@@ -12634,7 +12814,7 @@
       ]
     },
     {
-      "id": 93,
+      "id": 94,
       "sortOrder": 1112,
       "featured": false,
       "name": "GLACIAL",
@@ -12699,7 +12879,7 @@
       ]
     },
     {
-      "id": 94,
+      "id": 95,
       "sortOrder": 1110,
       "featured": false,
       "name": "GOTH",
@@ -12764,7 +12944,7 @@
       ]
     },
     {
-      "id": 95,
+      "id": 96,
       "sortOrder": 1215,
       "featured": false,
       "name": "GRAND RECKONING",
@@ -12840,7 +13020,7 @@
       ]
     },
     {
-      "id": 96,
+      "id": 97,
       "sortOrder": 1066,
       "featured": false,
       "name": "GUARDIAN OF THE SANDS",
@@ -12982,7 +13162,7 @@
       ]
     },
     {
-      "id": 97,
+      "id": 98,
       "sortOrder": 1030,
       "featured": false,
       "name": "HEADHUNTER",
@@ -13058,7 +13238,7 @@
       ]
     },
     {
-      "id": 98,
+      "id": 99,
       "sortOrder": 1233,
       "featured": false,
       "name": "HEARTSONG",
@@ -13090,7 +13270,7 @@
       ]
     },
     {
-      "id": 99,
+      "id": 100,
       "sortOrder": 1199,
       "featured": false,
       "name": "HEARTSTEEL",
@@ -13188,7 +13368,7 @@
       ]
     },
     {
-      "id": 100,
+      "id": 101,
       "sortOrder": 1189,
       "featured": false,
       "name": "HEARTTHROBS AND HEARTACHES",
@@ -13242,7 +13422,7 @@
       ]
     },
     {
-      "id": 101,
+      "id": 102,
       "sortOrder": 1201,
       "featured": false,
       "name": "HEAVENSCALE",
@@ -13362,7 +13542,7 @@
       ]
     },
     {
-      "id": 102,
+      "id": 103,
       "sortOrder": 1118,
       "featured": false,
       "name": "HEAVY METAL",
@@ -13438,7 +13618,7 @@
       ]
     },
     {
-      "id": 103,
+      "id": 104,
       "sortOrder": 1040,
       "featured": false,
       "name": "HEXTECH",
@@ -13679,7 +13859,7 @@
       ]
     },
     {
-      "id": 104,
+      "id": 105,
       "sortOrder": 1039,
       "featured": false,
       "name": "HIGH NOON",
@@ -14118,7 +14298,7 @@
       ]
     },
     {
-      "id": 105,
+      "id": 106,
       "sortOrder": 1102,
       "featured": false,
       "name": "HIGH SOCIETY",
@@ -14227,7 +14407,7 @@
       ]
     },
     {
-      "id": 106,
+      "id": 107,
       "sortOrder": 1081,
       "featured": false,
       "name": "IMMORTAL JOURNEY",
@@ -14468,7 +14648,7 @@
       ]
     },
     {
-      "id": 107,
+      "id": 108,
       "sortOrder": 1086,
       "featured": false,
       "name": "INFERNAL",
@@ -14775,7 +14955,7 @@
       ]
     },
     {
-      "id": 108,
+      "id": 109,
       "sortOrder": 1192,
       "featured": false,
       "name": "INKSHADOW",
@@ -14928,7 +15108,7 @@
       ]
     },
     {
-      "id": 109,
+      "id": 110,
       "sortOrder": 1105,
       "featured": false,
       "name": "INVADERS",
@@ -14971,7 +15151,7 @@
       ]
     },
     {
-      "id": 110,
+      "id": 111,
       "sortOrder": 1033,
       "featured": false,
       "name": "JUSTICAR",
@@ -15014,7 +15194,7 @@
       ]
     },
     {
-      "id": 111,
+      "id": 112,
       "sortOrder": 1091,
       "featured": false,
       "name": "K/DA",
@@ -15233,7 +15413,7 @@
       ]
     },
     {
-      "id": 112,
+      "id": 113,
       "sortOrder": 1079,
       "featured": false,
       "name": "KAIJU",
@@ -15265,7 +15445,7 @@
       ]
     },
     {
-      "id": 113,
+      "id": 114,
       "sortOrder": 1198,
       "featured": false,
       "name": "LA ILUSIÓN",
@@ -15363,7 +15543,7 @@
       ]
     },
     {
-      "id": 114,
+      "id": 115,
       "sortOrder": 1069,
       "featured": false,
       "name": "LANCER",
@@ -15428,7 +15608,7 @@
       ]
     },
     {
-      "id": 115,
+      "id": 116,
       "sortOrder": 1167,
       "featured": false,
       "name": "LEGACY",
@@ -16351,7 +16531,7 @@
       ]
     },
     {
-      "id": 116,
+      "id": 117,
       "sortOrder": 1034,
       "featured": false,
       "name": "LUCHADOR",
@@ -16416,7 +16596,7 @@
       ]
     },
     {
-      "id": 117,
+      "id": 118,
       "sortOrder": 1142,
       "featured": false,
       "name": "LUNAR BEAST",
@@ -16525,7 +16705,7 @@
       ]
     },
     {
-      "id": 118,
+      "id": 119,
       "sortOrder": 1055,
       "featured": false,
       "name": "LUNAR REVEL",
@@ -16744,7 +16924,7 @@
       ]
     },
     {
-      "id": 119,
+      "id": 120,
       "sortOrder": 1054,
       "featured": false,
       "name": "LUNAR REVEL: FIRECRACKER",
@@ -16974,7 +17154,7 @@
       ]
     },
     {
-      "id": 120,
+      "id": 121,
       "sortOrder": 1053,
       "featured": false,
       "name": "LUNAR REVEL: WARRING KINGDOMS",
@@ -17105,7 +17285,7 @@
       ]
     },
     {
-      "id": 121,
+      "id": 122,
       "sortOrder": 1106,
       "featured": false,
       "name": "MAD SCIENTISTS",
@@ -17181,7 +17361,7 @@
       ]
     },
     {
-      "id": 122,
+      "id": 123,
       "sortOrder": 1231,
       "featured": false,
       "name": "MAGMA CHAMBER",
@@ -17224,7 +17404,7 @@
       ]
     },
     {
-      "id": 123,
+      "id": 124,
       "sortOrder": 1214,
       "featured": false,
       "name": "MASKED JUSTICE",
@@ -17278,7 +17458,7 @@
       ]
     },
     {
-      "id": 124,
+      "id": 125,
       "sortOrder": 1211,
       "featured": false,
       "name": "MASQUE OF THE BLACK ROSE",
@@ -17365,7 +17545,7 @@
       ]
     },
     {
-      "id": 125,
+      "id": 126,
       "sortOrder": 1035,
       "featured": false,
       "name": "MECHA",
@@ -17452,7 +17632,7 @@
       ]
     },
     {
-      "id": 126,
+      "id": 127,
       "sortOrder": 1127,
       "featured": false,
       "name": "MECHA KINGDOMS",
@@ -17572,7 +17752,7 @@
       ]
     },
     {
-      "id": 127,
+      "id": 128,
       "sortOrder": 1114,
       "featured": false,
       "name": "MEDIEVAL",
@@ -17681,7 +17861,7 @@
       ]
     },
     {
-      "id": 128,
+      "id": 129,
       "sortOrder": 1212,
       "featured": false,
       "name": "MODERN MYTHOS",
@@ -17713,7 +17893,7 @@
       ]
     },
     {
-      "id": 129,
+      "id": 130,
       "sortOrder": 1162,
       "featured": false,
       "name": "MONSTER TAMERS",
@@ -17767,7 +17947,7 @@
       ]
     },
     {
-      "id": 130,
+      "id": 131,
       "sortOrder": 1188,
       "featured": false,
       "name": "MYTHMAKER",
@@ -17898,7 +18078,7 @@
       ]
     },
     {
-      "id": 131,
+      "id": 132,
       "sortOrder": 1159,
       "featured": false,
       "name": "OCEAN SONG",
@@ -18007,7 +18187,7 @@
       ]
     },
     {
-      "id": 132,
+      "id": 133,
       "sortOrder": 1073,
       "featured": false,
       "name": "ODYSSEY",
@@ -18171,7 +18351,7 @@
       ]
     },
     {
-      "id": 133,
+      "id": 134,
       "sortOrder": 1014,
       "featured": false,
       "name": "OMEGA SQUAD",
@@ -18247,7 +18427,7 @@
       ]
     },
     {
-      "id": 134,
+      "id": 135,
       "sortOrder": 1080,
       "featured": false,
       "name": "OMEN OF THE DARK",
@@ -18356,7 +18536,7 @@
       ]
     },
     {
-      "id": 135,
+      "id": 136,
       "sortOrder": 1060,
       "featured": false,
       "name": "ORDER OF THE LOTUS",
@@ -18399,7 +18579,7 @@
       ]
     },
     {
-      "id": 136,
+      "id": 137,
       "sortOrder": 1180,
       "featured": false,
       "name": "OTHERROADS",
@@ -18530,7 +18710,7 @@
       ]
     },
     {
-      "id": 137,
+      "id": 138,
       "sortOrder": 1229,
       "featured": false,
       "name": "PANDEMONIUM",
@@ -18595,7 +18775,7 @@
       ]
     },
     {
-      "id": 138,
+      "id": 139,
       "sortOrder": 1096,
       "featured": false,
       "name": "PAPERCRAFT",
@@ -18638,7 +18818,7 @@
       ]
     },
     {
-      "id": 139,
+      "id": 140,
       "sortOrder": 1084,
       "featured": false,
       "name": "PAX",
@@ -18714,7 +18894,7 @@
       ]
     },
     {
-      "id": 140,
+      "id": 141,
       "sortOrder": 1016,
       "featured": false,
       "name": "PENTAKILL",
@@ -18801,7 +18981,7 @@
       ]
     },
     {
-      "id": 141,
+      "id": 142,
       "sortOrder": 1151,
       "featured": false,
       "name": "PENTAKILL III: THE LOST CHAPTER",
@@ -18899,7 +19079,7 @@
       ]
     },
     {
-      "id": 142,
+      "id": 143,
       "sortOrder": 1225,
       "featured": false,
       "name": "PETALS OF SPRING",
@@ -18975,7 +19155,7 @@
       ]
     },
     {
-      "id": 143,
+      "id": 144,
       "sortOrder": 1067,
       "featured": false,
       "name": "PHARAOH",
@@ -19029,7 +19209,7 @@
       ]
     },
     {
-      "id": 144,
+      "id": 145,
       "sortOrder": 1150,
       "featured": false,
       "name": "PHOENIXMANCERS",
@@ -19094,7 +19274,7 @@
       ]
     },
     {
-      "id": 145,
+      "id": 146,
       "sortOrder": 1042,
       "featured": false,
       "name": "PILTOVER CUSTOMS",
@@ -19148,7 +19328,7 @@
       ]
     },
     {
-      "id": 146,
+      "id": 147,
       "sortOrder": 1015,
       "featured": false,
       "name": "POOL PARTY",
@@ -19455,7 +19635,7 @@
       ]
     },
     {
-      "id": 147,
+      "id": 148,
       "sortOrder": 1174,
       "featured": false,
       "name": "POPSTAR",
@@ -19487,7 +19667,7 @@
       ]
     },
     {
-      "id": 148,
+      "id": 149,
       "sortOrder": 1090,
       "featured": false,
       "name": "PRAETORIAN",
@@ -19530,7 +19710,7 @@
       ]
     },
     {
-      "id": 149,
+      "id": 150,
       "sortOrder": 1032,
       "featured": false,
       "name": "PREHISTORIC HUNTERS",
@@ -19672,7 +19852,7 @@
       ]
     },
     {
-      "id": 150,
+      "id": 151,
       "sortOrder": 1200,
       "featured": false,
       "name": "PRIMAL AMBUSH",
@@ -19737,7 +19917,7 @@
       ]
     },
     {
-      "id": 151,
+      "id": 152,
       "sortOrder": 1206,
       "featured": false,
       "name": "PRIMORDIAN",
@@ -19791,7 +19971,7 @@
       ]
     },
     {
-      "id": 152,
+      "id": 153,
       "sortOrder": 1017,
       "featured": false,
       "name": "PROGRAM",
@@ -19878,7 +20058,7 @@
       ]
     },
     {
-      "id": 153,
+      "id": 154,
       "sortOrder": 1018,
       "featured": false,
       "name": "PROJECT",
@@ -20262,7 +20442,7 @@
       ]
     },
     {
-      "id": 154,
+      "id": 155,
       "sortOrder": 1133,
       "featured": false,
       "name": "PSYOPS",
@@ -20360,7 +20540,7 @@
       ]
     },
     {
-      "id": 155,
+      "id": 156,
       "sortOrder": 1036,
       "featured": false,
       "name": "PULSEFIRE",
@@ -20524,7 +20704,7 @@
       ]
     },
     {
-      "id": 156,
+      "id": 157,
       "sortOrder": 1205,
       "featured": false,
       "name": "RAIN SHEPHERD",
@@ -20600,7 +20780,7 @@
       ]
     },
     {
-      "id": 157,
+      "id": 158,
       "sortOrder": 1227,
       "featured": false,
       "name": "REVENANT REIGN",
@@ -20632,7 +20812,7 @@
       ]
     },
     {
-      "id": 158,
+      "id": 159,
       "sortOrder": 1115,
       "featured": false,
       "name": "RIFT HOSPITAL",
@@ -20686,7 +20866,7 @@
       ]
     },
     {
-      "id": 159,
+      "id": 160,
       "sortOrder": 1038,
       "featured": false,
       "name": "RIFT QUEST",
@@ -20927,7 +21107,7 @@
       ]
     },
     {
-      "id": 160,
+      "id": 161,
       "sortOrder": 1037,
       "featured": false,
       "name": "RIOT",
@@ -21014,7 +21194,7 @@
       ]
     },
     {
-      "id": 161,
+      "id": 162,
       "sortOrder": 1204,
       "featured": false,
       "name": "RISEN LEGENDS",
@@ -21101,7 +21281,7 @@
       ]
     },
     {
-      "id": 162,
+      "id": 163,
       "sortOrder": 1070,
       "featured": false,
       "name": "ROAD WARRIOR",
@@ -21210,7 +21390,7 @@
       ]
     },
     {
-      "id": 163,
+      "id": 164,
       "sortOrder": 1164,
       "featured": false,
       "name": "RUINATION",
@@ -21242,7 +21422,7 @@
       ]
     },
     {
-      "id": 164,
+      "id": 165,
       "sortOrder": 1138,
       "featured": false,
       "name": "RUINED",
@@ -21362,7 +21542,7 @@
       ]
     },
     {
-      "id": 165,
+      "id": 166,
       "sortOrder": 1147,
       "featured": false,
       "name": "SENTINELS OF LIGHT",
@@ -21471,7 +21651,7 @@
       ]
     },
     {
-      "id": 166,
+      "id": 167,
       "sortOrder": 1139,
       "featured": false,
       "name": "SHAN HAI SCROLLS",
@@ -21580,7 +21760,7 @@
       ]
     },
     {
-      "id": 167,
+      "id": 168,
       "sortOrder": 1155,
       "featured": false,
       "name": "SHOCKBLADE",
@@ -21645,7 +21825,7 @@
       ]
     },
     {
-      "id": 168,
+      "id": 169,
       "sortOrder": 1111,
       "featured": false,
       "name": "SILVER AGE",
@@ -21820,7 +22000,7 @@
       ]
     },
     {
-      "id": 169,
+      "id": 170,
       "sortOrder": 1230,
       "featured": false,
       "name": "SINFUL SHORES",
@@ -21874,7 +22054,7 @@
       ]
     },
     {
-      "id": 170,
+      "id": 171,
       "sortOrder": 1031,
       "featured": false,
       "name": "SOCCER CUP",
@@ -22016,7 +22196,7 @@
       ]
     },
     {
-      "id": 171,
+      "id": 172,
       "sortOrder": 1196,
       "featured": false,
       "name": "SOUL FIGHTER",
@@ -22169,7 +22349,7 @@
       ]
     },
     {
-      "id": 172,
+      "id": 173,
       "sortOrder": 1183,
       "featured": false,
       "name": "SOULSTEALER",
@@ -22212,7 +22392,7 @@
       ]
     },
     {
-      "id": 173,
+      "id": 174,
       "sortOrder": 1144,
       "featured": false,
       "name": "SPACE GROOVE",
@@ -22431,7 +22611,7 @@
       ]
     },
     {
-      "id": 174,
+      "id": 175,
       "sortOrder": 1163,
       "featured": false,
       "name": "SPIRIT GUARD",
@@ -22463,7 +22643,7 @@
       ]
     },
     {
-      "id": 175,
+      "id": 176,
       "sortOrder": 1217,
       "featured": false,
       "name": "STARGAZER",
@@ -22495,7 +22675,7 @@
       ]
     },
     {
-      "id": 176,
+      "id": 177,
       "sortOrder": 1085,
       "featured": false,
       "name": "STEEL LEGION",
@@ -22538,7 +22718,7 @@
       ]
     },
     {
-      "id": 177,
+      "id": 178,
       "sortOrder": 1065,
       "featured": false,
       "name": "STEEL VALKYRIES",
@@ -22669,7 +22849,7 @@
       ]
     },
     {
-      "id": 178,
+      "id": 179,
       "sortOrder": 1071,
       "featured": false,
       "name": "STORYBOOK",
@@ -22756,7 +22936,7 @@
       ]
     },
     {
-      "id": 179,
+      "id": 180,
       "sortOrder": 1197,
       "featured": false,
       "name": "STREET DEMONS",
@@ -22843,7 +23023,7 @@
       ]
     },
     {
-      "id": 180,
+      "id": 181,
       "sortOrder": 1057,
       "featured": false,
       "name": "SUGAR RUSH",
@@ -22952,7 +23132,7 @@
       ]
     },
     {
-      "id": 181,
+      "id": 182,
       "sortOrder": 1223,
       "featured": false,
       "name": "SUNKEN SHADOWS",
@@ -22995,7 +23175,7 @@
       ]
     },
     {
-      "id": 182,
+      "id": 183,
       "sortOrder": 1021,
       "featured": false,
       "name": "SUPER GALAXY",
@@ -23104,7 +23284,7 @@
       ]
     },
     {
-      "id": 183,
+      "id": 184,
       "sortOrder": 1210,
       "featured": false,
       "name": "SUPERFANS",
@@ -23169,7 +23349,7 @@
       ]
     },
     {
-      "id": 184,
+      "id": 185,
       "sortOrder": 1169,
       "featured": false,
       "name": "SURPRISE PARTY",
@@ -23234,7 +23414,7 @@
       ]
     },
     {
-      "id": 185,
+      "id": 186,
       "sortOrder": 1222,
       "featured": false,
       "name": "THE ETERNAL ASPECTS",
@@ -23299,7 +23479,7 @@
       ]
     },
     {
-      "id": 186,
+      "id": 187,
       "sortOrder": 1224,
       "featured": false,
       "name": "THE LAWS OF STONE",
@@ -23375,7 +23555,7 @@
       ]
     },
     {
-      "id": 187,
+      "id": 188,
       "sortOrder": 1176,
       "featured": false,
       "name": "THREE HONORS",
@@ -23429,7 +23609,7 @@
       ]
     },
     {
-      "id": 188,
+      "id": 189,
       "sortOrder": 1052,
       "featured": false,
       "name": "THUNDER LORD",
@@ -23472,7 +23652,7 @@
       ]
     },
     {
-      "id": 189,
+      "id": 190,
       "sortOrder": 1061,
       "featured": false,
       "name": "TOY BOX",
@@ -23625,7 +23805,7 @@
       ]
     },
     {
-      "id": 190,
+      "id": 191,
       "sortOrder": 1082,
       "featured": false,
       "name": "TRADITIONAL",
@@ -23701,7 +23881,7 @@
       ]
     },
     {
-      "id": 191,
+      "id": 192,
       "sortOrder": 1088,
       "featured": false,
       "name": "TRICK-OR-TREAT",
@@ -23964,7 +24144,7 @@
       ]
     },
     {
-      "id": 192,
+      "id": 193,
       "sortOrder": 1184,
       "featured": false,
       "name": "TRIUMPHANT",
@@ -23996,7 +24176,7 @@
       ]
     },
     {
-      "id": 193,
+      "id": 194,
       "sortOrder": 1120,
       "featured": false,
       "name": "TRUE DAMAGE",
@@ -24127,7 +24307,7 @@
       ]
     },
     {
-      "id": 194,
+      "id": 195,
       "sortOrder": 1168,
       "featured": false,
       "name": "URF THE MANATEE",
@@ -24203,7 +24383,7 @@
       ]
     },
     {
-      "id": 195,
+      "id": 196,
       "sortOrder": 1027,
       "featured": false,
       "name": "VANDAL",
@@ -24290,7 +24470,7 @@
       ]
     },
     {
-      "id": 196,
+      "id": 197,
       "sortOrder": 1219,
       "featured": false,
       "name": "VISIONS OF THE FALLEN",
@@ -24344,7 +24524,7 @@
       ]
     },
     {
-      "id": 197,
+      "id": 198,
       "sortOrder": 1228,
       "featured": false,
       "name": "WARHOUNDS",
@@ -24398,7 +24578,7 @@
       ]
     },
     {
-      "id": 198,
+      "id": 199,
       "sortOrder": 1068,
       "featured": false,
       "name": "WOAD",
@@ -24474,7 +24654,7 @@
       ]
     },
     {
-      "id": 199,
+      "id": 200,
       "sortOrder": 1099,
       "featured": false,
       "name": "WONDERS OF THE WORLD",
@@ -24704,7 +24884,7 @@
       ]
     },
     {
-      "id": 200,
+      "id": 201,
       "sortOrder": 1001,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2011",
@@ -24780,7 +24960,7 @@
       ]
     },
     {
-      "id": 201,
+      "id": 202,
       "sortOrder": 1002,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2012",
@@ -24856,7 +25036,7 @@
       ]
     },
     {
-      "id": 202,
+      "id": 203,
       "sortOrder": 1003,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2013",
@@ -24932,7 +25112,7 @@
       ]
     },
     {
-      "id": 203,
+      "id": 204,
       "sortOrder": 1004,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2014",
@@ -25008,7 +25188,7 @@
       ]
     },
     {
-      "id": 204,
+      "id": 205,
       "sortOrder": 1005,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2015",
@@ -25095,7 +25275,7 @@
       ]
     },
     {
-      "id": 205,
+      "id": 206,
       "sortOrder": 1006,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2016",
@@ -25182,7 +25362,7 @@
       ]
     },
     {
-      "id": 206,
+      "id": 207,
       "sortOrder": 1075,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2017",
@@ -25269,7 +25449,7 @@
       ]
     },
     {
-      "id": 207,
+      "id": 208,
       "sortOrder": 1107,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2018",
@@ -25356,7 +25536,7 @@
       ]
     },
     {
-      "id": 208,
+      "id": 209,
       "sortOrder": 1130,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2019",
@@ -25432,7 +25612,7 @@
       ]
     },
     {
-      "id": 209,
+      "id": 210,
       "sortOrder": 1145,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2020",
@@ -25508,7 +25688,7 @@
       ]
     },
     {
-      "id": 210,
+      "id": 211,
       "sortOrder": 1158,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2021",
@@ -25584,7 +25764,7 @@
       ]
     },
     {
-      "id": 211,
+      "id": 212,
       "sortOrder": 1194,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2022",
@@ -25682,7 +25862,7 @@
       ]
     },
     {
-      "id": 212,
+      "id": 213,
       "sortOrder": 1207,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2023",
@@ -25769,7 +25949,7 @@
       ]
     },
     {
-      "id": 213,
+      "id": 214,
       "sortOrder": 1220,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2024",
@@ -25856,7 +26036,7 @@
       ]
     },
     {
-      "id": 214,
+      "id": 215,
       "sortOrder": 1232,
       "featured": false,
       "name": "WORLD CHAMPIONS: 2025",
@@ -25943,7 +26123,7 @@
       ]
     },
     {
-      "id": 215,
+      "id": 216,
       "sortOrder": 1008,
       "featured": false,
       "name": "WORLD CHAMPIONSHIP",
@@ -26118,7 +26298,7 @@
       ]
     },
     {
-      "id": 216,
+      "id": 217,
       "sortOrder": 1029,
       "featured": false,
       "name": "WORLDBREAKER",
@@ -26238,7 +26418,7 @@
       ]
     },
     {
-      "id": 217,
+      "id": 218,
       "sortOrder": 1165,
       "featured": false,
       "name": "ZENITH GAMES",
@@ -26292,7 +26472,7 @@
       ]
     },
     {
-      "id": 218,
+      "id": 219,
       "sortOrder": 1089,
       "featured": false,
       "name": "ZOMBIES VS SLAYERS",

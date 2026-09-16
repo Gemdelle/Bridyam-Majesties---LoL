@@ -33,7 +33,13 @@ interface SplashFit {
 }
 
 const SPLASH_FIT_KEY = 'bridyam-skin-splash-fit';
-const DEFAULT_FIT: SplashFit = { x: 50, y: 22, scale: 1.45 };
+const DEFAULT_FIT: SplashFit = { x: 50, y: 35, scale: 1.2 };
+
+const prettyAccountName = (username: string): string => {
+  const cleaned = cleanAccountName(username);
+  if (!cleaned) return '';
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+};
 const FEATURED_COLS = 6;
 const FEATURED_ROWS = 2;
 const FEATURED_PAGE_SIZE = FEATURED_COLS * FEATURED_ROWS;
@@ -163,22 +169,33 @@ const RoleSlot: React.FC<{
         <div className={styles.role__account__empty}>No account</div>
       ) : (
         <div className={styles.role__account__dropdown}>
-          <button
-            type="button"
-            className={styles.role__account__trigger}
-            onClick={() => {
-              setAccountOpen((v) => !v);
-              setSkinPickerOpen(false);
-            }}
-          >
-            <span className={styles.role__account__trigger__text}>
-              {cleanAccountName(selectedAccount?.username || '')}
-              {selectedSkin ? ` (${selectedSkin.champName})` : ''}
-            </span>
-            <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
-              ▾
-            </span>
-          </button>
+          <div className={styles.role__account__row}>
+            <button
+              type="button"
+              className={styles.role__account__trigger}
+              onClick={() => {
+                setAccountOpen((v) => !v);
+                setSkinPickerOpen(false);
+              }}
+            >
+              <span className={styles.role__account__trigger__text}>
+                {prettyAccountName(selectedAccount?.username || '')}
+              </span>
+              <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
+                ▾
+              </span>
+            </button>
+            {extraSkins > 1 && (
+              <button
+                type="button"
+                className={styles.skin__cycle__inline}
+                onClick={() => cycleSkin(1)}
+                title={`${extraSkins} skins — next`}
+              >
+                ›
+              </button>
+            )}
+          </div>
           {accountOpen && (
             <div className={styles.role__account__menu}>
               {availableAccounts.map((acc) => (
@@ -199,7 +216,7 @@ const RoleSlot: React.FC<{
                   }}
                 >
                   <span className={styles.role__account__option__text}>
-                    {cleanAccountName(acc.username)} ({accountChampLabel(acc, blockedChampions)})
+                    {prettyAccountName(acc.username)} ({accountChampLabel(acc, blockedChampions)})
                   </span>
                 </button>
               ))}
@@ -209,6 +226,7 @@ const RoleSlot: React.FC<{
       )}
 
       <div className={styles.role__skin__wrap}>
+        {/* EDITAR: ventana del splash dentro del frame (team). Si queda agujero negro, bajar `bottom` en .role__skin__image */}
         <div className={styles.role__skin__image}>
           {selectedSkin?.imageUrl ? (
             <img
@@ -250,7 +268,7 @@ const RoleSlot: React.FC<{
               onClick={() => cycleSkin(1)}
               title="Next skin"
             >
-              ▸
+              ›
             </button>
           </>
         )}
@@ -315,11 +333,14 @@ const Skins: React.FC = () => {
     const load = async () => {
       try {
         setLoading(true);
-        const [familiesData, ownership, rankeds, roles] = await Promise.all([
+        const [familiesData, ownership, rankeds, roles, fitRes] = await Promise.all([
           fetchSkinFamilies(),
           fetchAccountSkins(),
           fetchRankedData(),
           fetchChampionRoles(),
+          fetch(assetUrl(`data/skin-splash-fit.json?t=${Date.now()}`), { cache: 'no-store' }).catch(
+            () => null
+          ),
         ]);
         setFamilies(familiesData);
         setAccountSkins(ownership);
@@ -329,6 +350,18 @@ const Skins: React.FC = () => {
           lookup.set(r.id, { username: r.username, essencer: r.essencer || r.name });
         });
         setRankedLookup(lookup);
+
+        let fileFits: Record<string, SplashFit> = {};
+        if (fitRes && fitRes.ok) {
+          try {
+            fileFits = await fitRes.json();
+          } catch {
+            fileFits = {};
+          }
+        }
+        // File defaults + local edits on top
+        const merged = { ...fileFits, ...loadSplashFits() };
+        setSplashFits(merged);
       } catch (error) {
         console.error('Error loading skins data:', error);
       } finally {
@@ -472,16 +505,20 @@ const Skins: React.FC = () => {
           }
         }}
       >
-        <h3 className={styles.family__card__name}>{family.name}</h3>
-        <div className={styles.family__card__gems} title={`${covered}/5 roles covered`}>
-          <img
-            src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
-            alt={`${covered} roles`}
-            className={styles.family__card__gems__img}
-          />
-          <span className={styles.family__card__gems__count}>{covered}</span>
+        <div className={styles.family__card__title}>
+          <h3 className={styles.family__card__name}>{family.name}</h3>
+          <div className={styles.family__card__gems} title={`${covered}/5 roles covered`}>
+            <img
+              src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
+              alt={`${covered} roles`}
+              className={styles.family__card__gems__img}
+            />
+            <span className={styles.family__card__gems__count}>{covered}</span>
+          </div>
         </div>
         <div className={styles.family__card__stage}>
+          {/* EDITAR: ventana del splash en cards. El agujero negro aparece si `bottom` es muy alto.
+              Ajustá left/right/top/bottom de .family__card__image en Skins.module.scss */}
           <div className={styles.family__card__image}>
             <img
               src={family.splashart}

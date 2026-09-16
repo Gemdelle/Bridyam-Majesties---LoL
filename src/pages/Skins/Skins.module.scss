@@ -148,10 +148,21 @@
   outline-offset: 2px;
 }
 
-.family__card__name {
+.family__card__title {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35vw;
+  margin: 0 0 0.2vw;
+  flex-shrink: 0;
+  min-height: 1.2em;
+}
+
+.family__card__name {
   margin: 0;
-  padding: 0 0.2vw;
+  padding: 0;
+  max-width: calc(100% - 2vw);
   font-size: clamp(9px, 0.72vw, 13px);
   font-weight: 800;
   color: #e7c67a;
@@ -162,16 +173,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex-shrink: 0;
 }
 
 .family__card__gems {
   position: relative;
-  width: 1.6vw;
-  height: 1.6vw;
-  min-width: 18px;
-  min-height: 18px;
-  margin: 0.15vw 0 0.25vw;
+  width: 1.35vw;
+  height: 1.35vw;
+  min-width: 16px;
+  min-height: 16px;
+  margin: 0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -192,7 +202,7 @@
   align-items: center;
   justify-content: center;
   color: #f5e6b8;
-  font-size: clamp(7px, 0.55vw, 10px);
+  font-size: clamp(7px, 0.5vw, 9px);
   font-weight: 800;
   text-shadow: 0 1px 2px #000;
 }
@@ -204,12 +214,18 @@
   min-height: 0;
 }
 
+/*
+ * EDITAR — ventana del splash art dentro del skin-frame (family cards):
+ * Si ves un "agujero negro" abajo, BAJÁ el valor de `bottom` (ej. 8% → 4%).
+ * Si se sale de los costados, SUBÍ left/right (ej. 12% → 14%).
+ * top controla el margen superior del recorte.
+ */
 .family__card__image {
   position: absolute;
-  left: 16%;
-  right: 16%;
-  top: 10%;
-  bottom: 24%;
+  left: 12%;
+  right: 12%;
+  top: 7%;
+  bottom: 7%;
   z-index: 1;
   overflow: hidden;
   border-radius: 2px;
@@ -220,8 +236,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 22%;
-  transform: scale(1.45);
+  object-position: center 35%;
   transform-origin: center center;
   filter: saturate(0.6) brightness(0.75);
   transition: filter 0.25s ease;
@@ -348,6 +363,8 @@
   border: none;
   border-radius: 0;
   box-shadow: none;
+  padding-top: 2.2%;
+  justify-content: flex-start;
 }
 
 .family__header {
@@ -441,12 +458,16 @@
   overflow: visible;
 }
 
+/*
+ * EDITAR — ventana del splash en team view:
+ * Mismo criterio que .family__card__image. Bajá `bottom` si queda negro abajo.
+ */
 .role__skin__image {
   position: absolute;
-  left: 16%;
-  right: 16%;
-  top: 10%;
-  bottom: 24%;
+  left: 12%;
+  right: 12%;
+  top: 7%;
+  bottom: 7%;
   z-index: 1;
   overflow: hidden;
   border-radius: 2px;
@@ -457,8 +478,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 22%;
-  transform: scale(1.45);
+  object-position: center 35%;
   transform-origin: center center;
   display: block;
 }
@@ -559,25 +579,57 @@
 
 .skin__next__arrow {
   position: absolute;
-  right: 0.2vw;
-  top: 50%;
+  right: -0.15vw;
+  top: 42%;
   transform: translateY(-50%);
-  z-index: 5;
-  width: 1.5vw;
-  height: 2.2vw;
-  min-width: 18px;
-  border: none;
-  background: rgba(10, 12, 16, 0.55);
+  z-index: 6;
+  width: 1.8vw;
+  height: 2.6vw;
+  min-width: 22px;
+  min-height: 32px;
+  border: 1px solid #c89b3c;
+  border-radius: 4px;
+  background: rgba(10, 12, 16, 0.88);
   color: #e7c67a;
-  font-size: 1.2vw;
+  font-size: 1.6vw;
+  font-weight: 800;
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .skin__next__arrow:hover {
   color: #f5e6b8;
-  background: rgba(10, 12, 16, 0.8);
+  background: rgba(30, 24, 10, 0.95);
+  border-color: #e7c67a;
+}
+
+.skin__cycle__inline {
+  flex-shrink: 0;
+  width: 1.7vw;
+  height: 2.2vw;
+  min-width: 22px;
+  min-height: 28px;
+  border: 1px solid #c89b3c;
+  border-radius: 4px;
+  background: rgba(10, 12, 16, 0.88);
+  color: #e7c67a;
+  font-size: 1.35vw;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skin__cycle__inline:hover {
+  color: #f5e6b8;
+  border-color: #e7c67a;
 }
 
 .skin__picker {
@@ -649,8 +701,16 @@
   z-index: 25;
 }
 
-.role__account__trigger {
+.role__account__row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.35vw;
   width: 100%;
+}
+
+.role__account__trigger {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -665,7 +725,7 @@
   padding: 0.55vw 0.55vw 0.55vw 0.9vw;
   font-size: clamp(10px, 0.78vw, 13px);
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04vw;
   cursor: pointer;
   outline: none;
@@ -719,7 +779,7 @@
   font-family: 'Pixel', sans-serif;
   font-size: clamp(10px, 0.75vw, 13px);
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04vw;
   text-align: left;
   padding: 0.55vw 0.65vw 0.55vw 0.9vw;

@@ -186,11 +186,12 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
   }
 
   if (family.matchMode === 'nightbringer' || family.name === 'NIGHTBRINGER') {
-    return skinName.includes('nightbringer') || lineHits.some((l) => l.includes('nightbringer'));
+    // Shared CDragon line with Dawnbringer — match by skin name only
+    return skinName.includes('nightbringer');
   }
 
   if (family.matchMode === 'dawnbringer' || family.name === 'DAWNBRINGER') {
-    return skinName.includes('dawnbringer') || lineHits.some((l) => l.includes('dawnbringer'));
+    return skinName.includes('dawnbringer');
   }
 
   // Pure Coven only — not Old God, not Broken Covenant
@@ -204,11 +205,28 @@ export const skinBelongsToFamily = (skin: OwnedSkin, family: SkinFamily): boolea
     );
   }
 
-  if (family.matchMode === 'navidad' || family.name === 'NAVIDAD') {
+  if (
+    family.matchMode === 'christmas' ||
+    family.matchMode === 'navidad' ||
+    family.name === 'CHRISTMAS' ||
+    family.name === 'NAVIDAD'
+  ) {
     return (
       lineHits.some((l) => l.includes('snowdown')) ||
       keys.some((k) => skinName.includes(k)) ||
       /santa|reindeer|mistletoe|happy elf|candy cane|bad santa/.test(skinName)
+    );
+  }
+
+  if (family.matchMode === 'royal' || family.name === 'ROYAL') {
+    if (/king of clubs|queen of diamonds|jack of hearts|ace of spades|mecha kingdoms|battle queen/.test(skinName)) {
+      return false;
+    }
+    return (
+      /^(royal|imperial|golden|lord|king|queen)\b/.test(skinName) ||
+      skinName.includes('battle regalia') ||
+      skinName.includes('royal guard') ||
+      skinName.includes('majestic empress')
     );
   }
 
