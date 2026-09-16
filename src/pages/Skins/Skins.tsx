@@ -35,7 +35,7 @@ interface SplashFit {
   scale: number;
 }
 
-const SPLASH_FIT_KEY = 'bridyam-skin-splash-fit';
+const SPLASH_FIT_KEY = 'bridyam-skin-splash-fit-v2';
 const DEFAULT_FIT: SplashFit = { x: 50, y: 35, scale: 1.2 };
 
 const prettyAccountName = (username: string): string => {
@@ -309,9 +309,11 @@ const Skins: React.FC = () => {
             fileFits = {};
           }
         }
-        // File defaults + local edits on top
-        const merged = { ...fileFits, ...loadSplashFits() };
+        // File is source of truth for published fits; local edits (v2, name-keyed) overlay.
+        const local = loadSplashFits();
+        const merged = { ...fileFits, ...local };
         setSplashFits(merged);
+        saveSplashFits(merged);
       } catch (error) {
         console.error('Error loading skins data:', error);
       } finally {
@@ -411,10 +413,10 @@ const Skins: React.FC = () => {
     countCoveredRoles(family, accountSkins, rankedLookup, rolesData);
 
   const getFit = (family: SkinFamily): SplashFit =>
-    splashFits[String(family.id)] || splashFits[family.name] || DEFAULT_FIT;
+    splashFits[family.name] || splashFits[String(family.id)] || DEFAULT_FIT;
 
   const updateFit = (family: SkinFamily, patch: Partial<SplashFit>) => {
-    const key = String(family.id);
+    const key = family.name;
     const current = getFit(family);
     const nextFit: SplashFit = {
       x: Number(patch.x ?? current.x),
@@ -424,7 +426,7 @@ const Skins: React.FC = () => {
     nextFit.x = Math.max(-80, Math.min(180, nextFit.x));
     nextFit.y = Math.max(-80, Math.min(180, nextFit.y));
     nextFit.scale = Math.max(1, Math.min(2.8, nextFit.scale));
-    const next = { ...splashFits, [key]: nextFit };
+    const next = { ...splashFits, [key]: nextFit, [String(family.id)]: nextFit };
     setSplashFits(next);
     saveSplashFits(next);
   };
