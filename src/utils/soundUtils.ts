@@ -53,12 +53,34 @@ export const playNotificationSound = (): void => {
 export const playProgressClickSound = (): void => {
     try {
         const progressSound = new Audio('/sounds/UI/progress-click.mp3');
-        progressSound.volume = 0.7; // Adjust volume if needed
+        progressSound.volume = 0.7;
         progressSound.play().catch(error => {
-            console.error('Error playing progress click sound:', error);
+            console.error('Error playing progress sound:', error);
         });
     } catch (error) {
-        console.error('Error creating progress click sound:', error);
+        console.error('Error creating progress sound:', error);
+    }
+};
+
+/**
+ * Plays the petting / love sound used in Garden and adoption.
+ */
+export const playPettingSound = (petType?: string | number): void => {
+    try {
+        const type = Number(petType) || 0;
+        const src =
+            type >= 1 && type <= 4
+                ? `/sounds/pet-${type}-stage-1.mp3`
+                : '/sounds/petting.mp3';
+        const audio = new Audio(src);
+        audio.volume = 0.85;
+        audio.play().catch(() => {
+            const fallback = new Audio('/sounds/petting.mp3');
+            fallback.volume = 0.85;
+            fallback.play().catch(() => undefined);
+        });
+    } catch {
+        /* ignore */
     }
 };
 

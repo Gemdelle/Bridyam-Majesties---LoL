@@ -119,15 +119,15 @@ export const fetchAccountSkins = async (): Promise<AccountSkins[]> => {
   if (ownershipCache) return ownershipCache;
   try {
     const res = await fetch(assetUrl(`data/account-skins.json?t=${Date.now()}`), { cache: 'no-store' });
-    if (!res.ok) {
-      ownershipCache = [];
-      return ownershipCache;
+    let base: AccountSkins[] = [];
+    if (res.ok) {
+      const data: AccountSkinsFile = await res.json();
+      base = data.accounts || [];
     }
-    const data: AccountSkinsFile = await res.json();
-    ownershipCache = mergeManualSkins(data.accounts || []);
+    ownershipCache = await mergeSheetAndManualSkins(base);
     return ownershipCache;
   } catch {
-    ownershipCache = [];
+    ownershipCache = await mergeSheetAndManualSkins([]);
     return ownershipCache;
   }
 };
@@ -152,15 +152,61 @@ const saveManualSkinsLocal = (entries: ManualSkinEntry[]) => {
   localStorage.setItem(MANUAL_SKINS_KEY, JSON.stringify(entries));
 };
 
-const mergeManualSkins = (accounts: AccountSkins[]): AccountSkins[] => {
-  const manual = loadManualSkins();
-  if (!manual.length) return accounts;
+const fetchManualSkinsFromSheet = async (): Promise<ManualSkinEntry[]> => {
+  try {
+    const { SHEETS_WINS_URL } = await import('./sheetsWinsService');
+    const response = await fetch(`${SHEETS_WINS_URL}?resource=skins&t=${Date.now()}`, {
+      cache: 'no-store',
+    });
+    if (!response.ok) return [];
+    const payload = await response.json();
+    if (!payload.ok || !Array.isArray(payload.skins)) return [];
+    return payload.skins.map(
+      (row: {
+        ranked_id?: number;
+        username?: string;
+        skin_name?: string;
+        champ_name?: string;
+        rarity?: string;
+        image_url?: string;
+        skin_lines?: string[];
+      }) => ({
+        ranked_id: Number(row.ranked_id) || 0,
+        username: String(row.username || ''),
+        skin: {
+          name: String(row.skin_name || ''),
+          champName: String(row.champ_name || 'Unknown'),
+          rarity: String(row.rarity || 'kLegacy'),
+          imageUrl: String(row.image_url || ''),
+          skinLines: Array.isArray(row.skin_lines) ? row.skin_lines : ['legacy'],
+        },
+      })
+    );
+  } catch {
+    return [];
+  }
+};
+
+const mergeEntriesIntoAccounts = (
+  accounts: AccountSkins[],
+  entries: ManualSkinEntry[]
+): AccountSkins[] => {
+  if (!entries.length) return accounts;
   const byId = new Map(accounts.map((a) => [a.ranked_id, { ...a, skins: [...a.skins] }]));
-  manual.forEach((entry) => {
+  entries.forEach((entry) => {
+    if (!entry.skin?.name || !entry.username) return;
     let acc = byId.get(entry.ranked_id);
     if (!acc) {
-      acc = { ranked_id: entry.ranked_id, username: entry.username, skins: [] };
-      byId.set(entry.ranked_id, acc);
+      // Match by username if id missing
+      const found = [...byId.values()].find(
+        (a) => a.username.toLowerCase() === entry.username.toLowerCase()
+      );
+      if (found) {
+        acc = found;
+      } else {
+        acc = { ranked_id: entry.ranked_id, username: entry.username, skins: [] };
+        byId.set(entry.ranked_id || Date.now(), acc);
+      }
     }
     const exists = acc.skins.some(
       (s) => s.name.toLowerCase() === entry.skin.name.toLowerCase()
@@ -170,11 +216,17 @@ const mergeManualSkins = (accounts: AccountSkins[]): AccountSkins[] => {
   return [...byId.values()];
 };
 
+const mergeSheetAndManualSkins = async (accounts: AccountSkins[]): Promise<AccountSkins[]> => {
+  const fromSheet = await fetchManualSkinsFromSheet();
+  const fromLocal = loadManualSkins();
+  return mergeEntriesIntoAccounts(accounts, [...fromSheet, ...fromLocal]);
+};
+
 export const invalidateAccountSkinsCache = () => {
   ownershipCache = null;
 };
 
-/** Add a victorious / legacy / custom skin that the API cannot see. */
+/** Add a victorious / legacy / custom skin — persisted to Google Sheets SKINS tab (everyone sees it). */
 export const addManualAccountSkin = async (input: {
   rankedId: number;
   username: string;
@@ -200,33 +252,28 @@ export const addManualAccountSkin = async (input: {
     skinLines: [line],
   };
 
-  const manual = loadManualSkins();
-  manual.push({ ranked_id: input.rankedId, username, skin });
-  saveManualSkinsLocal(manual);
-  invalidateAccountSkinsCache();
-
-  // Best-effort persist into account-skins.json while running Vite locally
-  try {
-    const base = await fetch(assetUrl(`data/account-skins.json?t=${Date.now()}`), {
-      cache: 'no-store',
-    });
-    if (base.ok) {
-      const data: AccountSkinsFile = await base.json();
-      const accounts = mergeManualSkins(data.accounts || []);
-      await fetch('/api/save-account-skins', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          updatedAt: new Date().toISOString(),
-          source: 'manual+loldb',
-          accounts,
-        }),
-      });
-    }
-  } catch {
-    /* Pages / offline: localStorage overlay is enough */
+  // Shared source of truth: Google Sheets
+  const { postToSheet } = await import('./sheetsWinsService');
+  const ok = await postToSheet({
+    action: 'appendSkin',
+    skin: {
+      ranked_id: input.rankedId,
+      username,
+      skin_name: skinName,
+      champ_name: champGuess,
+      rarity: 'kLegacy',
+      image_url: '',
+      skin_lines: [line],
+    },
+  });
+  if (!ok) {
+    // Offline fallback so the adder still sees it locally
+    const manual = loadManualSkins();
+    manual.push({ ranked_id: input.rankedId, username, skin });
+    saveManualSkinsLocal(manual);
   }
 
+  invalidateAccountSkinsCache();
   return fetchAccountSkins();
 };
 
@@ -420,6 +467,18 @@ export const getRolesForChampionName = (
   return primary ? [primary] : ['mid'];
 };
 
+/** Single display lane per champion (primary). Dual-role champs still counted via getRolesForChampionName. */
+export const getPrimaryRoleForChampionName = (
+  champName: string,
+  rolesData: ChampionRolesFile
+): LaneRole => {
+  const key = normalize(champName);
+  const primary = rolesData.byName?.[key] || rolesData.byName?.[champName.toLowerCase()];
+  if (primary) return primary;
+  const all = rolesData.byNameAll?.[key] || rolesData.byNameAll?.[champName.toLowerCase()];
+  return (all && all[0]) || 'mid';
+};
+
 export interface FamilyAccountOwnership {
   rankedId: number;
   username: string;
@@ -451,7 +510,8 @@ export const getAccountsForFamily = (
   );
 };
 
-/** Group owned family skins by lane, then by account (for dropdowns). */
+/** Group owned family skins by lane, then by account (for dropdowns).
+ * Each champion appears on ONE lane only (primary role) so dual-role champs don't flicker. */
 export const getRoleTeamForFamily = (
   family: SkinFamily,
   accountSkins: AccountSkins[],
@@ -464,8 +524,9 @@ export const getRoleTeamForFamily = (
     for (const account of accountSkins) {
       for (const skin of account.skins || []) {
         if (!skinBelongsToFamily(skin, family)) continue;
-        const roles = getRolesForChampionName(skin.champName, rolesData);
-        if (!roles.includes(lane.id)) continue;
+        // Display only on primary lane — dual-role champs still "can" play elsewhere but show once
+        const primary = getPrimaryRoleForChampionName(skin.champName, rolesData);
+        if (primary !== lane.id) continue;
 
         const ranked = rankedLookup.get(account.ranked_id);
         const existing = byAccount.get(account.ranked_id);

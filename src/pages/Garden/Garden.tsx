@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Garden.module.scss';
 import {
-    abilityPower,
     hasPetPassword,
     loadGardenPets,
     petCare,
@@ -10,32 +10,62 @@ import {
     type GardenPet,
     verifyPetPassword,
 } from '../../services/gardenService';
-import type { PetAbility } from '../../services/petsService';
-import { playClickSound } from '../../utils/soundUtils';
+import { playClickSound, playPettingSound } from '../../utils/soundUtils';
+import { assetUrl } from '../../utils/assetUrl';
 
-type PanelMode = 'care' | 'auth' | 'fight' | null;
+type Heart = { id: number; x: number; y: number; type: number };
+type PanelMode = 'care' | 'auth' | null;
+
+type WalkPet = GardenPet & {
+    tx: number;
+    ty: number;
+    vx: number;
+    vy: number;
+};
+
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+/** Floor walkable area in % of the floor panel */
+const pickTarget = (): { x: number; y: number } => ({
+    x: rand(8, 92),
+    y: rand(12, 88),
+});
 
 const Garden: React.FC = () => {
-    const [pets, setPets] = useState<GardenPet[]>([]);
+    const navigate = useNavigate();
+    const [pets, setPets] = useState<WalkPet[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState<GardenPet | null>(null);
+    const [selected, setSelected] = useState<WalkPet | null>(null);
     const [panel, setPanel] = useState<PanelMode>(null);
     const [passwordInput, setPasswordInput] = useState('');
     const [authError, setAuthError] = useState('');
-    const [controlledOwner, setControlledOwner] = useState<string | null>(null);
-    const [enemy, setEnemy] = useState<GardenPet | null>(null);
-    const [playerHp, setPlayerHp] = useState(100);
-    const [enemyHp, setEnemyHp] = useState(100);
-    const [fightLog, setFightLog] = useState<string[]>([]);
-    const [fightOver, setFightOver] = useState(false);
-    const [winner, setWinner] = useState<'player' | 'enemy' | null>(null);
-    const animRef = useRef<number | null>(null);
+    const [hearts, setHearts] = useState<Heart[]>([]);
+    const [heartId, setHeartId] = useState(0);
+    const [pettingOwner, setPettingOwner] = useState<string | null>(null);
+    const floorRef = useRef<HTMLDivElement>(null);
+    const petsRef = useRef<WalkPet[]>([]);
+    const rafRef = useRef<number>(0);
 
     const refresh = useCallback(async () => {
         setLoading(true);
         try {
             const list = await loadGardenPets();
-            setPets(list);
+            const walked: WalkPet[] = list.map((p, i) => {
+                const start = pickTarget();
+                const target = pickTarget();
+                return {
+                    ...p,
+                    x: start.x,
+                    y: 20 + ((i * 11) % 60),
+                    tx: target.x,
+                    ty: target.y,
+                    vx: 0,
+                    vy: 0,
+                    activity: 'walk' as const,
+                };
+            });
+            petsRef.current = walked;
+            setPets(walked);
         } catch (err) {
             console.error('Garden load failed', err);
             setPets([]);
@@ -48,46 +78,79 @@ const Garden: React.FC = () => {
         void refresh();
     }, [refresh]);
 
+    // Smooth walking across the floor
     useEffect(() => {
-        if (panel === 'fight') return;
-        const tick = () => {
-            setPets((prev) =>
-                prev.map((p) => {
-                    let { x, y, facing, activity, needs } = p;
-                    const hungry = needs.hunger < 30;
-                    const tired = needs.energy < 25;
+        let last = performance.now();
+        const step = (now: number) => {
+            const dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+            const next = petsRef.current.map((p) => {
+                let { x, y, tx, ty, facing, activity, needs } = p;
+                const hungry = needs.hunger < 28;
+                const tired = needs.energy < 22;
 
-                    if (hungry && Math.random() < 0.04) {
-                        x += (18 - x) * 0.08;
-                        y += (72 - y) * 0.08;
-                        activity = Math.hypot(x - 18, y - 72) < 8 ? 'eat' : 'walk';
-                    } else if (tired && Math.random() < 0.04) {
-                        x += (78 - x) * 0.08;
-                        y += (70 - y) * 0.08;
-                        activity = Math.hypot(x - 78, y - 70) < 8 ? 'sleep' : 'walk';
-                    } else if (activity === 'eat' || activity === 'sleep') {
-                        if (Math.random() < 0.02) activity = 'walk';
-                    } else {
-                        activity = 'walk';
-                        const dx = (Math.random() - 0.5) * 1.4;
-                        const dy = (Math.random() - 0.5) * 0.9;
-                        x = Math.max(4, Math.min(90, x + dx));
-                        y = Math.max(18, Math.min(82, y + dy));
-                        if (dx !== 0) facing = dx > 0 ? 1 : -1;
-                    }
+                // Soft pull toward food / sleep corners of the floor when needy
+                if (hungry && Math.random() < 0.008) {
+                    tx = rand(70, 92);
+                    ty = rand(8, 28);
+                } else if (tired && Math.random() < 0.008) {
+                    tx = rand(8, 28);
+                    ty = rand(8, 28);
+                }
 
-                    return { ...p, x, y, facing, activity };
-                })
-            );
-            animRef.current = window.setTimeout(tick, 180);
+                const dx = tx - x;
+                const dy = ty - y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 1.2) {
+                    const t = pickTarget();
+                    tx = t.x;
+                    ty = t.y;
+                    activity =
+                        hungry && x > 65 && y < 35 ? 'eat' : tired && x < 35 && y < 35 ? 'sleep' : 'idle';
+                } else {
+                    activity = 'walk';
+                    const speed = 7 + Math.random() * 4; // % per second
+                    const nx = x + (dx / dist) * speed * dt;
+                    const ny = y + (dy / dist) * speed * dt;
+                    if (Math.abs(dx) > 0.2) facing = dx > 0 ? 1 : -1;
+                    x = Math.max(4, Math.min(96, nx));
+                    y = Math.max(6, Math.min(94, ny));
+                }
+
+                return { ...p, x, y, tx, ty, facing, activity };
+            });
+            petsRef.current = next;
+            setPets(next);
+            rafRef.current = requestAnimationFrame(step);
         };
-        animRef.current = window.setTimeout(tick, 180);
-        return () => {
-            if (animRef.current) window.clearTimeout(animRef.current);
-        };
-    }, [panel]);
+        rafRef.current = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(rafRef.current);
+    }, []);
 
-    const openPet = (pet: GardenPet) => {
+    const spawnHearts = (owner: string, clientX: number, clientY: number) => {
+        const floor = floorRef.current?.getBoundingClientRect();
+        const baseX = floor ? clientX - floor.left : clientX;
+        const baseY = floor ? clientY - floor.top : clientY;
+        const batch: Heart[] = [];
+        for (let i = 0; i < 4; i++) {
+            batch.push({
+                id: heartId + i,
+                x: baseX + (Math.random() - 0.5) * 50,
+                y: baseY - 10 - Math.random() * 20,
+                type: (Math.floor(Math.random() * 3) + 1) as number,
+            });
+        }
+        setHeartId((h) => h + 4);
+        setHearts((prev) => [...prev, ...batch]);
+        setTimeout(() => {
+            setHearts((prev) => prev.filter((h) => !batch.some((b) => b.id === h.id)));
+        }, 1600);
+        setPettingOwner(owner);
+        setTimeout(() => setPettingOwner(null), 500);
+    };
+
+    const openPet = (pet: WalkPet) => {
         playClickSound();
         setSelected(pet);
         setAuthError('');
@@ -97,23 +160,34 @@ const Garden: React.FC = () => {
 
     const applyCare = (action: 'love' | 'feed' | 'sleep') => {
         if (!selected) return;
-        playClickSound();
+        if (action === 'love') {
+            playPettingSound(selected.petType);
+            if (floorRef.current) {
+                const r = floorRef.current.getBoundingClientRect();
+                spawnHearts(
+                    selected.owner,
+                    r.left + (selected.x / 100) * r.width,
+                    r.top + (selected.y / 100) * r.height
+                );
+            }
+        } else {
+            playClickSound();
+        }
         const next = petCare(selected.owner, action);
         const stage = next.love >= 80 ? 3 : next.love >= 45 ? Math.max(selected.stage, 2) : selected.stage;
-        setPets((prev) =>
-            prev.map((p) =>
-                p.owner === selected.owner
-                    ? {
-                          ...p,
-                          needs: next,
-                          activity: action === 'feed' ? 'eat' : action === 'sleep' ? 'sleep' : 'idle',
-                          stage,
-                          imageSrc: p.imageSrc.replace(/pet-(\d)-\d/, `pet-$1-${stage}`),
-                      }
-                    : p
-            )
-        );
-        setSelected((s) => (s ? { ...s, needs: next, stage } : s));
+        const patch = (p: WalkPet): WalkPet =>
+            p.owner === selected.owner
+                ? {
+                      ...p,
+                      needs: next,
+                      stage,
+                      activity: action === 'feed' ? 'eat' : action === 'sleep' ? 'sleep' : 'idle',
+                      imageSrc: p.imageSrc.replace(/pet-(\d)-\d/, `pet-$1-${stage}`),
+                  }
+                : p;
+        petsRef.current = petsRef.current.map(patch);
+        setPets(petsRef.current);
+        setSelected((s) => (s ? patch(s) : s));
     };
 
     const startAuthForFight = () => {
@@ -124,20 +198,21 @@ const Garden: React.FC = () => {
         setPasswordInput('');
     };
 
-    const beginFight = (player: GardenPet) => {
-        const foes = pets.filter((p) => p.owner !== player.owner);
+    const goToFight = (player: WalkPet) => {
+        const foes = petsRef.current.filter((p) => p.owner !== player.owner);
         const foe = foes.length ? foes[Math.floor(Math.random() * foes.length)] : null;
         if (!foe) {
             setAuthError('Need at least one other pet in the garden to fight.');
             return;
         }
-        setEnemy(foe);
-        setPlayerHp(100);
-        setEnemyHp(100);
-        setFightLog([`${player.owner}'s ${player.species} challenges ${foe.owner}'s ${foe.species}!`]);
-        setFightOver(false);
-        setWinner(null);
-        setPanel('fight');
+        sessionStorage.setItem(
+            'bridyam_garden_fight',
+            JSON.stringify({
+                playerOwner: player.owner,
+                enemyOwner: foe.owner,
+            })
+        );
+        navigate('/garden/fight');
     };
 
     const confirmAuth = () => {
@@ -149,152 +224,102 @@ const Garden: React.FC = () => {
                 return;
             }
             setPetPassword(owner, passwordInput);
-            setControlledOwner(owner);
-            beginFight(selected);
+            goToFight(selected);
             return;
         }
         if (!verifyPetPassword(owner, passwordInput)) {
             setAuthError('Wrong password — only the owner can fight with this pet.');
             return;
         }
-        setControlledOwner(owner);
-        beginFight(selected);
-    };
-
-    const playerAbilities: PetAbility[] = useMemo(() => {
-        return selected?.catalog?.abilities?.length
-            ? selected.catalog.abilities
-            : [
-                  { name: 'Nuzzle', type: 'defensive', description: 'Soft guard' },
-                  { name: 'Pounce', type: 'offensive', description: 'Quick strike' },
-                  { name: 'Bond Burst', type: 'ultimate', description: 'Love-powered hit' },
-              ];
-    }, [selected]);
-
-    const doPlayerMove = (ability: PetAbility) => {
-        if (!selected || !enemy || fightOver) return;
-        playClickSound();
-        const pStats = selected.catalog?.stats || { force: 2, instinct: 2, pressure: 2, cleverness: 2 };
-        const eStats = enemy.catalog?.stats || { force: 2, instinct: 2, pressure: 2, cleverness: 2 };
-        const dmg = abilityPower(ability, pStats);
-        const nextEnemyHp = Math.max(0, enemyHp - dmg);
-        const logs = [`${selected.species} uses ${ability.name} (−${dmg})`];
-
-        if (nextEnemyHp <= 0) {
-            setEnemyHp(0);
-            setFightLog((l) => [...l, ...logs, `${selected.owner} wins!`]);
-            setFightOver(true);
-            setWinner('player');
-            petCare(selected.owner, 'love');
-            return;
-        }
-
-        const aiList = enemy.catalog?.abilities || [];
-        const aiAbility =
-            aiList[Math.floor(Math.random() * Math.max(1, aiList.length))] ||
-            ({ name: 'Scratch', type: 'offensive', description: 'AI hit' } as PetAbility);
-        const aiDmg = abilityPower(aiAbility, eStats);
-        const nextPlayerHp = Math.max(0, playerHp - aiDmg);
-        logs.push(`${enemy.species} uses ${aiAbility.name} (−${aiDmg})`);
-
-        setEnemyHp(nextEnemyHp);
-        setPlayerHp(nextPlayerHp);
-        setFightLog((l) => [...l, ...logs]);
-
-        if (nextPlayerHp <= 0) {
-            setFightOver(true);
-            setWinner('enemy');
-            setFightLog((l) => [...l, `${enemy.owner}'s pet wins.`]);
-        }
-    };
-
-    const closePanel = () => {
-        setPanel(null);
-        setSelected(null);
-        setEnemy(null);
-        setFightOver(false);
+        goToFight(selected);
     };
 
     return (
         <div className={styles.garden}>
+            <img className={styles.bg} src={sanctuaryAsset('bg')} alt="" />
+
             <div className={styles.header}>
                 <h1>Garden</h1>
-                <p>
-                    Pets roam, eat, sleep, and evolve with love. Click a pet to care — or prove you are its owner and
-                    fight.
-                </p>
+                <p>Walk the sanctuary. Pet, feed, rest — or prove ownership and fight.</p>
             </div>
 
-            <div className={styles.arena}>
-                <img
-                    className={styles.ground}
-                    src={sanctuaryAsset('ground')}
-                    alt=""
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                />
-                <div className={styles.zone} style={{ left: '8%', top: '58%' }} title="Feeding ground">
-                    <img src={sanctuaryAsset('eat-spot')} alt="eat" />
-                    <span>Eat</span>
-                </div>
-                <div className={styles.zone} style={{ left: '72%', top: '56%' }} title="Resting nest">
-                    <img src={sanctuaryAsset('sleep-spot')} alt="sleep" />
+            <div className={styles.stage}>
+                <div className={`${styles.prop} ${styles.propSleep}`}>
+                    <img src={sanctuaryAsset('sleep')} alt="Sleep" />
                     <span>Sleep</span>
                 </div>
+                <div className={`${styles.prop} ${styles.propFood}`}>
+                    <img src={sanctuaryAsset('food')} alt="Food" />
+                    <span>Food</span>
+                </div>
 
-                {loading && <div className={styles.loading}>Calling the pets…</div>}
-                {!loading && pets.length === 0 && (
-                    <div className={styles.loading}>No claimed pets in the sanctuary yet.</div>
-                )}
+                <div className={styles.floor} ref={floorRef}>
+                    <img className={styles.floorImg} src={sanctuaryAsset('floor')} alt="" />
 
-                {pets.map((pet) => (
-                    <button
-                        key={pet.owner}
-                        type="button"
-                        className={`${styles.pet} ${styles[`pet--${pet.activity}`]} ${
-                            selected?.owner === pet.owner ? styles.petSelected : ''
-                        }`}
-                        style={{
-                            left: `${pet.x}%`,
-                            top: `${pet.y}%`,
-                            transform: `translate(-50%, -50%) scaleX(${pet.facing})`,
-                        }}
-                        onClick={() => openPet(pet)}
-                        title={`${pet.owner} · ${pet.species}`}
-                    >
-                        <div className={styles.bars} style={{ transform: `scaleX(${pet.facing})` }}>
-                            <div className={styles.barTrack} title="Love">
-                                <div
-                                    className={`${styles.barFill} ${styles.love}`}
-                                    style={{ width: `${pet.needs.love}%` }}
-                                />
+                    {loading && <div className={styles.loading}>Calling the pets…</div>}
+                    {!loading && pets.length === 0 && (
+                        <div className={styles.loading}>No claimed pets yet.</div>
+                    )}
+
+                    {pets.map((pet) => (
+                        <button
+                            key={pet.owner}
+                            type="button"
+                            className={`${styles.pet} ${styles[`pet--${pet.activity}`]} ${
+                                pettingOwner === pet.owner ? styles.petting : ''
+                            } ${selected?.owner === pet.owner ? styles.petSelected : ''}`}
+                            style={{
+                                left: `${pet.x}%`,
+                                top: `${pet.y}%`,
+                                transform: `translate(-50%, -50%) scaleX(${pet.facing})`,
+                                zIndex: Math.round(pet.y),
+                            }}
+                            onClick={() => openPet(pet)}
+                            title={`${pet.owner} · ${pet.species}`}
+                        >
+                            <div className={styles.bars} style={{ transform: `scaleX(${pet.facing})` }}>
+                                <div className={styles.barTrack} title="Love">
+                                    <div
+                                        className={`${styles.barFill} ${styles.love}`}
+                                        style={{ width: `${pet.needs.love}%` }}
+                                    />
+                                </div>
+                                <div className={styles.barTrack} title="Hunger">
+                                    <div
+                                        className={`${styles.barFill} ${styles.hunger}`}
+                                        style={{ width: `${pet.needs.hunger}%` }}
+                                    />
+                                </div>
+                                <div className={styles.barTrack} title="Energy">
+                                    <div
+                                        className={`${styles.barFill} ${styles.energy}`}
+                                        style={{ width: `${pet.needs.energy}%` }}
+                                    />
+                                </div>
                             </div>
-                            <div className={styles.barTrack} title="Hunger">
-                                <div
-                                    className={`${styles.barFill} ${styles.hunger}`}
-                                    style={{ width: `${pet.needs.hunger}%` }}
-                                />
-                            </div>
-                            <div className={styles.barTrack} title="Energy">
-                                <div
-                                    className={`${styles.barFill} ${styles.energy}`}
-                                    style={{ width: `${pet.needs.energy}%` }}
-                                />
-                            </div>
-                        </div>
-                        <img src={pet.imageSrc} alt={pet.species} draggable={false} />
-                        <span className={styles.petName} style={{ transform: `scaleX(${pet.facing})` }}>
-                            {pet.owner}
-                        </span>
-                    </button>
-                ))}
+                            <img src={pet.imageSrc} alt={pet.species} draggable={false} />
+                            <span className={styles.petName} style={{ transform: `scaleX(${pet.facing})` }}>
+                                {pet.owner}
+                            </span>
+                        </button>
+                    ))}
+
+                    {hearts.map((heart) => (
+                        <img
+                            key={heart.id}
+                            className={styles.heart}
+                            style={{ left: heart.x, top: heart.y }}
+                            src={assetUrl(`images/icons/love-icon-${heart.type}.png`)}
+                            alt=""
+                        />
+                    ))}
+                </div>
             </div>
 
             {panel && selected && (
-                <div className={styles.overlay} onClick={closePanel}>
+                <div className={styles.overlay} onClick={() => setPanel(null)}>
                     <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
-                        <button type="button" className={styles.close} onClick={closePanel}>
+                        <button type="button" className={styles.close} onClick={() => setPanel(null)}>
                             ×
                         </button>
 
@@ -382,66 +407,9 @@ const Garden: React.FC = () => {
                                         Back
                                     </button>
                                     <button type="button" className={styles.fightBtn} onClick={confirmAuth}>
-                                        {hasPetPassword(selected.owner) ? 'Enter fight' : 'Set & fight'}
+                                        {hasPetPassword(selected.owner) ? 'Enter arena' : 'Set & fight'}
                                     </button>
                                 </div>
-                            </>
-                        )}
-
-                        {panel === 'fight' && enemy && (
-                            <>
-                                <h2>Pet Battle</h2>
-                                <p className={styles.fightSub}>
-                                    You control {selected.species}. {enemy.species} is wild (AI).
-                                    {controlledOwner ? ` · Playing as ${controlledOwner}` : ''}
-                                </p>
-                                <div className={styles.fightArena}>
-                                    <div className={styles.fighter}>
-                                        <img src={selected.imageSrc} alt="" />
-                                        <div className={styles.barTrack}>
-                                            <div
-                                                className={`${styles.barFill} ${styles.hp}`}
-                                                style={{ width: `${playerHp}%` }}
-                                            />
-                                        </div>
-                                        <span>{selected.owner}</span>
-                                    </div>
-                                    <span className={styles.vs}>VS</span>
-                                    <div className={styles.fighter}>
-                                        <img src={enemy.imageSrc} alt="" />
-                                        <div className={styles.barTrack}>
-                                            <div
-                                                className={`${styles.barFill} ${styles.hp}`}
-                                                style={{ width: `${enemyHp}%` }}
-                                            />
-                                        </div>
-                                        <span>{enemy.owner}</span>
-                                    </div>
-                                </div>
-                                <div className={styles.log}>
-                                    {fightLog.slice(-6).map((line, i) => (
-                                        <p key={`${line}-${i}`}>{line}</p>
-                                    ))}
-                                </div>
-                                {!fightOver ? (
-                                    <div className={styles.abilityGrid}>
-                                        {playerAbilities.map((ab) => (
-                                            <button key={ab.name} type="button" onClick={() => doPlayerMove(ab)}>
-                                                <strong>{ab.name}</strong>
-                                                <small>{ab.type}</small>
-                                            </button>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className={styles.actions}>
-                                        <p className={styles.winner}>
-                                            {winner === 'player' ? 'Victory!' : 'Defeat…'}
-                                        </p>
-                                        <button type="button" className={styles.fightBtn} onClick={closePanel}>
-                                            Back to garden
-                                        </button>
-                                    </div>
-                                )}
                             </>
                         )}
                     </div>

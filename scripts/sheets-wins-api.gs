@@ -5,14 +5,18 @@
  *   ACCOUNTS  → ACCOUNT | LV | ESSENCER | WINS | HONOR | SOLO | FLEX
  *   ESSENCERS → ESSENCER | PET | LEVEL
  *   MASTERY   → ranked_id | username | champion_id | champion_level | champion_points
+ *   FEED      → feed events
+ *   SKINS     → ranked_id | username | skin_name | champ_name | rarity | image_url | skin_lines
  *
  * Paste → Save → Deploy → Manage deployments → Edit → New version → Deploy
+ * (SKINS tab is auto-created on first append if missing)
  */
 
 const ACCOUNTS_SHEET = 'ACCOUNTS';
 const ESSENCERS_SHEET = 'ESSENCERS';
 const MASTERY_SHEET = 'MASTERY';
 const FEED_SHEET = 'FEED';
+const SKINS_SHEET = 'SKINS';
 
 function getSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -392,6 +396,93 @@ function appendFeed_(item) {
   return { ok: true, id: Number(item.id) || nextId, createdAt };
 }
 
+/** Manual / victorious / legacy skins shared for everyone */
+function ensureSkinsSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SKINS_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(SKINS_SHEET);
+    sheet.appendRow([
+      'ranked_id',
+      'username',
+      'skin_name',
+      'champ_name',
+      'rarity',
+      'image_url',
+      'skin_lines'
+    ]);
+  }
+  return sheet;
+}
+
+function readManualSkinRows_() {
+  var sheet = getSheet_(SKINS_SHEET) || ensureSkinsSheet_();
+  var values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  var headers = values[0].map(function (h) { return String(h || '').trim().toLowerCase(); });
+  var idIdx = headers.indexOf('ranked_id');
+  var userIdx = headers.indexOf('username');
+  var nameIdx = headers.indexOf('skin_name');
+  var champIdx = headers.indexOf('champ_name');
+  var rarityIdx = headers.indexOf('rarity');
+  var imgIdx = headers.indexOf('image_url');
+  var linesIdx = headers.indexOf('skin_lines');
+  if (nameIdx === -1 || userIdx === -1) return [];
+
+  var rows = [];
+  for (var i = 1; i < values.length; i++) {
+    var skinName = String(values[i][nameIdx] || '').trim();
+    var username = String(values[i][userIdx] || '').trim();
+    if (!skinName || !username) continue;
+    var linesRaw = linesIdx >= 0 ? String(values[i][linesIdx] || '').trim() : 'legacy';
+    var skinLines = [];
+    try {
+      skinLines = JSON.parse(linesRaw);
+      if (!Array.isArray(skinLines)) skinLines = [String(linesRaw)];
+    } catch (e) {
+      skinLines = linesRaw ? linesRaw.split(',').map(function (s) { return s.trim(); }) : ['legacy'];
+    }
+    rows.push({
+      ranked_id: idIdx >= 0 ? Number(values[i][idIdx]) || 0 : 0,
+      username: username,
+      skin_name: skinName,
+      champ_name: champIdx >= 0 ? String(values[i][champIdx] || '').trim() : '',
+      rarity: rarityIdx >= 0 ? String(values[i][rarityIdx] || '').trim() || 'kLegacy' : 'kLegacy',
+      image_url: imgIdx >= 0 ? String(values[i][imgIdx] || '').trim() : '',
+      skin_lines: skinLines
+    });
+  }
+  return rows;
+}
+
+function appendManualSkin_(item) {
+  var sheet = ensureSkinsSheet_();
+  var username = String(item.username || '').trim();
+  var skinName = String(item.skin_name || item.skinName || '').trim();
+  if (!username || !skinName) {
+    return { ok: false, error: 'username and skin_name required' };
+  }
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    var existingUser = String(values[i][1] || '').trim().toLowerCase();
+    var existingName = String(values[i][2] || '').trim().toLowerCase();
+    if (existingUser === username.toLowerCase() && existingName === skinName.toLowerCase()) {
+      return { ok: true, duplicate: true };
+    }
+  }
+  var lines = item.skin_lines || item.skinLines || ['legacy'];
+  sheet.appendRow([
+    Number(item.ranked_id || item.rankedId) || 0,
+    username,
+    skinName,
+    String(item.champ_name || item.champName || ''),
+    String(item.rarity || 'kLegacy'),
+    String(item.image_url || item.imageUrl || ''),
+    JSON.stringify(lines)
+  ]);
+  return { ok: true, duplicate: false };
+}
+
 function doGet(e) {
   try {
     const resource = e && e.parameter && e.parameter.resource;
@@ -402,12 +493,19 @@ function doGet(e) {
         .createTextOutput(JSON.stringify({ ok: true, feed }))
         .setMimeType(ContentService.MimeType.JSON);
     }
+    if (resource === 'skins') {
+      const skins = readManualSkinRows_();
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: true, skins }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     const data = readAccountRows_();
     const essencers = readEssencerRows_();
     const masteries = readMasteryRows_();
+    const skins = readManualSkinRows_();
     return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, data, essencers, masteries }))
+      .createTextOutput(JSON.stringify({ ok: true, data, essencers, masteries, skins }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService
@@ -424,6 +522,15 @@ function doPost(e) {
     if (body.action === 'appendFeed' || body.feed) {
       const item = body.feed || body;
       const result = appendFeed_(item);
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Append manual skin (victorious / legacy / custom)
+    if (body.action === 'appendSkin' || body.skin) {
+      const item = body.skin || body;
+      const result = appendManualSkin_(item);
       return ContentService
         .createTextOutput(JSON.stringify(result))
         .setMimeType(ContentService.MimeType.JSON);

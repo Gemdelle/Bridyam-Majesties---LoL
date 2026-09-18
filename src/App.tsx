@@ -27,6 +27,7 @@ import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
 import Leaderboard from './pages/Leaderboard/Leaderboard'
 import Garden from './pages/Garden/Garden'
+import GardenFight from './pages/Garden/GardenFight'
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -166,6 +167,14 @@ function AppContent() {
                 element={
                   <ProtectedRoute>
                     <Garden />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/garden/fight"
+                element={
+                  <ProtectedRoute>
+                    <GardenFight />
                   </ProtectedRoute>
                 }
               />

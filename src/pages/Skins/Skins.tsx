@@ -90,6 +90,10 @@ const RoleSlot: React.FC<{
 }> = ({ column, selection, blockedChampions, onSelect }) => {
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const blockedKey = useMemo(
+    () => [...blockedChampions].sort().join('|'),
+    [blockedChampions]
+  );
 
   const availableAccounts = useMemo(() => {
     return column.accounts.filter((acc) => {
@@ -124,17 +128,22 @@ const RoleSlot: React.FC<{
     if (!column.accounts.length) return;
     if (selection) {
       const acc = column.accounts.find((a) => a.rankedId === selection.rankedId);
-      if (acc?.skins.some((s) => s.name === selection.skinName)) return;
+      if (acc?.skins.some((s) => s.name === selection.skinName)) {
+        // Keep selection only if that champ is not blocked by another lane
+        const skin = acc.skins.find((s) => s.name === selection.skinName);
+        if (skin && !blockedChampions.has(champKey(skin.champName))) return;
+      }
     }
     for (const acc of column.accounts) {
-      const skin = firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
+      const skin = firstAvailableSkin(acc.skins, blockedChampions);
       if (skin) {
         onSelect({ rankedId: acc.rankedId, skinName: skin.name });
         return;
       }
     }
+    // No unblocked option — leave empty (do NOT fall back to blocked skins)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [column.role, column.accounts, selection?.rankedId, selection?.skinName]);
+  }, [column.role, column.accounts, selection?.rankedId, selection?.skinName, blockedKey]);
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -190,8 +199,7 @@ const RoleSlot: React.FC<{
                       : ''
                   }`}
                   onClick={() => {
-                    const skin =
-                      firstAvailableSkin(acc.skins, blockedChampions) || acc.skins[0];
+                    const skin = firstAvailableSkin(acc.skins, blockedChampions);
                     if (!skin) return;
                     onSelect({ rankedId: acc.rankedId, skinName: skin.name });
                     setAccountOpen(false);
@@ -479,7 +487,7 @@ const Skins: React.FC = () => {
         skinLine: 'legacy',
       });
       setAccountSkins(next);
-      setAddSkinStatus('Skin added. (Saved locally; Vite also writes account-skins.json in dev.)');
+      setAddSkinStatus('Skin saved to Google Sheets — everyone will see it after refresh.');
       setAddSkinName('');
       setAddSkinChamp('');
     } catch (err) {

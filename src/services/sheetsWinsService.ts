@@ -37,11 +37,22 @@ interface SheetAccountsResponse {
     data?: SheetAccountRow[];
     essencers?: SheetEssencerRow[];
     masteries?: SheetMasteryRow[];
+    skins?: SheetManualSkinRow[];
     error?: string | null;
     account?: string;
     updated?: number;
     inserted?: number;
     skipped?: number;
+}
+
+export interface SheetManualSkinRow {
+    ranked_id: number;
+    username: string;
+    skin_name: string;
+    champ_name: string;
+    rarity: string;
+    image_url: string;
+    skin_lines: string[];
 }
 
 /** Map pet species name → image id (1-4) */

@@ -203,8 +203,20 @@ export const abilityPower = (ability: PetAbility, stats: Pet['stats']): number =
     return Math.max(6, Math.round(base + mult * 1.8 + Math.random() * 8));
 };
 
-export const sanctuaryAsset = (name: 'ground' | 'eat-spot' | 'sleep-spot'): string =>
-    assetUrl(`images/sanctuary/${name}.svg`);
+export const sanctuaryAsset = (
+    name: 'bg' | 'floor' | 'food' | 'sleep' | 'ground' | 'eat-spot' | 'sleep-spot'
+): string => {
+    const map: Record<string, string> = {
+        bg: 'sanctuary-bg.png',
+        floor: 'floor.png',
+        food: 'food.png',
+        sleep: 'sleep.png',
+        ground: 'sanctuary-bg.png',
+        'eat-spot': 'food.png',
+        'sleep-spot': 'sleep.png',
+    };
+    return assetUrl(`images/sanctuary/${map[name] || name}`);
+};
 
 export const trophyAsset = (rankIndex: number): string => {
     // rankIndex 0 = 1st place
