@@ -72,8 +72,8 @@ export const splashUrlFor = (champId: string, num: number): string =>
 export const loadingUrlFor = (champId: string, num: number): string =>
   `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champId}_${num}.jpg`;
 
-/** Prefer loading (portrait) for team slots; splash as alternate. */
-export const artUrlFor = (champId: string, num: number): string => loadingUrlFor(champId, num);
+/** Prefer splash (wide, always available on DDragon) for team cards. */
+export const artUrlFor = (champId: string, num: number): string => splashUrlFor(champId, num);
 
 /**
  * Skins that LoLDB / account APIs usually miss — Victorious (+ chromas),

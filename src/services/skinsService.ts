@@ -116,7 +116,7 @@ export type SkinLine = SkinFamily;
 export const fetchSkinLines = fetchSkinFamilies;
 
 export const fetchAccountSkins = async (): Promise<AccountSkins[]> => {
-  if (ownershipCache) return ownershipCache;
+  // Always re-merge Sheet + local so newly added skins show up after invalidate
   try {
     const res = await fetch(assetUrl(`data/account-skins.json?t=${Date.now()}`), { cache: 'no-store' });
     let base: AccountSkins[] = [];
@@ -152,50 +152,97 @@ const saveManualSkinsLocal = (entries: ManualSkinEntry[]) => {
   localStorage.setItem(MANUAL_SKINS_KEY, JSON.stringify(entries));
 };
 
+const upsertLocalManualSkin = (entry: ManualSkinEntry) => {
+  const manual = loadManualSkins();
+  const idx = manual.findIndex(
+    (m) =>
+      m.username.toLowerCase() === entry.username.toLowerCase() &&
+      m.skin.name.toLowerCase() === entry.skin.name.toLowerCase()
+  );
+  if (idx >= 0) manual[idx] = entry;
+  else manual.push(entry);
+  saveManualSkinsLocal(manual);
+};
+
+const normalizeSkinLines = (raw: unknown): string[] => {
+  if (Array.isArray(raw)) return raw.map(String);
+  if (typeof raw === 'string') {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed.map(String);
+    } catch {
+      /* ignore */
+    }
+    return raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+  return ['legacy'];
+};
+
+const mapSheetSkinRow = async (row: {
+  ranked_id?: number;
+  username?: string;
+  skin_name?: string;
+  champ_name?: string;
+  rarity?: string;
+  image_url?: string;
+  skin_lines?: unknown;
+}): Promise<ManualSkinEntry | null> => {
+  const name = String(row.skin_name || '').trim();
+  const username = String(row.username || '').trim();
+  if (!name || !username) return null;
+  const champName = String(row.champ_name || '').trim() || name.split(/\s+/).slice(-1)[0] || 'Unknown';
+  let imageUrl = String(row.image_url || '').trim();
+  // Always try to fill missing art (old Sheet rows / failed writes)
+  if (!imageUrl) {
+    const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
+    imageUrl =
+      (await resolveSkinImageUrl(name, champName)) ||
+      (await resolveChampionPortraitUrl(champName)) ||
+      '';
+  }
+  return {
+    ranked_id: Number(row.ranked_id) || 0,
+    username,
+    skin: {
+      name,
+      champName,
+      rarity: String(row.rarity || 'kLegacy'),
+      imageUrl,
+      skinLines: normalizeSkinLines(row.skin_lines ?? ['victorious']),
+    },
+  };
+};
+
 const fetchManualSkinsFromSheet = async (): Promise<ManualSkinEntry[]> => {
   try {
     const { SHEETS_WINS_URL } = await import('./sheetsWinsService');
-    const response = await fetch(`${SHEETS_WINS_URL}?resource=skins&t=${Date.now()}`, {
-      cache: 'no-store',
-    });
-    if (!response.ok) return [];
-    const payload = await response.json();
-    if (!payload.ok || !Array.isArray(payload.skins)) return [];
-
-    const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
-    const entries: ManualSkinEntry[] = [];
-    for (const row of payload.skins as Array<{
-      ranked_id?: number;
-      username?: string;
-      skin_name?: string;
-      champ_name?: string;
-      rarity?: string;
-      image_url?: string;
-      skin_lines?: string[];
-    }>) {
-      const name = String(row.skin_name || '');
-      const champName = String(row.champ_name || 'Unknown');
-      let imageUrl = String(row.image_url || '');
-      if (!imageUrl && name) {
-        imageUrl =
-          (await resolveSkinImageUrl(name, champName)) ||
-          (await resolveChampionPortraitUrl(champName)) ||
-          '';
+    // Prefer dedicated resource; fall back to main payload.skins (after redeploy)
+    const urls = [
+      `${SHEETS_WINS_URL}?resource=skins&t=${Date.now()}`,
+      `${SHEETS_WINS_URL}?t=${Date.now()}`,
+    ];
+    let rows: unknown[] = [];
+    for (const url of urls) {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) continue;
+      const payload = await response.json();
+      if (payload?.ok && Array.isArray(payload.skins)) {
+        rows = payload.skins;
+        break;
       }
-      entries.push({
-        ranked_id: Number(row.ranked_id) || 0,
-        username: String(row.username || ''),
-        skin: {
-          name,
-          champName,
-          rarity: String(row.rarity || 'kLegacy'),
-          imageUrl,
-          skinLines: Array.isArray(row.skin_lines) ? row.skin_lines : ['legacy'],
-        },
-      });
+    }
+
+    const entries: ManualSkinEntry[] = [];
+    for (const row of rows as Array<Record<string, unknown>>) {
+      const mapped = await mapSheetSkinRow(row as Parameters<typeof mapSheetSkinRow>[0]);
+      if (mapped) entries.push(mapped);
     }
     return entries;
-  } catch {
+  } catch (err) {
+    console.warn('fetchManualSkinsFromSheet failed:', err);
     return [];
   }
 };
@@ -206,25 +253,45 @@ const mergeEntriesIntoAccounts = (
 ): AccountSkins[] => {
   if (!entries.length) return accounts;
   const byId = new Map(accounts.map((a) => [a.ranked_id, { ...a, skins: [...a.skins] }]));
+  const byUser = new Map(
+    [...byId.values()].map((a) => [a.username.trim().toLowerCase(), a] as const)
+  );
+
   entries.forEach((entry) => {
     if (!entry.skin?.name || !entry.username) return;
-    let acc = byId.get(entry.ranked_id);
+    let acc =
+      (entry.ranked_id ? byId.get(entry.ranked_id) : undefined) ||
+      byUser.get(entry.username.trim().toLowerCase());
+
     if (!acc) {
-      // Match by username if id missing
-      const found = [...byId.values()].find(
-        (a) => a.username.toLowerCase() === entry.username.toLowerCase()
-      );
-      if (found) {
-        acc = found;
-      } else {
-        acc = { ranked_id: entry.ranked_id, username: entry.username, skins: [] };
-        byId.set(entry.ranked_id || Date.now(), acc);
-      }
+      acc = {
+        ranked_id: entry.ranked_id || Date.now(),
+        username: entry.username,
+        skins: [],
+      };
+      byId.set(acc.ranked_id, acc);
+      byUser.set(acc.username.trim().toLowerCase(), acc);
     }
-    const exists = acc.skins.some(
+
+    const existingIdx = acc.skins.findIndex(
       (s) => s.name.toLowerCase() === entry.skin.name.toLowerCase()
     );
-    if (!exists) acc.skins.push(entry.skin);
+    if (existingIdx >= 0) {
+      // Prefer entry with an image
+      if (entry.skin.imageUrl && !acc.skins[existingIdx].imageUrl) {
+        acc.skins[existingIdx] = { ...acc.skins[existingIdx], ...entry.skin };
+      } else if (entry.skin.imageUrl) {
+        acc.skins[existingIdx] = {
+          ...acc.skins[existingIdx],
+          imageUrl: entry.skin.imageUrl,
+          skinLines: entry.skin.skinLines?.length
+            ? entry.skin.skinLines
+            : acc.skins[existingIdx].skinLines,
+        };
+      }
+    } else {
+      acc.skins.push(entry.skin);
+    }
   });
   return [...byId.values()];
 };
@@ -232,6 +299,7 @@ const mergeEntriesIntoAccounts = (
 const mergeSheetAndManualSkins = async (accounts: AccountSkins[]): Promise<AccountSkins[]> => {
   const fromSheet = await fetchManualSkinsFromSheet();
   const fromLocal = loadManualSkins();
+  // Local last so just-added skins (with art) win over empty Sheet rows
   return mergeEntriesIntoAccounts(accounts, [...fromSheet, ...fromLocal]);
 };
 
@@ -275,7 +343,10 @@ export const addManualAccountSkin = async (input: {
     skinLines: [line],
   };
 
-  // Shared source of truth: Google Sheets
+  // Always keep a local copy so the UI updates even if Apps Script is not redeployed yet
+  upsertLocalManualSkin({ ranked_id: input.rankedId, username, skin });
+
+  // Shared source of truth: Google Sheets (requires latest sheets-wins-api.gs deploy)
   const { postToSheet } = await import('./sheetsWinsService');
   const ok = await postToSheet({
     action: 'appendSkin',
@@ -290,10 +361,7 @@ export const addManualAccountSkin = async (input: {
     },
   });
   if (!ok) {
-    // Offline fallback so the adder still sees it locally
-    const manual = loadManualSkins();
-    manual.push({ ranked_id: input.rankedId, username, skin });
-    saveManualSkinsLocal(manual);
+    console.warn('Sheets appendSkin may have failed — skin kept in localStorage.');
   }
 
   invalidateAccountSkinsCache();

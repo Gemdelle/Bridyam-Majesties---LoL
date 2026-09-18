@@ -222,6 +222,15 @@ const RoleSlot: React.FC<{
               src={selectedSkin.imageUrl}
               alt={selectedSkin.name}
               className={styles.role__skin__img}
+              onError={(e) => {
+                const img = e.currentTarget;
+                // loading ↔ splash fallback for DDragon art
+                if (img.src.includes('/loading/')) {
+                  img.src = img.src.replace('/loading/', '/splash/').replace('.png', '.jpg');
+                } else if (img.src.includes('/splash/')) {
+                  img.src = img.src.replace('/splash/', '/loading/');
+                }
+              }}
             />
           ) : (
             <div className={styles.role__empty__box}>—</div>
@@ -550,7 +559,9 @@ const Skins: React.FC = () => {
         imageUrl: selectedManualSkin.imageUrl,
       });
       setAccountSkins(next);
-      setAddSkinStatus('Skin saved to Google Sheets — everyone will see it after refresh.');
+      setAddSkinStatus(
+        'Skin saved. If others still don’t see it, redeploy sheets-wins-api.gs (SKINS tab).'
+      );
       setAddSkinKey('');
     } catch (err) {
       console.error(err);

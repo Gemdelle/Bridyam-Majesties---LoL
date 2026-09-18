@@ -463,14 +463,29 @@ function appendManualSkin_(item) {
     return { ok: false, error: 'username and skin_name required' };
   }
   var values = sheet.getDataRange().getValues();
+  var headers = (values[0] || []).map(function (h) { return String(h || '').trim().toLowerCase(); });
+  var userIdx = headers.indexOf('username');
+  var nameIdx = headers.indexOf('skin_name');
+  if (userIdx < 0) userIdx = 1;
+  if (nameIdx < 0) nameIdx = 2;
+
   for (var i = 1; i < values.length; i++) {
-    var existingUser = String(values[i][1] || '').trim().toLowerCase();
-    var existingName = String(values[i][2] || '').trim().toLowerCase();
+    var existingUser = String(values[i][userIdx] || '').trim().toLowerCase();
+    var existingName = String(values[i][nameIdx] || '').trim().toLowerCase();
     if (existingUser === username.toLowerCase() && existingName === skinName.toLowerCase()) {
+      // Refresh image_url if a better one is provided
+      var imgIdx = headers.indexOf('image_url');
+      var newImg = String(item.image_url || item.imageUrl || '').trim();
+      if (imgIdx >= 0 && newImg) {
+        sheet.getRange(i + 1, imgIdx + 1).setValue(newImg);
+      }
       return { ok: true, duplicate: true };
     }
   }
   var lines = item.skin_lines || item.skinLines || ['legacy'];
+  if (Object.prototype.toString.call(lines) !== '[object Array]') {
+    lines = [String(lines)];
+  }
   sheet.appendRow([
     Number(item.ranked_id || item.rankedId) || 0,
     username,
