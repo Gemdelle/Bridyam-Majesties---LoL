@@ -621,7 +621,6 @@
 .account__skin__stage {
   position: relative;
   width: 100%;
-  /* Match skin-frame-thin.png native ratio (1323×760) — never stretch height */
   aspect-ratio: 1323 / 760;
   flex: none;
   height: auto;
@@ -629,10 +628,10 @@
 
 .account__skin__art {
   position: absolute;
-  left: 6.5%;
-  right: 6.5%;
-  top: 8%;
-  bottom: 12%;
+  left: 3%;
+  right: 3%;
+  top: 5%;
+  bottom: 5%;
   z-index: 1;
   overflow: hidden;
   background: #0a0c10;
