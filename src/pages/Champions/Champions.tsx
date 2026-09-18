@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Champions.module.scss';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { type MasteryData } from '../../services/apiMasteriesService';
+import { type MasteryData, updateMasteries } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
 import { getEssencerList, getEssencerFavorites, saveEssencerFavorites, loadFavoritesFromFile } from '../../services/favoritesService';
 import ChampionProgress from '../../components/ChampionProgress/ChampionProgress';
@@ -447,42 +447,16 @@ const updateMasteryLevel = (rankedId: number, championId: number, delta: number)
                 return { ...e, totalMastery };
             }));
             
-// Build masteries in the correct format for the JSON file
-            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number; champion_points: number }[]> = {};
-            masteryData.forEach(m => {
-                if (!masteriesByAccount[m.ranked_id]) {
-                    masteriesByAccount[m.ranked_id] = [];
-                }
-                masteriesByAccount[m.ranked_id].push({
-                    champion_id: m.champion_id,
-                    champion_level: m.champion_level ?? 0,
-                    champion_points: m.champion_points ?? 0
+            // Persist only the changed row to Sheet (and JSON in dev)
+            const changed =
+                masteryData.find((m) => m.ranked_id === rankedId && m.champion_id === riotId) ||
+                null;
+            if (changed) {
+                void updateMasteries([changed], 'set').then(() => {
+                    masteryCacheService.invalidateCache();
+                    console.log('%c✅ Mastery saved to Sheet!', 'color: #90EE90; font-weight: bold;');
                 });
-            });
-
-            // Convert to array format matching masteries.json structure
-            const masteriesArray = rankedAccounts.map(account => ({
-                ranked_id: account.id,
-                username: account.username || account.name,
-                masteries: masteriesByAccount[account.id] || []
-            })).filter(acc => acc.masteries.length > 0);
-
-            // Save to JSON file via Vite dev server
-            fetch('/api/save-masteries', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(masteriesArray)
-            })
-                .then(res => {
-                    if (res.ok) {
-                        console.log('%c✅ Masteries saved to JSON file!', 'color: #90EE90; font-weight: bold;');
-                    } else {
-                        console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
-                    }
-                })
-                .catch(() => {
-                    console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
-                });
+            }
     };
 
     if (loading) {

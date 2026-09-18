@@ -23,12 +23,25 @@ export interface SheetEssencerRow {
     level: number;
 }
 
+export interface SheetMasteryRow {
+    row?: number;
+    ranked_id: number;
+    username: string;
+    champion_id: number;
+    champion_level: number;
+    champion_points: number;
+}
+
 interface SheetAccountsResponse {
     ok: boolean;
     data?: SheetAccountRow[];
     essencers?: SheetEssencerRow[];
+    masteries?: SheetMasteryRow[];
     error?: string | null;
     account?: string;
+    updated?: number;
+    inserted?: number;
+    skipped?: number;
 }
 
 /** Map pet species name → image id (1-4) */
@@ -167,4 +180,54 @@ export const updateAccountInSheet = async (
 /** Update wins for one account in Google Sheets. */
 export const updateWinsInSheet = async (account: string, wins: number): Promise<boolean> => {
     return updateAccountInSheet(account, { wins });
+};
+
+/** Fetch mastery rows from Google Sheets MASTERY tab */
+export const fetchMasteriesFromSheet = async (): Promise<SheetMasteryRow[]> => {
+    const payload = await fetchSheetPayload();
+    return (payload.masteries || []).filter(
+        (row) => Number(row.ranked_id) > 0 && Number(row.champion_id) > 0
+    );
+};
+
+/**
+ * Upsert masteries into MASTERY tab.
+ * mode 'max' = never lower values (API sync)
+ * mode 'set' = overwrite (manual UI edit)
+ */
+export const upsertMasteriesToSheet = async (
+    masteries: SheetMasteryRow[],
+    mode: 'max' | 'set' = 'max'
+): Promise<{ updated: number; inserted: number; skipped: number }> => {
+    const response = await fetch(SHEETS_WINS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+            action: 'upsertMasteries',
+            mode,
+            masteries: masteries.map((m) => ({
+                ranked_id: Number(m.ranked_id) || 0,
+                username: String(m.username || ''),
+                champion_id: Number(m.champion_id) || 0,
+                champion_level: Number(m.champion_level) || 0,
+                champion_points: Number(m.champion_points) || 0,
+            })),
+        }),
+        redirect: 'follow',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Sheets mastery POST failed: ${response.status}`);
+    }
+
+    const payload: SheetAccountsResponse = await response.json();
+    if (!payload.ok) {
+        throw new Error(payload.error || 'Sheets mastery POST failed');
+    }
+
+    return {
+        updated: Number(payload.updated) || 0,
+        inserted: Number(payload.inserted) || 0,
+        skipped: Number(payload.skipped) || 0,
+    };
 };

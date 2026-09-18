@@ -28,6 +28,9 @@ const MASTERIES_PATH = path.join(ROOT, 'public', 'data', 'masteries.json');
 const RANKEDS_PATH = path.join(ROOT, 'public', 'data', 'rankeds.json');
 const BACKUP_DIR = path.join(ROOT, 'public', 'data', 'backups');
 const ENV_PATH = path.join(ROOT, '.env');
+const SHEETS_URL =
+  process.env.SHEETS_WINS_URL ||
+  'https://script.google.com/macros/s/AKfycby9hlSpsWIa7X_IJbt9-UxoZFdrJBDrZEjkcUk1cuFm5f9UM6zVl_wRbOVF54vZgMpo/exec';
 
 function loadDotEnv() {
   if (!fs.existsSync(ENV_PATH)) return;
@@ -174,6 +177,55 @@ function summarize(masteries, n = 8) {
     .join('\n');
 }
 
+/** Keep the higher of previous vs live per champion (never lower). */
+function mergeMaxMasteries(previous, live) {
+  const map = new Map();
+  for (const m of previous || []) {
+    map.set(m.champion_id, { ...m });
+  }
+  for (const m of live || []) {
+    const old = map.get(m.champion_id);
+    if (
+      !old ||
+      m.champion_level > old.champion_level ||
+      (m.champion_level === old.champion_level && m.champion_points > old.champion_points)
+    ) {
+      map.set(m.champion_id, { ...m });
+    }
+  }
+  return [...map.values()].sort(
+    (a, b) => b.champion_level - a.champion_level || b.champion_points - a.champion_points
+  );
+}
+
+async function pushMasteriesToSheet(rankedId, username, masteries) {
+  const payload = {
+    action: 'upsertMasteries',
+    mode: 'max',
+    masteries: masteries.map((m) => ({
+      ranked_id: rankedId,
+      username,
+      champion_id: m.champion_id,
+      champion_level: m.champion_level,
+      champion_points: m.champion_points,
+    })),
+  };
+  const res = await fetch(SHEETS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+    redirect: 'follow',
+  });
+  if (!res.ok) {
+    throw new Error(`Sheets POST ${res.status}`);
+  }
+  const json = await res.json();
+  if (!json.ok) {
+    throw new Error(json.error || 'Sheets mastery upsert failed');
+  }
+  return json;
+}
+
 function backupMasteries() {
   fs.mkdirSync(BACKUP_DIR, { recursive: true });
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -241,21 +293,33 @@ async function main() {
 
     console.log(`→ Fetching ${username} (ranked_id=${ranked.id})...`);
     const live = await fetchMasteriesForAccount(username);
+    const merged = mergeMaxMasteries(previous, live.masteries);
 
     console.log(`  Riot: ${live.gameName}#${live.tagLine} @ ${live.platform}`);
     console.log(`  Before: ${previous.length} champ masteries`);
     console.log(summarize(previous) || '  (empty)');
-    console.log(`  After:  ${live.masteries.length} champ masteries`);
-    console.log(summarize(live.masteries) || '  (empty)');
+    console.log(`  After (max merge):  ${merged.length} champ masteries`);
+    console.log(summarize(merged) || '  (empty)');
 
     const entry = {
       ranked_id: ranked.id,
       username,
-      masteries: live.masteries
+      masteries: merged
     };
 
     if (idx >= 0) masteriesFile[idx] = entry;
     else masteriesFile.push(entry);
+
+    if (APPLY) {
+      try {
+        const sheetResult = await pushMasteriesToSheet(ranked.id, username, merged);
+        console.log(
+          `  Sheet upsert: +${sheetResult.inserted || 0} / ~${sheetResult.updated || 0} / skip ${sheetResult.skipped || 0}`
+        );
+      } catch (err) {
+        console.warn(`  Sheet upsert failed: ${err.message || err}`);
+      }
+    }
 
     changed += 1;
     await sleep(120);

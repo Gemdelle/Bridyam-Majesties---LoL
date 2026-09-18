@@ -4,18 +4,14 @@
  * Tabs:
  *   ACCOUNTS  → ACCOUNT | LV | ESSENCER | WINS | HONOR | SOLO | FLEX
  *   ESSENCERS → ESSENCER | PET | LEVEL
+ *   MASTERY   → ranked_id | username | champion_id | champion_level | champion_points
  *
- * PET species (exact names):
- *   Flarnit    (pet 1, fighter)
- *   Pettlewyn  (pet 2, venom)
- *   Peewee     (pet 3, water)
- *   Vindeloon  (pet 4, psychic)
- *
- * Paste → Save → Deploy → Manage → New version → Deploy
+ * Paste → Save → Deploy → Manage deployments → Edit → New version → Deploy
  */
 
 const ACCOUNTS_SHEET = 'ACCOUNTS';
 const ESSENCERS_SHEET = 'ESSENCERS';
+const MASTERY_SHEET = 'MASTERY';
 
 function getSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -137,12 +133,166 @@ function readEssencerRows_() {
   return rows;
 }
 
+function masteryKey_(rankedId, championId) {
+  return String(Number(rankedId) || 0) + '|' + String(Number(championId) || 0);
+}
+
+function readMasteryRows_() {
+  const sheet = getSheet_(MASTERY_SHEET);
+  if (!sheet) return [];
+
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+
+  const headers = (values[0] || []).map(norm_);
+  const rankedIdx = findCol_(headers, ['RANKED_ID', 'RANKEDID'], ['RANKED']);
+  const userIdx = findCol_(headers, ['USERNAME', 'ACCOUNT'], ['USER', 'ACCOUNT']);
+  const champIdx = findCol_(headers, ['CHAMPION_ID', 'CHAMPIONID', 'CHAMP_ID'], ['CHAMPION', 'CHAMP']);
+  const levelIdx = findCol_(headers, ['CHAMPION_LEVEL', 'CHAMPIONLEVEL', 'LEVEL', 'MASTERY'], ['LEVEL', 'MASTERY']);
+  const pointsIdx = findCol_(headers, ['CHAMPION_POINTS', 'CHAMPIONPOINTS', 'POINTS'], ['POINTS']);
+
+  if (rankedIdx === -1 || champIdx === -1) {
+    throw new Error('MASTERY needs ranked_id + champion_id. Headers: ' + headers.join(' | '));
+  }
+
+  const rows = [];
+  for (let i = 1; i < values.length; i++) {
+    const ranked_id = Number(values[i][rankedIdx]) || 0;
+    const champion_id = Number(values[i][champIdx]) || 0;
+    if (!ranked_id || !champion_id) continue;
+
+    rows.push({
+      row: i + 1,
+      ranked_id,
+      username: userIdx >= 0 ? String(values[i][userIdx] || '').trim() : '',
+      champion_id,
+      champion_level: levelIdx >= 0 ? Number(values[i][levelIdx]) || 0 : 0,
+      champion_points: pointsIdx >= 0 ? Number(values[i][pointsIdx]) || 0 : 0
+    });
+  }
+  return rows;
+}
+
+/**
+ * Upsert masteries.
+ * mode:
+ *   'max' → keep highest level (then highest points)  [API sync]
+ *   'set' → overwrite with provided values            [manual UI edit]
+ */
+function upsertMasteries_(incoming, mode) {
+  const sheet = getSheet_(MASTERY_SHEET);
+  if (!sheet) {
+    return { ok: false, error: 'tab MASTERY no encontrada', updated: 0, inserted: 0 };
+  }
+
+  const list = Array.isArray(incoming) ? incoming : [];
+  if (!list.length) {
+    return { ok: true, updated: 0, inserted: 0, skipped: 0 };
+  }
+
+  const values = sheet.getDataRange().getValues();
+  if (!values.length) {
+    sheet.appendRow(['ranked_id', 'username', 'champion_id', 'champion_level', 'champion_points']);
+    values.push(['ranked_id', 'username', 'champion_id', 'champion_level', 'champion_points']);
+  }
+
+  const headers = (values[0] || []).map(norm_);
+  let rankedIdx = findCol_(headers, ['RANKED_ID', 'RANKEDID'], ['RANKED']);
+  let userIdx = findCol_(headers, ['USERNAME', 'ACCOUNT'], ['USER', 'ACCOUNT']);
+  let champIdx = findCol_(headers, ['CHAMPION_ID', 'CHAMPIONID', 'CHAMP_ID'], ['CHAMPION', 'CHAMP']);
+  let levelIdx = findCol_(headers, ['CHAMPION_LEVEL', 'CHAMPIONLEVEL', 'LEVEL', 'MASTERY'], ['LEVEL', 'MASTERY']);
+  let pointsIdx = findCol_(headers, ['CHAMPION_POINTS', 'CHAMPIONPOINTS', 'POINTS'], ['POINTS']);
+
+  // Ensure required columns exist
+  if (rankedIdx === -1 || champIdx === -1 || levelIdx === -1) {
+    return { ok: false, error: 'MASTERY headers incompletos', updated: 0, inserted: 0 };
+  }
+  if (userIdx === -1) userIdx = -1;
+  if (pointsIdx === -1) pointsIdx = -1;
+
+  const indexByKey = {};
+  for (let i = 1; i < values.length; i++) {
+    const rid = Number(values[i][rankedIdx]) || 0;
+    const cid = Number(values[i][champIdx]) || 0;
+    if (!rid || !cid) continue;
+    indexByKey[masteryKey_(rid, cid)] = i;
+  }
+
+  let updated = 0;
+  let inserted = 0;
+  let skipped = 0;
+  const toAppend = [];
+
+  const useMax = String(mode || 'max').toLowerCase() !== 'set';
+
+  for (let n = 0; n < list.length; n++) {
+    const item = list[n] || {};
+    const ranked_id = Number(item.ranked_id) || 0;
+    const champion_id = Number(item.champion_id) || 0;
+    if (!ranked_id || !champion_id) {
+      skipped += 1;
+      continue;
+    }
+
+    const username = String(item.username || '').trim();
+    const newLevel = Number(item.champion_level) || 0;
+    const newPoints = Number(item.champion_points) || 0;
+    const key = masteryKey_(ranked_id, champion_id);
+    const rowIdx = indexByKey[key];
+
+    if (rowIdx === undefined) {
+      const row = [];
+      const width = Math.max(headers.length, 5);
+      for (let c = 0; c < width; c++) row[c] = '';
+      row[rankedIdx] = ranked_id;
+      if (userIdx >= 0) row[userIdx] = username;
+      row[champIdx] = champion_id;
+      row[levelIdx] = newLevel;
+      if (pointsIdx >= 0) row[pointsIdx] = newPoints;
+      toAppend.push(row);
+      indexByKey[key] = values.length + toAppend.length - 1;
+      inserted += 1;
+      continue;
+    }
+
+    const oldLevel = Number(values[rowIdx][levelIdx]) || 0;
+    const oldPoints = pointsIdx >= 0 ? Number(values[rowIdx][pointsIdx]) || 0 : 0;
+
+    let nextLevel = newLevel;
+    let nextPoints = newPoints;
+
+    if (useMax) {
+      if (newLevel < oldLevel || (newLevel === oldLevel && newPoints <= oldPoints)) {
+        skipped += 1;
+        continue;
+      }
+      nextLevel = Math.max(oldLevel, newLevel);
+      nextPoints = nextLevel > oldLevel ? newPoints : Math.max(oldPoints, newPoints);
+    }
+
+    const sheetRow = rowIdx + 1;
+    sheet.getRange(sheetRow, levelIdx + 1).setValue(nextLevel);
+    if (pointsIdx >= 0) sheet.getRange(sheetRow, pointsIdx + 1).setValue(nextPoints);
+    if (userIdx >= 0 && username) sheet.getRange(sheetRow, userIdx + 1).setValue(username);
+    values[rowIdx][levelIdx] = nextLevel;
+    if (pointsIdx >= 0) values[rowIdx][pointsIdx] = nextPoints;
+    updated += 1;
+  }
+
+  if (toAppend.length) {
+    sheet.getRange(sheet.getLastRow() + 1, 1, toAppend.length, toAppend[0].length).setValues(toAppend);
+  }
+
+  return { ok: true, updated, inserted, skipped, mode: useMax ? 'max' : 'set' };
+}
+
 function doGet() {
   try {
     const data = readAccountRows_();
     const essencers = readEssencerRows_();
+    const masteries = readMasteryRows_();
     return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, data, essencers }))
+      .createTextOutput(JSON.stringify({ ok: true, data, essencers, masteries }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService
@@ -154,6 +304,14 @@ function doGet() {
 function doPost(e) {
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
+
+    // Upsert masteries (from API sync or UI)
+    if (body.action === 'upsertMasteries' || Array.isArray(body.masteries)) {
+      const result = upsertMasteries_(body.masteries || [], body.mode || 'max');
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     // Update essencer pet/level
     if (body.essencer && (body.pet !== undefined || body.level !== undefined)) {
@@ -193,7 +351,7 @@ function doPost(e) {
     const account = String(body.account || '').trim();
     if (!account) {
       return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: 'account o essencer requerido' }))
+        .createTextOutput(JSON.stringify({ ok: false, error: 'account, essencer o masteries requerido' }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 

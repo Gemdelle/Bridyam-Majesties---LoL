@@ -3,7 +3,7 @@ import styles from './Mastery.module.scss';
 import Filter, { type FilterOption } from '../../components/Filter';
 import { fetchRankedData, type RankedData } from '../../services/apiRankedsService';
 import { fetchChampions, type Champion, getRiotIdForChampion } from '../../services/championsService';
-import { type MasteryData, updateMasteriesByRankedId } from '../../services/apiMasteriesService';
+import { type MasteryData, updateMasteries } from '../../services/apiMasteriesService';
 import { masteryCacheService } from '../../services/masteryCacheService';
 import { usePermissions } from '../../hooks/usePermissions';
 import CacheStatus from '../../components/CacheStatus/CacheStatus';
@@ -354,49 +354,13 @@ const Mastery: React.FC = () => {
             }
             setMasteryData(updatedMasteryData);
 
-            // Build masteries in the correct format for the JSON file
-            const masteriesByAccount: Record<number, { champion_id: number; champion_level: number | null; champion_points: number }[]> = {};
-            updatedMasteryData.forEach(m => {
-                if (!masteriesByAccount[m.ranked_id]) {
-                    masteriesByAccount[m.ranked_id] = [];
-                }
-                masteriesByAccount[m.ranked_id].push({
-                    champion_id: m.champion_id,
-                    champion_level: m.champion_level ?? 0,
-                    champion_points: m.champion_points ?? 0
-                });
-            });
-
-            // Convert to array format matching masteries.json structure
-            const masteriesArray = rankedData.map(account => ({
-                ranked_id: account.id,
-                username: account.username || account.name,
-                masteries: masteriesByAccount[account.id] || []
-            })).filter(acc => acc.masteries.length > 0);
-
-            // Save to JSON file via Vite dev server
-            const saveResponse = await fetch('/api/save-masteries', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(masteriesArray)
-            });
-
-            if (saveResponse.ok) {
-                console.log('%c✅ Masteries saved to JSON file!', 'color: #90EE90; font-weight: bold;');
-            } else {
-                console.log('%c⚠️ Could not save to file (dev server only)', 'color: #FFA500;');
-            }
-
-            // Invalidate cache to force fresh data on next request
+            // Save changed row to Sheet (mode set = respect manual edit)
+            await updateMasteries([masteryToUpdate], 'set');
             masteryCacheService.invalidateCache();
-
-            // Close dropdown
             setActiveMasteryDropdown(null);
-
             console.log('Data updated successfully');
         } catch (error) {
             console.error('Error updating masteries in backend:', error);
-            // Optionally, you could show an error message to the user here
         }
     };
 
