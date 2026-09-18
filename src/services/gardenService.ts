@@ -221,7 +221,7 @@ export const sanctuaryAsset = (
 export const trophyAsset = (rankIndex: number): string => {
     // rankIndex 0 = 1st place
     if (rankIndex >= 0 && rankIndex < 5) {
-        return assetUrl(`images/trophies/trophy-${rankIndex + 1}.svg`);
+        return assetUrl(`images/trophies/trophy-${rankIndex + 1}.png`);
     }
-    return assetUrl('images/trophies/trophy-default.svg');
+    return assetUrl('images/trophies/trophy-default.png');
 };

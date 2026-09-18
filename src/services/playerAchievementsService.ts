@@ -38,14 +38,6 @@ export const ACHIEVEMENT_DEFS: AchievementDef[] = [
         thresholds: [1, 3, 5, 10, 15, 25, 50, 100, 200, 500],
     },
     {
-        name: 'Battlelord',
-        description: 'Play matches',
-        iconSrc: '/images/ranked-btn/mission.png',
-        type: 'lol',
-        achievementNumber: 3,
-        thresholds: [5, 15, 30, 75, 150, 300, 750, 1500, 3000, 7500],
-    },
-    {
         name: 'Victorious',
         description: 'Win matches',
         iconSrc: '/images/ranked-btn/wins.png',
@@ -206,8 +198,6 @@ export const fetchPlayerAchievementLeaderboard = async (
                     return agg.mastery10;
                 case 'Artisan':
                     return agg.masterySum;
-                case 'Battlelord':
-                    return agg.wins * 2; // approx games
                 case 'Victorious':
                     return agg.wins;
                 case 'Majesty':

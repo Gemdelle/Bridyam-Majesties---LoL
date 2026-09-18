@@ -46,7 +46,7 @@ const Ranked: React.FC = () => {
 
     // --- Estado para la paginación ---
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 16;
+    const itemsPerPage = 15;
 
     // --- Estado para la búsqueda ---
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -523,17 +523,14 @@ const Ranked: React.FC = () => {
                         </div>
                         <div className={styles.ranking__header}
                         >
-                            <span className={styles.rank}>RANK</span>
+                            <span className={styles.rank}>ESSENCER</span>
                             <div className={styles.achievements__header}>
                                 <span className={styles.redeem}>REDEEM</span>
                                 <span className={styles.win}>WIN</span>
                                 <span className={styles.mastery}>MASTERY</span>
-                                <span className={styles.honor}>HONOR</span>
                                 <span className={styles.level}>LEVEL</span>
-                                <span className={styles.member}>MEMBER</span>
                                 <span className={styles.elo}>ELO</span>
                             </div>
-                            <span className={styles.score}>SCORE</span>
                         </div>
                     </div>
                     <div className={styles.accounts__container}>

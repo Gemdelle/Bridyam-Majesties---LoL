@@ -9,8 +9,8 @@ import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 import { assetUrl } from '../../utils/assetUrl'
 
 const FEED_SEEN_KEY = 'bridyam_feed_seen_count'
-/** Garden is local-dev only until ready for production. */
-const GARDEN_ENABLED = import.meta.env.DEV
+/** Garden + Leaderboard are local-dev only until ready for production. */
+const LOCAL_ONLY = import.meta.env.DEV
 
 export const Nav = () => {
     const location = useLocation()
@@ -66,20 +66,9 @@ export const Nav = () => {
                 }
                 prevCountRef.current = currentCount
 
-                if (unread > 0 && notifications[0]) {
-                    const petType = notifications[0].petType
-                    const petStage = notifications[0].petStage
-                    if (
-                        petType &&
-                        ['1', '2', '3', '4'].includes(petType) &&
-                        petStage &&
-                        petStage >= 1 &&
-                        petStage <= 3
-                    ) {
-                        setAlertPetSrc(assetUrl(`images/pets/pet-${petType}-${petStage}.png`))
-                    } else {
-                        setAlertPetSrc(assetUrl('images/pets/pet-1-1.png'))
-                    }
+                if (unread > 0) {
+                    // Default crystal pet until login can resolve the player's pet
+                    setAlertPetSrc(assetUrl('images/pets/crystal-pet-3.png'))
                 } else {
                     setAlertPetSrc(null)
                 }
@@ -155,37 +144,50 @@ export const Nav = () => {
                         <Link to="/feed" onClick={playClickSound}>{t('nav.feed')}</Link>
                         {showFeedAlert && (
                             <>
-                                <span className={styles.feedBadge} aria-label={`${unreadCount} new`}>
+                                <span className={styles.feedSparkles} aria-hidden="true">
+                                    <span className={`${styles.feedSparkle} ${styles.feedSparkle__1}`} />
+                                    <span className={`${styles.feedSparkle} ${styles.feedSparkle__2}`} />
+                                    <span className={`${styles.feedSparkle} ${styles.feedSparkle__3}`} />
+                                </span>
+                                <span className={styles.feedBadge} aria-label={`${badgeLabel} new`}>
                                     <img
-                                        src={assetUrl('images/frames/notification-icon-frame.png')}
+                                        src={assetUrl('images/frames/mastery-level-frame.png')}
                                         alt=""
                                         className={styles.feedBadge__frame}
                                     />
                                     <span className={styles.feedBadge__count}>{badgeLabel}</span>
                                 </span>
-                                {alertPetSrc && (
-                                    <img
-                                        src={alertPetSrc}
-                                        alt=""
-                                        className={styles.feedAlertPet}
-                                    />
-                                )}
+                                <img
+                                    src={alertPetSrc || assetUrl('images/pets/crystal-pet-3.png')}
+                                    alt=""
+                                    className={styles.feedAlertPet}
+                                />
                             </>
                         )}
                     </li>
-                    <li className={linkClass('/leaderboard')} data-nav="leaderboard">
-                        <Link to="/leaderboard" onClick={playClickSound}>
-                            Leaderboard
-                        </Link>
+                    <li
+                        className={`${LOCAL_ONLY ? linkClass('/leaderboard') : ''} ${
+                            !LOCAL_ONLY ? styles.navDisabled : ''
+                        }`}
+                        data-nav="leaderboard"
+                        title={LOCAL_ONLY ? 'Leaderboard' : 'Leaderboard — coming soon'}
+                    >
+                        {LOCAL_ONLY ? (
+                            <Link to="/leaderboard" onClick={playClickSound}>
+                                Leaderboard
+                            </Link>
+                        ) : (
+                            <span className={styles.navDisabledLabel}>Leaderboard</span>
+                        )}
                     </li>
                     <li
-                        className={`${GARDEN_ENABLED ? linkClass('/garden') : ''} ${styles.gardenItem} ${
-                            !GARDEN_ENABLED ? styles.navDisabled : ''
+                        className={`${LOCAL_ONLY ? linkClass('/garden') : ''} ${styles.gardenItem} ${
+                            !LOCAL_ONLY ? styles.navDisabled : ''
                         }`}
                         data-nav="garden"
-                        title={GARDEN_ENABLED ? 'Garden' : 'Garden — coming soon'}
+                        title={LOCAL_ONLY ? 'Garden' : 'Garden — coming soon'}
                     >
-                        {GARDEN_ENABLED ? (
+                        {LOCAL_ONLY ? (
                             <Link to="/garden" onClick={playClickSound}>
                                 Garden
                             </Link>

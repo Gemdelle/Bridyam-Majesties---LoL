@@ -26,13 +26,6 @@ const achievements: Achievement[] = [
         type: 'lol'
     },
     {
-        name: "Battlelord",
-        description: "Play matches",
-        iconSrc: "/images/ranked-btn/mission.png",
-        completedSteps: 9,
-        type: 'lol'
-    },
-    {
         name: "Victorious",
         description: "Win matches",
         iconSrc: "/images/ranked-btn/wins.png",

@@ -21,7 +21,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
         const achievementMap: { [key: string]: number } = {
             "Ascension": 1,
             "Artisan": 2,
-            "Battlelord": 3,
             "Victorious": 4,
             "Conqueror": 6,
             "Champion": 7,
@@ -37,7 +36,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const getAchievementValues = (achievementName: string): number[] => {
         const valueMap: { [key: string]: number[] } = {
             "Artisan": [1, 3, 5, 10, 15, 25, 50, 100, 200, 500],
-            "Battlelord": [5, 15, 30, 75, 150, 300, 750, 1500, 3000, 7500],
             "Victorious": [1, 5, 15, 35, 75, 150, 350, 750, 1500, 3500],
             "Conqueror": [1, 3, 5, 8, 12, 18, 25, 35, 40, 50],
             "Champion": [1, 2, 3, 5, 8, 12, 18, 22, 26, 30],

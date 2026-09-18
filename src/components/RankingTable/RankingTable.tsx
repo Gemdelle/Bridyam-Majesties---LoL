@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styles from './RankingTable.module.scss';
 import { fetchGlobalRanking, type RankingEntry } from '../../services/progressRankingService';
 import { assetUrl } from '../../utils/assetUrl';
+import { trophyAsset } from '../../services/gardenService';
+
+const PODIUM_SPARKLES: Record<number, string[]> = {
+    0: ['tl', 'tr', 'bl', 'br', 'tm', 'bm', 'ml', 'mr', 'tml', 'tmr'],
+    1: ['tl', 'tr', 'bl', 'br', 'tm'],
+    2: ['tl', 'tr', 'bm'],
+};
 
 const RankingTable: React.FC = () => {
     const [ranking, setRanking] = useState<RankingEntry[]>([]);
@@ -80,23 +87,7 @@ const RankingTable: React.FC = () => {
         }
     };
 
-    // Helper function to render rank number as images
-    const renderRankNumber = (rank: number) => {
-        const digits = rank.toString().split('');
-        return (
-            <div className={styles.rank__number}>
-                {digits.map((digit, index) => (
-                    <img
-                        key={index}
-                        src={`/images/numbers/${digit}.png`}
-                        alt={digit}
-                    />
-                ))}
-            </div>
-        );
-    };
-
-    // Helper function to render score as images
+    // Helper function to render score as images (small digit assets)
     const renderScoreAsImages = (score: number) => {
         const scoreString = score.toString();
         return scoreString.split('').map((digit, index) => (
@@ -104,35 +95,78 @@ const RankingTable: React.FC = () => {
                 key={index}
                 src={`/images/numbers/${digit}.png`}
                 alt={digit}
-                className={styles.score__digit}
+                className={styles.rank__score__digit}
             />
         ));
+    };
+
+    const formatEssencerName = (name: string) => {
+        const raw = String(name || '').trim();
+        if (!raw) return '';
+        // Title case reads better with italic serif names
+        return raw
+            .toLowerCase()
+            .replace(/\b([a-zÁÉÍÓÚÑÜáéíóúñü])/g, (c) => c.toUpperCase());
     };
 
     const renderRankingRow = (entry: RankingEntry, rowClass: string) => {
         const winTier = getCategoryTier(entry, 'winsGained');
         const masteryTier = getCategoryTier(entry, 'masteryLevelsGained');
-        const honorTier = getCategoryTier(entry, 'honorGained');
         const levelTier = getCategoryTier(entry, 'levelGained');
-        const memberTier = getCategoryTier(entry, 'level30BonusCount');
         const eloTier = getCategoryTier(entry, 'eloDivisionsGained');
         const redeemTier = getCategoryTier(entry, 'redeemCount');
+        const rankIndex = Math.max(0, entry.rank - 1);
+        const sparklePos = PODIUM_SPARKLES[rankIndex] || [];
 
         return (
             <div className={rowClass} key={entry.userId}>
-                {/* DESCRIPTION */}
+                {/* ESSENCER */}
                 <div className={styles.essencer__description}>
-                    {getPetImage(entry.petType, entry.petStage) && (
-                        <img
-                            src={getPetImage(entry.petType, entry.petStage)!}
-                            alt="Pet"
-                            className={`${styles.pet__mirrored} ${entry.petType === '2' ? styles.pet__type2 : ''}`}
-                        />
-                    )}
                     <div className={styles.essencer__info}>
                         <div className={styles.essencer__info__rank}>
-                            {renderRankNumber(entry.rank)}
-                            <span>{entry.rankedName}</span>
+                            <div className={styles.rank__trophyWrap}>
+                                <img
+                                    src={trophyAsset(rankIndex)}
+                                    alt={`#${entry.rank}`}
+                                    className={styles.rank__trophy}
+                                />
+                                {sparklePos.map((pos) => (
+                                    <span
+                                        key={pos}
+                                        className={styles.rank__trophySparkle}
+                                        data-pos={pos}
+                                        aria-hidden
+                                    />
+                                ))}
+                            </div>
+                            <div className={styles.rank__text}>
+                                <span className={styles.rank__name}>
+                                    {formatEssencerName(entry.rankedName || '')}
+                                </span>
+                                <div className={styles.rank__score}>
+                                    {renderScoreAsImages(entry.totalProgressScore)}
+                                </div>
+                            </div>
+                            {getPetImage(entry.petType, entry.petStage) && (
+                                <div className={styles.rank__petWrap}>
+                                    <img
+                                        src={getPetImage(entry.petType, entry.petStage)!}
+                                        alt="Pet"
+                                        className={[
+                                            styles.rank__pet,
+                                            entry.petType === '2' ? styles.pet__type2 : '',
+                                            entry.rank === 1 ? styles.rank__petJump : '',
+                                        ].filter(Boolean).join(' ')}
+                                    />
+                                    {entry.rank === 1 && (
+                                        <div className={styles.rank__hearts} aria-hidden>
+                                            <img src="/images/icons/love-icon-1.png" alt="" className={`${styles.rank__heart} ${styles.rank__heart1}`} />
+                                            <img src="/images/icons/love-icon-2.png" alt="" className={`${styles.rank__heart} ${styles.rank__heart2}`} />
+                                            <img src="/images/icons/love-icon-3.png" alt="" className={`${styles.rank__heart} ${styles.rank__heart3}`} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -169,28 +203,12 @@ const RankingTable: React.FC = () => {
                             <span className={styles.achievement__score}>{entry.masteryScore > 0 ? entry.masteryScore : ''}</span>
                         </div>
                     </div>
-                    {/* HONOR */}
-                    <div className={`${styles.achievement__container} ${styles[`achievement__${honorTier}`]}`}>
-                        <img src={`/images/ranking/${honorTier}/${honorTier}-honor.png`} alt="Honor" />
-                        <div className={styles.achievement__stats}>
-                            <span className={styles.achievement__gained}>{entry.honorGained}</span>
-                            <span className={styles.achievement__score}>{entry.honorScore > 0 ? entry.honorScore : ''}</span>
-                        </div>
-                    </div>
                     {/* LEVEL */}
                     <div className={`${styles.achievement__container} ${styles.achievement__level} ${styles[`achievement__${levelTier}`]}`}>
                         <img src={`/images/ranking/${levelTier}/${levelTier}-level.png`} alt="Level" />
                         <div className={styles.achievement__stats}>
                             <span className={styles.achievement__gained}>{entry.levelGained}</span>
                             <span className={styles.achievement__score}>{entry.levelScore > 0 ? entry.levelScore : ''}</span>
-                        </div>
-                    </div>
-                    {/* MEMBER */}
-                    <div className={`${styles.achievement__container} ${styles[`achievement__${memberTier}`]}`}>
-                        <img src={`/images/ranking/${memberTier}/${memberTier}-member.png`} alt="Member" />
-                        <div className={styles.achievement__stats}>
-                            <span className={styles.achievement__gained}>{entry.level30BonusCount}</span>
-                            <span className={styles.achievement__score}>{entry.memberScore > 0 ? entry.memberScore : ''}</span>
                         </div>
                     </div>
                     {/* ELO */}
@@ -200,32 +218,6 @@ const RankingTable: React.FC = () => {
                             <span className={styles.achievement__gained}>{entry.eloDivisionsGained}</span>
                             <span className={styles.achievement__score}>{entry.eloScore > 0 ? entry.eloScore : ''}</span>
                         </div>
-                    </div>
-                </div>
-
-                {/* TOTAL */}
-                <div className={styles.total__container}>
-                    {/* Derlets flotantes */}
-                    <img
-                        src="/images/derlet/derlet-side.png"
-                        alt="derlet"
-                        className={`${styles.derlet} ${styles.derlet__right__top}`}
-                    />
-                    <img
-                        src="/images/derlet/derlet-side-2.png"
-                        alt="derlet"
-                        className={`${styles.derlet} ${styles.derlet__left__bottom}`}
-                    />
-
-                    {/* Partículas flotantes */}
-                    <div className={styles.score__particles__container}>
-                        {Array.from({ length: 12 }, (_, i) => (
-                            <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
-                        ))}
-                    </div>
-
-                    <div className={styles.score__numbers}>
-                        {renderScoreAsImages(entry.totalProgressScore)}
                     </div>
                 </div>
             </div>

@@ -1,77 +1,182 @@
 .card {
   position: relative;
   overflow: visible;
-  height: 13.2% !important;
+  height: 14.4% !important;
   min-height: 0;
-  margin-bottom: 0.35vh;
+  margin-bottom: 0.55vh;
   flex-shrink: 0;
+  transition: box-shadow 0.35s ease, filter 0.35s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  padding-left: 1.2%;
+}
+
+.podium1 {
+  box-shadow:
+    0 0 22px rgba(255, 214, 90, 0.55),
+    0 0 48px rgba(200, 155, 60, 0.35),
+    inset 0 0 28px rgba(255, 220, 120, 0.12);
+  filter: saturate(1.08) brightness(1.04);
+
+  .trophySlot {
+    transform: scale(1.16);
+  }
+}
+
+.podium2 {
+  box-shadow:
+    0 0 16px rgba(210, 220, 235, 0.4),
+    0 0 34px rgba(160, 175, 200, 0.28),
+    inset 0 0 20px rgba(220, 230, 245, 0.08);
+  filter: saturate(1.04) brightness(1.02);
+
+  .trophySlot {
+    transform: scale(1.1);
+  }
+}
+
+.podium3 {
+  box-shadow:
+    0 0 14px rgba(205, 140, 80, 0.38),
+    0 0 28px rgba(160, 95, 45, 0.22),
+    inset 0 0 18px rgba(220, 150, 90, 0.08);
+
+  .trophySlot {
+    transform: scale(1.05);
+  }
 }
 
 .info {
-  width: 18%;
-  height: 72%;
+  width: 22%;
+  height: auto;
+  margin-left: 5.5%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: stretch;
-  padding-top: 0.35vw;
-  gap: 0.35vw;
+  gap: 0.4vw;
+  flex-shrink: 0;
+  z-index: 2;
 }
 
-.progressStack {
+.nameRow {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 92%;
-  gap: 0.3vw;
-  margin-top: 0.15vw;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.5vw;
+  width: 100%;
+  min-width: 0;
+}
+
+.playerName {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #e7c67a;
+  font-size: 1.15vw;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
 }
 
 .progressPercent {
   color: #c89b3c;
-  font-size: 0.88vw;
+  font-size: 0.9vw;
   font-weight: 800;
-  letter-spacing: 0.05vw;
+  font-style: italic;
+  letter-spacing: 0.04vw;
   line-height: 1;
-  text-align: center;
-  width: 100%;
+  flex-shrink: 0;
 }
 
 .progressRow {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 0.55vw;
+  gap: 0.85vw;
   height: 1.15vw;
+}
+
+.progressBar {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .progressCount {
   color: #c89b3c;
-  font-size: 0.72vw;
+  font-size: 0.78vw;
   font-weight: bold;
   letter-spacing: 0.04vw;
   white-space: nowrap;
-  min-width: fit-content;
+  margin-left: 0.35vw;
   flex-shrink: 0;
 }
 
 .circles {
-  width: 70%;
-  height: 80%;
-  display: flex;
-  align-items: flex-end;
+  flex: 1 1 auto;
+  width: auto;
+  height: 100% !important;
+  min-height: 0;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
   justify-content: space-evenly;
-  gap: 0.55vw;
-  padding: 0 0.35vw 0.6vw;
+  gap: 0.45vw;
+  padding: 0 1.2vw 0 0.6vw;
+  overflow: visible;
+  align-self: stretch;
 }
 
 .circle {
   flex: 0 0 auto;
-  margin: 0 0.12vw;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22vw;
+  margin: 0;
   position: relative;
+  overflow: visible;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.circle:hover {
+  transform: scale(1.06);
+}
+
+.badgeImg {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+}
+
+.badgeCounter {
+  flex-shrink: 0;
+  font-size: 0.72vw;
+  font-weight: 800;
+  color: #e4c493;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95);
+  line-height: 1;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.circleDone .badgeCounter {
+  color: #f0e6d2;
 }
 
 .trophySlot {
+  transform-origin: center center;
   img {
     width: auto;
     height: 90%;
@@ -79,20 +184,201 @@
   }
 }
 
+.trophyBadge {
+  position: relative;
+  overflow: visible;
+}
+
+.trophyGlow1 img {
+  filter: drop-shadow(0 0 10px rgba(255, 214, 90, 0.95))
+    drop-shadow(0 0 22px rgba(200, 155, 60, 0.7));
+  animation: trophyPulseGold 2.4s ease-in-out infinite;
+}
+
+.trophyGlow2 img {
+  filter: drop-shadow(0 0 8px rgba(210, 220, 240, 0.85))
+    drop-shadow(0 0 16px rgba(170, 185, 210, 0.55));
+  animation: trophyPulseSilver 2.6s ease-in-out infinite;
+}
+
+.trophyGlow3 img {
+  filter: drop-shadow(0 0 7px rgba(210, 140, 75, 0.8))
+    drop-shadow(0 0 14px rgba(160, 95, 45, 0.45));
+  animation: trophyPulseBronze 2.8s ease-in-out infinite;
+}
+
+.trophySparkle {
+  position: absolute;
+  z-index: 5;
+  width: 0.4vw;
+  height: 0.4vw;
+  min-width: 4px;
+  min-height: 4px;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff9e0 0%, #e7c67a 42%, transparent 72%);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(231, 198, 122, 0.95);
+  animation: sparkleTwinkle 1.7s ease-in-out infinite;
+}
+
+.trophyGlow2 .trophySparkle {
+  background: radial-gradient(circle, #fff 0%, #d5deea 45%, transparent 72%);
+  box-shadow: 0 0 7px rgba(210, 220, 240, 0.9);
+}
+
+.trophyGlow3 .trophySparkle {
+  background: radial-gradient(circle, #ffe2c2 0%, #d4a06a 45%, transparent 72%);
+  box-shadow: 0 0 7px rgba(210, 140, 75, 0.85);
+  animation-duration: 2s;
+}
+
+.trophySparkle[data-pos='tl'] {
+  top: 8%;
+  left: 10%;
+  animation-delay: 0s;
+}
+.trophySparkle[data-pos='tr'] {
+  top: 10%;
+  right: 10%;
+  animation-delay: 0.2s;
+}
+.trophySparkle[data-pos='bl'] {
+  bottom: 12%;
+  left: 12%;
+  animation-delay: 0.35s;
+}
+.trophySparkle[data-pos='br'] {
+  bottom: 10%;
+  right: 12%;
+  animation-delay: 0.5s;
+}
+.trophySparkle[data-pos='tm'] {
+  top: 2%;
+  left: 48%;
+  animation-delay: 0.15s;
+}
+.trophySparkle[data-pos='bm'] {
+  bottom: 4%;
+  left: 50%;
+  animation-delay: 0.55s;
+}
+.trophySparkle[data-pos='ml'] {
+  top: 45%;
+  left: 2%;
+  animation-delay: 0.4s;
+}
+.trophySparkle[data-pos='mr'] {
+  top: 48%;
+  right: 2%;
+  animation-delay: 0.65s;
+}
+.trophySparkle[data-pos='tml'] {
+  top: 18%;
+  left: 28%;
+  width: 0.28vw;
+  height: 0.28vw;
+  animation-delay: 0.8s;
+}
+.trophySparkle[data-pos='tmr'] {
+  top: 22%;
+  right: 26%;
+  width: 0.28vw;
+  height: 0.28vw;
+  animation-delay: 1s;
+}
+
+@keyframes sparkleTwinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes trophyPulseGold {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 214, 90, 0.75))
+      drop-shadow(0 0 16px rgba(200, 155, 60, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(255, 230, 140, 1))
+      drop-shadow(0 0 28px rgba(200, 155, 60, 0.8));
+  }
+}
+
+@keyframes trophyPulseSilver {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(210, 220, 240, 0.65))
+      drop-shadow(0 0 12px rgba(170, 185, 210, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 11px rgba(235, 240, 250, 0.95))
+      drop-shadow(0 0 20px rgba(170, 185, 210, 0.7));
+  }
+}
+
+@keyframes trophyPulseBronze {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(210, 140, 75, 0.6))
+      drop-shadow(0 0 10px rgba(160, 95, 45, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(230, 165, 100, 0.9))
+      drop-shadow(0 0 18px rgba(160, 95, 45, 0.6));
+  }
+}
+
+.petFace {
+  position: relative;
+  width: 5.4vw;
+  height: 5.7vw;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.petFace__img {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 14%;
+  bottom: 18%;
+  width: auto;
+  height: auto;
+  max-width: 68%;
+  max-height: 68%;
+  object-fit: cover;
+  object-position: center 12%;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.petFace__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .prize {
-  right: -4% !important;
-  width: 8vw !important;
-  height: 8vw !important;
-
-  /* no spinning circle */
-  :global(.spinning__circle) {
-    display: none !important;
-  }
-
-  img {
-    height: 115% !important;
-    width: auto;
-  }
+  position: absolute !important;
+  right: -2.2% !important;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5.8vw !important;
+  height: 6.1vw !important;
+  z-index: 99;
 }
 
 .tooltip {

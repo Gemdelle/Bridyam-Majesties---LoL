@@ -10,6 +10,34 @@ interface Props {
     rankIndex: number;
 }
 
+const PODIUM_SPARKLES: Record<number, string[]> = {
+    0: ['tl', 'tr', 'bl', 'br', 'tm', 'bm', 'ml', 'mr', 'tml', 'tmr'],
+    1: ['tl', 'tr', 'bl', 'br', 'tm'],
+    2: ['tl', 'tr', 'bm'],
+};
+
+export const getPetFaceSrc = (petType: string | null, petStage: number | null): string => {
+    const type = petType && ['1', '2', '3', '4'].includes(petType) ? petType : '1';
+    const stage = Math.max(1, Math.min(3, Number(petStage) || 1));
+    return assetUrl(`images/pets/pet-${type}-${stage}.png`);
+};
+
+export const PetFaceFrame: React.FC<{
+    petType: string | null;
+    petStage: number | null;
+    alt?: string;
+    className?: string;
+}> = ({ petType, petStage, alt = 'Pet', className }) => (
+    <div className={`${styles.petFace} ${className || ''}`}>
+        <img src={getPetFaceSrc(petType, petStage)} alt={alt} className={styles.petFace__img} />
+        <img
+            src={assetUrl('images/frames/personal-champion.frame.png')}
+            alt=""
+            className={styles.petFace__frame}
+        />
+    </div>
+);
+
 const PlayerAchievementRow: React.FC<Props> = ({ row, rankIndex }) => {
     const [hoverTip, setHoverTip] = useState<{
         name: string;
@@ -19,47 +47,65 @@ const PlayerAchievementRow: React.FC<Props> = ({ row, rankIndex }) => {
         y: number;
     } | null>(null);
 
-    const getPetImage = (): string => {
-        const type = row.petType && ['1', '2', '3', '4'].includes(row.petType) ? row.petType : '1';
-        const stage = Math.max(1, Math.min(3, Number(row.petStage) || 1));
-        return assetUrl(`images/pets/pet-${type}-${stage}.png`);
-    };
+    const podiumPlace = rankIndex <= 2 ? rankIndex + 1 : 0;
+    const sparklePos = PODIUM_SPARKLES[rankIndex] || [];
 
-    const badgeSizeStyle = (step: number): React.CSSProperties => {
-        // Match AchievementCard progressive sizing (step 1 small → step 10 large)
-        const widthPct = 3.5 + step * 0.95;
-        const heightPct = 70 + step * 5;
-        return {
-            width: `${widthPct}%`,
-            height: `${heightPct}%`,
-        };
-    };
+    const badgeHeight = (step: number): string => `${2.1 + step * 0.22}vw`;
+
+    const podiumClass =
+        podiumPlace === 1
+            ? styles.podium1
+            : podiumPlace === 2
+              ? styles.podium2
+              : podiumPlace === 3
+                ? styles.podium3
+                : '';
+    const trophyGlowClass =
+        podiumPlace === 1
+            ? styles.trophyGlow1
+            : podiumPlace === 2
+              ? styles.trophyGlow2
+              : podiumPlace === 3
+                ? styles.trophyGlow3
+                : '';
 
     return (
-        <div className={`${cardStyles.achievement__card} ${styles.card}`}>
+        <div className={`${cardStyles.achievement__card} ${styles.card} ${podiumClass}`}>
             <div className={`${cardStyles.achievement__icon} ${styles.trophySlot}`}>
-                <div className={cardStyles.achievement__badge}>
+                <div
+                    className={`${cardStyles.achievement__badge} ${styles.trophyBadge} ${trophyGlowClass}`}
+                >
                     <img src={trophyAsset(rankIndex)} alt={`Rank ${rankIndex + 1}`} />
+                    {sparklePos.map((pos) => (
+                        <span
+                            key={pos}
+                            className={styles.trophySparkle}
+                            data-pos={pos}
+                            aria-hidden
+                        />
+                    ))}
                 </div>
             </div>
-            <div className={`${cardStyles.achievement__info} ${styles.info}`}>
-                <h3 className={cardStyles.achievement__name}>{row.playerName}</h3>
-                <div className={styles.progressStack}>
+
+            <div className={styles.info}>
+                <div className={styles.nameRow}>
+                    <h3 className={styles.playerName}>{row.playerName}</h3>
                     <span className={styles.progressPercent}>{row.progressPercent}%</span>
-                    <div className={styles.progressRow}>
-                        <div className={cardStyles.progress__bar}>
-                            <div
-                                className={cardStyles.progress__fill}
-                                style={{ width: `${row.progressPercent}%` }}
-                            />
-                        </div>
-                        <span className={styles.progressCount}>
-                            {row.totalBadges}/{row.maxBadges}
-                        </span>
+                </div>
+                <div className={styles.progressRow}>
+                    <div className={`${cardStyles.progress__bar} ${styles.progressBar}`}>
+                        <div
+                            className={cardStyles.progress__fill}
+                            style={{ width: `${row.progressPercent}%` }}
+                        />
                     </div>
+                    <span className={styles.progressCount}>
+                        {row.totalBadges}/{row.maxBadges}
+                    </span>
                 </div>
             </div>
-            <div className={`${cardStyles.achievement__circles} ${styles.circles}`}>
+
+            <div className={styles.circles}>
                 {row.achievements.map((ach) => {
                     const def = ACHIEVEMENT_DEFS.find((d) => d.name === ach.name);
                     const num = def?.achievementNumber || 1;
@@ -82,10 +128,10 @@ const PlayerAchievementRow: React.FC<Props> = ({ row, rankIndex }) => {
                     return (
                         <div
                             key={ach.name}
-                            className={`${cardStyles.achievement__circle} ${styles.circle} ${
-                                ach.completedSteps > 0 ? cardStyles.completed : ''
-                            } ${ach.completedSteps > 0 ? cardStyles.currentLevel : ''}`}
-                            style={badgeSizeStyle(Math.max(1, displayStep || 1))}
+                            className={`${styles.circle} ${
+                                ach.completedSteps > 0 ? styles.circleDone : ''
+                            }`}
+                            style={{ height: badgeHeight(Math.max(1, displayStep || 1)) }}
                             onMouseEnter={(e) => {
                                 const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
                                 setHoverTip({
@@ -101,18 +147,21 @@ const PlayerAchievementRow: React.FC<Props> = ({ row, rankIndex }) => {
                             <img
                                 src={img}
                                 alt={ach.name}
+                                className={styles.badgeImg}
                                 style={{ opacity: ach.completedSteps > 0 ? 1 : 0.35 }}
                             />
-                            <div className={cardStyles.badge__counter}>
-                                <span>{displayStep}</span>
-                            </div>
+                            <span className={styles.badgeCounter}>{displayStep}</span>
                         </div>
                     );
                 })}
             </div>
-            <div className={`${cardStyles.achievement__prize} ${styles.prize}`}>
-                <img src={getPetImage()} alt={row.playerName} />
-            </div>
+
+            <PetFaceFrame
+                petType={row.petType}
+                petStage={row.petStage}
+                alt={row.playerName}
+                className={styles.prize}
+            />
 
             {hoverTip && (
                 <div

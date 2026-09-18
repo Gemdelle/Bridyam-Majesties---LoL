@@ -236,6 +236,36 @@ export const updateMasteries = async (
         await upsertMasteriesToSheet(toSheetRows(masteriesData), mode);
         console.log(`Masteries queued to Sheet (${mode}, ${masteriesData.length} row(s))`);
 
+        // Verify Sheet caught up (Apps Script writes are async / opaque to the browser)
+        for (const m of masteriesData) {
+            const expected = Number(m.champion_level) || 0;
+            let ok = false;
+            for (let attempt = 0; attempt < 6; attempt++) {
+                await new Promise((r) => setTimeout(r, 700 + attempt * 300));
+                invalidateMasteryCache();
+                const rows = await fetchMasteriesFromSheet();
+                const row = rows.find(
+                    (x) =>
+                        Number(x.ranked_id) === Number(m.ranked_id) &&
+                        Number(x.champion_id) === Number(m.champion_id)
+                );
+                if (row && Number(row.champion_level) === expected) {
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok) {
+                console.warn(
+                    'Sheet mastery verify timed out — ranking may lag until Sheet updates:',
+                    m.username,
+                    m.champion_id,
+                    expected
+                );
+            } else {
+                console.log('Sheet mastery verified:', m.username, m.champion_id, '→', expected);
+            }
+        }
+
         // Feed: one event per changed mastery (person name + pet resolved in publishFeedEvent)
         const { publishFeedEvent, NotificationAction } = await import('./feedNotificationService');
         const { getChampionNameByRiotId } = await import('./championsService');

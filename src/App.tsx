@@ -26,12 +26,12 @@ import CursorSelection from './pages/CursorSelection/CursorSelection'
 import Roulette from './pages/Roulette/Roulette'
 import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
-import Leaderboard from './pages/Leaderboard/Leaderboard'
 
-/** Garden stays local-only until ready — not linked/routed on production builds. */
-const GARDEN_ENABLED = import.meta.env.DEV
-const Garden = GARDEN_ENABLED ? lazy(() => import('./pages/Garden/Garden')) : null
-const GardenFight = GARDEN_ENABLED ? lazy(() => import('./pages/Garden/GardenFight')) : null
+/** Local-only until polished — not linked/routed on production builds. */
+const LOCAL_ONLY = import.meta.env.DEV
+const Garden = LOCAL_ONLY ? lazy(() => import('./pages/Garden/Garden')) : null
+const GardenFight = LOCAL_ONLY ? lazy(() => import('./pages/Garden/GardenFight')) : null
+const Leaderboard = LOCAL_ONLY ? lazy(() => import('./pages/Leaderboard/Leaderboard')) : null
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -158,15 +158,19 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/leaderboard"
-                element={
-                  <ProtectedRoute>
-                    <Leaderboard />
-                  </ProtectedRoute>
-                }
-              />
-              {GARDEN_ENABLED && Garden && GardenFight && (
+              {LOCAL_ONLY && Leaderboard && (
+                <Route
+                  path="/leaderboard"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={null}>
+                        <Leaderboard />
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+              )}
+              {LOCAL_ONLY && Garden && GardenFight && (
                 <>
                   <Route
                     path="/garden"

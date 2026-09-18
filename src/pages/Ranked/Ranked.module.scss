@@ -259,7 +259,7 @@
 }
 
 .accounts {
-  width: 55%;
+  width: 62%;
   height: 100%;
   @include flex-col;
   justify-content: flex-start;
@@ -268,7 +268,7 @@
 }
 
 .ranking__container {
-  width: 43%;
+  width: 36%;
   height: 100%;
   // background-color: lightcoral;
   @include flex-center;
@@ -284,31 +284,25 @@
 }
 
 .ranking__header {
-  width: 49%;
+  width: 40%;
   height: 100%;
   border-bottom: 3px solid #B69461;
   // background-color: lightcoral;
-  @include flex-between;
-
-  .rank,
-  .score {
-    color: #e4c493;
-    // background-color: lightblue;
-    @include flex-center;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 
   .rank {
-    width: 23%;
-    // background-color: red;
-  }
-
-  .score {
-    width: 18%;
-    // background-color: red;
+    width: 48%;
+    color: #e4c493;
+    @include flex-center;
+    flex-shrink: 0;
   }
 
   .achievements__header {
-    flex: 1;
+    width: 48%;
+    flex: 0 0 48%;
+    min-width: 0;
     height: 100%;
     @include flex-between;
     // background-color: green;
@@ -328,7 +322,7 @@
 }
 
 .accounts__header {
-  width: 60%;
+  width: 68%;
   height: 100%;
   // border-bottom: 2px solid #B69461;
   @include flex-top;

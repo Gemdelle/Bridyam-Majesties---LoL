@@ -1,1 +1,1 @@
-export { default } from './PlayerAchievementRow';
+export { default, PetFaceFrame, getPetFaceSrc } from './PlayerAchievementRow';

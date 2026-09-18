@@ -11,6 +11,11 @@ export interface SheetAccountRow {
     honor?: number;
     solo?: string;
     flex?: string;
+    /** Season baseline — null if not frozen yet */
+    init_lv?: number | null;
+    init_solo?: string;
+    init_flex?: string;
+    init_mastery?: number | null;
 }
 
 /** @deprecated use SheetAccountRow */
@@ -268,4 +273,22 @@ export const upsertMasteriesToSheet = async (
 
     // Browser cannot read Apps Script redirect body; treat as queued.
     return { updated: masteries.length, inserted: 0, skipped: 0 };
+};
+
+/**
+ * Freeze current LV / SOLO / FLEX / mastery sum into INIT_* columns.
+ * Safe to re-run: only fills empty baselines unless force=true.
+ * Requires redeployed Apps Script with freezeBaselines action.
+ */
+export const freezeProgressBaselines = async (force = false): Promise<boolean> => {
+    return postToSheet({ action: 'freezeBaselines', force });
+};
+
+/** True if at least one claimed account is missing an INIT_LV baseline. */
+export const needsProgressBaselineFreeze = (rows: SheetAccountRow[]): boolean => {
+    return rows.some(
+        (row) =>
+            isClaimedEssencer(row.essencer) &&
+            (row.init_lv === null || row.init_lv === undefined)
+    );
 };

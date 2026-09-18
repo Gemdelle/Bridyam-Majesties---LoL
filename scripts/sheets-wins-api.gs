@@ -3,11 +3,13 @@
  *
  * Tabs:
  *   ACCOUNTS  → ACCOUNT | LV | ESSENCER | WINS | HONOR | SOLO | FLEX
+ *               | INIT_LV | INIT_SOLO | INIT_FLEX | INIT_MASTERY
  *   ESSENCERS → ESSENCER | PET | LEVEL
  *   MASTERY   → ranked_id | username | champion_id | champion_level | champion_points
  *   FEED      → feed events
  *   SKINS     → ranked_id | username | skin_name | champ_name | rarity | image_url | skin_lines
  *
+ * INIT_* = season baseline frozen once via action: 'freezeBaselines'
  * Paste → Save → Deploy → Manage deployments → Edit → New version → Deploy
  * (SKINS tab is auto-created on first append if missing)
  */
@@ -78,6 +80,10 @@ function readAccountRows_() {
   const honorIdx = findCol_(headers, ['HONOR'], ['HONOR']);
   const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
   const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
+  const initLvIdx = findCol_(headers, ['INIT_LV', 'INITLV', 'BASELINE_LV'], ['INIT_LV', 'INIT LV']);
+  const initSoloIdx = findCol_(headers, ['INIT_SOLO', 'INITSOLO', 'BASELINE_SOLO'], ['INIT_SOLO', 'INIT SOLO']);
+  const initFlexIdx = findCol_(headers, ['INIT_FLEX', 'INITFLEX', 'BASELINE_FLEX'], ['INIT_FLEX', 'INIT FLEX']);
+  const initMasteryIdx = findCol_(headers, ['INIT_MASTERY', 'INITMASTERY', 'BASELINE_MASTERY'], ['INIT_MASTERY', 'INIT MASTERY']);
 
   if (accountIdx === -1) {
     throw new Error('Missing ACCOUNT column. Headers: ' + headers.join(' | '));
@@ -103,10 +109,115 @@ function readAccountRows_() {
       wins: winsIdx >= 0 ? Number(values[i][winsIdx]) || 0 : 0,
       honor: honorIdx >= 0 ? Number(values[i][honorIdx]) || 0 : 0,
       solo: soloIdx >= 0 ? String(values[i][soloIdx] || '').trim() : 'unranked',
-      flex: flexIdx >= 0 ? String(values[i][flexIdx] || '').trim() : 'unranked'
+      flex: flexIdx >= 0 ? String(values[i][flexIdx] || '').trim() : 'unranked',
+      init_lv: initLvIdx >= 0 && values[i][initLvIdx] !== '' && values[i][initLvIdx] !== null
+        ? Number(values[i][initLvIdx]) || 0
+        : null,
+      init_solo: initSoloIdx >= 0 ? String(values[i][initSoloIdx] || '').trim() : '',
+      init_flex: initFlexIdx >= 0 ? String(values[i][initFlexIdx] || '').trim() : '',
+      init_mastery: initMasteryIdx >= 0 && values[i][initMasteryIdx] !== '' && values[i][initMasteryIdx] !== null
+        ? Number(values[i][initMasteryIdx]) || 0
+        : null
     });
   }
   return rows;
+}
+
+/** Ensure INIT_* header columns exist on ACCOUNTS (appended to header row 1). */
+function ensureInitColumns_(sheet, values) {
+  const headerRow = 1;
+  const headers = (values[0] || []).map(function (h) { return String(h || '').trim(); });
+  const needed = ['INIT_LV', 'INIT_SOLO', 'INIT_FLEX', 'INIT_MASTERY'];
+  const normHeaders = headers.map(norm_);
+  let changed = false;
+
+  needed.forEach(function (name) {
+    if (normHeaders.indexOf(norm_(name)) === -1) {
+      headers.push(name);
+      normHeaders.push(norm_(name));
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    sheet.getRange(headerRow, 1, 1, headers.length).setValues([headers]);
+  }
+
+  return buildHeaders_(sheet.getDataRange().getValues());
+}
+
+/** Sum champion_level per username (lowercase) from MASTERY tab. */
+function masterySumByUsername_() {
+  const rows = readMasteryRows_();
+  const map = {};
+  rows.forEach(function (r) {
+    const key = String(r.username || '').trim().toLowerCase();
+    if (!key) return;
+    map[key] = (map[key] || 0) + (Number(r.champion_level) || 0);
+  });
+  return map;
+}
+
+/**
+ * Freeze current LV / SOLO / FLEX / mastery sum as season baselines.
+ * By default only fills empty INIT cells (safe to re-run).
+ * Pass force: true to overwrite all baselines.
+ */
+function freezeBaselines_(force) {
+  const sheet = getSheet_(ACCOUNTS_SHEET);
+  if (!sheet) {
+    return { ok: false, error: 'tab ACCOUNTS no encontrada', frozen: 0 };
+  }
+
+  let values = sheet.getDataRange().getValues();
+  if (values.length < 2) {
+    return { ok: false, error: 'ACCOUNTS vacío', frozen: 0 };
+  }
+
+  const headers = ensureInitColumns_(sheet, values);
+  values = sheet.getDataRange().getValues();
+
+  const accountIdx = findCol_(headers, ['ACCOUNT'], ['ACCOUNT']);
+  const lvIdx = findCol_(headers, ['LV', 'LEVEL'], ['LV', 'LEVEL']);
+  const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
+  const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
+  const initLvIdx = findCol_(headers, ['INIT_LV', 'INITLV'], ['INIT_LV']);
+  const initSoloIdx = findCol_(headers, ['INIT_SOLO', 'INITSOLO'], ['INIT_SOLO']);
+  const initFlexIdx = findCol_(headers, ['INIT_FLEX', 'INITFLEX'], ['INIT_FLEX']);
+  const initMasteryIdx = findCol_(headers, ['INIT_MASTERY', 'INITMASTERY'], ['INIT_MASTERY']);
+
+  if (accountIdx === -1 || initLvIdx === -1) {
+    return { ok: false, error: 'No se pudieron crear columnas INIT_*', frozen: 0 };
+  }
+
+  const masteryByUser = masterySumByUsername_();
+  let frozen = 0;
+  let skipped = 0;
+
+  for (let i = 1; i < values.length; i++) {
+    const account = String(values[i][accountIdx] || '').trim();
+    if (!account || !isAccountRow_(account) || account.toUpperCase() === 'GEM') continue;
+
+    const existingInit = values[i][initLvIdx];
+    const hasBaseline = existingInit !== '' && existingInit !== null && existingInit !== undefined;
+    if (hasBaseline && !force) {
+      skipped += 1;
+      continue;
+    }
+
+    const lv = lvIdx >= 0 ? Number(values[i][lvIdx]) || 0 : 0;
+    const solo = soloIdx >= 0 ? String(values[i][soloIdx] || '').trim() || 'unranked' : 'unranked';
+    const flex = flexIdx >= 0 ? String(values[i][flexIdx] || '').trim() || 'unranked' : 'unranked';
+    const masterySum = masteryByUser[account.toLowerCase()] || 0;
+
+    sheet.getRange(i + 1, initLvIdx + 1).setValue(lv);
+    if (initSoloIdx >= 0) sheet.getRange(i + 1, initSoloIdx + 1).setValue(solo);
+    if (initFlexIdx >= 0) sheet.getRange(i + 1, initFlexIdx + 1).setValue(flex);
+    if (initMasteryIdx >= 0) sheet.getRange(i + 1, initMasteryIdx + 1).setValue(masterySum);
+    frozen += 1;
+  }
+
+  return { ok: true, frozen: frozen, skipped: skipped, force: !!force };
 }
 
 function readEssencerRows_() {
@@ -532,6 +643,14 @@ function doGet(e) {
 function doPost(e) {
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
+
+    // Freeze season baselines (INIT_LV / INIT_SOLO / INIT_FLEX / INIT_MASTERY)
+    if (body.action === 'freezeBaselines') {
+      const result = freezeBaselines_(!!body.force);
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     // Append feed event
     if (body.action === 'appendFeed' || body.feed) {
