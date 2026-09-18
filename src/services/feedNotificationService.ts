@@ -1,8 +1,5 @@
-// LOCAL MODE: Feed notifications disabled (no backend)
+import { SHEETS_WINS_URL, postToSheet } from './sheetsWinsService';
 
-/**
- * Tipos de acción de notificación
- */
 export enum NotificationAction {
     LEVEL_UP = 'LEVEL_UP',
     HONOR_UP = 'HONOR_UP',
@@ -13,12 +10,9 @@ export enum NotificationAction {
     ELO_DIVISION_UP = 'ELO_DIVISION_UP',
     MEMBER = 'MEMBER',
     USER_REGISTERED = 'USER_REGISTERED',
-    MISSION_COMPLETED = 'MISSION_COMPLETED'
+    MISSION_COMPLETED = 'MISSION_COMPLETED',
 }
 
-/**
- * Notificación del feed
- */
 export interface FeedNotification {
     id: number;
     userId: string;
@@ -36,46 +30,116 @@ export interface FeedNotification {
     points: number | null;
 }
 
-/**
- * Type alias para mejor legibilidad
- */
 export type FeedNotificationType = FeedNotification;
 
-/**
- * LOCAL MODE: Obtiene todas las notificaciones del feed (devuelve array vacío)
- */
+export interface CreateFeedEventInput {
+    rankedId?: number;
+    rankedUsername: string;
+    rankedName?: string;
+    bloodline?: string;
+    petType?: string | null;
+    petStage?: number | null;
+    action: NotificationAction | string;
+    title: string;
+    description?: string;
+    metadata?: Record<string, string>;
+    points?: number | null;
+}
+
+const mapRow = (row: Record<string, unknown>): FeedNotification => ({
+    id: Number(row.id) || 0,
+    userId: String(row.rankedName || row.rankedUsername || ''),
+    rankedId: Number(row.rankedId) || 0,
+    rankedName: String(row.rankedName || ''),
+    rankedUsername: String(row.rankedUsername || ''),
+    bloodline: String(row.bloodline || ''),
+    petType: row.petType != null && String(row.petType) !== '' ? String(row.petType) : null,
+    petStage: row.petStage != null && String(row.petStage) !== '' ? Number(row.petStage) : null,
+    action: String(row.action || '') as NotificationAction,
+    title: String(row.title || ''),
+    description: String(row.description || ''),
+    metadata: (row.metadata as Record<string, string>) || {},
+    createdAt: String(row.createdAt || new Date().toISOString()),
+    points: row.points == null || row.points === '' ? null : Number(row.points),
+});
+
 export const fetchAllNotifications = async (limit: number = 100): Promise<FeedNotification[]> => {
-    // LOCAL MODE: No backend, return empty array
-    return [];
+    try {
+        const response = await fetch(
+            `${SHEETS_WINS_URL}?resource=feed&limit=${limit}&t=${Date.now()}`,
+            { cache: 'no-store' }
+        );
+        if (!response.ok) throw new Error(`Feed GET ${response.status}`);
+        const payload = await response.json();
+        if (!payload.ok) throw new Error(payload.error || 'Feed GET failed');
+        return (payload.feed || []).map(mapRow);
+    } catch (err) {
+        console.warn('Feed unavailable:', err);
+        return [];
+    }
 };
 
-/**
- * LOCAL MODE: Obtiene las notificaciones de un usuario específico
- */
-export const fetchNotificationsByUser = async (userId: string, limit: number = 50): Promise<FeedNotification[]> => {
-    // LOCAL MODE: No backend, return empty array
-    return [];
+export const fetchNotificationsByUser = async (
+    userId: string,
+    limit: number = 50
+): Promise<FeedNotification[]> => {
+    const all = await fetchAllNotifications(Math.max(limit, 100));
+    const key = String(userId || '').toLowerCase();
+    return all
+        .filter(
+            (n) =>
+                n.userId.toLowerCase() === key ||
+                n.rankedName.toLowerCase() === key ||
+                n.rankedUsername.toLowerCase().includes(key)
+        )
+        .slice(0, limit);
 };
 
-/**
- * LOCAL MODE: Obtiene las notificaciones de una bloodline específica
- */
-export const fetchNotificationsByBloodline = async (bloodline: string, limit: number = 100): Promise<FeedNotification[]> => {
-    // LOCAL MODE: No backend, return empty array
-    return [];
+export const fetchNotificationsByBloodline = async (
+    bloodline: string,
+    limit: number = 100
+): Promise<FeedNotification[]> => {
+    const all = await fetchAllNotifications(limit);
+    const key = String(bloodline || '').toLowerCase();
+    return all.filter((n) => n.bloodline.toLowerCase().includes(key));
 };
 
-/**
- * LOCAL MODE: Obtiene las notificaciones de una cuenta ranked específica
- */
-export const fetchNotificationsByRanked = async (rankedId: number, limit: number = 50): Promise<FeedNotification[]> => {
-    // LOCAL MODE: No backend, return empty array
-    return [];
+export const fetchNotificationsByRanked = async (
+    rankedId: number,
+    limit: number = 50
+): Promise<FeedNotification[]> => {
+    const all = await fetchAllNotifications(Math.max(limit, 100));
+    return all.filter((n) => n.rankedId === rankedId).slice(0, limit);
 };
 
-/**
- * Formatea la fecha de una notificación
- */
+/** Publish a feed event identified by account / player name (no login required). */
+export const publishFeedEvent = async (input: CreateFeedEventInput): Promise<void> => {
+    const username = String(input.rankedUsername || '').trim();
+    if (!username || !input.action || !input.title) return;
+
+    try {
+        await postToSheet({
+            action: 'appendFeed',
+            feed: {
+                rankedId: Number(input.rankedId) || 0,
+                rankedUsername: username,
+                rankedName: String(input.rankedName || username),
+                bloodline: String(input.bloodline || ''),
+                petType: input.petType ?? '',
+                petStage: input.petStage ?? '',
+                action: String(input.action),
+                title: String(input.title),
+                description: String(input.description || ''),
+                metadata: input.metadata || {},
+                createdAt: new Date().toISOString(),
+                points: input.points ?? null,
+            },
+        });
+    } catch (err) {
+        console.warn('Could not publish feed event:', err);
+    }
+};
+
 export const formatNotificationDate = (dateString: string): string => {
     try {
         const date = new Date(dateString);
@@ -85,30 +149,20 @@ export const formatNotificationDate = (dateString: string): string => {
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffMins < 1) {
-            return 'Just now';
-        } else if (diffMins < 60) {
-            return `${diffMins}m ago`;
-        } else if (diffHours < 24) {
-            return `${diffHours}h ago`;
-        } else if (diffDays < 7) {
-            return `${diffDays}d ago`;
-        } else {
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
-    } catch (error) {
-        console.error('Error formatting notification date:', error);
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
+        if (diffDays < 7) return `${diffDays}d ago`;
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
+    } catch {
         return dateString;
     }
 };
 
-/**
- * Obtiene el icono apropiado para el tipo de acción
- */
 export const getNotificationIcon = (action: NotificationAction): string => {
     switch (action) {
         case NotificationAction.LEVEL_UP:
@@ -136,39 +190,33 @@ export const getNotificationIcon = (action: NotificationAction): string => {
     }
 };
 
-/**
- * Obtiene el color apropiado para el tipo de acción
- */
 export const getNotificationColor = (action: NotificationAction): string => {
     switch (action) {
         case NotificationAction.LEVEL_UP:
-            return '#4CAF50'; // Verde
+            return '#4CAF50';
         case NotificationAction.HONOR_UP:
-            return '#2196F3'; // Azul
+            return '#2196F3';
         case NotificationAction.WIN:
-            return '#FFC107'; // Amarillo dorado
+            return '#FFC107';
         case NotificationAction.RANK_UP:
-            return '#9C27B0'; // Púrpura
+            return '#9C27B0';
         case NotificationAction.MASTERY_LEVEL_UP:
-            return '#FF5722'; // Naranja rojizo
+            return '#FF5722';
         case NotificationAction.LEVEL_30_ACHIEVED:
-            return '#FF9800'; // Naranja
+            return '#FF9800';
         case NotificationAction.ELO_DIVISION_UP:
-            return '#00BCD4'; // Cian
+            return '#00BCD4';
         case NotificationAction.MEMBER:
-            return '#E91E63'; // Rosa
+            return '#E91E63';
         case NotificationAction.USER_REGISTERED:
-            return '#8BC34A'; // Verde claro
+            return '#8BC34A';
         case NotificationAction.MISSION_COMPLETED:
-            return '#FF6B35'; // Naranja vibrante
+            return '#FF6B35';
         default:
-            return '#757575'; // Gris
+            return '#757575';
     }
 };
 
-/**
- * Interfaz para crear notificaciones de missions
- */
 export interface CreateMissionNotificationRequest {
     userId: string;
     rankedId: number;
@@ -179,11 +227,20 @@ export interface CreateMissionNotificationRequest {
     totalMissions?: number;
 }
 
-/**
- * LOCAL MODE: Crea una notificación cuando un usuario completa una misión (disabled)
- */
-export const createMissionNotification = async (request: CreateMissionNotificationRequest): Promise<void> => {
-    // LOCAL MODE: No backend, do nothing
-    console.log('LOCAL MODE: createMissionNotification is disabled');
+export const createMissionNotification = async (
+    request: CreateMissionNotificationRequest
+): Promise<void> => {
+    await publishFeedEvent({
+        rankedId: request.rankedId,
+        rankedUsername: request.rankedUsername,
+        rankedName: request.rankedName,
+        bloodline: request.bloodline,
+        action: NotificationAction.MISSION_COMPLETED,
+        title: `Mission ${request.missionNumber} completed`,
+        description: `${request.rankedName || request.rankedUsername} completed a mission`,
+        metadata: {
+            missionNumber: String(request.missionNumber),
+            totalMissions: String(request.totalMissions || ''),
+        },
+    });
 };
-

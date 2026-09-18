@@ -12,6 +12,7 @@
 const ACCOUNTS_SHEET = 'ACCOUNTS';
 const ESSENCERS_SHEET = 'ESSENCERS';
 const MASTERY_SHEET = 'MASTERY';
+const FEED_SHEET = 'FEED';
 
 function getSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -286,8 +287,122 @@ function upsertMasteries_(incoming, mode) {
   return { ok: true, updated, inserted, skipped, mode: useMax ? 'max' : 'set' };
 }
 
-function doGet() {
+function ensureFeedSheet_() {
+  let sheet = getSheet_(FEED_SHEET);
+  if (!sheet) {
+    sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(FEED_SHEET);
+    sheet.appendRow([
+      'id',
+      'ranked_id',
+      'ranked_username',
+      'ranked_name',
+      'bloodline',
+      'pet_type',
+      'pet_stage',
+      'action',
+      'title',
+      'description',
+      'metadata',
+      'created_at',
+      'points'
+    ]);
+  }
+  return sheet;
+}
+
+function readFeedRows_(limit) {
+  const sheet = ensureFeedSheet_();
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+
+  const headers = (values[0] || []).map(norm_);
+  const idIdx = findCol_(headers, ['ID'], ['ID']);
+  const rankedIdx = findCol_(headers, ['RANKED_ID', 'RANKEDID'], ['RANKED']);
+  const userIdx = findCol_(headers, ['RANKED_USERNAME', 'USERNAME', 'ACCOUNT'], ['USER', 'ACCOUNT']);
+  const nameIdx = findCol_(headers, ['RANKED_NAME', 'NAME', 'ESSENCER'], ['NAME', 'ESSENCER']);
+  const bloodIdx = findCol_(headers, ['BLOODLINE'], ['BLOOD']);
+  const petTypeIdx = findCol_(headers, ['PET_TYPE', 'PETTYPE'], ['PET_TYPE', 'TYPE']);
+  const petStageIdx = findCol_(headers, ['PET_STAGE', 'PETSTAGE', 'STAGE'], ['STAGE']);
+  const actionIdx = findCol_(headers, ['ACTION'], ['ACTION']);
+  const titleIdx = findCol_(headers, ['TITLE'], ['TITLE']);
+  const descIdx = findCol_(headers, ['DESCRIPTION', 'DESC'], ['DESC']);
+  const metaIdx = findCol_(headers, ['METADATA', 'META'], ['META']);
+  const createdIdx = findCol_(headers, ['CREATED_AT', 'CREATED', 'DATE'], ['CREATED', 'DATE']);
+  const pointsIdx = findCol_(headers, ['POINTS'], ['POINT']);
+
+  const rows = [];
+  for (let i = 1; i < values.length; i++) {
+    const action = actionIdx >= 0 ? String(values[i][actionIdx] || '').trim() : '';
+    if (!action) continue;
+
+    let metadata = {};
+    if (metaIdx >= 0) {
+      try {
+        metadata = JSON.parse(String(values[i][metaIdx] || '{}'));
+      } catch (err) {
+        metadata = {};
+      }
+    }
+
+    rows.push({
+      id: idIdx >= 0 ? Number(values[i][idIdx]) || i : i,
+      rankedId: rankedIdx >= 0 ? Number(values[i][rankedIdx]) || 0 : 0,
+      rankedUsername: userIdx >= 0 ? String(values[i][userIdx] || '').trim() : '',
+      rankedName: nameIdx >= 0 ? String(values[i][nameIdx] || '').trim() : '',
+      bloodline: bloodIdx >= 0 ? String(values[i][bloodIdx] || '').trim() : '',
+      petType: petTypeIdx >= 0 ? String(values[i][petTypeIdx] || '').trim() || null : null,
+      petStage: petStageIdx >= 0 ? Number(values[i][petStageIdx]) || null : null,
+      action,
+      title: titleIdx >= 0 ? String(values[i][titleIdx] || '').trim() : '',
+      description: descIdx >= 0 ? String(values[i][descIdx] || '').trim() : '',
+      metadata,
+      createdAt: createdIdx >= 0 ? String(values[i][createdIdx] || '').trim() : new Date().toISOString(),
+      points: pointsIdx >= 0 ? Number(values[i][pointsIdx]) || null : null
+    });
+  }
+
+  rows.sort(function (a, b) {
+    return String(b.createdAt).localeCompare(String(a.createdAt));
+  });
+
+  const max = Math.max(1, Number(limit) || 100);
+  return rows.slice(0, max);
+}
+
+function appendFeed_(item) {
+  const sheet = ensureFeedSheet_();
+  const values = sheet.getDataRange().getValues();
+  const nextId = values.length; // header + rows → next id
+  const createdAt = item.createdAt || new Date().toISOString();
+  sheet.appendRow([
+    Number(item.id) || nextId,
+    Number(item.rankedId) || 0,
+    String(item.rankedUsername || ''),
+    String(item.rankedName || ''),
+    String(item.bloodline || ''),
+    item.petType == null ? '' : String(item.petType),
+    item.petStage == null ? '' : Number(item.petStage),
+    String(item.action || ''),
+    String(item.title || ''),
+    String(item.description || ''),
+    JSON.stringify(item.metadata || {}),
+    createdAt,
+    item.points == null ? '' : Number(item.points)
+  ]);
+  return { ok: true, id: Number(item.id) || nextId, createdAt };
+}
+
+function doGet(e) {
   try {
+    const resource = e && e.parameter && e.parameter.resource;
+    if (resource === 'feed') {
+      const limit = e && e.parameter && e.parameter.limit ? Number(e.parameter.limit) : 100;
+      const feed = readFeedRows_(limit);
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: true, feed }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     const data = readAccountRows_();
     const essencers = readEssencerRows_();
     const masteries = readMasteryRows_();
@@ -304,6 +419,15 @@ function doGet() {
 function doPost(e) {
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || '{}');
+
+    // Append feed event
+    if (body.action === 'appendFeed' || body.feed) {
+      const item = body.feed || body;
+      const result = appendFeed_(item);
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     // Upsert masteries (from API sync or UI)
     if (body.action === 'upsertMasteries' || Array.isArray(body.masteries)) {

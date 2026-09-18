@@ -235,6 +235,23 @@ export const updateMasteries = async (
     try {
         await upsertMasteriesToSheet(toSheetRows(masteriesData), mode);
         console.log(`Masteries queued to Sheet (${mode}, ${masteriesData.length} row(s))`);
+
+        // Feed: one event per changed mastery (account name identifies the actor)
+        const { publishFeedEvent, NotificationAction } = await import('./feedNotificationService');
+        for (const m of masteriesData) {
+            void publishFeedEvent({
+                rankedId: m.ranked_id,
+                rankedUsername: m.username,
+                rankedName: m.username,
+                action: NotificationAction.MASTERY_LEVEL_UP,
+                title: `${m.username} updated a mastery`,
+                description: `Champion ${m.champion_id} → level ${m.champion_level}`,
+                metadata: {
+                    championId: String(m.champion_id),
+                    masteryLevel: String(m.champion_level ?? 0),
+                },
+            });
+        }
     } catch (err) {
         console.warn('Could not save masteries to Sheet:', err);
         throw err;

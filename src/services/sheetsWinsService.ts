@@ -176,7 +176,7 @@ export const fetchMasteriesFromSheet = async (): Promise<SheetMasteryRow[]> => {
 };
 
 /** Fire-and-forget POST that Apps Script can receive from the browser */
-const postToSheet = async (body: Record<string, unknown>): Promise<boolean> => {
+export const postToSheet = async (body: Record<string, unknown>): Promise<boolean> => {
     const payload = JSON.stringify(body);
 
     // sendBeacon is the most reliable write from a browser tab

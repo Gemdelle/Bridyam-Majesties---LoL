@@ -224,6 +224,53 @@ export const updateChangedRankedData = async (originalData: RankedData[], modifi
             )
         );
         console.log('%c✅ Ranked fields saved to Google Sheets!', 'color: #90EE90; font-weight: bold;');
+
+        const { publishFeedEvent, NotificationAction } = await import('./feedNotificationService');
+        for (const item of sheetUpdates) {
+            const original = originalData.find((o) => o.id === item.id);
+            const username = item.username || item.name;
+            const player = item.name || item.essencer || username;
+            if (original && item.wins.current > original.wins.current) {
+                void publishFeedEvent({
+                    rankedId: item.id,
+                    rankedUsername: username,
+                    rankedName: player,
+                    bloodline: item.bloodline,
+                    action: NotificationAction.WIN,
+                    title: `${player} won a ranked game`,
+                    description: `${username} now has ${item.wins.current} wins`,
+                    metadata: {
+                        wins: String(item.wins.current),
+                        previousWins: String(original.wins.current),
+                    },
+                    points: 70,
+                });
+            }
+            if (original && item.level > original.level) {
+                void publishFeedEvent({
+                    rankedId: item.id,
+                    rankedUsername: username,
+                    rankedName: player,
+                    bloodline: item.bloodline,
+                    action: NotificationAction.LEVEL_UP,
+                    title: `${player} leveled up`,
+                    description: `${username} reached level ${item.level}`,
+                    metadata: { level: String(item.level) },
+                });
+            }
+            if (original && item.honor > original.honor) {
+                void publishFeedEvent({
+                    rankedId: item.id,
+                    rankedUsername: username,
+                    rankedName: player,
+                    bloodline: item.bloodline,
+                    action: NotificationAction.HONOR_UP,
+                    title: `${player} gained honor`,
+                    description: `${username} reached honor ${item.honor}`,
+                    metadata: { honor: String(item.honor) },
+                });
+            }
+        }
     }
 
     // Keep local JSON in sync when running vite dev (no-op on GitHub Pages)

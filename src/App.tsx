@@ -25,6 +25,7 @@ import CursorSelection from './pages/CursorSelection/CursorSelection'
 import Roulette from './pages/Roulette/Roulette'
 import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
+import Leaderboard from './pages/Leaderboard/Leaderboard'
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -148,6 +149,14 @@ function AppContent() {
                 element={
                   <ProtectedRoute>
                     <Achievements />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/leaderboard"
+                element={
+                  <ProtectedRoute>
+                    <Leaderboard />
                   </ProtectedRoute>
                 }
               />
