@@ -437,7 +437,58 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Update essencer pet/level
+    // Update account row FIRST when account is present (wins/lv/honor/elo/essencer claim)
+    const account = String(body.account || '').trim();
+    if (account) {
+      const sheet = getSheet_(ACCOUNTS_SHEET);
+      if (!sheet) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ ok: false, error: 'tab ACCOUNTS no encontrada' }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
+      const values = sheet.getDataRange().getValues();
+      const headers = buildHeaders_(values);
+      const accountIdx = findCol_(headers, ['ACCOUNT'], ['ACCOUNT']);
+      const winsIdx = findCol_(headers, ['WINS'], ['WIN']);
+      const lvIdx = findCol_(headers, ['LV', 'LEVEL'], ['LV', 'LEVEL']);
+      const honorIdx = findCol_(headers, ['HONOR'], ['HONOR']);
+      const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
+      const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
+      const essencerIdx = findCol_(headers, ['ESSENCER'], ['ESSENCER']);
+
+      let found = false;
+      for (let i = 1; i < values.length; i++) {
+        if (String(values[i][accountIdx] || '').trim() !== account) continue;
+
+        if (body.wins !== undefined && winsIdx >= 0) {
+          sheet.getRange(i + 1, winsIdx + 1).setValue(Number(body.wins) || 0);
+        }
+        if (body.lv !== undefined && lvIdx >= 0) {
+          sheet.getRange(i + 1, lvIdx + 1).setValue(Number(body.lv) || 0);
+        }
+        if (body.honor !== undefined && honorIdx >= 0) {
+          sheet.getRange(i + 1, honorIdx + 1).setValue(Number(body.honor) || 0);
+        }
+        if (body.solo !== undefined && soloIdx >= 0) {
+          sheet.getRange(i + 1, soloIdx + 1).setValue(String(body.solo));
+        }
+        if (body.flex !== undefined && flexIdx >= 0) {
+          sheet.getRange(i + 1, flexIdx + 1).setValue(String(body.flex));
+        }
+        if (body.essencer !== undefined && essencerIdx >= 0) {
+          sheet.getRange(i + 1, essencerIdx + 1).setValue(String(body.essencer));
+        }
+        found = true;
+        break;
+      }
+
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: found, error: found ? null : 'cuenta no encontrada', account }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Update essencer pet/level (only when not an account update)
     if (body.essencer && (body.pet !== undefined || body.level !== undefined)) {
       const sheet = getSheet_(ESSENCERS_SHEET);
       if (!sheet) {
@@ -471,59 +522,8 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Update account row
-    const account = String(body.account || '').trim();
-    if (!account) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: 'account, essencer o masteries requerido' }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-
-    const sheet = getSheet_(ACCOUNTS_SHEET);
-    if (!sheet) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: 'tab ACCOUNTS no encontrada' }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-
-    const values = sheet.getDataRange().getValues();
-    const headers = buildHeaders_(values);
-    const accountIdx = findCol_(headers, ['ACCOUNT'], ['ACCOUNT']);
-    const winsIdx = findCol_(headers, ['WINS'], ['WIN']);
-    const lvIdx = findCol_(headers, ['LV', 'LEVEL'], ['LV', 'LEVEL']);
-    const honorIdx = findCol_(headers, ['HONOR'], ['HONOR']);
-    const soloIdx = findCol_(headers, ['SOLO', 'SOLOQ'], ['SOLO']);
-    const flexIdx = findCol_(headers, ['FLEX'], ['FLEX']);
-    const essencerIdx = findCol_(headers, ['ESSENCER'], ['ESSENCER']);
-
-    let found = false;
-    for (let i = 1; i < values.length; i++) {
-      if (String(values[i][accountIdx] || '').trim() !== account) continue;
-
-      if (body.wins !== undefined && winsIdx >= 0) {
-        sheet.getRange(i + 1, winsIdx + 1).setValue(Number(body.wins) || 0);
-      }
-      if (body.lv !== undefined && lvIdx >= 0) {
-        sheet.getRange(i + 1, lvIdx + 1).setValue(Number(body.lv) || 0);
-      }
-      if (body.honor !== undefined && honorIdx >= 0) {
-        sheet.getRange(i + 1, honorIdx + 1).setValue(Number(body.honor) || 0);
-      }
-      if (body.solo !== undefined && soloIdx >= 0) {
-        sheet.getRange(i + 1, soloIdx + 1).setValue(String(body.solo));
-      }
-      if (body.flex !== undefined && flexIdx >= 0) {
-        sheet.getRange(i + 1, flexIdx + 1).setValue(String(body.flex));
-      }
-      if (body.essencer !== undefined && essencerIdx >= 0) {
-        sheet.getRange(i + 1, essencerIdx + 1).setValue(String(body.essencer));
-      }
-      found = true;
-      break;
-    }
-
     return ContentService
-      .createTextOutput(JSON.stringify({ ok: found, error: found ? null : 'cuenta no encontrada', account }))
+      .createTextOutput(JSON.stringify({ ok: false, error: 'account, essencer o masteries requerido' }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService

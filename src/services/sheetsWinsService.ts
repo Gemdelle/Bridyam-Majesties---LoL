@@ -159,7 +159,12 @@ export const updateAccountInSheet = async (
     account: string,
     patch: Partial<{ wins: number; lv: number; honor: number; solo: string; flex: string; essencer: string }>
 ): Promise<boolean> => {
-    return postToSheet({ account, ...patch });
+    const ok = await postToSheet({ account, ...patch });
+    if (!ok) {
+        throw new Error(`No se pudo guardar en Sheet: ${account}`);
+    }
+    console.log('Sheet account update queued:', account, patch);
+    return true;
 };
 
 /** Update wins for one account in Google Sheets. */
@@ -175,7 +180,7 @@ export const fetchMasteriesFromSheet = async (): Promise<SheetMasteryRow[]> => {
     );
 };
 
-/** POST to Apps Script. Prefer real fetch — sendBeacon often does not reach doPost. */
+/** POST to Apps Script without following redirects (follow can drop the POST body). */
 export const postToSheet = async (body: Record<string, unknown>): Promise<boolean> => {
     const payload = JSON.stringify(body);
 
@@ -184,22 +189,32 @@ export const postToSheet = async (body: Record<string, unknown>): Promise<boolea
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: payload,
-            redirect: 'follow',
+            redirect: 'manual',
         });
 
-        // Redirect response may fail CORS when reading body; write usually already ran.
-        try {
-            const data = (await response.json()) as { ok?: boolean; error?: string };
-            if (data && data.ok === false) {
-                console.warn('Sheets POST rejected:', data.error);
-                return false;
-            }
-        } catch {
-            /* ignore unreadable CORS body */
+        // 0 / opaqueredirect / 302 = request accepted by Apps Script before redirect
+        const status = response.status;
+        if (status === 0 || status === 301 || status === 302 || status === 303 || status === 307 || status === 308) {
+            return true;
         }
-        return true;
+
+        if (response.ok) {
+            try {
+                const data = (await response.json()) as { ok?: boolean; error?: string };
+                if (data && data.ok === false) {
+                    console.warn('Sheets POST rejected:', data.error, body);
+                    return false;
+                }
+            } catch {
+                /* body may be unreadable */
+            }
+            return true;
+        }
+
+        console.warn('Sheets POST unexpected status:', status);
+        return false;
     } catch (err) {
-        console.warn('Sheets POST cors-mode failed, retrying no-cors:', err);
+        console.warn('Sheets POST failed, retrying no-cors:', err);
         try {
             await fetch(SHEETS_WINS_URL, {
                 method: 'POST',

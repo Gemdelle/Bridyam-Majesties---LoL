@@ -172,26 +172,23 @@ const Ranked: React.FC = () => {
     // --- Función para actualizar un rankedData específico ---
     const handleUpdateRankedData = async (updatedData: RankedData) => {
         console.log('handleUpdateRankedData called with:', updatedData);
+        const previous = rankedData;
+        const previousOriginal = originalRankedData;
+        const newData = rankedData.map((item) =>
+            item.id === updatedData.id ? updatedData : item
+        );
+        setRankedData(newData);
+
         try {
-            // Update local state first for immediate UI feedback
-            const newData = rankedData.map(item =>
-                item.id === updatedData.id ? updatedData : item
-            );
-            console.log('New data array:', newData);
-            setRankedData(newData);
-
-            // Use the optimized method that only sends changed data
-            const updatedDataFromServer = await updateChangedRankedData(originalRankedData, newData);
-            console.log('Data updated successfully with optimized method');
-
-            // Update original data to reflect the changes for future comparisons
-            setOriginalRankedData(updatedDataFromServer);
+            const saved = await updateChangedRankedData(previousOriginal, newData);
+            setOriginalRankedData(saved);
+            setRankedData(saved);
+            console.log('Ranked data saved to Sheet');
         } catch (error) {
             console.error('Error updating ranked data:', error);
-            setError('Failed to update data on server');
-
-            // Revert local state if API call fails
-            setRankedData(prevData => prevData);
+            setError('Failed to save wins to Google Sheets');
+            setRankedData(previous);
+            setOriginalRankedData(previousOriginal);
         }
     };
 
