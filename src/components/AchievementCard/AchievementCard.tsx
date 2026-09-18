@@ -23,14 +23,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             "Artisan": 2,
             "Battlelord": 3,
             "Victorious": 4,
-            "Initiate": 5,
             "Conqueror": 6,
             "Champion": 7,
             "Majesty": 8,
-            "Warrior": 9,
             "Guardian": 10,
-            "Companion": 11,
-            "Questmaster": 12
         };
         return achievementMap[achievementName] || 0;
     };
@@ -43,13 +39,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
             "Artisan": [1, 3, 5, 10, 15, 25, 50, 100, 200, 500],
             "Battlelord": [5, 15, 30, 75, 150, 300, 750, 1500, 3000, 7500],
             "Victorious": [1, 5, 15, 35, 75, 150, 350, 750, 1500, 3500],
-            "Initiate": [1, 2, 3, 5, 8, 12, 18, 25, 35, 50],
             "Conqueror": [1, 3, 5, 8, 12, 18, 25, 35, 40, 50],
             "Champion": [1, 2, 3, 5, 8, 12, 18, 22, 26, 30],
-            "Warrior": [5, 15, 35, 75, 150, 300, 500, 750, 1000, 1500],
             "Guardian": [10, 50, 150, 500, 1000, 2000, 3500, 5000, 7500, 10000],
-            "Companion": [1, 5, 15, 35, 75, 150, 250, 350, 425, 500],
-            "Questmaster": [5, 25, 75, 200, 500, 1000, 2000, 3500, 5500, 8000]
         };
         return valueMap[achievementName] || [];
     };

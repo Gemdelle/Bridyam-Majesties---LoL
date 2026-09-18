@@ -40,13 +40,6 @@ const achievements: Achievement[] = [
         type: 'lol'
     },
     {
-        name: "Initiate",
-        description: "Obtain first blood",
-        iconSrc: "/images/masteries/mastery/1.png",
-        completedSteps: 1,
-        type: 'lol'
-    },
-    {
         name: "Conqueror",
         description: "Advance to the next division",
         iconSrc: "/images/lol-elements/tier-challenger.webp",
@@ -65,27 +58,6 @@ const achievements: Achievement[] = [
         description: "Redeem majesty accounts",
         iconSrc: "/images/ranked-btn/porveldam.png",
         completedSteps: 6,
-        type: 'lol'
-    },
-    {
-        name: "Warrior",
-        description: "Win victorious champion ranked games",
-        iconSrc: "/images/ranked-btn/gladasmy.png",
-        completedSteps: 2,
-        type: 'lol'
-    },
-    {
-        name: "Companion",
-        description: "Play games in premade",
-        iconSrc: "/images/achievement/achievement-11-1.png",
-        completedSteps: 3,
-        type: 'lol'
-    },
-    {
-        name: "Questmaster",
-        description: "Complete missions",
-        iconSrc: "/images/achievement/achievement-12-1.png",
-        completedSteps: 7,
         type: 'lol'
     },
     {

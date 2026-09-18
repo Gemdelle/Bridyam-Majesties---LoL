@@ -236,21 +236,22 @@ export const updateMasteries = async (
         await upsertMasteriesToSheet(toSheetRows(masteriesData), mode);
         console.log(`Masteries queued to Sheet (${mode}, ${masteriesData.length} row(s))`);
 
-        // Feed: one event per changed mastery (account name identifies the actor)
+        // Feed: one event per changed mastery (person name + pet resolved in publishFeedEvent)
         const { publishFeedEvent, NotificationAction } = await import('./feedNotificationService');
         for (const m of masteriesData) {
+            const level = Number(m.champion_level) || 0;
             void publishFeedEvent({
                 rankedId: m.ranked_id,
                 rankedUsername: m.username,
-                rankedName: m.username,
                 action: NotificationAction.MASTERY_LEVEL_UP,
-                title: `${m.username} updated a mastery`,
-                description: `Champion ${m.champion_id} → level ${m.champion_level}`,
+                title: `${m.username} leveled a mastery`,
+                description: `Reached mastery ${level}`,
                 metadata: {
                     championId: String(m.champion_id),
-                    masteryLevel: String(m.champion_level ?? 0),
-                    to: String(m.champion_level ?? 0),
+                    masteryLevel: String(level),
+                    to: String(level),
                 },
+                points: Math.max(20, level * 10),
             });
         }
     } catch (err) {

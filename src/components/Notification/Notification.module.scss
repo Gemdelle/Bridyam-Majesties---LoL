@@ -1,7 +1,7 @@
 @use '../../styles/variables.scss' as *;
 
 .notification {
-  width: 65%;
+  width: 72%;
   height: 6vw;
   margin-bottom: 1.2vw;
   position: relative;
@@ -23,6 +23,10 @@
   z-index: 1;
   @include flex-start;
   transition: filter 0.3s ease;
+}
+
+.notificacion__background__glow {
+  animation: glowPulse 2s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
@@ -248,7 +252,7 @@
 
 .pet__image {
   position: absolute;
-  right: -9%;
+  right: -7%;
   width: auto;
   height: 7vw;
   z-index: 2;
@@ -334,10 +338,12 @@
   font-size: 1vw;
   font-weight: 700;
   margin: 0;
+  padding-right: 0.35em;
   text-transform: uppercase;
-  letter-spacing: 0.2vw;
+  letter-spacing: 0.12vw;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
+  max-width: none;
 }
 
 .notification__timestamp {

@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../AchievementCard/AchievementCard.module.scss';
+import cardStyles from '../AchievementCard/AchievementCard.module.scss';
+import styles from './PlayerAchievementRow.module.scss';
 import { assetUrl } from '../../utils/assetUrl';
 import { ACHIEVEMENT_DEFS, type PlayerAchievementRow as RowData } from '../../services/playerAchievementsService';
 
@@ -15,27 +16,30 @@ const PlayerAchievementRow: React.FC<Props> = ({ row }) => {
     };
 
     return (
-        <div className={styles.achievement__card}>
-            <div className={styles.achievement__icon}>
-                <div className={styles.achievement__badge}>
+        <div className={cardStyles.achievement__card}>
+            <div className={cardStyles.achievement__icon}>
+                <div className={cardStyles.achievement__badge}>
                     <img src={getPetImage()} alt={row.playerName} />
                 </div>
             </div>
-            <div className={styles.achievement__info}>
-                <h3 className={styles.achievement__name}>{row.playerName}</h3>
-                <div className={styles.achievement__progress}>
-                    <div className={styles.progress__bar}>
-                        <div
-                            className={styles.progress__fill}
-                            style={{ width: `${row.progressPercent}%` }}
-                        />
+            <div className={`${cardStyles.achievement__info} ${styles.info}`}>
+                <h3 className={cardStyles.achievement__name}>{row.playerName}</h3>
+                <div className={styles.progressStack}>
+                    <span className={styles.progressPercent}>{row.progressPercent}%</span>
+                    <div className={styles.progressRow}>
+                        <div className={cardStyles.progress__bar}>
+                            <div
+                                className={cardStyles.progress__fill}
+                                style={{ width: `${row.progressPercent}%` }}
+                            />
+                        </div>
+                        <span className={styles.progressCount}>
+                            {row.totalBadges}/{row.maxBadges}
+                        </span>
                     </div>
-                    <span className={styles.progress__text}>
-                        {row.totalBadges}/{row.maxBadges} · {row.progressPercent}%
-                    </span>
                 </div>
             </div>
-            <div className={styles.achievement__circles}>
+            <div className={`${cardStyles.achievement__circles} ${styles.circles}`}>
                 {row.achievements.map((ach) => {
                     const def = ACHIEVEMENT_DEFS.find((d) => d.name === ach.name);
                     const num = def?.achievementNumber || 1;
@@ -47,9 +51,9 @@ const PlayerAchievementRow: React.FC<Props> = ({ row }) => {
                     return (
                         <div
                             key={ach.name}
-                            className={`${styles.achievement__circle} ${
-                                ach.completedSteps > 0 ? styles.completed : ''
-                            } ${ach.completedSteps > 0 ? styles.currentLevel : ''}`}
+                            className={`${cardStyles.achievement__circle} ${styles.circle} ${
+                                ach.completedSteps > 0 ? cardStyles.completed : ''
+                            } ${ach.completedSteps > 0 ? cardStyles.currentLevel : ''}`}
                             title={`${ach.name}: ${ach.completedSteps}/10`}
                         >
                             <img
@@ -57,17 +61,15 @@ const PlayerAchievementRow: React.FC<Props> = ({ row }) => {
                                 alt={ach.name}
                                 style={{ opacity: ach.completedSteps > 0 ? 1 : 0.35 }}
                             />
-                            <div className={styles.badge__counter}>
-                                <span>
-                                    {ach.completedSteps}/10
-                                </span>
+                            <div className={cardStyles.badge__counter}>
+                                <span>{ach.completedSteps}/10</span>
                             </div>
                         </div>
                     );
                 })}
             </div>
-            <div className={styles.achievement__prize}>
-                <div className={styles.spinning__circle} />
+            <div className={cardStyles.achievement__prize}>
+                <div className={cardStyles.spinning__circle} />
                 <img src={getPetImage()} alt={row.playerName} />
             </div>
         </div>

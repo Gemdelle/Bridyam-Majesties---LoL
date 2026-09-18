@@ -1,20 +1,25 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { usePermissions } from '../../hooks/usePermissions'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
 import PetDisplay from '../PetDisplay'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
+import { assetUrl } from '../../utils/assetUrl'
+
+const FEED_SEEN_KEY = 'bridyam_feed_seen_count'
 
 export const Nav = () => {
     const location = useLocation()
     const { logout } = useAuthContext()
     const { canSeeAllNavigation } = usePermissions()
     const { language, setLanguage, t } = useLanguage()
-    const [hasNewNotifications, setHasNewNotifications] = useState(false)
-    const [lastNotificationCount, setLastNotificationCount] = useState(0)
+    const [unreadCount, setUnreadCount] = useState(0)
+    const [alertPetSrc, setAlertPetSrc] = useState<string | null>(null)
+    const prevCountRef = useRef(0)
+    const onFeedPage = location.pathname === '/feed'
 
     const handleLogout = async () => {
         playClickSound();
@@ -29,22 +34,54 @@ export const Nav = () => {
         setLanguage(newLang);
     }
 
-    // Verificar notificaciones nuevas cada 30 segundos
+    const markFeedSeen = (count: number) => {
+        localStorage.setItem(FEED_SEEN_KEY, String(count))
+        setUnreadCount(0)
+        setAlertPetSrc(null)
+    }
+
     useEffect(() => {
+        let cancelled = false
+
         const checkNotifications = async () => {
             try {
                 const notifications = await fetchAllNotifications(100)
-                const currentCount = notifications.length
+                if (cancelled) return
 
-                // Si hay más notificaciones que antes, mostrar efecto y reproducir sonido
-                if (lastNotificationCount > 0 && currentCount > lastNotificationCount) {
-                    setHasNewNotifications(true)
-                    playNotificationSound()
-                } else if (currentCount === 0) {
-                    setHasNewNotifications(false)
+                const currentCount = notifications.length
+                const seen = Number(localStorage.getItem(FEED_SEEN_KEY) || '0')
+
+                if (onFeedPage) {
+                    markFeedSeen(currentCount)
+                    prevCountRef.current = currentCount
+                    return
                 }
 
-                setLastNotificationCount(currentCount)
+                const unread = Math.max(0, currentCount - seen)
+                setUnreadCount(unread)
+
+                if (prevCountRef.current > 0 && currentCount > prevCountRef.current) {
+                    playNotificationSound()
+                }
+                prevCountRef.current = currentCount
+
+                if (unread > 0 && notifications[0]) {
+                    const petType = notifications[0].petType
+                    const petStage = notifications[0].petStage
+                    if (
+                        petType &&
+                        ['1', '2', '3', '4'].includes(petType) &&
+                        petStage &&
+                        petStage >= 1 &&
+                        petStage <= 3
+                    ) {
+                        setAlertPetSrc(assetUrl(`images/pets/pet-${petType}-${petStage}.png`))
+                    } else {
+                        setAlertPetSrc(assetUrl('images/pets/pet-1-1.png'))
+                    }
+                } else {
+                    setAlertPetSrc(null)
+                }
             } catch (error) {
                 console.error('Error checking notifications:', error)
             }
@@ -52,16 +89,14 @@ export const Nav = () => {
 
         checkNotifications()
         const interval = setInterval(checkNotifications, 30000)
-
-        return () => clearInterval(interval)
-    }, [lastNotificationCount])
-
-    // Limpiar el efecto cuando se visita la página de Feed
-    useEffect(() => {
-        if (location.pathname === '/feed') {
-            setHasNewNotifications(false)
+        return () => {
+            cancelled = true
+            clearInterval(interval)
         }
-    }, [location.pathname])
+    }, [onFeedPage])
+
+    const badgeLabel = unreadCount > 9 ? '9+' : String(unreadCount)
+    const showFeedAlert = unreadCount > 0 && !onFeedPage
 
     return (
         <div className={styles.nav}>
@@ -137,25 +172,29 @@ export const Nav = () => {
                             </li>
                         </>
                     )}
-                    {/* DISABLED - Local mode: Redeem functionality is disabled
                     <li
-                        className={location.pathname === '/redeem' ? styles.active : ''}
-                        data-nav="redeem"
-                    >
-                        <Link to="/redeem" onClick={playClickSound}>{t('nav.redeem')}</Link>
-                    </li>
-                    */}
-                    <li
-                        className={`${location.pathname === '/feed' ? styles.active : ''} ${hasNewNotifications ? styles.hasNotifications : ''}`}
+                        className={`${location.pathname === '/feed' ? styles.active : ''} ${showFeedAlert ? styles.hasNotifications : ''}`}
                         data-nav="feed"
                     >
                         <Link to="/feed" onClick={playClickSound}>{t('nav.feed')}</Link>
-                        {hasNewNotifications && (
-                            <div className={styles.particles__container}>
-                                {Array.from({ length: 8 }, (_, i) => (
-                                    <div key={i} className={`${styles.particle} ${styles[`particle__${i + 1}`]}`}></div>
-                                ))}
-                            </div>
+                        {showFeedAlert && (
+                            <>
+                                <span className={styles.feedBadge} aria-label={`${unreadCount} new`}>
+                                    <img
+                                        src={assetUrl('images/frames/notification-icon-frame.png')}
+                                        alt=""
+                                        className={styles.feedBadge__frame}
+                                    />
+                                    <span className={styles.feedBadge__count}>{badgeLabel}</span>
+                                </span>
+                                {alertPetSrc && (
+                                    <img
+                                        src={alertPetSrc}
+                                        alt=""
+                                        className={styles.feedAlertPet}
+                                    />
+                                )}
+                            </>
                         )}
                     </li>
                     <li
@@ -166,16 +205,6 @@ export const Nav = () => {
                             Leaderboard
                         </Link>
                     </li>
-                    {/* DISABLED - Local mode: Logout button is disabled
-                    <li>
-                        <button
-                            className={styles.logoutButton}
-                            onClick={handleLogout}
-                        >
-                            {t('nav.logout')}
-                        </button>
-                    </li>
-                    */}
                 </ul>
             </div>
             <div className={styles.nav__pet}>

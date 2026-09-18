@@ -54,14 +54,6 @@ export const ACHIEVEMENT_DEFS: AchievementDef[] = [
         thresholds: [1, 5, 15, 35, 75, 150, 350, 750, 1500, 3500],
     },
     {
-        name: 'Initiate',
-        description: 'Obtain first blood',
-        iconSrc: '/images/masteries/mastery/1.png',
-        type: 'lol',
-        achievementNumber: 5,
-        thresholds: [1, 2, 3, 5, 8, 12, 18, 25, 35, 50],
-    },
-    {
         name: 'Conqueror',
         description: 'Advance to the next division',
         iconSrc: '/images/lol-elements/tier-challenger.webp',
@@ -84,30 +76,6 @@ export const ACHIEVEMENT_DEFS: AchievementDef[] = [
         type: 'lol',
         achievementNumber: 8,
         thresholds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    },
-    {
-        name: 'Warrior',
-        description: 'Win victorious champion ranked games',
-        iconSrc: '/images/ranked-btn/gladasmy.png',
-        type: 'lol',
-        achievementNumber: 9,
-        thresholds: [5, 15, 35, 75, 150, 300, 500, 750, 1000, 1500],
-    },
-    {
-        name: 'Companion',
-        description: 'Play games in premade',
-        iconSrc: '/images/achievement/achievement-11-1.png',
-        type: 'lol',
-        achievementNumber: 11,
-        thresholds: [1, 5, 15, 35, 75, 150, 250, 350, 425, 500],
-    },
-    {
-        name: 'Questmaster',
-        description: 'Complete missions',
-        iconSrc: '/images/achievement/achievement-12-1.png',
-        type: 'lol',
-        achievementNumber: 12,
-        thresholds: [5, 25, 75, 200, 500, 1000, 2000, 3500, 5500, 8000],
     },
     {
         name: 'Guardian',
@@ -246,8 +214,6 @@ export const fetchPlayerAchievementLeaderboard = async (
                     return agg.accounts;
                 case 'Guardian':
                     return agg.petLevel * 50;
-                case 'Warrior':
-                    return Math.floor(agg.wins / 2);
                 default:
                     return 0;
             }

@@ -198,8 +198,6 @@ const Feed: React.FC = () => {
                     '1';
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
-                // Agregar clase específica para el nivel de maestría
-                feedNotif.masteryLevel = masteryLvl;
                 break;
             }
             case NotificationAction.LEVEL_30_ACHIEVED:
@@ -265,6 +263,39 @@ const Feed: React.FC = () => {
         // Estos puntos representan el score de ranking que se suma por esa acción
         const score = feedNotif.points ?? undefined;
 
+        const masteryLevelForIcon =
+            feedNotif.action === NotificationAction.MASTERY_LEVEL_UP
+                ? feedNotif.metadata.to ||
+                  feedNotif.metadata.masteryLevel ||
+                  feedNotif.metadata.champion_level ||
+                  null
+                : null;
+
+        // Prefer person name over account username in the visible title
+        if (
+            feedNotif.rankedName &&
+            feedNotif.rankedUsername &&
+            feedNotif.rankedName !== feedNotif.rankedUsername &&
+            notificationTitle.includes(feedNotif.rankedUsername)
+        ) {
+            notificationTitle = notificationTitle
+                .split(feedNotif.rankedUsername)
+                .join(feedNotif.rankedName);
+        } else if (
+            feedNotif.rankedName &&
+            !notificationTitle.toLowerCase().includes(feedNotif.rankedName.toLowerCase()) &&
+            (feedNotif.action === NotificationAction.MASTERY_LEVEL_UP ||
+                feedNotif.action === NotificationAction.WIN ||
+                feedNotif.action === NotificationAction.LEVEL_UP ||
+                feedNotif.action === NotificationAction.HONOR_UP)
+        ) {
+            // Older feed rows may only have the account in title — swap to person name
+            notificationTitle = notificationTitle.replace(
+                feedNotif.rankedUsername || '',
+                feedNotif.rankedName
+            );
+        }
+
         return {
             id: feedNotif.id,
             type: notifType,
@@ -280,7 +311,7 @@ const Feed: React.FC = () => {
             action: feedNotif.action,
             rankedName: feedNotif.rankedName,
             username: feedNotif.metadata.username || '',
-            masteryLevel: feedNotif.masteryLevel || null
+            masteryLevel: masteryLevelForIcon
         };
     };
 

@@ -1,4 +1,13 @@
-import { SHEETS_WINS_URL, postToSheet } from './sheetsWinsService';
+import {
+    SHEETS_WINS_URL,
+    postToSheet,
+    fetchWinsFromSheet,
+    fetchEssencerPetMap,
+    normalizeSheetEssencer,
+    isClaimedEssencer,
+    getPetTypeFromSpecies,
+    getPetStageFromLevel,
+} from './sheetsWinsService';
 
 export enum NotificationAction {
     LEVEL_UP = 'LEVEL_UP',
@@ -12,6 +21,77 @@ export enum NotificationAction {
     USER_REGISTERED = 'USER_REGISTERED',
     MISSION_COMPLETED = 'MISSION_COMPLETED',
 }
+
+type FeedActor = {
+    rankedName: string;
+    petType: string | null;
+    petStage: number | null;
+};
+
+let actorCache: { at: number; byUsername: Map<string, FeedActor> } | null = null;
+
+const defaultPointsForAction = (action: string): number | null => {
+    switch (action) {
+        case NotificationAction.WIN:
+            return 70;
+        case NotificationAction.MASTERY_LEVEL_UP:
+            return 45;
+        case NotificationAction.LEVEL_UP:
+            return 25;
+        case NotificationAction.HONOR_UP:
+            return 30;
+        case NotificationAction.RANK_UP:
+        case NotificationAction.ELO_DIVISION_UP:
+            return 50;
+        case NotificationAction.MISSION_COMPLETED:
+            return 40;
+        default:
+            return null;
+    }
+};
+
+/** Resolve person name + pet from the account username (Sheet ACCOUNTS + ESSENCERS). */
+const resolveFeedActor = async (
+    username: string,
+    fallbackName?: string
+): Promise<FeedActor> => {
+    const key = username.trim().toLowerCase();
+    const now = Date.now();
+    if (!actorCache || now - actorCache.at > 60_000) {
+        try {
+            const [accounts, pets] = await Promise.all([
+                fetchWinsFromSheet(),
+                fetchEssencerPetMap(),
+            ]);
+            const byUsername = new Map<string, FeedActor>();
+            accounts.forEach((row) => {
+                const accountKey = String(row.account || '').trim().toLowerCase();
+                if (!accountKey) return;
+                const essencer = normalizeSheetEssencer(row.essencer);
+                const rankedName = isClaimedEssencer(essencer)
+                    ? essencer
+                    : String(row.essencer || '').trim() || accountKey;
+                const petRow = pets.get(rankedName.toLowerCase());
+                const petType = getPetTypeFromSpecies(petRow?.pet);
+                byUsername.set(accountKey, {
+                    rankedName: isClaimedEssencer(essencer) ? essencer : rankedName,
+                    petType,
+                    petStage: petType ? getPetStageFromLevel(petRow?.level) : null,
+                });
+            });
+            actorCache = { at: now, byUsername };
+        } catch (err) {
+            console.warn('Could not resolve feed actors from Sheet:', err);
+            actorCache = { at: now, byUsername: new Map() };
+        }
+    }
+
+    const found = actorCache.byUsername.get(key);
+    if (found) return found;
+
+    const fallback = String(fallbackName || username).trim() || username;
+    return { rankedName: fallback, petType: null, petStage: null };
+};
 
 export interface FeedNotification {
     id: number;
@@ -118,21 +198,36 @@ export const publishFeedEvent = async (input: CreateFeedEventInput): Promise<voi
     if (!username || !input.action || !input.title) return;
 
     try {
+        const actor = await resolveFeedActor(username, input.rankedName);
+        const playerName = actor.rankedName || String(input.rankedName || username);
+        const points =
+            input.points !== undefined && input.points !== null
+                ? input.points
+                : defaultPointsForAction(String(input.action));
+
+        // Prefer person name in title/description when the caller used the account name
+        let title = String(input.title);
+        let description = String(input.description || '');
+        if (playerName && playerName !== username) {
+            title = title.split(username).join(playerName);
+            description = description.split(username).join(playerName);
+        }
+
         await postToSheet({
             action: 'appendFeed',
             feed: {
                 rankedId: Number(input.rankedId) || 0,
                 rankedUsername: username,
-                rankedName: String(input.rankedName || username),
+                rankedName: playerName,
                 bloodline: String(input.bloodline || ''),
-                petType: input.petType ?? '',
-                petStage: input.petStage ?? '',
+                petType: input.petType ?? actor.petType ?? '',
+                petStage: input.petStage ?? actor.petStage ?? '',
                 action: String(input.action),
-                title: String(input.title),
-                description: String(input.description || ''),
+                title,
+                description,
                 metadata: input.metadata || {},
                 createdAt: new Date().toISOString(),
-                points: input.points ?? null,
+                points,
             },
         });
     } catch (err) {

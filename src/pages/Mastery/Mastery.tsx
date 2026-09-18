@@ -670,7 +670,6 @@ const Mastery: React.FC = () => {
                                             const masteryValue = masteryLevel ?? 0;
                                             const isSmallMastery = masteryValue >= 1 && masteryValue <= 5;
                                             const isLargeMastery = masteryValue >= 10;
-                                            const hasGlow = masteryValue >= 5;
                                             const masteryText = masteryValue > 10 ? '10+' : masteryValue.toString();
                                             const canClick = canEditRankedUsername(account.username);
                                             const dropdownKey = `${account.id}-${champion.id}`;
@@ -699,7 +698,7 @@ const Mastery: React.FC = () => {
                                                     <img
                                                         src={getMasteryImage(masteryLevel)}
                                                         alt={`Mastery ${masteryText}`}
-                                                        className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${hasGlow ? styles['mastery__image--glow'] : ''} ${masteryLevel === 0 ? styles['mastery__image--bought'] : ''}`}
+                                                        className={`${styles.mastery__image} ${isSmallMastery ? styles['mastery__image--small'] : ''} ${isLargeMastery ? styles['mastery__image--large'] : ''} ${masteryLevel === 0 ? styles['mastery__image--bought'] : ''}`}
                                                         style={{
                                                             cursor: canClick ? 'pointer' : 'default',
                                                             opacity: canClick ? 0.8 : 1

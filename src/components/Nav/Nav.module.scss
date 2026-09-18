@@ -314,65 +314,81 @@ ul li.active::before {
   }
 }
 
-// Particles effect for new notifications
+// Feed alert: badge count + jumping pet
 ul li.hasNotifications {
   position: relative;
-  
+
   a {
     animation: pulseGlow 2s ease-in-out infinite;
   }
 }
 
-.particles__container {
+.feedBadge {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: -0.55rem;
+  right: -1.1rem;
+  width: 1.55rem;
+  height: 1.55rem;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: badgePop 0.45s ease-out;
+}
+
+.feedBadge__frame {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(200, 155, 60, 0.75));
+}
+
+.feedBadge__count {
+  position: relative;
   z-index: 1;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #f0e6d2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  line-height: 1;
 }
 
-.particle {
+.feedAlertPet {
   position: absolute;
-  width: 3px;
-  height: 3px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.9), rgba(200, 155, 60, 0.7));
-  border-radius: 50%;
-  animation: particleFloat 3s ease-in-out infinite;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(200, 155, 60, 0.5);
+  left: 50%;
+  bottom: 115%;
+  width: auto;
+  height: 2.4rem;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
+  animation: petHop 0.7s ease-in-out infinite;
 }
 
-// Posiciones de las partículas
-.particle__1 { top: 20%; left: 10%; animation-delay: 0s; }
-.particle__2 { top: 30%; right: 15%; animation-delay: 0.4s; }
-.particle__3 { top: 50%; left: 20%; animation-delay: 0.8s; }
-.particle__4 { top: 40%; right: 10%; animation-delay: 1.2s; }
-.particle__5 { top: 60%; left: 15%; animation-delay: 1.6s; }
-.particle__6 { top: 70%; right: 20%; animation-delay: 2s; }
-.particle__7 { top: 25%; left: 50%; animation-delay: 2.4s; }
-.particle__8 { top: 55%; right: 50%; animation-delay: 2.8s; }
-
-// Animación de partículas flotantes
-@keyframes particleFloat {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translateY(-15px) scale(1.3);
-    opacity: 1;
-  }
+@keyframes badgePop {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
-// Animación de pulso para el texto
+@keyframes petHop {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-4deg); }
+  40% { transform: translateX(-50%) translateY(-10px) rotate(4deg); }
+  60% { transform: translateX(-50%) translateY(-4px) rotate(-2deg); }
+}
+
 @keyframes pulseGlow {
   0%, 100% {
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.5), 0 0 12px rgba(200, 155, 60, 0.3);
+    color: #f0e6d2;
   }
   50% {
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 20px rgba(200, 155, 60, 0.6);
+    text-shadow: 0 0 16px rgba(255, 215, 0, 0.95), 0 0 24px rgba(200, 155, 60, 0.7);
+    color: #fff6d8;
   }
 }
 

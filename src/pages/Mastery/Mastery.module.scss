@@ -404,10 +404,6 @@
   filter: brightness(0.3);
 }
 
-.row__account:hover .mastery__image--glow {
-  filter: brightness(0.3) drop-shadow(0 0 10px #332913) drop-shadow(0 0 15px #e1d9c9);
-}
-
 .row__account:hover .mastery__roman {
   opacity: 1;
 }
@@ -426,10 +422,6 @@
 .mastery__image--large {
   width: auto;
   height: 80%;
-}
-
-.mastery__image--glow {
-  filter: drop-shadow(0 0 10px #332913) drop-shadow(0 0 15px #e1d9c9);
 }
 
 .mastery__image--bought {
