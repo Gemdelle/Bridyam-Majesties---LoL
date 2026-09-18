@@ -1,5 +1,6 @@
 /**
  * Data Dragon helpers for Add Skin (champion / skin dropdowns + art URLs).
+ * Manual-add list = skins not in the permanent RP store (legacy + rewards).
  */
 
 const norm = (s: string) =>
@@ -22,9 +23,12 @@ export type ManualSkinOption = {
   skinLine: string;
 };
 
+type CdragonSkinMeta = { isLegacy: boolean; name: string };
+
 let ddragonVersion: string | null = null;
 let champListCache: DdragonChampionOption[] | null = null;
 let champIdByName: Map<string, string> | null = null;
+let cdragonSkinsById: Map<number, CdragonSkinMeta> | null = null;
 
 const getDdragonVersion = async (): Promise<string> => {
   if (ddragonVersion) return ddragonVersion;
@@ -60,6 +64,27 @@ const ensureChampMaps = async (version: string) => {
   champIdByName = map;
 };
 
+/** Community Dragon marks retired / limited store skins with isLegacy. */
+const ensureCdragonSkins = async () => {
+  if (cdragonSkinsById) return;
+  const res = await fetch(
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/skins.json'
+  );
+  if (!res.ok) throw new Error('cdragon skins.json failed');
+  const data = (await res.json()) as Record<
+    string,
+    { isBase?: boolean; isLegacy?: boolean; name?: string }
+  >;
+  const map = new Map<number, CdragonSkinMeta>();
+  Object.entries(data).forEach(([id, skin]) => {
+    if (!skin || skin.isBase) return;
+    const n = Number(id);
+    if (!Number.isFinite(n)) return;
+    map.set(n, { isLegacy: Boolean(skin.isLegacy), name: String(skin.name || '') });
+  });
+  cdragonSkinsById = map;
+};
+
 export const fetchChampionOptions = async (): Promise<DdragonChampionOption[]> => {
   const version = await getDdragonVersion();
   await ensureChampMaps(version);
@@ -75,33 +100,44 @@ export const loadingUrlFor = (champId: string, num: number): string =>
 /** Prefer splash (wide, always available on DDragon) for team cards. */
 export const artUrlFor = (champId: string, num: number): string => splashUrlFor(champId, num);
 
-/**
- * Skins that LoLDB / account APIs usually miss — Victorious (+ chromas),
- * plus a few legacy / event patterns users add by hand.
- */
-const isManualOnlySkin = (skinName: string): boolean => {
+/** Reward / never-in-permanent-RP-shop name patterns (when CDragon isLegacy is false). */
+const isRewardOrSpecialUnavailable = (skinName: string): boolean => {
   const n = norm(skinName);
-  if (n === 'default') return false;
   return (
     n.includes('victorious') ||
-    n.startsWith('mercenary ') ||
-    n.includes('silverfang') ||
-    n.includes('underworld ') ||
-    n.includes('blackthorn ') ||
-    n.includes('judgement ') ||
-    n.includes('phantom ') ||
-    n.includes('riot ') ||
+    n.startsWith('riot ') ||
     n.includes('championship ') ||
     n.includes('worlds ') ||
+    n.startsWith('mercenary ') ||
+    n.includes('silverfang') ||
+    n.includes('judgement ') ||
+    n.includes('underworld ') ||
+    n.includes('blackthorn ') ||
+    n.includes('phantom ') ||
     /\bwp\b/.test(n)
   );
 };
 
-const skinLineFromName = (skinName: string): string => {
+/**
+ * Skins not buyable year-round in the RP store: CDragon legacy + Victorious/rewards.
+ * Chromas (name with parentheses) are excluded.
+ */
+const isManualOnlySkin = (skinName: string, skinId: number): boolean => {
+  const n = norm(skinName);
+  if (!n || n === 'default') return false;
+  // Chromas: "Skin Name (Ruby)" or "... Chroma"
+  if (/\([^)]+\)/.test(n) || /\bchroma\b/.test(n)) return false;
+
+  const meta = cdragonSkinsById?.get(skinId);
+  if (meta?.isLegacy) return true;
+  return isRewardOrSpecialUnavailable(skinName);
+};
+
+const skinLineFromName = (skinName: string, isLegacy: boolean): string => {
   const n = norm(skinName);
   if (n.includes('victorious')) return 'victorious';
   if (n.includes('championship') || n.includes('worlds')) return 'worlds';
-  if (n.includes('mercenary')) return 'legacy';
+  if (isLegacy || n.includes('mercenary')) return 'legacy';
   return 'legacy';
 };
 
@@ -111,6 +147,11 @@ export const fetchManualSkinOptionsForChampion = async (
   if (!champId) return [];
   const version = await getDdragonVersion();
   await ensureChampMaps(version);
+  try {
+    await ensureCdragonSkins();
+  } catch (err) {
+    console.warn('CDragon skins unavailable, falling back to name patterns:', err);
+  }
   const champName =
     champListCache?.find((c) => c.id === champId)?.name || champId;
 
@@ -123,15 +164,19 @@ export const fetchManualSkinOptionsForChampion = async (
     payload?.data?.[champId]?.skins || [];
 
   return skins
-    .filter((s) => isManualOnlySkin(s.name))
-    .map((s) => ({
-      name: s.name === 'default' ? champName : s.name,
-      champId,
-      champName,
-      num: s.num,
-      imageUrl: artUrlFor(champId, s.num),
-      skinLine: skinLineFromName(s.name),
-    }));
+    .filter((s) => isManualOnlySkin(s.name, Number(s.id)))
+    .map((s) => {
+      const skinId = Number(s.id);
+      const legacy = Boolean(cdragonSkinsById?.get(skinId)?.isLegacy);
+      return {
+        name: s.name === 'default' ? champName : s.name,
+        champId,
+        champName,
+        num: s.num,
+        imageUrl: artUrlFor(champId, s.num),
+        skinLine: skinLineFromName(s.name, legacy),
+      };
+    });
 };
 
 const guessChampFromSkinName = (skinName: string): string => {

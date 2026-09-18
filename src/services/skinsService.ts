@@ -602,7 +602,8 @@ export const getAccountsForFamily = (
 };
 
 /** Group owned family skins by lane, then by account (for dropdowns).
- * Each champion appears on ONE lane only (primary role) so dual-role champs don't flicker. */
+ * Champions with multiple roles appear on every lane they can play.
+ * Initial picks (pickUniqueRoleSelections) place each champ on one lane to maximize coverage. */
 export const getRoleTeamForFamily = (
   family: SkinFamily,
   accountSkins: AccountSkins[],
@@ -615,9 +616,8 @@ export const getRoleTeamForFamily = (
     for (const account of accountSkins) {
       for (const skin of account.skins || []) {
         if (!skinBelongsToFamily(skin, family)) continue;
-        // Display only on primary lane — dual-role champs still "can" play elsewhere but show once
-        const primary = getPrimaryRoleForChampionName(skin.champName, rolesData);
-        if (primary !== lane.id) continue;
+        const roles = getRolesForChampionName(skin.champName, rolesData);
+        if (!roles.includes(lane.id)) continue;
 
         const ranked = rankedLookup.get(account.ranked_id);
         const existing = byAccount.get(account.ranked_id);
@@ -707,8 +707,9 @@ export const firstAvailableSkin = (
 ): OwnedSkin | null => skins.find((s) => !blocked.has(champKey(s.champName))) || null;
 
 /**
- * Build initial role selections with unique champions across the 5 lanes
- * (same champ can't play two roles in one game).
+ * Build initial role selections with unique champions across the 5 lanes.
+ * Fills scarcest lanes first and prefers inflexible champs (fewer alternate roles)
+ * so dual-role champs (Vayne top/adc, Morgana support/jungle) maximize coverage.
  */
 export const pickUniqueRoleSelections = (
   columns: RoleTeamColumn[]
@@ -716,17 +717,62 @@ export const pickUniqueRoleSelections = (
   const used = new Set<string>();
   const result: Partial<Record<LaneRole, RoleSelection>> = {};
 
+  const flexibility = new Map<string, number>();
   for (const col of columns) {
-    let picked: RoleSelection | null = null;
+    const seenInLane = new Set<string>();
     for (const acc of col.accounts) {
-      const skin = firstAvailableSkin(acc.skins, used);
-      if (skin) {
-        used.add(champKey(skin.champName));
-        picked = { rankedId: acc.rankedId, skinName: skin.name };
-        break;
+      for (const skin of acc.skins) {
+        const k = champKey(skin.champName);
+        if (seenInLane.has(k)) continue;
+        seenInLane.add(k);
+        flexibility.set(k, (flexibility.get(k) || 0) + 1);
       }
     }
-    if (picked) result[col.role] = picked;
+  }
+
+  const uniqueChampCount = (col: RoleTeamColumn): number => {
+    const champs = new Set<string>();
+    for (const acc of col.accounts) {
+      for (const skin of acc.skins) champs.add(champKey(skin.champName));
+    }
+    return champs.size;
+  };
+
+  const ordered = [...columns].sort(
+    (a, b) => uniqueChampCount(a) - uniqueChampCount(b) || a.role.localeCompare(b.role)
+  );
+
+  for (const col of ordered) {
+    type Cand = {
+      rankedId: number;
+      skinName: string;
+      champ: string;
+      flex: number;
+      prio: number;
+    };
+    const cands: Cand[] = [];
+    for (const acc of col.accounts) {
+      for (const skin of acc.skins) {
+        const champ = champKey(skin.champName);
+        if (used.has(champ)) continue;
+        cands.push({
+          rankedId: acc.rankedId,
+          skinName: skin.name,
+          champ,
+          flex: flexibility.get(champ) || 1,
+          prio: champRolePriority(col.role, skin.champName),
+        });
+      }
+    }
+    cands.sort(
+      (a, b) =>
+        a.flex - b.flex || a.prio - b.prio || a.skinName.localeCompare(b.skinName)
+    );
+    const pick = cands[0];
+    if (pick) {
+      used.add(pick.champ);
+      result[col.role] = { rankedId: pick.rankedId, skinName: pick.skinName };
+    }
   }
 
   return result;
@@ -775,9 +821,9 @@ export const cleanAccountName = (username: string): string =>
     .trim();
 
 export const canFormFullTeam = (columns: RoleTeamColumn[]): boolean =>
-  columns.every((col) => col.accounts.length > 0);
+  Object.keys(pickUniqueRoleSelections(columns)).length === LANE_ROLES.length;
 
-/** How many of the 5 lanes can be filled for this family. */
+/** How many of the 5 lanes can be filled for this family (unique champs). */
 export const countCoveredRoles = (
   family: SkinFamily,
   accountSkins: AccountSkins[],
@@ -785,7 +831,7 @@ export const countCoveredRoles = (
   rolesData: ChampionRolesFile
 ): number => {
   const team = getRoleTeamForFamily(family, accountSkins, rankedLookup, rolesData);
-  return team.filter((col) => col.accounts.length > 0).length;
+  return Object.keys(pickUniqueRoleSelections(team)).length;
 };
 
 /** Preferred champion for catalog splash (prefer owned skin of that champ when available). */
@@ -863,3 +909,30 @@ export const FEATURED_PRIORITY_ORDER = [
 
 /** Always show these last among featured families. */
 export const FEATURED_TRAILING_ORDER = ['HEARTBREAKERS', 'HALLOWEEN', 'CHRISTMAS'];
+
+/** Same display order used on the Families grid (priority → middle → trailing → other). */
+export const familyDisplayOrderIndex = (name: string, featured?: boolean): number => {
+  const priority = FEATURED_PRIORITY_ORDER.indexOf(name);
+  if (priority !== -1) return priority;
+  const trailing = FEATURED_TRAILING_ORDER.indexOf(name);
+  if (trailing !== -1) return 500 + trailing;
+  if (featured) return 200;
+  return 1000;
+};
+
+/** First matching family for a skin, preferring featured display order. */
+export const findFamilyForSkin = (
+  skin: OwnedSkin,
+  families: SkinFamily[]
+): SkinFamily | null => {
+  const ordered = [...families].sort(
+    (a, b) =>
+      familyDisplayOrderIndex(a.name, a.featured) - familyDisplayOrderIndex(b.name, b.featured) ||
+      (a.sortOrder || a.id) - (b.sortOrder || b.id) ||
+      a.name.localeCompare(b.name)
+  );
+  for (const family of ordered) {
+    if (skinBelongsToFamily(skin, family)) return family;
+  }
+  return null;
+};

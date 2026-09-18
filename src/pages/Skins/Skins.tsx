@@ -14,8 +14,12 @@ import {
   getBlockedChampions,
   firstAvailableSkin,
   addManualAccountSkin,
+  invalidateAccountSkinsCache,
+  invalidateSkinsCache,
   FEATURED_PRIORITY_ORDER,
   FEATURED_TRAILING_ORDER,
+  findFamilyForSkin,
+  familyDisplayOrderIndex,
   type SkinFamily,
   type AccountSkins,
   type RoleTeamColumn,
@@ -27,7 +31,7 @@ import {
 import { fetchRankedData } from '../../services/apiRankedsService';
 import { assetUrl } from '../../utils/assetUrl';
 
-type ViewState = 'featured' | 'other' | 'family';
+type ViewState = 'featured' | 'other' | 'family' | 'account';
 
 interface SplashFit {
   x: number; // object-position % horizontal
@@ -155,7 +159,7 @@ const RoleSlot: React.FC<{
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
 
-  const extraSkins = availableSkins.length;
+  const showSkinArrow = Boolean(selectedAccount && availableSkins.length > 1);
 
   const cycleSkin = (dir: 1 | -1) => {
     if (!selectedAccount || availableSkins.length < 2) return;
@@ -250,7 +254,7 @@ const RoleSlot: React.FC<{
         <span className={styles.role__sparkle} data-pos="mr" aria-hidden />
         <span className={styles.role__sparkle} data-pos="bm" aria-hidden />
 
-        {extraSkins > 1 && (
+        {showSkinArrow && (
           <button
             type="button"
             className={styles.skin__next__arrow}
@@ -292,9 +296,10 @@ const Skins: React.FC = () => {
   );
   const [featuredPage, setFeaturedPage] = useState(0);
   const [otherPage, setOtherPage] = useState(0);
-  const [editSplash, setEditSplash] = useState(false);
   const [splashFits, setSplashFits] = useState<Record<string, SplashFit>>(() => loadSplashFits());
-  const [editingFamilyId, setEditingFamilyId] = useState<number | null>(null);
+  const [filterAccountId, setFilterAccountId] = useState<number | ''>('');
+  const [updating, setUpdating] = useState(false);
+  const [accountPage, setAccountPage] = useState(0);
   const [showAddSkin, setShowAddSkin] = useState(false);
   const [addChampId, setAddChampId] = useState('');
   const [addSkinKey, setAddSkinKey] = useState(''); // `${num}::${name}`
@@ -447,38 +452,172 @@ const Skins: React.FC = () => {
   const getFit = (family: SkinFamily): SplashFit =>
     splashFits[family.name] || splashFits[String(family.id)] || DEFAULT_FIT;
 
-  const updateFit = (family: SkinFamily, patch: Partial<SplashFit>) => {
-    const key = family.name;
-    const current = getFit(family);
-    const nextFit: SplashFit = {
-      x: Number(patch.x ?? current.x),
-      y: Number(patch.y ?? current.y),
-      scale: Number(patch.scale ?? current.scale),
-    };
-    nextFit.x = Math.max(-80, Math.min(180, nextFit.x));
-    nextFit.y = Math.max(-80, Math.min(180, nextFit.y));
-    nextFit.scale = Math.max(1, Math.min(2.8, nextFit.scale));
-    const next = { ...splashFits, [key]: nextFit, [String(family.id)]: nextFit };
-    setSplashFits(next);
-    saveSplashFits(next);
-  };
-
-  const copyFitsJson = async () => {
-    const text = JSON.stringify(splashFits, null, 2);
-    try {
-      await navigator.clipboard.writeText(text);
-      alert('Splash fits copied to clipboard (localStorage also saved).');
-    } catch {
-      console.log(text);
-      alert('Could not copy — check console for JSON.');
-    }
-  };
-
   const accountOptions = useMemo(() => {
     return [...rankedLookup.entries()]
       .map(([id, info]) => ({ id, username: info.username, essencer: info.essencer }))
       .sort((a, b) => a.username.localeCompare(b.username));
   }, [rankedLookup]);
+
+  const selectedAccountSkins = useMemo(() => {
+    if (filterAccountId === '') return null;
+    const owned = accountSkins.find((a) => a.ranked_id === filterAccountId);
+    const info = rankedLookup.get(filterAccountId);
+    const skins = [...(owned?.skins || [])]
+      .map((skin) => {
+        const family = findFamilyForSkin(skin, families);
+        return {
+          skin,
+          familyName: family?.name || 'OTHER',
+          familyOrder: family
+            ? familyDisplayOrderIndex(family.name, family.featured)
+            : 9999,
+          familySort: family?.sortOrder ?? family?.id ?? 9999,
+        };
+      })
+      .sort(
+        (a, b) =>
+          a.familyOrder - b.familyOrder ||
+          a.familySort - b.familySort ||
+          a.familyName.localeCompare(b.familyName) ||
+          a.skin.name.localeCompare(b.skin.name, undefined, { sensitivity: 'base' })
+      );
+    return {
+      rankedId: filterAccountId,
+      username: info?.username || owned?.username || String(filterAccountId),
+      essencer: info?.essencer,
+      skins,
+    };
+  }, [filterAccountId, accountSkins, rankedLookup, families]);
+
+  const accountPageCount = Math.max(
+    1,
+    Math.ceil((selectedAccountSkins?.skins.length || 0) / FEATURED_PAGE_SIZE)
+  );
+
+  const pagedAccountSkins = useMemo(() => {
+    if (!selectedAccountSkins) return [];
+    const start = accountPage * FEATURED_PAGE_SIZE;
+    return selectedAccountSkins.skins.slice(start, start + FEATURED_PAGE_SIZE);
+  }, [selectedAccountSkins, accountPage]);
+
+  useEffect(() => {
+    setAccountPage(0);
+  }, [filterAccountId]);
+
+  useEffect(() => {
+    if (accountPage > accountPageCount - 1) setAccountPage(0);
+  }, [accountPage, accountPageCount]);
+
+  const refreshSkins = async () => {
+    try {
+      setUpdating(true);
+      invalidateAccountSkinsCache();
+      invalidateSkinsCache();
+      const [familiesData, ownership, rankeds, roles] = await Promise.all([
+        fetchSkinFamilies(),
+        fetchAccountSkins(),
+        fetchRankedData(),
+        fetchChampionRoles(),
+      ]);
+      setFamilies(familiesData);
+      setAccountSkins(ownership);
+      setRolesData(roles);
+      const lookup = new Map<number, { username: string; essencer?: string }>();
+      rankeds.forEach((r) => {
+        lookup.set(r.id, { username: r.username, essencer: r.essencer || r.name });
+      });
+      setRankedLookup(lookup);
+      if (selectedFamily) {
+        const team = getRoleTeamForFamily(selectedFamily, ownership, lookup, roles);
+        setRoleTeam(team);
+        setRoleSelections(pickUniqueRoleSelections(team));
+      }
+    } catch (err) {
+      console.error('Error refreshing skins:', err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const goFamilies = () => {
+    setFilterAccountId('');
+    setSearchTerm('');
+    setSelectedFamily(null);
+    setRoleTeam([]);
+    setRoleSelections({});
+    setViewState('featured');
+  };
+
+  const goOther = () => {
+    setFilterAccountId('');
+    setSearchTerm('');
+    setSelectedFamily(null);
+    setRoleTeam([]);
+    setRoleSelections({});
+    setViewState('other');
+  };
+
+  const onAccountFilterChange = (value: string) => {
+    if (!value) {
+      goFamilies();
+      return;
+    }
+    const id = Number(value);
+    setFilterAccountId(id);
+    setSelectedFamily(null);
+    setRoleTeam([]);
+    setRoleSelections({});
+    setViewState('account');
+  };
+
+  const renderListToolbar = (mode: 'featured' | 'other') => (
+    <div className={styles.content__top}>
+      <button
+        type="button"
+        className={`${styles.other__button} ${mode === 'featured' ? styles.edit__active : ''}`}
+        onClick={goFamilies}
+      >
+        Families
+      </button>
+      {(mode === 'featured' || mode === 'other') && (
+        <button
+          type="button"
+          className={`${styles.other__button} ${mode === 'other' ? styles.edit__active : ''}`}
+          onClick={goOther}
+        >
+          Other
+        </button>
+      )}
+      {mode === 'other' && (
+        <div className={styles.search__container}>
+          <input
+            type="text"
+            placeholder="Search all other skin lines..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.search__input}
+          />
+        </div>
+      )}
+      <select
+        className={styles.account__select}
+        value={filterAccountId === '' ? '' : String(filterAccountId)}
+        onChange={(e) => onAccountFilterChange(e.target.value)}
+        aria-label="Skins by account"
+      >
+        <option value="">Skins by account…</option>
+        {accountOptions.map((a) => (
+          <option key={a.id} value={a.id}>
+            {a.username}
+            {a.essencer && a.essencer !== '-' ? ` · ${a.essencer}` : ''}
+          </option>
+        ))}
+      </select>
+      <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
+        Add skin
+      </button>
+    </div>
+  );
 
   const selectedManualSkin = useMemo(() => {
     if (!addSkinKey) return null;
@@ -590,11 +729,9 @@ const Skins: React.FC = () => {
     const covered = rolesCovered(family);
     const gemN = Math.max(1, Math.min(5, covered || 1));
     const fit = getFit(family);
-    const isEditing = editSplash && editingFamilyId === family.id;
     const splashSrc = family.splashart;
     const imgStyle: React.CSSProperties = {
       objectPosition: `${fit.x}% ${fit.y}%`,
-      // Origin follows focus point so ↑/↓ actually pans while zoomed
       transform: `scale(${fit.scale})`,
       transformOrigin: `${fit.x}% ${fit.y}%`,
     };
@@ -602,21 +739,12 @@ const Skins: React.FC = () => {
     return (
       <div
         key={family.id}
-        className={`${styles.family__card} ${isEditing ? styles.family__card__editing : ''}`}
-        onClick={() => {
-          if (editSplash) {
-            setEditingFamilyId(family.id);
-            return;
-          }
-          openFamily(family);
-        }}
+        className={styles.family__card}
+        onClick={() => openFamily(family)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            if (editSplash) setEditingFamilyId(family.id);
-            else openFamily(family);
-          }
+          if (e.key === 'Enter' || e.key === ' ') openFamily(family);
         }}
       >
         <div className={styles.family__card__title}>
@@ -627,9 +755,7 @@ const Skins: React.FC = () => {
               alt=""
               className={`${styles.family__card__gems__img} ${styles.gem__bob} ${styles.gem__bob__a}`}
             />
-            <span className={`${styles.family__card__gems__count}`}>
-              {covered}
-            </span>
+            <span className={`${styles.family__card__gems__count}`}>{covered}</span>
             <img
               src={assetUrl(`images/frames/ring-gems-${gemN}.png`)}
               alt=""
@@ -672,61 +798,6 @@ const Skins: React.FC = () => {
             <span>{acctCount}</span>
           </div>
         </div>
-
-        {isEditing && (
-          <div
-            className={styles.splash__edit__panel}
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
-          >
-            <button type="button" onClick={() => updateFit(family, { x: fit.x - 6 })}>
-              ←
-            </button>
-            <button
-              type="button"
-              title="Pan up (reveal lower part / push image up)"
-              onClick={() => updateFit(family, { y: Number(fit.y) - 8 })}
-            >
-              ↑
-            </button>
-            <button
-              type="button"
-              title="Pan down (reveal heads / push image down)"
-              onClick={() => updateFit(family, { y: Number(fit.y) + 8 })}
-            >
-              ↓
-            </button>
-            <button type="button" onClick={() => updateFit(family, { x: fit.x + 6 })}>
-              →
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                updateFit(family, { scale: Math.max(1, +(Number(fit.scale) - 0.08).toFixed(2)) })
-              }
-            >
-              −
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                updateFit(family, { scale: Math.min(2.8, +(Number(fit.scale) + 0.08).toFixed(2)) })
-              }
-            >
-              +
-            </button>
-            <button
-              type="button"
-              onClick={() => updateFit(family, { ...DEFAULT_FIT })}
-              title="Reset"
-            >
-              ↺
-            </button>
-            <span className={styles.splash__edit__meta}>
-              y:{Math.round(Number(fit.y))} z:{Number(fit.scale).toFixed(2)}
-            </span>
-          </div>
-        )}
       </div>
     );
   };
@@ -735,16 +806,26 @@ const Skins: React.FC = () => {
     pageCount > 1 ? (
       <div className={styles.pager}>
         {page > 0 && (
-          <button type="button" className={styles.pager__btn} onClick={onPrev} aria-label="Previous page">
-            ▴
+          <button
+            type="button"
+            className={`${styles.pager__arrow} ${styles.pager__arrow__up}`}
+            onClick={onPrev}
+            aria-label="Previous page"
+          >
+            ›
           </button>
         )}
         <span className={styles.pager__meta}>
           {page + 1}/{pageCount}
         </span>
         {page < pageCount - 1 && (
-          <button type="button" className={styles.pager__btn} onClick={onNext} aria-label="Next page">
-            ▾
+          <button
+            type="button"
+            className={`${styles.pager__arrow} ${styles.pager__arrow__down}`}
+            onClick={onNext}
+            aria-label="Next page"
+          >
+            ›
           </button>
         )}
       </div>
@@ -752,38 +833,19 @@ const Skins: React.FC = () => {
 
   return (
     <div className={styles.page}>
+      <button
+        type="button"
+        className={styles.update__button}
+        onClick={() => void refreshSkins()}
+        disabled={updating}
+        title="Pull latest skins from the Sheet"
+      >
+        {updating ? 'Updating…' : 'Update'}
+      </button>
+
       {viewState === 'featured' && (
         <div className={`${styles.container} ${styles.list__container}`}>
-          <div className={styles.content__top}>
-            <button
-              type="button"
-              className={styles.other__button}
-              onClick={() => {
-                setSearchTerm('');
-                setViewState('other');
-              }}
-            >
-              Other
-            </button>
-            <button
-              type="button"
-              className={`${styles.other__button} ${editSplash ? styles.edit__active : ''}`}
-              onClick={() => {
-                setEditSplash((v) => !v);
-                setEditingFamilyId(null);
-              }}
-            >
-              {editSplash ? 'Done editing' : 'Edit splashes'}
-            </button>
-            <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
-              Add skin
-            </button>
-            {editSplash && (
-              <button type="button" className={styles.other__button} onClick={copyFitsJson}>
-                Copy fits JSON
-              </button>
-            )}
-          </div>
+          {renderListToolbar('featured')}
           <div className={`${styles.content} ${styles.list__content}`}>
             <div className={styles.families__grid__featured}>{pagedFeatured.map(renderFamilyCard)}</div>
           </div>
@@ -798,33 +860,7 @@ const Skins: React.FC = () => {
 
       {viewState === 'other' && (
         <div className={`${styles.container} ${styles.list__container}`}>
-          <div className={styles.content__top}>
-            <button type="button" className={styles.back__button} onClick={() => setViewState('featured')}>
-              ← Featured
-            </button>
-            <div className={styles.search__container}>
-              <input
-                type="text"
-                placeholder="Search all other skin lines..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.search__input}
-              />
-            </div>
-            <button
-              type="button"
-              className={`${styles.other__button} ${editSplash ? styles.edit__active : ''}`}
-              onClick={() => {
-                setEditSplash((v) => !v);
-                setEditingFamilyId(null);
-              }}
-            >
-              {editSplash ? 'Done editing' : 'Edit splashes'}
-            </button>
-            <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
-              Add skin
-            </button>
-          </div>
+          {renderListToolbar('other')}
           <div className={`${styles.content} ${styles.other__content}`}>
             <div className={styles.families__grid__other}>{pagedOther.map(renderFamilyCard)}</div>
             {otherFamilies.length === 0 && (
@@ -839,6 +875,96 @@ const Skins: React.FC = () => {
             () => setOtherPage((p) => Math.max(0, p - 1)),
             () => setOtherPage((p) => Math.min(otherPageCount - 1, p + 1))
           )}
+        </div>
+      )}
+
+      {viewState === 'account' && selectedAccountSkins && (
+        <div className={`${styles.container} ${styles.list__container}`}>
+          <div className={styles.content__top}>
+            <button type="button" className={styles.other__button} onClick={goFamilies}>
+              Families
+            </button>
+            <select
+              className={styles.account__select}
+              value={String(filterAccountId)}
+              onChange={(e) => onAccountFilterChange(e.target.value)}
+              aria-label="Skins by account"
+            >
+              <option value="">Skins by account…</option>
+              {accountOptions.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.username}
+                  {a.essencer && a.essencer !== '-' ? ` · ${a.essencer}` : ''}
+                </option>
+              ))}
+            </select>
+            <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
+              Add skin
+            </button>
+          </div>
+          <div className={styles.account__header}>
+            <h2 className={styles.account__title}>
+              {prettyAccountName(selectedAccountSkins.username)}
+              {selectedAccountSkins.essencer && selectedAccountSkins.essencer !== '-'
+                ? ` · ${selectedAccountSkins.essencer}`
+                : ''}
+            </h2>
+            <p className={styles.account__meta}>
+              {selectedAccountSkins.skins.length} skin
+              {selectedAccountSkins.skins.length === 1 ? '' : 's'}
+            </p>
+          </div>
+          <div className={`${styles.content} ${styles.account__content}`}>
+            {selectedAccountSkins.skins.length === 0 ? (
+              <div className={styles.no__results}>
+                <p>No skins logged for this account yet.</p>
+              </div>
+            ) : (
+              <div className={styles.account__skins__grid}>
+                {pagedAccountSkins.map(({ skin, familyName }) => (
+                  <div key={`${skin.name}-${skin.champName}`} className={styles.account__skin__card}>
+                    <div className={styles.account__skin__stage}>
+                      <div className={styles.account__skin__art}>
+                        {skin.imageUrl ? (
+                          <img
+                            src={skin.imageUrl}
+                            alt={skin.name}
+                            onError={(e) => {
+                              const img = e.currentTarget;
+                              if (img.src.includes('/splash/')) {
+                                img.src = img.src.replace('/splash/', '/loading/');
+                              } else {
+                                img.style.visibility = 'hidden';
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div className={styles.account__skin__empty}>—</div>
+                        )}
+                      </div>
+                      <img
+                        src={assetUrl('images/frames/skin-frame-thin.png')}
+                        alt=""
+                        className={styles.account__skin__frame}
+                      />
+                    </div>
+                    <div className={styles.account__skin__caption}>
+                      <em className={styles.account__skin__family}>{familyName}</em>
+                      <strong>{skin.name}</strong>
+                      <span>{skin.champName}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {selectedAccountSkins.skins.length > 0 &&
+            renderPager(
+              accountPage,
+              accountPageCount,
+              () => setAccountPage((p) => Math.max(0, p - 1)),
+              () => setAccountPage((p) => Math.min(accountPageCount - 1, p + 1))
+            )}
         </div>
       )}
 
@@ -878,8 +1004,8 @@ const Skins: React.FC = () => {
           <div className={styles.addSkinPanel} onClick={(e) => e.stopPropagation()}>
             <h3>Add skin</h3>
             <p>
-              Pick from skins the LoLDB API usually misses (Victorious, some legacy / event). Art is
-              resolved automatically.
+              Legacy, limited, and reward skins that are not in the permanent RP store (Victorious,
+              Heartseeker, Freljord, etc.). Chromas are skipped. Art resolves automatically.
             </p>
             <label>
               Champion
@@ -904,8 +1030,8 @@ const Skins: React.FC = () => {
                     ? 'Select a champion first…'
                     : manualSkinsLoading
                       ? 'Loading skins…'
-                      : manualSkinOptions.length === 0
-                        ? 'No manual-only skins for this champ'
+                        : manualSkinOptions.length === 0
+                        ? 'No legacy / limited skins for this champ'
                         : 'Select skin…'}
                 </option>
                 {manualSkinOptions.map((s) => (
