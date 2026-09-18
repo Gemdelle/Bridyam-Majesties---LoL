@@ -175,29 +175,43 @@ export const fetchMasteriesFromSheet = async (): Promise<SheetMasteryRow[]> => {
     );
 };
 
-/** Fire-and-forget POST that Apps Script can receive from the browser */
+/** POST to Apps Script. Prefer real fetch — sendBeacon often does not reach doPost. */
 export const postToSheet = async (body: Record<string, unknown>): Promise<boolean> => {
     const payload = JSON.stringify(body);
 
-    // sendBeacon is the most reliable write from a browser tab
-    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-        const blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
-        const ok = navigator.sendBeacon(SHEETS_WINS_URL, blob);
-        if (ok) return true;
-    }
-
     try {
-        await fetch(SHEETS_WINS_URL, {
+        const response = await fetch(SHEETS_WINS_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: payload,
+            redirect: 'follow',
         });
-        // no-cors → opaque response; assume delivered
+
+        // Redirect response may fail CORS when reading body; write usually already ran.
+        try {
+            const data = (await response.json()) as { ok?: boolean; error?: string };
+            if (data && data.ok === false) {
+                console.warn('Sheets POST rejected:', data.error);
+                return false;
+            }
+        } catch {
+            /* ignore unreadable CORS body */
+        }
         return true;
     } catch (err) {
-        console.error('Sheets POST failed:', err);
-        return false;
+        console.warn('Sheets POST cors-mode failed, retrying no-cors:', err);
+        try {
+            await fetch(SHEETS_WINS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: payload,
+            });
+            return true;
+        } catch (err2) {
+            console.error('Sheets POST failed:', err2);
+            return false;
+        }
     }
 };
 
