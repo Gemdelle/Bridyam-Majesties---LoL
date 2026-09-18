@@ -249,6 +249,7 @@ export const updateMasteries = async (
                 metadata: {
                     championId: String(m.champion_id),
                     masteryLevel: String(m.champion_level ?? 0),
+                    to: String(m.champion_level ?? 0),
                 },
             });
         }

@@ -191,7 +191,11 @@ const Feed: React.FC = () => {
             case NotificationAction.MASTERY_LEVEL_UP: {
                 notifType = 'achievement';
                 // Usar imagen de mastery según el nivel en metadata
-                const masteryLvl = feedNotif.metadata.to || '1'; // 'to' contiene el mastery level alcanzado
+                const masteryLvl =
+                    feedNotif.metadata.to ||
+                    feedNotif.metadata.masteryLevel ||
+                    feedNotif.metadata.champion_level ||
+                    '1';
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
                 // Agregar clase específica para el nivel de maestría
