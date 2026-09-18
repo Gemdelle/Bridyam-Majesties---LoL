@@ -4,12 +4,13 @@ import { usePermissions } from '../../hooks/usePermissions'
 import { useState, useEffect, useRef } from 'react'
 import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
-// import PetDisplay from '../PetDisplay'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 import { assetUrl } from '../../utils/assetUrl'
 
 const FEED_SEEN_KEY = 'bridyam_feed_seen_count'
+/** Garden is local-dev only until ready for production. */
+const GARDEN_ENABLED = import.meta.env.DEV
 
 export const Nav = () => {
     const location = useLocation()
@@ -98,10 +99,13 @@ export const Nav = () => {
     const badgeLabel = unreadCount > 9 ? '9+' : String(unreadCount)
     const showFeedAlert = unreadCount > 0 && !onFeedPage
 
+    const linkClass = (path: string, extra = '') =>
+        `${location.pathname === path ? styles.active : ''} ${extra}`.trim()
+
     return (
         <div className={styles.nav}>
             <div className={styles.nav__container}>
-                <ul className={styles.nav__container__links__left}>
+                <ul className={styles.nav__links}>
                     <li className={styles.language__selector}>
                         <div className={styles.language__current}>
                             <img
@@ -124,58 +128,28 @@ export const Nav = () => {
                             </span>
                         </div>
                     </li>
-                    <li
-                        className={location.pathname === '/' ? styles.active : ''}
-                        data-nav="accounts"
-                    >
+                    <li className={linkClass('/')} data-nav="accounts">
                         <Link to="/" onClick={playClickSound}>{t('nav.home')}</Link>
                     </li>
-                    <li
-                        className={location.pathname === '/bloodlines' ? styles.active : ''}
-                        data-nav="bloodlines"
-                    >
+                    <li className={linkClass('/bloodlines')} data-nav="bloodlines">
                         <Link to="/bloodlines" onClick={playClickSound}>{t('nav.bloodlines')}</Link>
                     </li>
-                    <li
-                        className={location.pathname === '/ranked' ? styles.active : ''}
-                        data-nav="ranked"
-                    >
+                    <li className={linkClass('/ranked')} data-nav="ranked">
                         <Link to="/ranked" onClick={playClickSound}>{t('nav.ranked')}</Link>
                     </li>
-                    <li
-                        className={location.pathname === '/champions' ? styles.active : ''}
-                        data-nav="champions"
-                    >
+                    <li className={linkClass('/champions')} data-nav="champions">
                         <Link to="/champions" onClick={playClickSound}>{t('nav.champions')}</Link>
                     </li>
-                    <li
-                        className={location.pathname === '/skins' ? styles.active : ''}
-                        data-nav="skins"
-                    >
+                    <li className={linkClass('/skins')} data-nav="skins">
                         <Link to="/skins" onClick={playClickSound}>{t('nav.skins')}</Link>
                     </li>
-                </ul>
-                <ul className={styles.nav__container__links__right}>
                     {canSeeAllNavigation && (
-                        <>
-                            {/* Achievements moved to Leaderboard "See achievement list" button
-                            <li
-                                className={location.pathname === '/achievements' ? styles.active : ''}
-                                data-nav="achievements"
-                            >
-                                <Link to="/achievements" onClick={playClickSound}>{t('nav.achievements')}</Link>
-                            </li>
-                            */}
-                            <li
-                                className={location.pathname === '/roulette' ? styles.active : ''}
-                                data-nav="roulette"
-                            >
-                                <Link to="/roulette" onClick={playClickSound}>{t('nav.roulette')}</Link>
-                            </li>
-                        </>
+                        <li className={linkClass('/roulette')} data-nav="roulette">
+                            <Link to="/roulette" onClick={playClickSound}>{t('nav.roulette')}</Link>
+                        </li>
                     )}
                     <li
-                        className={`${location.pathname === '/feed' ? styles.active : ''} ${showFeedAlert ? styles.hasNotifications : ''}`}
+                        className={`${linkClass('/feed')} ${showFeedAlert ? styles.hasNotifications : ''}`}
                         data-nav="feed"
                     >
                         <Link to="/feed" onClick={playClickSound}>{t('nav.feed')}</Link>
@@ -199,38 +173,27 @@ export const Nav = () => {
                             </>
                         )}
                     </li>
-                    <li
-                        className={location.pathname === '/leaderboard' ? styles.active : ''}
-                        data-nav="leaderboard"
-                    >
+                    <li className={linkClass('/leaderboard')} data-nav="leaderboard">
                         <Link to="/leaderboard" onClick={playClickSound}>
                             Leaderboard
                         </Link>
                     </li>
+                    <li
+                        className={`${GARDEN_ENABLED ? linkClass('/garden') : ''} ${styles.gardenItem} ${
+                            !GARDEN_ENABLED ? styles.navDisabled : ''
+                        }`}
+                        data-nav="garden"
+                        title={GARDEN_ENABLED ? 'Garden' : 'Garden — coming soon'}
+                    >
+                        {GARDEN_ENABLED ? (
+                            <Link to="/garden" onClick={playClickSound}>
+                                Garden
+                            </Link>
+                        ) : (
+                            <span className={styles.navDisabledLabel}>Garden</span>
+                        )}
+                    </li>
                 </ul>
-            </div>
-            {/* Pet nav display commented out (no login / personal pet yet) — Garden replaces it */}
-            {/*
-            <div className={styles.nav__pet}>
-                <PetDisplay />
-            </div>
-            */}
-            <div className={styles.nav__pet}>
-                <Link
-                    to="/garden"
-                    className={`${styles.gardenNav} ${location.pathname === '/garden' ? styles.gardenNavActive : ''}`}
-                    onClick={playClickSound}
-                >
-                    <img
-                        src={assetUrl('images/frames/egg-frame.png')}
-                        alt=""
-                        className={styles.gardenNav__frame}
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.opacity = '0.35';
-                        }}
-                    />
-                    <span>Garden</span>
-                </Link>
             </div>
         </div>
     )

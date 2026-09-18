@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import './App.scss'
 import { Nav } from './components/Nav/Nav'
 import { useAuthContext } from './contexts/AuthContext'
@@ -26,8 +27,11 @@ import Roulette from './pages/Roulette/Roulette'
 import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
 import Leaderboard from './pages/Leaderboard/Leaderboard'
-import Garden from './pages/Garden/Garden'
-import GardenFight from './pages/Garden/GardenFight'
+
+/** Garden stays local-only until ready — not linked/routed on production builds. */
+const GARDEN_ENABLED = import.meta.env.DEV
+const Garden = GARDEN_ENABLED ? lazy(() => import('./pages/Garden/Garden')) : null
+const GardenFight = GARDEN_ENABLED ? lazy(() => import('./pages/Garden/GardenFight')) : null
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -162,22 +166,30 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/garden"
-                element={
-                  <ProtectedRoute>
-                    <Garden />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/garden/fight"
-                element={
-                  <ProtectedRoute>
-                    <GardenFight />
-                  </ProtectedRoute>
-                }
-              />
+              {GARDEN_ENABLED && Garden && GardenFight && (
+                <>
+                  <Route
+                    path="/garden"
+                    element={
+                      <ProtectedRoute>
+                        <Suspense fallback={null}>
+                          <Garden />
+                        </Suspense>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/garden/fight"
+                    element={
+                      <ProtectedRoute>
+                        <Suspense fallback={null}>
+                          <GardenFight />
+                        </Suspense>
+                      </ProtectedRoute>
+                    }
+                  />
+                </>
+              )}
               <Route
                 path="/roulette"
                 element={

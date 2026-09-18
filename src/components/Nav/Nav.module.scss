@@ -22,109 +22,97 @@
   height: 60%;
   position: relative;
   z-index: 1;
-  @include flex-between;
-  // background-color: $light-color;
-}
-
-.nav__pet {
-  position: absolute;
-  width: 98%;
-  height: 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5000;
-  pointer-events: none;
   @include flex-center;
 }
 
-.gardenNav {
-  pointer-events: auto;
-  position: relative;
+.nav__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #f0e6d2;
-  font-weight: 800;
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
-  transition: transform 0.2s ease, filter 0.2s ease;
+  justify-content: space-evenly;
+  gap: 0.35rem;
+  position: relative;
+  z-index: 2;
 
-  span {
+  > li {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    @include flex-center;
     position: relative;
-    z-index: 2;
-    margin-top: -0.15rem;
   }
 
-  &:hover {
-    transform: translateY(-2px) scale(1.04);
-    filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.55));
+  > li a,
+  > li .navDisabledLabel {
+    color: #cdbe91;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: clamp(0.7rem, 1.05vw, 1.05rem);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  > li:hover a {
+    color: #f0e6d2;
+    text-shadow: 0 0 8px rgba(240, 230, 210, 0.6);
+  }
+
+  > li.active a {
+    color: #f0e6d2;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(240, 230, 210, 0.8);
+    border-bottom: 1px solid #c89b3c;
+    animation: bottomGlow 3s ease-in-out infinite alternate;
+  }
+
+  > li.active::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 20px;
+    background-image: url('/images/nav/selector.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
   }
 }
 
-.gardenNavActive {
-  color: #fff6d8;
-  filter: drop-shadow(0 0 10px rgba(200, 155, 60, 0.7));
+.navDisabled {
+  cursor: not-allowed;
+
+  .navDisabledLabel {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &:hover .navDisabledLabel {
+    color: #cdbe91;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  }
 }
 
-.gardenNav__frame {
-  position: absolute;
-  width: 4.2rem;
-  height: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -52%);
-  z-index: 1;
-  opacity: 0.9;
-  pointer-events: none;
+.gardenItem {
+  /* same weight as every other nav item — no special frame */
 }
 
 ul {
     list-style: none;
-    @include flex-between;
 }
 
-ul li {
-    @include flex-center;
-    position: relative;
-    // background-color: yellow;
-}
-
-ul li a,
-ul li {
-    color: #cdbe91;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-ul li:hover a,
-ul li:hover {
-    color: #f0e6d2;
-    text-shadow: 0 0 8px rgba(240, 230, 210, 0.6);
-}
-
-ul li.active a,
-ul li.active {
-    color: #f0e6d2;
-    font-weight: 800;
-    text-shadow: 0 0 10px rgba(240, 230, 210, 0.8);
-    letter-spacing: 2px;
-    
-}
-
-ul li.active a{
-  border-bottom: 1px solid #c89b3c;
-  animation: bottomGlow 3s ease-in-out infinite alternate;
-}
+/* Legacy link styles kept for language selector / other nav bits;
+   main equidistant row uses .nav__links */
 
 @keyframes bottomGlow {
     0% {
@@ -168,14 +156,15 @@ ul li.active::before {
 // ===== SELECTOR DE IDIOMA =====
 .language__selector {
   position: relative;
-  width: 5vw;
-  min-width: 1vw;
+  flex: 0 0 auto !important;
+  width: auto;
+  min-width: 2.8rem;
+  max-width: 4rem;
   padding: 0;
   height: 95%;
   transition: all 0.3s ease;
-  margin-left: 5%;
+  margin-left: 0;
   z-index: 10000;
-  // background-color: red;
   @include flex-center;
 
   &:hover .language__hover {

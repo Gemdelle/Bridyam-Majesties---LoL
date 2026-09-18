@@ -161,27 +161,40 @@ const fetchManualSkinsFromSheet = async (): Promise<ManualSkinEntry[]> => {
     if (!response.ok) return [];
     const payload = await response.json();
     if (!payload.ok || !Array.isArray(payload.skins)) return [];
-    return payload.skins.map(
-      (row: {
-        ranked_id?: number;
-        username?: string;
-        skin_name?: string;
-        champ_name?: string;
-        rarity?: string;
-        image_url?: string;
-        skin_lines?: string[];
-      }) => ({
+
+    const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
+    const entries: ManualSkinEntry[] = [];
+    for (const row of payload.skins as Array<{
+      ranked_id?: number;
+      username?: string;
+      skin_name?: string;
+      champ_name?: string;
+      rarity?: string;
+      image_url?: string;
+      skin_lines?: string[];
+    }>) {
+      const name = String(row.skin_name || '');
+      const champName = String(row.champ_name || 'Unknown');
+      let imageUrl = String(row.image_url || '');
+      if (!imageUrl && name) {
+        imageUrl =
+          (await resolveSkinImageUrl(name, champName)) ||
+          (await resolveChampionPortraitUrl(champName)) ||
+          '';
+      }
+      entries.push({
         ranked_id: Number(row.ranked_id) || 0,
         username: String(row.username || ''),
         skin: {
-          name: String(row.skin_name || ''),
-          champName: String(row.champ_name || 'Unknown'),
+          name,
+          champName,
           rarity: String(row.rarity || 'kLegacy'),
-          imageUrl: String(row.image_url || ''),
+          imageUrl,
           skinLines: Array.isArray(row.skin_lines) ? row.skin_lines : ['legacy'],
         },
-      })
-    );
+      });
+    }
+    return entries;
   } catch {
     return [];
   }
@@ -244,11 +257,17 @@ export const addManualAccountSkin = async (input: {
     'Unknown';
   const line = String(input.skinLine || 'legacy').trim().toLowerCase() || 'legacy';
 
+  const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
+  let imageUrl = await resolveSkinImageUrl(skinName, champGuess);
+  if (!imageUrl) {
+    imageUrl = await resolveChampionPortraitUrl(champGuess);
+  }
+
   const skin: OwnedSkin = {
     name: skinName,
     champName: champGuess,
     rarity: 'kLegacy',
-    imageUrl: '',
+    imageUrl,
     skinLines: [line],
   };
 
@@ -262,7 +281,7 @@ export const addManualAccountSkin = async (input: {
       skin_name: skinName,
       champ_name: champGuess,
       rarity: 'kLegacy',
-      image_url: '',
+      image_url: imageUrl,
       skin_lines: [line],
     },
   });
