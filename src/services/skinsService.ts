@@ -246,6 +246,7 @@ export const addManualAccountSkin = async (input: {
   skinName: string;
   champName?: string;
   skinLine?: string;
+  imageUrl?: string;
 }): Promise<AccountSkins[]> => {
   const skinName = String(input.skinName || '').trim();
   const username = String(input.username || '').trim();
@@ -257,10 +258,13 @@ export const addManualAccountSkin = async (input: {
     'Unknown';
   const line = String(input.skinLine || 'legacy').trim().toLowerCase() || 'legacy';
 
-  const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
-  let imageUrl = await resolveSkinImageUrl(skinName, champGuess);
+  let imageUrl = String(input.imageUrl || '').trim();
   if (!imageUrl) {
-    imageUrl = await resolveChampionPortraitUrl(champGuess);
+    const { resolveSkinImageUrl, resolveChampionPortraitUrl } = await import('./skinArtResolver');
+    imageUrl = await resolveSkinImageUrl(skinName, champGuess);
+    if (!imageUrl) {
+      imageUrl = await resolveChampionPortraitUrl(champGuess);
+    }
   }
 
   const skin: OwnedSkin = {

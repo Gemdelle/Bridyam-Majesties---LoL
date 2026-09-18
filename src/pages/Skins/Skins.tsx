@@ -287,11 +287,16 @@ const Skins: React.FC = () => {
   const [splashFits, setSplashFits] = useState<Record<string, SplashFit>>(() => loadSplashFits());
   const [editingFamilyId, setEditingFamilyId] = useState<number | null>(null);
   const [showAddSkin, setShowAddSkin] = useState(false);
-  const [addSkinName, setAddSkinName] = useState('');
-  const [addSkinChamp, setAddSkinChamp] = useState('');
+  const [addChampId, setAddChampId] = useState('');
+  const [addSkinKey, setAddSkinKey] = useState(''); // `${num}::${name}`
   const [addSkinAccountId, setAddSkinAccountId] = useState<number | ''>('');
   const [addSkinStatus, setAddSkinStatus] = useState('');
   const [addSkinSaving, setAddSkinSaving] = useState(false);
+  const [champOptions, setChampOptions] = useState<{ id: string; name: string }[]>([]);
+  const [manualSkinOptions, setManualSkinOptions] = useState<
+    { name: string; champId: string; champName: string; num: number; imageUrl: string; skinLine: string }[]
+  >([]);
+  const [manualSkinsLoading, setManualSkinsLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -466,9 +471,66 @@ const Skins: React.FC = () => {
       .sort((a, b) => a.username.localeCompare(b.username));
   }, [rankedLookup]);
 
+  const selectedManualSkin = useMemo(() => {
+    if (!addSkinKey) return null;
+    return manualSkinOptions.find((s) => `${s.num}::${s.name}` === addSkinKey) || null;
+  }, [addSkinKey, manualSkinOptions]);
+
+  useEffect(() => {
+    if (!showAddSkin) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { fetchChampionOptions } = await import('../../services/skinArtResolver');
+        const list = await fetchChampionOptions();
+        if (!cancelled) setChampOptions(list);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [showAddSkin]);
+
+  useEffect(() => {
+    if (!addChampId) {
+      setManualSkinOptions([]);
+      setAddSkinKey('');
+      return;
+    }
+    let cancelled = false;
+    setManualSkinsLoading(true);
+    setAddSkinKey('');
+    void (async () => {
+      try {
+        const { fetchManualSkinOptionsForChampion } = await import('../../services/skinArtResolver');
+        const skins = await fetchManualSkinOptionsForChampion(addChampId);
+        if (!cancelled) setManualSkinOptions(skins);
+      } catch (err) {
+        console.error(err);
+        if (!cancelled) setManualSkinOptions([]);
+      } finally {
+        if (!cancelled) setManualSkinsLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [addChampId]);
+
+  const openAddSkinModal = () => {
+    setShowAddSkin(true);
+    setAddSkinStatus('');
+    setAddChampId('');
+    setAddSkinKey('');
+    setAddSkinAccountId('');
+    setManualSkinOptions([]);
+  };
+
   const submitAddSkin = async () => {
-    if (!addSkinName.trim() || addSkinAccountId === '') {
-      setAddSkinStatus('Skin name and account are required.');
+    if (!selectedManualSkin || addSkinAccountId === '') {
+      setAddSkinStatus('Pick champion, skin, and account.');
       return;
     }
     const account = rankedLookup.get(Number(addSkinAccountId));
@@ -482,14 +544,14 @@ const Skins: React.FC = () => {
       const next = await addManualAccountSkin({
         rankedId: Number(addSkinAccountId),
         username: account.username,
-        skinName: addSkinName.trim(),
-        champName: addSkinChamp.trim() || undefined,
-        skinLine: 'legacy',
+        skinName: selectedManualSkin.name,
+        champName: selectedManualSkin.champName,
+        skinLine: selectedManualSkin.skinLine,
+        imageUrl: selectedManualSkin.imageUrl,
       });
       setAccountSkins(next);
       setAddSkinStatus('Skin saved to Google Sheets — everyone will see it after refresh.');
-      setAddSkinName('');
-      setAddSkinChamp('');
+      setAddSkinKey('');
     } catch (err) {
       console.error(err);
       setAddSkinStatus('Could not add skin.');
@@ -702,14 +764,7 @@ const Skins: React.FC = () => {
             >
               {editSplash ? 'Done editing' : 'Edit splashes'}
             </button>
-            <button
-              type="button"
-              className={styles.other__button}
-              onClick={() => {
-                setShowAddSkin(true);
-                setAddSkinStatus('');
-              }}
-            >
+            <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
               Add skin
             </button>
             {editSplash && (
@@ -755,14 +810,7 @@ const Skins: React.FC = () => {
             >
               {editSplash ? 'Done editing' : 'Edit splashes'}
             </button>
-            <button
-              type="button"
-              className={styles.other__button}
-              onClick={() => {
-                setShowAddSkin(true);
-                setAddSkinStatus('');
-              }}
-            >
+            <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
               Add skin
             </button>
           </div>
@@ -818,23 +866,49 @@ const Skins: React.FC = () => {
         <div className={styles.addSkinOverlay} onClick={() => setShowAddSkin(false)}>
           <div className={styles.addSkinPanel} onClick={(e) => e.stopPropagation()}>
             <h3>Add skin</h3>
-            <p>For victorious / legacy skins the API cannot see.</p>
+            <p>
+              Pick from skins the LoLDB API usually misses (Victorious, some legacy / event). Art is
+              resolved automatically.
+            </p>
             <label>
-              Skin name
-              <input
-                value={addSkinName}
-                onChange={(e) => setAddSkinName(e.target.value)}
-                placeholder="e.g. Victorious Orianna"
-              />
+              Champion
+              <select value={addChampId} onChange={(e) => setAddChampId(e.target.value)}>
+                <option value="">Select champion…</option>
+                {champOptions.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
-              Champion (optional)
-              <input
-                value={addSkinChamp}
-                onChange={(e) => setAddSkinChamp(e.target.value)}
-                placeholder="Orianna"
-              />
+              Skin
+              <select
+                value={addSkinKey}
+                onChange={(e) => setAddSkinKey(e.target.value)}
+                disabled={!addChampId || manualSkinsLoading}
+              >
+                <option value="">
+                  {!addChampId
+                    ? 'Select a champion first…'
+                    : manualSkinsLoading
+                      ? 'Loading skins…'
+                      : manualSkinOptions.length === 0
+                        ? 'No manual-only skins for this champ'
+                        : 'Select skin…'}
+                </option>
+                {manualSkinOptions.map((s) => (
+                  <option key={`${s.num}-${s.name}`} value={`${s.num}::${s.name}`}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
             </label>
+            {selectedManualSkin?.imageUrl && (
+              <div className={styles.addSkinPreview}>
+                <img src={selectedManualSkin.imageUrl} alt={selectedManualSkin.name} />
+              </div>
+            )}
             <label>
               Account
               <select
@@ -857,7 +931,11 @@ const Skins: React.FC = () => {
               <button type="button" onClick={() => setShowAddSkin(false)}>
                 Cancel
               </button>
-              <button type="button" disabled={addSkinSaving} onClick={() => void submitAddSkin()}>
+              <button
+                type="button"
+                disabled={addSkinSaving || !selectedManualSkin || addSkinAccountId === ''}
+                onClick={() => void submitAddSkin()}
+              >
                 {addSkinSaving ? 'Saving…' : 'Add'}
               </button>
             </div>
