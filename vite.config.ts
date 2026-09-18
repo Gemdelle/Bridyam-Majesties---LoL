@@ -107,6 +107,27 @@ function saveJsonPlugin() {
           next();
         }
       });
+
+      server.middlewares.use('/api/save-account-skins', async (req: any, res: any, next: any) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', (chunk: any) => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const data = JSON.parse(body);
+              const filePath = path.resolve(__dirname, 'public/data/account-skins.json');
+              fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: true }));
+            } catch (e) {
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: 'Failed to save account skins' }));
+            }
+          });
+        } else {
+          next();
+        }
+      });
     }
   };
 }

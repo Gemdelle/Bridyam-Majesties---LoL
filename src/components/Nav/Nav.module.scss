@@ -35,6 +35,52 @@
   transform: translate(-50%, -50%);
   z-index: 5000;
   pointer-events: none;
+  @include flex-center;
+}
+
+.gardenNav {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #f0e6d2;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  transition: transform 0.2s ease, filter 0.2s ease;
+
+  span {
+    position: relative;
+    z-index: 2;
+    margin-top: -0.15rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px) scale(1.04);
+    filter: drop-shadow(0 0 8px rgba(200, 155, 60, 0.55));
+  }
+}
+
+.gardenNavActive {
+  color: #fff6d8;
+  filter: drop-shadow(0 0 10px rgba(200, 155, 60, 0.7));
+}
+
+.gardenNav__frame {
+  position: absolute;
+  width: 4.2rem;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  z-index: 1;
+  opacity: 0.9;
+  pointer-events: none;
 }
 
 ul {

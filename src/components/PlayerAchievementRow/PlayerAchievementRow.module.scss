@@ -1,26 +1,40 @@
+.card {
+  position: relative;
+  overflow: visible;
+  height: 13.2% !important;
+  min-height: 0;
+  margin-bottom: 0.35vh;
+  flex-shrink: 0;
+}
+
 .info {
   width: 18%;
-  height: 70%;
+  height: 72%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: stretch;
+  padding-top: 0.35vw;
+  gap: 0.35vw;
 }
 
 .progressStack {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 90%;
-  gap: 0.25vw;
+  align-items: stretch;
+  width: 92%;
+  gap: 0.3vw;
+  margin-top: 0.15vw;
 }
 
 .progressPercent {
   color: #c89b3c;
-  font-size: 0.75vw;
-  font-weight: bold;
+  font-size: 0.88vw;
+  font-weight: 800;
   letter-spacing: 0.05vw;
   line-height: 1;
+  text-align: center;
+  width: 100%;
 }
 
 .progressRow {
@@ -28,7 +42,7 @@
   align-items: center;
   width: 100%;
   gap: 0.55vw;
-  height: 1.1vw;
+  height: 1.15vw;
 }
 
 .progressCount {
@@ -47,14 +61,73 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-evenly;
-  gap: 0.9vw;
-  padding: 0 0.4vw;
+  gap: 0.55vw;
+  padding: 0 0.35vw 0.6vw;
 }
 
 .circle {
-  /* Match mid-range achievement badge proportions (not progressive 10-step ramp) */
-  width: 8.5% !important;
-  height: 100% !important;
   flex: 0 0 auto;
-  margin: 0 0.15vw;
+  margin: 0 0.12vw;
+  position: relative;
+}
+
+.trophySlot {
+  img {
+    width: auto;
+    height: 90%;
+    object-fit: contain;
+  }
+}
+
+.prize {
+  right: -4% !important;
+  width: 8vw !important;
+  height: 8vw !important;
+
+  /* no spinning circle */
+  :global(.spinning__circle) {
+    display: none !important;
+  }
+
+  img {
+    height: 115% !important;
+    width: auto;
+  }
+}
+
+.tooltip {
+  position: fixed;
+  transform: translate(-50%, calc(-100% - 10px));
+  z-index: 50000;
+  pointer-events: none;
+  min-width: 10rem;
+  max-width: 16rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #c89b3c;
+  background: rgba(14, 16, 12, 0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  strong {
+    color: #f0e6d2;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  span {
+    color: #cdbe91;
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+
+  em {
+    color: #c89b3c;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 0.82rem;
+  }
 }

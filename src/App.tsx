@@ -26,6 +26,7 @@ import Roulette from './pages/Roulette/Roulette'
 import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
 import Leaderboard from './pages/Leaderboard/Leaderboard'
+import Garden from './pages/Garden/Garden'
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -157,6 +158,14 @@ function AppContent() {
                 element={
                   <ProtectedRoute>
                     <Leaderboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/garden"
+                element={
+                  <ProtectedRoute>
+                    <Garden />
                   </ProtectedRoute>
                 }
               />

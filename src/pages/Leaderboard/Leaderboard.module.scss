@@ -1,0 +1,38 @@
+.seeListBtn {
+  position: absolute;
+  top: 10.5%;
+  right: 4%;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem 0.55rem 0.7rem;
+  text-decoration: none;
+  color: #0f1419;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 8px;
+  border: 2px solid #e5ca8f;
+  background: linear-gradient(145deg, #e5ca8f, #a8893a);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 18px rgba(200, 155, 60, 0.25);
+  transition: transform 0.2s ease, filter 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.03);
+    filter: brightness(1.06);
+  }
+}
+
+.seeListBtn__icon {
+  width: 1.45rem;
+  height: 1.45rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.denseContent {
+  gap: 0.25vh !important;
+  justify-content: flex-start !important;
+}

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../Achievements/Achievements.module.scss';
+import lbStyles from './Leaderboard.module.scss';
 import PlayerAchievementRow from '../../components/PlayerAchievementRow';
 import {
     fetchPlayerAchievementLeaderboard,
     type AchievementKind,
     type PlayerAchievementRow as RowData,
 } from '../../services/playerAchievementsService';
+import { assetUrl } from '../../utils/assetUrl';
+import { playClickSound } from '../../utils/soundUtils';
 
 const Leaderboard: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [activeTab, setActiveTab] = useState<AchievementKind>('lol');
     const [rows, setRows] = useState<RowData[]>([]);
     const [loading, setLoading] = useState(true);
-    const itemsPerPage = 4;
+    const itemsPerPage = 6;
 
     useEffect(() => {
         let cancelled = false;
@@ -49,6 +53,18 @@ const Leaderboard: React.FC = () => {
 
     return (
         <div className={styles.achievements}>
+            <Link
+                to="/achievements"
+                className={lbStyles.seeListBtn}
+                onClick={playClickSound}
+            >
+                <img
+                    src={assetUrl('images/ranked-btn/mission.png')}
+                    alt=""
+                    className={lbStyles.seeListBtn__icon}
+                />
+                <span>See achievement list</span>
+            </Link>
             <div className={styles.tabContainer}>
                 <button
                     type="button"
@@ -66,14 +82,18 @@ const Leaderboard: React.FC = () => {
                 </button>
             </div>
             <div className={styles.achievements__container}>
-                <div className={styles.achievements__content}>
+                <div className={`${styles.achievements__content} ${lbStyles.denseContent}`}>
                     {loading && <p style={{ color: '#cdbe91' }}>Loading leaderboard...</p>}
                     {!loading && currentRows.length === 0 && (
                         <p style={{ color: '#cdbe91' }}>No players with achievements yet.</p>
                     )}
                     {!loading &&
-                        currentRows.map((row) => (
-                            <PlayerAchievementRow key={row.playerName} row={row} />
+                        currentRows.map((row, i) => (
+                            <PlayerAchievementRow
+                                key={row.playerName}
+                                row={row}
+                                rankIndex={startIndex + i}
+                            />
                         ))}
                 </div>
                 <div className={styles.pagination}>

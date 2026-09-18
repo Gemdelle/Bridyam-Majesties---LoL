@@ -13,6 +13,7 @@ import {
   reconcileUniqueSelections,
   getBlockedChampions,
   firstAvailableSkin,
+  addManualAccountSkin,
   FEATURED_PRIORITY_ORDER,
   FEATURED_TRAILING_ORDER,
   type SkinFamily,
@@ -277,6 +278,12 @@ const Skins: React.FC = () => {
   const [editSplash, setEditSplash] = useState(false);
   const [splashFits, setSplashFits] = useState<Record<string, SplashFit>>(() => loadSplashFits());
   const [editingFamilyId, setEditingFamilyId] = useState<number | null>(null);
+  const [showAddSkin, setShowAddSkin] = useState(false);
+  const [addSkinName, setAddSkinName] = useState('');
+  const [addSkinChamp, setAddSkinChamp] = useState('');
+  const [addSkinAccountId, setAddSkinAccountId] = useState<number | ''>('');
+  const [addSkinStatus, setAddSkinStatus] = useState('');
+  const [addSkinSaving, setAddSkinSaving] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -442,6 +449,44 @@ const Skins: React.FC = () => {
     } catch {
       console.log(text);
       alert('Could not copy — check console for JSON.');
+    }
+  };
+
+  const accountOptions = useMemo(() => {
+    return [...rankedLookup.entries()]
+      .map(([id, info]) => ({ id, username: info.username, essencer: info.essencer }))
+      .sort((a, b) => a.username.localeCompare(b.username));
+  }, [rankedLookup]);
+
+  const submitAddSkin = async () => {
+    if (!addSkinName.trim() || addSkinAccountId === '') {
+      setAddSkinStatus('Skin name and account are required.');
+      return;
+    }
+    const account = rankedLookup.get(Number(addSkinAccountId));
+    if (!account) {
+      setAddSkinStatus('Account not found.');
+      return;
+    }
+    setAddSkinSaving(true);
+    setAddSkinStatus('');
+    try {
+      const next = await addManualAccountSkin({
+        rankedId: Number(addSkinAccountId),
+        username: account.username,
+        skinName: addSkinName.trim(),
+        champName: addSkinChamp.trim() || undefined,
+        skinLine: 'legacy',
+      });
+      setAccountSkins(next);
+      setAddSkinStatus('Skin added. (Saved locally; Vite also writes account-skins.json in dev.)');
+      setAddSkinName('');
+      setAddSkinChamp('');
+    } catch (err) {
+      console.error(err);
+      setAddSkinStatus('Could not add skin.');
+    } finally {
+      setAddSkinSaving(false);
     }
   };
 
@@ -649,6 +694,16 @@ const Skins: React.FC = () => {
             >
               {editSplash ? 'Done editing' : 'Edit splashes'}
             </button>
+            <button
+              type="button"
+              className={styles.other__button}
+              onClick={() => {
+                setShowAddSkin(true);
+                setAddSkinStatus('');
+              }}
+            >
+              Add skin
+            </button>
             {editSplash && (
               <button type="button" className={styles.other__button} onClick={copyFitsJson}>
                 Copy fits JSON
@@ -691,6 +746,16 @@ const Skins: React.FC = () => {
               }}
             >
               {editSplash ? 'Done editing' : 'Edit splashes'}
+            </button>
+            <button
+              type="button"
+              className={styles.other__button}
+              onClick={() => {
+                setShowAddSkin(true);
+                setAddSkinStatus('');
+              }}
+            >
+              Add skin
             </button>
           </div>
           <div className={`${styles.content} ${styles.other__content}`}>
@@ -737,6 +802,57 @@ const Skins: React.FC = () => {
                 onSelect={(next) => handleRoleSelect(col.role, next)}
               />
             ))}
+          </div>
+        </div>
+      )}
+
+      {showAddSkin && (
+        <div className={styles.addSkinOverlay} onClick={() => setShowAddSkin(false)}>
+          <div className={styles.addSkinPanel} onClick={(e) => e.stopPropagation()}>
+            <h3>Add skin</h3>
+            <p>For victorious / legacy skins the API cannot see.</p>
+            <label>
+              Skin name
+              <input
+                value={addSkinName}
+                onChange={(e) => setAddSkinName(e.target.value)}
+                placeholder="e.g. Victorious Orianna"
+              />
+            </label>
+            <label>
+              Champion (optional)
+              <input
+                value={addSkinChamp}
+                onChange={(e) => setAddSkinChamp(e.target.value)}
+                placeholder="Orianna"
+              />
+            </label>
+            <label>
+              Account
+              <select
+                value={addSkinAccountId === '' ? '' : String(addSkinAccountId)}
+                onChange={(e) =>
+                  setAddSkinAccountId(e.target.value ? Number(e.target.value) : '')
+                }
+              >
+                <option value="">Select account…</option>
+                {accountOptions.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.username}
+                    {a.essencer && a.essencer !== '-' ? ` · ${a.essencer}` : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {addSkinStatus && <p className={styles.addSkinStatus}>{addSkinStatus}</p>}
+            <div className={styles.addSkinActions}>
+              <button type="button" onClick={() => setShowAddSkin(false)}>
+                Cancel
+              </button>
+              <button type="button" disabled={addSkinSaving} onClick={() => void submitAddSkin()}>
+                {addSkinSaving ? 'Saving…' : 'Add'}
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -124,12 +124,110 @@ export const fetchAccountSkins = async (): Promise<AccountSkins[]> => {
       return ownershipCache;
     }
     const data: AccountSkinsFile = await res.json();
-    ownershipCache = data.accounts || [];
+    ownershipCache = mergeManualSkins(data.accounts || []);
     return ownershipCache;
   } catch {
     ownershipCache = [];
     return ownershipCache;
   }
+};
+
+const MANUAL_SKINS_KEY = 'bridyam-manual-account-skins-v1';
+
+type ManualSkinEntry = {
+  ranked_id: number;
+  username: string;
+  skin: OwnedSkin;
+};
+
+const loadManualSkins = (): ManualSkinEntry[] => {
+  try {
+    return JSON.parse(localStorage.getItem(MANUAL_SKINS_KEY) || '[]') as ManualSkinEntry[];
+  } catch {
+    return [];
+  }
+};
+
+const saveManualSkinsLocal = (entries: ManualSkinEntry[]) => {
+  localStorage.setItem(MANUAL_SKINS_KEY, JSON.stringify(entries));
+};
+
+const mergeManualSkins = (accounts: AccountSkins[]): AccountSkins[] => {
+  const manual = loadManualSkins();
+  if (!manual.length) return accounts;
+  const byId = new Map(accounts.map((a) => [a.ranked_id, { ...a, skins: [...a.skins] }]));
+  manual.forEach((entry) => {
+    let acc = byId.get(entry.ranked_id);
+    if (!acc) {
+      acc = { ranked_id: entry.ranked_id, username: entry.username, skins: [] };
+      byId.set(entry.ranked_id, acc);
+    }
+    const exists = acc.skins.some(
+      (s) => s.name.toLowerCase() === entry.skin.name.toLowerCase()
+    );
+    if (!exists) acc.skins.push(entry.skin);
+  });
+  return [...byId.values()];
+};
+
+export const invalidateAccountSkinsCache = () => {
+  ownershipCache = null;
+};
+
+/** Add a victorious / legacy / custom skin that the API cannot see. */
+export const addManualAccountSkin = async (input: {
+  rankedId: number;
+  username: string;
+  skinName: string;
+  champName?: string;
+  skinLine?: string;
+}): Promise<AccountSkins[]> => {
+  const skinName = String(input.skinName || '').trim();
+  const username = String(input.username || '').trim();
+  if (!skinName || !username) throw new Error('Skin name and account are required');
+
+  const champGuess =
+    String(input.champName || '').trim() ||
+    skinName.split(/\s+/).slice(-1)[0] ||
+    'Unknown';
+  const line = String(input.skinLine || 'legacy').trim().toLowerCase() || 'legacy';
+
+  const skin: OwnedSkin = {
+    name: skinName,
+    champName: champGuess,
+    rarity: 'kLegacy',
+    imageUrl: '',
+    skinLines: [line],
+  };
+
+  const manual = loadManualSkins();
+  manual.push({ ranked_id: input.rankedId, username, skin });
+  saveManualSkinsLocal(manual);
+  invalidateAccountSkinsCache();
+
+  // Best-effort persist into account-skins.json while running Vite locally
+  try {
+    const base = await fetch(assetUrl(`data/account-skins.json?t=${Date.now()}`), {
+      cache: 'no-store',
+    });
+    if (base.ok) {
+      const data: AccountSkinsFile = await base.json();
+      const accounts = mergeManualSkins(data.accounts || []);
+      await fetch('/api/save-account-skins', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          updatedAt: new Date().toISOString(),
+          source: 'manual+loldb',
+          accounts,
+        }),
+      });
+    }
+  } catch {
+    /* Pages / offline: localStorage overlay is enough */
+  }
+
+  return fetchAccountSkins();
 };
 
 export const fetchChampionRoles = async (): Promise<ChampionRolesFile> => {

@@ -198,6 +198,19 @@ const Feed: React.FC = () => {
                     '1';
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
+                {
+                    const champ =
+                        feedNotif.metadata.championName ||
+                        feedNotif.metadata.champion ||
+                        'Champion';
+                    const account =
+                        feedNotif.metadata.account ||
+                        feedNotif.rankedUsername ||
+                        '';
+                    notificationMessage = `Reached mastery ${masteryLvl} with ${champ}${
+                        account ? ` in ${account}` : ''
+                    }`;
+                }
                 break;
             }
             case NotificationAction.LEVEL_30_ACHIEVED:

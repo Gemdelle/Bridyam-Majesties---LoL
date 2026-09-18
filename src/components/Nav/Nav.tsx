@@ -4,7 +4,7 @@ import { usePermissions } from '../../hooks/usePermissions'
 import { useState, useEffect, useRef } from 'react'
 import { fetchAllNotifications } from '../../services/feedNotificationService'
 import styles from './Nav.module.scss'
-import PetDisplay from '../PetDisplay'
+// import PetDisplay from '../PetDisplay'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 import { assetUrl } from '../../utils/assetUrl'
@@ -158,12 +158,14 @@ export const Nav = () => {
                 <ul className={styles.nav__container__links__right}>
                     {canSeeAllNavigation && (
                         <>
+                            {/* Achievements moved to Leaderboard "See achievement list" button
                             <li
                                 className={location.pathname === '/achievements' ? styles.active : ''}
                                 data-nav="achievements"
                             >
                                 <Link to="/achievements" onClick={playClickSound}>{t('nav.achievements')}</Link>
                             </li>
+                            */}
                             <li
                                 className={location.pathname === '/roulette' ? styles.active : ''}
                                 data-nav="roulette"
@@ -207,8 +209,28 @@ export const Nav = () => {
                     </li>
                 </ul>
             </div>
+            {/* Pet nav display commented out (no login / personal pet yet) — Garden replaces it */}
+            {/*
             <div className={styles.nav__pet}>
                 <PetDisplay />
+            </div>
+            */}
+            <div className={styles.nav__pet}>
+                <Link
+                    to="/garden"
+                    className={`${styles.gardenNav} ${location.pathname === '/garden' ? styles.gardenNavActive : ''}`}
+                    onClick={playClickSound}
+                >
+                    <img
+                        src={assetUrl('images/frames/egg-frame.png')}
+                        alt=""
+                        className={styles.gardenNav__frame}
+                        onError={(e) => {
+                            (e.target as HTMLImageElement).style.opacity = '0.35';
+                        }}
+                    />
+                    <span>Garden</span>
+                </Link>
             </div>
         </div>
     )

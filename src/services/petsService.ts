@@ -1,3 +1,5 @@
+import { assetUrl } from '../utils/assetUrl';
+
 // Pet data structure based on the API response
 export interface PetAbility {
     name: string;
@@ -52,7 +54,7 @@ export interface ClaimPetResponse {
  */
 export const fetchPets = async (): Promise<Pet[]> => {
     try {
-        const response = await fetch('/data/pets.json');
+        const response = await fetch(assetUrl(`data/pets.json?t=${Date.now()}`));
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

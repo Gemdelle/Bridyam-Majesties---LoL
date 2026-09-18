@@ -238,18 +238,23 @@ export const updateMasteries = async (
 
         // Feed: one event per changed mastery (person name + pet resolved in publishFeedEvent)
         const { publishFeedEvent, NotificationAction } = await import('./feedNotificationService');
+        const { getChampionNameByRiotId } = await import('./championsService');
         for (const m of masteriesData) {
             const level = Number(m.champion_level) || 0;
+            const champName = getChampionNameByRiotId(m.champion_id);
+            const account = m.username || '';
             void publishFeedEvent({
                 rankedId: m.ranked_id,
-                rankedUsername: m.username,
+                rankedUsername: account,
                 action: NotificationAction.MASTERY_LEVEL_UP,
-                title: `${m.username} leveled a mastery`,
-                description: `Reached mastery ${level}`,
+                title: `${account} leveled a mastery`,
+                description: `Reached mastery ${level} with ${champName} in ${account}`,
                 metadata: {
                     championId: String(m.champion_id),
+                    championName: champName,
                     masteryLevel: String(level),
                     to: String(level),
+                    account,
                 },
                 points: Math.max(20, level * 10),
             });

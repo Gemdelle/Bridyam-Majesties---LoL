@@ -961,3 +961,89 @@
     overflow-x: auto;
   }
 }
+
+.addSkinOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vh;
+}
+
+.addSkinPanel {
+  width: min(420px, 92vw);
+  background: linear-gradient(160deg, #1e2328, #0f1419);
+  border: 2px solid #b69461;
+  border-radius: 10px;
+  padding: 1.2rem 1.3rem 1.4rem;
+  color: #cdbe91;
+
+  h3 {
+    margin: 0 0 0.35rem;
+    color: #f0e6d2;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  p {
+    margin: 0 0 0.9rem;
+    font-size: 0.85rem;
+    color: #8b7355;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  input,
+  select {
+    background: #0c1014;
+    border: 1px solid #463714;
+    border-radius: 6px;
+    color: #f0e6d2;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.9rem;
+  }
+}
+
+.addSkinStatus {
+  color: #c89b3c !important;
+  font-size: 0.82rem !important;
+}
+
+.addSkinActions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+
+  button {
+    flex: 1;
+    border: 2px solid #6b5a38;
+    background: #1a1f16;
+    color: #e4c493;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.55rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      border-color: #c89b3c;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+  }
+}

@@ -368,3 +368,17 @@ const championIdMapping: { [key: number]: number } = {
 export const getRiotIdForChampion = (championId: number): number => {
     return championIdMapping[championId] || championId;
 };
+
+/** Resolve champion display name from a Riot champion id (as stored in masteries). */
+export const getChampionNameByRiotId = (riotId: number | string): string => {
+    const target = Number(riotId);
+    if (!Number.isFinite(target)) return 'Champion';
+    const entry = Object.entries(championIdMapping).find(([, riot]) => riot === target);
+    if (entry) {
+        const internalId = Number(entry[0]);
+        const champ = mockChampions.find((c) => c.id === internalId);
+        if (champ) return champ.name;
+    }
+    const byInternal = mockChampions.find((c) => c.id === target);
+    return byInternal?.name || 'Champion';
+};
