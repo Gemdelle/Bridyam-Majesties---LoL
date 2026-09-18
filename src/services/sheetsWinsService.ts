@@ -152,29 +152,14 @@ export const fetchEssencerPetMap = async (): Promise<Map<string, SheetEssencerRo
 
 /**
  * Update one account in Google Sheets.
- * Uses text/plain to avoid CORS preflight with Apps Script.
+ * Uses text/plain + no-cors / sendBeacon so Apps Script accepts browser writes
+ * (redirect responses are not CORS-readable).
  */
 export const updateAccountInSheet = async (
     account: string,
     patch: Partial<{ wins: number; lv: number; honor: number; solo: string; flex: string; essencer: string }>
 ): Promise<boolean> => {
-    const response = await fetch(SHEETS_WINS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ account, ...patch }),
-        redirect: 'follow'
-    });
-
-    if (!response.ok) {
-        throw new Error(`Sheets POST failed: ${response.status}`);
-    }
-
-    const payload: SheetAccountsResponse = await response.json();
-    if (!payload.ok) {
-        throw new Error(payload.error || 'Sheets POST failed');
-    }
-
-    return true;
+    return postToSheet({ account, ...patch });
 };
 
 /** Update wins for one account in Google Sheets. */
@@ -190,6 +175,32 @@ export const fetchMasteriesFromSheet = async (): Promise<SheetMasteryRow[]> => {
     );
 };
 
+/** Fire-and-forget POST that Apps Script can receive from the browser */
+const postToSheet = async (body: Record<string, unknown>): Promise<boolean> => {
+    const payload = JSON.stringify(body);
+
+    // sendBeacon is the most reliable write from a browser tab
+    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+        const blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
+        const ok = navigator.sendBeacon(SHEETS_WINS_URL, blob);
+        if (ok) return true;
+    }
+
+    try {
+        await fetch(SHEETS_WINS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: payload,
+        });
+        // no-cors → opaque response; assume delivered
+        return true;
+    } catch (err) {
+        console.error('Sheets POST failed:', err);
+        return false;
+    }
+};
+
 /**
  * Upsert masteries into MASTERY tab.
  * mode 'max' = never lower values (API sync)
@@ -199,35 +210,22 @@ export const upsertMasteriesToSheet = async (
     masteries: SheetMasteryRow[],
     mode: 'max' | 'set' = 'max'
 ): Promise<{ updated: number; inserted: number; skipped: number }> => {
-    const response = await fetch(SHEETS_WINS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-            action: 'upsertMasteries',
-            mode,
-            masteries: masteries.map((m) => ({
-                ranked_id: Number(m.ranked_id) || 0,
-                username: String(m.username || ''),
-                champion_id: Number(m.champion_id) || 0,
-                champion_level: Number(m.champion_level) || 0,
-                champion_points: Number(m.champion_points) || 0,
-            })),
-        }),
-        redirect: 'follow',
+    const ok = await postToSheet({
+        action: 'upsertMasteries',
+        mode,
+        masteries: masteries.map((m) => ({
+            ranked_id: Number(m.ranked_id) || 0,
+            username: String(m.username || ''),
+            champion_id: Number(m.champion_id) || 0,
+            champion_level: Number(m.champion_level) || 0,
+            champion_points: Number(m.champion_points) || 0,
+        })),
     });
 
-    if (!response.ok) {
-        throw new Error(`Sheets mastery POST failed: ${response.status}`);
+    if (!ok) {
+        throw new Error('Sheets mastery POST failed');
     }
 
-    const payload: SheetAccountsResponse = await response.json();
-    if (!payload.ok) {
-        throw new Error(payload.error || 'Sheets mastery POST failed');
-    }
-
-    return {
-        updated: Number(payload.updated) || 0,
-        inserted: Number(payload.inserted) || 0,
-        skipped: Number(payload.skipped) || 0,
-    };
+    // Browser cannot read Apps Script redirect body; treat as queued.
+    return { updated: masteries.length, inserted: 0, skipped: 0 };
 };

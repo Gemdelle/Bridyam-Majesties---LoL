@@ -232,12 +232,14 @@ export const updateMasteries = async (
     masteriesData: MasteryData[],
     mode: 'max' | 'set' = 'set'
 ): Promise<void> => {
-    invalidateMasteryCache();
     try {
         await upsertMasteriesToSheet(toSheetRows(masteriesData), mode);
-        console.log(`Masteries saved to Sheet (${mode})`);
+        console.log(`Masteries queued to Sheet (${mode}, ${masteriesData.length} row(s))`);
     } catch (err) {
         console.warn('Could not save masteries to Sheet:', err);
+        throw err;
+    } finally {
+        invalidateMasteryCache();
     }
 
     try {

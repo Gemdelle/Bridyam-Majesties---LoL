@@ -159,16 +159,23 @@ const Champions: React.FC = () => {
         loadData();
     }, []);
 
-    // Reload data when page becomes visible (coming back from another tab)
+    // Reload when coming back to the tab — wait a bit so in-flight Sheet writes finish
     useEffect(() => {
+        let timer: ReturnType<typeof setTimeout> | null = null;
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
+            if (document.visibilityState !== 'visible') return;
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                masteryCacheService.invalidateCache();
                 loadData();
-            }
+            }, 1500);
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            if (timer) clearTimeout(timer);
+        };
     }, []);
 
 
@@ -399,64 +406,63 @@ const Champions: React.FC = () => {
     };
 
     // Update mastery level for a specific champion and account
-const updateMasteryLevel = (rankedId: number, championId: number, delta: number) => {
+    const updateMasteryLevel = (rankedId: number, championId: number, delta: number) => {
         const riotId = getRiotIdForChampion(championId);
-        const masteryIndex = masteryData.findIndex(m =>
-            m.ranked_id === rankedId && m.champion_id === riotId
+        const account = rankedAccounts.find((a) => a.id === rankedId);
+        const existing = masteryData.find(
+            (m) => m.ranked_id === rankedId && m.champion_id === riotId
         );
+        const currentLevel = existing?.champion_level ?? 0;
+        const newLevel = Math.max(0, Math.min(10, currentLevel + delta));
 
-        let newLevel: number;
+        const changed: MasteryData = existing
+            ? { ...existing, champion_level: newLevel }
+            : {
+                  id: null,
+                  ranked_id: rankedId,
+                  username: account?.username || account?.name || '',
+                  champion_id: riotId,
+                  champion_level: newLevel,
+                  champion_points: 0,
+                  champion_points_since_last_level: 0,
+                  champion_points_until_next_level: 0,
+                  chest_granted: false,
+                  last_play_time: new Date().toISOString(),
+              };
 
-        if (masteryIndex !== -1) {
-            const currentLevel = masteryData[masteryIndex].champion_level ?? 0;
-            newLevel = Math.max(0, Math.min(10, currentLevel + delta));
-            masteryData[masteryIndex].champion_level = newLevel;
-        } else {
-            // Create new mastery entry if it doesn't exist
-            newLevel = Math.max(0, Math.min(10, delta));
-            const account = rankedAccounts.find(a => a.id === rankedId);
-            masteryData.push({
-                id: null,
-                ranked_id: rankedId,
-                username: account?.username || account?.name || '',
-                champion_id: riotId,
-                champion_level: newLevel,
-                champion_points: 0,
-                champion_points_since_last_level: 0,
-                champion_points_until_next_level: 0,
-                chest_granted: false,
-                last_play_time: new Date().toISOString()
-            });
-        }
+        const nextMasteries = existing
+            ? masteryData.map((m) =>
+                  m.ranked_id === rankedId && m.champion_id === riotId ? changed : m
+              )
+            : [...masteryData, changed];
 
-// Force re-render
-            setMasteryUpdateTrigger(prev => prev + 1);
-            
-            // Update essencers total mastery
-            setEssencers(prev => prev.map(e => {
+        setMasteryData(nextMasteries);
+        setMasteryUpdateTrigger((prev) => prev + 1);
+
+        setEssencers((prev) =>
+            prev.map((e) => {
                 const favorites = getEssencerFavorites(e.name);
                 let totalMastery = 0;
-                favorites.forEach(champId => {
+                favorites.forEach((champId) => {
                     const rid = getRiotIdForChampion(champId);
-                    masteryData.forEach(m => {
+                    nextMasteries.forEach((m) => {
                         if (m.champion_id === rid) {
                             totalMastery += m.champion_level || 0;
                         }
                     });
                 });
                 return { ...e, totalMastery };
-            }));
-            
-            // Persist only the changed row to Sheet (and JSON in dev)
-            const changed =
-                masteryData.find((m) => m.ranked_id === rankedId && m.champion_id === riotId) ||
-                null;
-            if (changed) {
-                void updateMasteries([changed], 'set').then(() => {
-                    masteryCacheService.invalidateCache();
-                    console.log('%c✅ Mastery saved to Sheet!', 'color: #90EE90; font-weight: bold;');
-                });
-            }
+            })
+        );
+
+        void updateMasteries([changed], 'set')
+            .then(() => {
+                masteryCacheService.invalidateCache();
+                console.log('%c✅ Mastery saved to Sheet!', 'color: #90EE90; font-weight: bold;');
+            })
+            .catch((err) => {
+                console.error('Mastery save failed:', err);
+            });
     };
 
     if (loading) {
