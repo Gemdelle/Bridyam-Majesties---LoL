@@ -12,7 +12,7 @@ import Tutorial from './components/Tutorial'
 import { NotificationWrapper } from './components/NotificationWrapper'
 import AchievementPopup from './components/AchievementPopup'
 import { useAchievementNotifications } from './hooks/useAchievementNotifications'
-import Accounts from './pages/Accounts/Accounts'
+// import Accounts from './pages/Accounts/Accounts'
 import Mastery from './pages/Mastery/Mastery'
 import Ranked from './pages/Ranked/Ranked'
 import Champions from './pages/Champions/Champions'
@@ -31,7 +31,7 @@ import Profile from './pages/Profile/Profile'
 const LOCAL_ONLY = import.meta.env.DEV
 const Garden = LOCAL_ONLY ? lazy(() => import('./pages/Garden/Garden')) : null
 const GardenFight = LOCAL_ONLY ? lazy(() => import('./pages/Garden/GardenFight')) : null
-const Leaderboard = LOCAL_ONLY ? lazy(() => import('./pages/Leaderboard/Leaderboard')) : null
+// const Leaderboard = LOCAL_ONLY ? lazy(() => import('./pages/Leaderboard/Leaderboard')) : null
 
 function AppContent() {
   const { isAuthenticated, user } = useAuthContext();
@@ -89,17 +89,18 @@ function AppContent() {
               <Route
                 path="/login"
                 element={
-                  isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <Login />
+                  isAuthenticated ? <Navigate to={hasPet() ? "/bloodlines" : "/cursor-selection"} replace /> : <Login />
                 }
               />
               <Route
                 path="/signup"
                 element={
-                  isAuthenticated ? <Navigate to={hasPet() ? "/accounts" : "/cursor-selection"} replace /> : <SignUp />
+                  isAuthenticated ? <Navigate to={hasPet() ? "/bloodlines" : "/cursor-selection"} replace /> : <SignUp />
                 }
               />
 
               {/* Protected routes */}
+              {/* Home / Accounts hidden until further notice
               <Route
                 path="/"
                 element={
@@ -108,6 +109,8 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
+              */}
+              <Route path="/" element={<Navigate to="/bloodlines" replace />} />
               <Route
                 path="/bloodlines"
                 element={
@@ -158,6 +161,7 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
+              {/* Leaderboard removed
               {LOCAL_ONLY && Leaderboard && (
                 <Route
                   path="/leaderboard"
@@ -170,6 +174,7 @@ function AppContent() {
                   }
                 />
               )}
+              */}
               {LOCAL_ONLY && Garden && GardenFight && (
                 <>
                   <Route
@@ -236,7 +241,7 @@ function AppContent() {
               />
               <Route path="*"
                 element={
-                  <Navigate to={isAuthenticated ? (hasPet() ? "/accounts" : "/cursor-selection") : "/login"} replace />
+                  <Navigate to={isAuthenticated ? (hasPet() ? "/bloodlines" : "/cursor-selection") : "/login"} replace />
                 }
               />
             </Routes>

@@ -58,24 +58,16 @@ const Notification: React.FC<NotificationProps> = ({
 
     // Función para obtener imagen de pet
     const getPetImage = (petType: string | null | undefined, petStage: number | null | undefined): string | null => {
-        console.log('getPetImage called with:', { petType, petStage });
-
-        // Validar petType (debe ser "1", "2", "3", "4", no "0")
         if (!petType || petType === '0' || !['1', '2', '3', '4'].includes(petType)) {
-            console.log('Invalid petType, returning null');
-            return null; // No mostrar pet si no es válido
+            return null;
         }
-
-        // Validar petStage (debe ser 1, 2, o 3)
         if (!petStage || petStage < 1 || petStage > 3) {
-            console.log('Invalid petStage, returning null');
-            return null; // No mostrar pet si la etapa no es válida
+            return null;
         }
-
-        const imagePath = `/images/pets/pet-${petType}-${petStage}.png`;
-        console.log('Using pet image:', imagePath);
-        return imagePath;
+        return `/images/pets/pet-${petType}-${petStage}.png`;
     };
+
+    const petSrc = getPetImage(petType, petStage);
 
     const getTypeColor = () => {
         switch (type) {
@@ -156,12 +148,13 @@ const Notification: React.FC<NotificationProps> = ({
                             className={`${styles.derlet} ${styles.derlet__left__bottom}`}
                         />
 
-                        {/* Partículas flotantes */}
-                        <div className={styles.score__particles__container}>
-                            {Array.from({ length: 12 }, (_, i) => (
-                                <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
-                            ))}
-                        </div>
+                        {isNew && (
+                          <div className={styles.score__particles__container}>
+                              {Array.from({ length: 4 }, (_, i) => (
+                                  <div key={i} className={`${styles.score__particle} ${styles[`score__particle__${i + 1}`]}`}></div>
+                              ))}
+                          </div>
+                        )}
 
                         {/* Números del score */}
                         <div className={styles.score__numbers}>
@@ -171,8 +164,8 @@ const Notification: React.FC<NotificationProps> = ({
                 )}
 
             </div>
-            {getPetImage(petType, petStage) && (
-                <img src={getPetImage(petType, petStage)!} alt="pet" className={styles.pet__image} />
+            {petSrc && (
+                <img src={petSrc} alt="pet" className={styles.pet__image} />
             )}
             {/* Unread indicator */}
             {!isRead && (

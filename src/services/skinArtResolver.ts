@@ -164,7 +164,12 @@ export const fetchManualSkinOptionsForChampion = async (
     payload?.data?.[champId]?.skins || [];
 
   return skins
-    .filter((s) => isManualOnlySkin(s.name, Number(s.id)))
+    .filter((s) => {
+      const n = norm(s.name);
+      if (!n || n === 'default' || s.num === 0) return false;
+      if (/\([^)]+\)/.test(n) || /\bchroma\b/.test(n)) return false;
+      return true;
+    })
     .map((s) => {
       const skinId = Number(s.id);
       const legacy = Boolean(cdragonSkinsById?.get(skinId)?.isLegacy);

@@ -5589,6 +5589,15 @@
           ]
         },
         {
+          "name": "Dawnbringer Janna",
+          "champName": "Janna",
+          "rarity": "kEpic",
+          "imageUrl": "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/janna/skins/skin66/images/janna_splash_tile_66.jpg",
+          "skinLines": [
+            "nightbringer and dawnbringer"
+          ]
+        },
+        {
           "name": "Dawnbringer Vex",
           "champName": "Vex",
           "rarity": "kEpic",

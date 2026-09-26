@@ -6,6 +6,8 @@ import {
   fetchChampionRoles,
   getRoleTeamForFamily,
   getAccountsForFamily,
+  findBestFamilyForAccounts,
+  getTeamColumnsForPicks,
   cleanAccountName,
   canFormFullTeam,
   countCoveredRoles,
@@ -20,6 +22,8 @@ import {
   FEATURED_TRAILING_ORDER,
   findFamilyForSkin,
   familyDisplayOrderIndex,
+  skinBelongsToFamily,
+  LANE_ROLES,
   type SkinFamily,
   type AccountSkins,
   type RoleTeamColumn,
@@ -31,7 +35,7 @@ import {
 import { fetchRankedData } from '../../services/apiRankedsService';
 import { assetUrl } from '../../utils/assetUrl';
 
-type ViewState = 'featured' | 'other' | 'family' | 'account';
+type ViewState = 'featured' | 'other' | 'family' | 'account' | 'team';
 
 interface SplashFit {
   x: number; // object-position % horizontal
@@ -50,6 +54,8 @@ const prettyAccountName = (username: string): string => {
 const FEATURED_COLS = 6;
 const FEATURED_ROWS = 2;
 const FEATURED_PAGE_SIZE = FEATURED_COLS * FEATURED_ROWS;
+const ACCOUNT_ROWS = 3;
+const ACCOUNT_PAGE_SIZE = FEATURED_COLS * ACCOUNT_ROWS;
 
 const champKey = (name: string) =>
   String(name || '')
@@ -91,7 +97,18 @@ const RoleSlot: React.FC<{
   selection: RoleSelection | null;
   blockedChampions: Set<string>;
   onSelect: (next: RoleSelection) => void;
-}> = ({ column, selection, blockedChampions, onSelect }) => {
+  mode?: 'family' | 'team';
+  accountChoices?: RoleAccountOption[];
+  onPickAccount?: (rankedId: number | null) => void;
+}> = ({
+  column,
+  selection,
+  blockedChampions,
+  onSelect,
+  mode = 'family',
+  accountChoices,
+  onPickAccount,
+}) => {
   const [accountOpen, setAccountOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const blockedKey = useMemo(
@@ -100,18 +117,20 @@ const RoleSlot: React.FC<{
   );
 
   const availableAccounts = useMemo(() => {
-    return column.accounts.filter((acc) => {
+    const source = mode === 'team' ? accountChoices || [] : column.accounts;
+    return source.filter((acc) => {
       if (selection?.rankedId === acc.rankedId) return true;
       return acc.skins.some((s) => !blockedChampions.has(champKey(s.champName)));
     });
-  }, [column.accounts, blockedChampions, selection?.rankedId]);
+  }, [mode, accountChoices, column.accounts, blockedChampions, selection?.rankedId]);
 
   const selectedAccount: RoleAccountOption | null = useMemo(() => {
     if (!availableAccounts.length) return null;
-    return (
-      availableAccounts.find((a) => a.rankedId === selection?.rankedId) || availableAccounts[0]
-    );
-  }, [availableAccounts, selection]);
+    const picked = availableAccounts.find((a) => a.rankedId === selection?.rankedId);
+    if (picked) return picked;
+    if (mode === 'team') return null;
+    return availableAccounts[0];
+  }, [availableAccounts, selection, mode]);
 
   const availableSkins = useMemo(() => {
     if (!selectedAccount) return [] as OwnedSkin[];
@@ -129,6 +148,7 @@ const RoleSlot: React.FC<{
   }, [selectedAccount, availableSkins, selection]);
 
   useEffect(() => {
+    if (mode === 'team') return;
     if (!column.accounts.length) return;
     if (selection) {
       const acc = column.accounts.find((a) => a.rankedId === selection.rankedId);
@@ -173,7 +193,7 @@ const RoleSlot: React.FC<{
 
   return (
     <div className={styles.role__column} ref={rootRef}>
-      {availableAccounts.length === 0 ? (
+      {availableAccounts.length === 0 && mode !== 'team' ? (
         <div className={styles.role__account__empty}>No account</div>
       ) : (
         <div className={styles.role__account__dropdown}>
@@ -185,7 +205,8 @@ const RoleSlot: React.FC<{
             }}
           >
             <span className={styles.role__account__trigger__text}>
-              {prettyAccountName(selectedAccount?.username || '')}
+              {prettyAccountName(selectedAccount?.username || '') ||
+                (mode === 'team' ? 'Select account' : 'No account')}
             </span>
             <span className={`${styles.role__account__arrow} ${accountOpen ? styles.open : ''}`}>
               ›
@@ -193,6 +214,18 @@ const RoleSlot: React.FC<{
           </button>
           {accountOpen && (
             <div className={styles.role__account__menu}>
+              {mode === 'team' && selectedAccount && (
+                <button
+                  type="button"
+                  className={styles.role__account__option}
+                  onClick={() => {
+                    onPickAccount?.(null);
+                    setAccountOpen(false);
+                  }}
+                >
+                  <span className={styles.role__account__option__text}>Clear account</span>
+                </button>
+              )}
               {availableAccounts.map((acc) => (
                 <button
                   key={acc.rankedId}
@@ -203,6 +236,11 @@ const RoleSlot: React.FC<{
                       : ''
                   }`}
                   onClick={() => {
+                    if (mode === 'team') {
+                      onPickAccount?.(acc.rankedId);
+                      setAccountOpen(false);
+                      return;
+                    }
                     const skin = firstAvailableSkin(acc.skins, blockedChampions);
                     if (!skin) return;
                     onSelect({ rankedId: acc.rankedId, skinName: skin.name });
@@ -300,12 +338,18 @@ const Skins: React.FC = () => {
   const [filterAccountId, setFilterAccountId] = useState<number | ''>('');
   const [updating, setUpdating] = useState(false);
   const [accountPage, setAccountPage] = useState(0);
+  const [teamPicks, setTeamPicks] = useState<Partial<Record<LaneRole, number>>>({});
+  const [teamLockedFamilyName, setTeamLockedFamilyName] = useState<string | null>(null);
   const [showAddSkin, setShowAddSkin] = useState(false);
   const [addChampId, setAddChampId] = useState('');
+  const [addChampQuery, setAddChampQuery] = useState('');
+  const [champMenuOpen, setChampMenuOpen] = useState(false);
   const [addSkinKey, setAddSkinKey] = useState(''); // `${num}::${name}`
   const [addSkinAccountId, setAddSkinAccountId] = useState<number | ''>('');
+  const [addSkinAccountLocked, setAddSkinAccountLocked] = useState(false);
   const [addSkinStatus, setAddSkinStatus] = useState('');
   const [addSkinSaving, setAddSkinSaving] = useState(false);
+  const champSearchRef = useRef<HTMLDivElement>(null);
   const [champOptions, setChampOptions] = useState<{ id: string; name: string }[]>([]);
   const [manualSkinOptions, setManualSkinOptions] = useState<
     { name: string; champId: string; champName: string; num: number; imageUrl: string; skinLine: string }[]
@@ -443,6 +487,111 @@ const Skins: React.FC = () => {
     });
   };
 
+  const teamAccountChoices = useMemo<RoleAccountOption[]>(() => {
+    const used = new Set(
+      (Object.values(teamPicks) as number[]).filter((id) => Number.isFinite(id))
+    );
+    return accountSkins
+      .map((a) => {
+        const ranked = rankedLookup.get(a.ranked_id);
+        return {
+          rankedId: a.ranked_id,
+          username: a.username || ranked?.username || `Account ${a.ranked_id}`,
+          essencer: ranked?.essencer,
+          skins: a.skins || [],
+        };
+      })
+      .filter((a) => !used.has(a.rankedId) || Object.values(teamPicks).includes(a.rankedId))
+      .sort((a, b) => prettyAccountName(a.username).localeCompare(prettyAccountName(b.username)));
+  }, [accountSkins, rankedLookup, teamPicks]);
+
+  const teamMatch = useMemo(() => {
+    const picked = Object.values(teamPicks).filter((id) => Boolean(id)).length;
+    if (!picked) return null;
+    if (teamLockedFamilyName) {
+      const family = families.find((f) => f.name === teamLockedFamilyName);
+      if (family) {
+        const auto = findBestFamilyForAccounts(families, accountSkins, teamPicks, rolesData);
+        return {
+          family,
+          matches: auto?.family.name === family.name ? auto.matches : picked,
+          score: auto?.family.name === family.name ? auto.score : 0,
+        };
+      }
+    }
+    return findBestFamilyForAccounts(families, accountSkins, teamPicks, rolesData);
+  }, [families, accountSkins, teamPicks, rolesData, teamLockedFamilyName]);
+
+  const teamColumns = useMemo(
+    () =>
+      getTeamColumnsForPicks(
+        teamMatch?.family || null,
+        accountSkins,
+        rankedLookup,
+        rolesData,
+        teamPicks
+      ),
+    [teamMatch?.family, accountSkins, rankedLookup, rolesData, teamPicks]
+  );
+
+  const handleTeamAccountPick = (role: LaneRole, rankedId: number | null) => {
+    setTeamLockedFamilyName(null);
+    setTeamPicks((prev) => {
+      const next = { ...prev };
+      if (rankedId == null) delete next[role];
+      else next[role] = rankedId;
+      return next;
+    });
+    setRoleSelections((prev) => {
+      const next = { ...prev };
+      if (rankedId == null) delete next[role];
+      return next;
+    });
+  };
+
+  const handleTeamRoleSelect = (role: LaneRole, next: RoleSelection) => {
+    setRoleSelections((prev) => ({ ...prev, [role]: next }));
+    const acc = accountSkins.find((a) => a.ranked_id === next.rankedId);
+    const skin = acc?.skins.find((s) => s.name === next.skinName);
+    if (!skin) return;
+    const family = findFamilyForSkin(skin, families);
+    if (family) setTeamLockedFamilyName(family.name);
+  };
+
+  useEffect(() => {
+    if (viewState !== 'team') return;
+    setRoleSelections((prev) => {
+      const next = { ...prev };
+      for (const col of teamColumns) {
+        const rankedId = teamPicks[col.role];
+        if (!rankedId) {
+          delete next[col.role];
+          continue;
+        }
+        const acc = col.accounts[0];
+        if (!acc) continue;
+        const existing = next[col.role];
+        const existingSkin = existing
+          ? acc.skins.find((s) => s.name === existing.skinName)
+          : null;
+        if (
+          existingSkin &&
+          teamMatch?.family &&
+          skinBelongsToFamily(existingSkin, teamMatch.family)
+        ) {
+          continue;
+        }
+        const preferred =
+          acc.skins.find(
+            (s) => teamMatch?.family && skinBelongsToFamily(s, teamMatch.family)
+          ) || null;
+        if (preferred) next[col.role] = { rankedId, skinName: preferred.name };
+        else delete next[col.role];
+      }
+      return next;
+    });
+  }, [viewState, teamColumns, teamMatch?.family, teamPicks]);
+
   const accountsWithTheme = (family: SkinFamily): number =>
     getAccountsForFamily(family, accountSkins, rankedLookup).length;
 
@@ -491,13 +640,13 @@ const Skins: React.FC = () => {
 
   const accountPageCount = Math.max(
     1,
-    Math.ceil((selectedAccountSkins?.skins.length || 0) / FEATURED_PAGE_SIZE)
+    Math.ceil((selectedAccountSkins?.skins.length || 0) / ACCOUNT_PAGE_SIZE)
   );
 
   const pagedAccountSkins = useMemo(() => {
     if (!selectedAccountSkins) return [];
-    const start = accountPage * FEATURED_PAGE_SIZE;
-    return selectedAccountSkins.skins.slice(start, start + FEATURED_PAGE_SIZE);
+    const start = accountPage * ACCOUNT_PAGE_SIZE;
+    return selectedAccountSkins.skins.slice(start, start + ACCOUNT_PAGE_SIZE);
   }, [selectedAccountSkins, accountPage]);
 
   useEffect(() => {
@@ -557,6 +706,15 @@ const Skins: React.FC = () => {
     setViewState('other');
   };
 
+  const goTeam = () => {
+    setFilterAccountId('');
+    setSearchTerm('');
+    setSelectedFamily(null);
+    setRoleTeam([]);
+    setRoleSelections({});
+    setViewState('team');
+  };
+
   const onAccountFilterChange = (value: string) => {
     if (!value) {
       goFamilies();
@@ -570,7 +728,7 @@ const Skins: React.FC = () => {
     setViewState('account');
   };
 
-  const renderListToolbar = (mode: 'featured' | 'other') => (
+  const renderListToolbar = (mode: 'featured' | 'other' | 'team') => (
     <div className={styles.content__top}>
       <button
         type="button"
@@ -579,15 +737,20 @@ const Skins: React.FC = () => {
       >
         Families
       </button>
-      {(mode === 'featured' || mode === 'other') && (
-        <button
-          type="button"
-          className={`${styles.other__button} ${mode === 'other' ? styles.edit__active : ''}`}
-          onClick={goOther}
-        >
-          Other
-        </button>
-      )}
+      <button
+        type="button"
+        className={`${styles.other__button} ${mode === 'other' ? styles.edit__active : ''}`}
+        onClick={goOther}
+      >
+        Other
+      </button>
+      <button
+        type="button"
+        className={`${styles.other__button} ${mode === 'team' ? styles.edit__active : ''}`}
+        onClick={goTeam}
+      >
+        Team
+      </button>
       {mode === 'other' && (
         <div className={styles.search__container}>
           <input
@@ -667,14 +830,50 @@ const Skins: React.FC = () => {
     };
   }, [addChampId]);
 
+  const filteredChampOptions = useMemo(() => {
+    const q = addChampQuery.trim().toLowerCase();
+    if (!q) return champOptions;
+    return champOptions.filter((c) => c.name.toLowerCase().includes(q));
+  }, [champOptions, addChampQuery]);
+
+  const lockedAccount = useMemo(() => {
+    if (!addSkinAccountLocked || addSkinAccountId === '') return null;
+    return accountOptions.find((a) => a.id === addSkinAccountId) || null;
+  }, [addSkinAccountLocked, addSkinAccountId, accountOptions]);
+
   const openAddSkinModal = () => {
     setShowAddSkin(true);
     setAddSkinStatus('');
     setAddChampId('');
+    setAddChampQuery('');
+    setChampMenuOpen(false);
     setAddSkinKey('');
-    setAddSkinAccountId('');
     setManualSkinOptions([]);
+    if (viewState === 'account' && filterAccountId !== '') {
+      setAddSkinAccountId(filterAccountId);
+      setAddSkinAccountLocked(true);
+    } else {
+      setAddSkinAccountId('');
+      setAddSkinAccountLocked(false);
+    }
   };
+
+  const pickChampion = (id: string, name: string) => {
+    setAddChampId(id);
+    setAddChampQuery(name);
+    setChampMenuOpen(false);
+  };
+
+  useEffect(() => {
+    if (!showAddSkin || !champMenuOpen) return;
+    const onPointerDown = (event: MouseEvent) => {
+      if (champSearchRef.current && !champSearchRef.current.contains(event.target as Node)) {
+        setChampMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [showAddSkin, champMenuOpen]);
 
   const submitAddSkin = async () => {
     if (!selectedManualSkin || addSkinAccountId === '') {
@@ -698,9 +897,7 @@ const Skins: React.FC = () => {
         imageUrl: selectedManualSkin.imageUrl,
       });
       setAccountSkins(next);
-      setAddSkinStatus(
-        'Skin saved. If others still don’t see it, redeploy sheets-wins-api.gs (SKINS tab).'
-      );
+      setAddSkinStatus('Skin saved.');
       setAddSkinKey('');
     } catch (err) {
       console.error(err);
@@ -884,6 +1081,12 @@ const Skins: React.FC = () => {
             <button type="button" className={styles.other__button} onClick={goFamilies}>
               Families
             </button>
+            <button type="button" className={styles.other__button} onClick={goOther}>
+              Other
+            </button>
+            <button type="button" className={styles.other__button} onClick={goTeam}>
+              Team
+            </button>
             <select
               className={styles.account__select}
               value={String(filterAccountId)}
@@ -901,18 +1104,18 @@ const Skins: React.FC = () => {
             <button type="button" className={styles.other__button} onClick={openAddSkinModal}>
               Add skin
             </button>
-          </div>
-          <div className={styles.account__header}>
-            <h2 className={styles.account__title}>
-              {prettyAccountName(selectedAccountSkins.username)}
-              {selectedAccountSkins.essencer && selectedAccountSkins.essencer !== '-'
-                ? ` · ${selectedAccountSkins.essencer}`
-                : ''}
-            </h2>
-            <p className={styles.account__meta}>
-              {selectedAccountSkins.skins.length} skin
-              {selectedAccountSkins.skins.length === 1 ? '' : 's'}
-            </p>
+            <div className={styles.account__header}>
+              <h2 className={styles.account__title}>
+                {prettyAccountName(selectedAccountSkins.username)}
+                {selectedAccountSkins.essencer && selectedAccountSkins.essencer !== '-'
+                  ? ` · ${selectedAccountSkins.essencer}`
+                  : ''}
+              </h2>
+              <p className={styles.account__meta}>
+                {selectedAccountSkins.skins.length} skin
+                {selectedAccountSkins.skins.length === 1 ? '' : 's'}
+              </p>
+            </div>
           </div>
           <div className={`${styles.content} ${styles.account__content}`}>
             {selectedAccountSkins.skins.length === 0 ? (
@@ -968,6 +1171,48 @@ const Skins: React.FC = () => {
         </div>
       )}
 
+      {viewState === 'team' && (
+        <div className={`${styles.container} ${styles.team__container}`}>
+          {renderListToolbar('team')}
+          <div className={styles.family__header}>
+            <div className={styles.family__title__block}>
+              <h2 className={styles.family__title}>
+                {teamMatch?.family.name || 'TEAM'}
+              </h2>
+              <p className={styles.family__meta}>
+                {Object.values(teamPicks).filter(Boolean).length} accounts
+                {teamMatch
+                  ? ` · ${teamMatch.matches} matching ${teamMatch.family.name}`
+                  : ' · pick accounts to match a skin line'}
+              </p>
+            </div>
+          </div>
+          <div className={styles.team__board}>
+            {LANE_ROLES.map((lane) => {
+              const col =
+                teamColumns.find((c) => c.role === lane.id) || {
+                  role: lane.id,
+                  label: lane.label,
+                  icon: lane.icon,
+                  accounts: [],
+                };
+              return (
+                <RoleSlot
+                  key={lane.id}
+                  column={col}
+                  selection={roleSelections[lane.id] || null}
+                  blockedChampions={getBlockedChampions(teamColumns, roleSelections, lane.id)}
+                  onSelect={(next) => handleTeamRoleSelect(lane.id, next)}
+                  mode="team"
+                  accountChoices={teamAccountChoices}
+                  onPickAccount={(rankedId) => handleTeamAccountPick(lane.id, rankedId)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {viewState === 'family' && selectedFamily && (
         <div className={`${styles.container} ${styles.team__container}`}>
           <div className={styles.family__header}>
@@ -1003,20 +1248,46 @@ const Skins: React.FC = () => {
         <div className={styles.addSkinOverlay} onClick={() => setShowAddSkin(false)}>
           <div className={styles.addSkinPanel} onClick={(e) => e.stopPropagation()}>
             <h3>Add skin</h3>
-            <p>
-              Legacy, limited, and reward skins that are not in the permanent RP store (Victorious,
-              Heartseeker, Freljord, etc.). Chromas are skipped. Art resolves automatically.
-            </p>
             <label>
               Champion
-              <select value={addChampId} onChange={(e) => setAddChampId(e.target.value)}>
-                <option value="">Select champion…</option>
-                {champOptions.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.addSkinSearch} ref={champSearchRef}>
+                <input
+                  type="text"
+                  value={addChampQuery}
+                  placeholder="Type champion name…"
+                  autoComplete="off"
+                  onFocus={() => setChampMenuOpen(true)}
+                  onChange={(e) => {
+                    const next = e.target.value;
+                    setAddChampQuery(next);
+                    setChampMenuOpen(true);
+                    const exact = champOptions.find(
+                      (c) => c.name.toLowerCase() === next.trim().toLowerCase()
+                    );
+                    setAddChampId(exact ? exact.id : '');
+                  }}
+                />
+                {champMenuOpen && (
+                  <div className={styles.addSkinSearchMenu}>
+                    {filteredChampOptions.length === 0 ? (
+                      <div className={styles.addSkinSearchEmpty}>No champion found</div>
+                    ) : (
+                      filteredChampOptions.map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          className={`${styles.addSkinSearchOption} ${
+                            addChampId === c.id ? styles.addSkinSearchOptionActive : ''
+                          }`}
+                          onClick={() => pickChampion(c.id, c.name)}
+                        >
+                          {c.name}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
             </label>
             <label>
               Skin
@@ -1046,23 +1317,38 @@ const Skins: React.FC = () => {
                 <img src={selectedManualSkin.imageUrl} alt={selectedManualSkin.name} />
               </div>
             )}
-            <label>
-              Account
-              <select
-                value={addSkinAccountId === '' ? '' : String(addSkinAccountId)}
-                onChange={(e) =>
-                  setAddSkinAccountId(e.target.value ? Number(e.target.value) : '')
-                }
-              >
-                <option value="">Select account…</option>
-                {accountOptions.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.username}
-                    {a.essencer && a.essencer !== '-' ? ` · ${a.essencer}` : ''}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {addSkinAccountLocked && lockedAccount ? (
+              <label>
+                Account
+                <input
+                  type="text"
+                  value={`${lockedAccount.username}${
+                    lockedAccount.essencer && lockedAccount.essencer !== '-'
+                      ? ` · ${lockedAccount.essencer}`
+                      : ''
+                  }`}
+                  readOnly
+                />
+              </label>
+            ) : (
+              <label>
+                Account
+                <select
+                  value={addSkinAccountId === '' ? '' : String(addSkinAccountId)}
+                  onChange={(e) =>
+                    setAddSkinAccountId(e.target.value ? Number(e.target.value) : '')
+                  }
+                >
+                  <option value="">Select account…</option>
+                  {accountOptions.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.username}
+                      {a.essencer && a.essencer !== '-' ? ` · ${a.essencer}` : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             {addSkinStatus && <p className={styles.addSkinStatus}>{addSkinStatus}</p>}
             <div className={styles.addSkinActions}>
               <button type="button" onClick={() => setShowAddSkin(false)}>

@@ -921,6 +921,82 @@ export const familyDisplayOrderIndex = (name: string, featured?: boolean): numbe
 };
 
 /** First matching family for a skin, preferring featured display order. */
+export const findBestFamilyForAccounts = (
+  families: SkinFamily[],
+  accountSkins: AccountSkins[],
+  picks: Partial<Record<LaneRole, number>>,
+  rolesData: ChampionRolesFile
+): { family: SkinFamily; matches: number; score: number } | null => {
+  const entries = (Object.entries(picks) as [LaneRole, number][]).filter(([, id]) => Boolean(id));
+  if (!entries.length) return null;
+
+  let best: { family: SkinFamily; matches: number; score: number; extra: number } | null = null;
+  for (const family of families) {
+    let score = 0;
+    let matches = 0;
+    let extra = 0;
+    for (const [role, rankedId] of entries) {
+      const acc = accountSkins.find((a) => a.ranked_id === rankedId);
+      if (!acc) continue;
+      const famSkins = (acc.skins || []).filter((s) => skinBelongsToFamily(s, family));
+      extra += famSkins.length;
+      const roleHit = famSkins.some((s) =>
+        getRolesForChampionName(s.champName, rolesData).includes(role)
+      );
+      if (roleHit) {
+        score += 2;
+        matches += 1;
+      } else if (famSkins.length) {
+        score += 1;
+        matches += 1;
+      }
+    }
+    if (matches === 0) continue;
+    if (family.featured) score += 0.1;
+    if (
+      !best ||
+      score > best.score ||
+      (score === best.score && extra > best.extra)
+    ) {
+      best = { family, matches, score, extra };
+    }
+  }
+  return best;
+};
+
+export const getTeamColumnsForPicks = (
+  family: SkinFamily | null,
+  accountSkins: AccountSkins[],
+  rankedLookup: Map<number, { username: string; essencer?: string }>,
+  rolesData: ChampionRolesFile,
+  picks: Partial<Record<LaneRole, number>>
+): RoleTeamColumn[] => {
+  return LANE_ROLES.map((lane) => {
+    const rankedId = picks[lane.id];
+    if (!rankedId) {
+      return { role: lane.id, label: lane.label, icon: lane.icon, accounts: [] };
+    }
+    const acc = accountSkins.find((a) => a.ranked_id === rankedId);
+    const ranked = rankedLookup.get(rankedId);
+    const username = acc?.username || ranked?.username || `Account ${rankedId}`;
+    const skins = [...(acc?.skins || [])].sort((a, b) => {
+      if (!family) return a.name.localeCompare(b.name);
+      const aFam = skinBelongsToFamily(a, family) ? 0 : 1;
+      const bFam = skinBelongsToFamily(b, family) ? 0 : 1;
+      if (aFam !== bFam) return aFam - bFam;
+      const aRole = getRolesForChampionName(a.champName, rolesData).includes(lane.id) ? 0 : 1;
+      const bRole = getRolesForChampionName(b.champName, rolesData).includes(lane.id) ? 0 : 1;
+      return aRole - bRole || a.name.localeCompare(b.name);
+    });
+    return {
+      role: lane.id,
+      label: lane.label,
+      icon: lane.icon,
+      accounts: [{ rankedId, username, essencer: ranked?.essencer, skins }],
+    };
+  });
+};
+
 export const findFamilyForSkin = (
   skin: OwnedSkin,
   families: SkinFamily[]

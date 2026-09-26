@@ -9,7 +9,7 @@ import { playClickSound, playNotificationSound } from '../../utils/soundUtils'
 import { assetUrl } from '../../utils/assetUrl'
 
 const FEED_SEEN_KEY = 'bridyam_feed_seen_count'
-/** Garden + Leaderboard are local-dev only until ready for production. */
+/** Garden is local-dev only until ready for production. */
 const LOCAL_ONLY = import.meta.env.DEV
 
 export const Nav = () => {
@@ -46,7 +46,7 @@ export const Nav = () => {
 
         const checkNotifications = async () => {
             try {
-                const notifications = await fetchAllNotifications(100)
+                const notifications = await fetchAllNotifications(25)
                 if (cancelled) return
 
                 const currentCount = notifications.length
@@ -117,9 +117,11 @@ export const Nav = () => {
                             </span>
                         </div>
                     </li>
+                    {/* Home hidden until further notice
                     <li className={linkClass('/')} data-nav="accounts">
                         <Link to="/" onClick={playClickSound}>{t('nav.home')}</Link>
                     </li>
+                    */}
                     <li className={linkClass('/bloodlines')} data-nav="bloodlines">
                         <Link to="/bloodlines" onClick={playClickSound}>{t('nav.bloodlines')}</Link>
                     </li>
@@ -163,21 +165,6 @@ export const Nav = () => {
                                     className={styles.feedAlertPet}
                                 />
                             </>
-                        )}
-                    </li>
-                    <li
-                        className={`${LOCAL_ONLY ? linkClass('/leaderboard') : ''} ${
-                            !LOCAL_ONLY ? styles.navDisabled : ''
-                        }`}
-                        data-nav="leaderboard"
-                        title={LOCAL_ONLY ? 'Leaderboard' : 'Leaderboard — coming soon'}
-                    >
-                        {LOCAL_ONLY ? (
-                            <Link to="/leaderboard" onClick={playClickSound}>
-                                Leaderboard
-                            </Link>
-                        ) : (
-                            <span className={styles.navDisabledLabel}>Leaderboard</span>
                         )}
                     </li>
                     <li

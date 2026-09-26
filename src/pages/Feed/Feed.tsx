@@ -332,11 +332,7 @@ const Feed: React.FC = () => {
     const loadNotifications = useCallback(async () => {
         try {
             setError(null);
-            const feedNotifications = await fetchAllNotifications(100);
-
-            // Debug: ver los primeros 3 registros crudos del backend
-            console.log('RAW BACKEND DATA (first 3):', feedNotifications.slice(0, 3));
-
+            const feedNotifications = await fetchAllNotifications(25);
             const mappedNotifications = feedNotifications.map(mapFeedNotificationToProps);
             setNotifications(mappedNotifications);
             setLoading(false);
@@ -368,9 +364,7 @@ const Feed: React.FC = () => {
         );
     };
 
-    const handleNotificationClick = (id: number) => {
-        console.log('Notification clicked:', id);
-    };
+    const handleNotificationClick = (_id: number) => {};
 
     const handleNotificationHover = (id: number) => {
         setViewedNotifications(prev => {

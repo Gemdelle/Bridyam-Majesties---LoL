@@ -180,7 +180,7 @@
     "name": "-",
     "username": "GEM Orzyadhere#LAS",
     "bloodline": "Porveldam",
-    "essencer": "Gemy",
+    "essencer": "-",
     "champions": 90,
     "skins": 298,
     "masteries": 90,
@@ -452,7 +452,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6893.png",
     "wins": {
       "totals": 15,
-      "current": 10
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -496,7 +496,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6386.png",
     "wins": {
       "totals": 15,
-      "current": 7
+      "current": 12
     },
     "missions": {
       "current_act": {
@@ -509,12 +509,12 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "gold",
+      "division": 1
     },
     "elo_flex": {
       "tier": "platinum",
-      "division": 3
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -628,7 +628,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3018.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 6
     },
     "missions": {
       "current_act": {
@@ -641,12 +641,12 @@
       }
     },
     "elo_soloq": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "silver",
+      "division": 2
     },
     "elo_flex": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "platinum",
+      "division": 2
     },
     "honor": 5,
     "rol": {
@@ -716,7 +716,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/6446.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 3
     },
     "missions": {
       "current_act": {
@@ -734,7 +734,7 @@
     },
     "elo_flex": {
       "tier": "platinum",
-      "division": 3
+      "division": 4
     },
     "honor": 5,
     "rol": {
@@ -972,7 +972,7 @@
     "name": "-",
     "username": "GEM Ivelism#GEM",
     "bloodline": "Zephiroth",
-    "essencer": "Gemy",
+    "essencer": "-",
     "champions": 67,
     "skins": 256,
     "masteries": 67,
@@ -1068,7 +1068,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5640.png",
     "wins": {
       "totals": 15,
-      "current": 0
+      "current": 3
     },
     "missions": {
       "current_act": {
@@ -1244,7 +1244,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/5471.png",
     "wins": {
       "totals": 15,
-      "current": 2
+      "current": 11
     },
     "missions": {
       "current_act": {
@@ -1261,10 +1261,10 @@
       "division": 4
     },
     "elo_flex": {
-      "tier": "unranked",
-      "division": 4
+      "tier": "gold",
+      "division": 1
     },
-    "honor": 4,
+    "honor": 5,
     "rol": {
       "adc": 78,
       "mid": 56,
@@ -1280,7 +1280,7 @@
     "name": "Nighty",
     "username": "GEM Dellablivien#GEM",
     "bloodline": "Gladasmy",
-    "essencer": "Gemy",
+    "essencer": "Nighty",
     "champions": 68,
     "skins": 378,
     "masteries": 68,
@@ -2212,7 +2212,7 @@
     "icon": "https://ddragon.leagueoflegends.com/cdn/15.21.1/img/profileicon/3149.png",
     "wins": {
       "totals": 15,
-      "current": 13
+      "current": 15
     },
     "missions": {
       "current_act": {
@@ -2248,7 +2248,7 @@
     "name": "-",
     "username": "GEM Pracelgance#GEM",
     "bloodline": "Spadelline",
-    "essencer": "Gemy",
+    "essencer": "-",
     "champions": 0,
     "skins": 0,
     "masteries": 0,
