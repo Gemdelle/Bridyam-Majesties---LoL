@@ -237,8 +237,8 @@ export const updateChangedRankedData = async (originalData: RankedData[], modifi
                     rankedName: player,
                     bloodline: item.bloodline,
                     action: NotificationAction.WIN,
-                    title: `${player} won a ranked game`,
-                    description: `${username} now has ${item.wins.current} wins`,
+                    title: `WON A RANKED GAME IN ${username}`,
+                    description: `${player} now has ${item.wins.current} wins in ${username}`,
                     metadata: {
                         wins: String(item.wins.current),
                         previousWins: String(original.wins.current),

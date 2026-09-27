@@ -57,6 +57,8 @@ const Mastery: React.FC = () => {
 
     // --- Estado para ordenamiento por cuenta ---
     const [sortByAccount, setSortByAccount] = useState<number | null>(null);
+    const [accountPage, setAccountPage] = useState(0);
+    const ACCOUNTS_PER_PAGE = 10;
 
     // --- Estado para el dropdown de mastery ---
     const [activeMasteryDropdown, setActiveMasteryDropdown] = useState<string | null>(null);
@@ -453,7 +455,16 @@ const Mastery: React.FC = () => {
     // --- Calcular las accounts a mostrar ---
     const getCurrentPageAccounts = () => {
         const filteredData = filterRankedData(rankedData);
-        return { accounts: filteredData };
+        const totalPages = Math.max(1, Math.ceil(filteredData.length / ACCOUNTS_PER_PAGE));
+        const page = Math.min(accountPage, totalPages - 1);
+        const start = page * ACCOUNTS_PER_PAGE;
+        return {
+            accounts: filteredData.slice(start, start + ACCOUNTS_PER_PAGE),
+            page,
+            totalPages,
+            hasPrev: page > 0,
+            hasNext: page < totalPages - 1,
+        };
     };
 
 
@@ -465,6 +476,7 @@ const Mastery: React.FC = () => {
         if (newSelection.length > 0) {
             const newView = newSelection[newSelection.length - 1]; // Get the last selected item
             setSelectedView(newView);
+            setAccountPage(0);
         }
     };
 
@@ -631,8 +643,8 @@ const Mastery: React.FC = () => {
                             <div className={styles.header__id}>ID</div>
                             <div className={styles.header__champion}>CHAMPION</div>
                             {(() => {
-                                const { accounts } = getCurrentPageAccounts();
-                                return accounts.map((account) => (
+                                const { accounts, hasPrev, hasNext } = getCurrentPageAccounts();
+                                return accounts.map((account, index) => (
                                     <div
                                         key={account.id}
                                         className={styles.header__account}
@@ -645,6 +657,19 @@ const Mastery: React.FC = () => {
                                             borderRight: sortByAccount === account.id ? '2px solid #c89b3c' : 'none'
                                         }}
                                     >
+                                        {hasPrev && index === 0 && (
+                                            <button
+                                                type="button"
+                                                className={`${styles.accounts__arrow} ${styles.accounts__arrow__prev}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setAccountPage((p) => Math.max(0, p - 1));
+                                                }}
+                                                aria-label="Previous accounts"
+                                            >
+                                                ‹
+                                            </button>
+                                        )}
                                         <div className={styles.account__portrait}>
                                             <img src={getPortraitUrl(account.username)} alt={account.username} />
                                         </div>
@@ -652,6 +677,19 @@ const Mastery: React.FC = () => {
                                             <div>{account.name}</div>
                                             <div className={styles.majesty__name}>{cleanSummonerName(account.username)}</div>
                                         </div>
+                                        {hasNext && index === accounts.length - 1 && (
+                                            <button
+                                                type="button"
+                                                className={`${styles.accounts__arrow} ${styles.accounts__arrow__next}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setAccountPage((p) => p + 1);
+                                                }}
+                                                aria-label="Next accounts"
+                                            >
+                                                ›
+                                            </button>
+                                        )}
                                     </div>
                                 ));
                             })()}

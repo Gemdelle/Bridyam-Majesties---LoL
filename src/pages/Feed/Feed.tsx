@@ -76,11 +76,10 @@ const Feed: React.FC = () => {
         if (level >= 1 && level <= 10) {
             return `/images/masteries/badges/${level}.png`;
         }
-        // Si el nivel es mayor a 10, usar la imagen del nivel 10
         if (level > 10) {
             return '/images/masteries/badges/10.png';
         }
-        return '/images/masteries/badges/1.png';
+        return '/images/masteries/mastery/0.png';
     };
 
     // Función helper para obtener portrait de majesty
@@ -174,12 +173,24 @@ const Feed: React.FC = () => {
                 }
                 break;
             }
-            case NotificationAction.WIN:
+            case NotificationAction.WIN: {
                 notifType = 'achievement';
-                // Usar ícono de gem según la bloodline de la cuenta (porveldam, spadelline, zephiroth, gladasmy, primogenit)
                 imageUrl = getBloodlineGem(feedNotif.bloodline);
                 notifFilterType = 'ranked';
+                {
+                    const accountName = (feedNotif.rankedUsername || '')
+                        .replace(/^GEM\s+/i, '')
+                        .replace(/#[A-Za-z0-9]+$/, '')
+                        .trim() || feedNotif.rankedUsername;
+                    const player = feedNotif.rankedName || accountName;
+                    const wins = feedNotif.metadata.wins || '';
+                    notificationTitle = `WON A RANKED GAME IN ${accountName}`;
+                    notificationMessage = wins
+                        ? `${player} now has ${wins} wins in ${accountName}`
+                        : `${player} won a ranked game in ${accountName}`;
+                }
                 break;
+            }
             case NotificationAction.RANK_UP: {
                 notifType = 'ranked';
                 // Usar imagen de tier según el metadata
@@ -192,10 +203,10 @@ const Feed: React.FC = () => {
                 notifType = 'achievement';
                 // Usar imagen de mastery según el nivel en metadata
                 const masteryLvl =
-                    feedNotif.metadata.to ||
-                    feedNotif.metadata.masteryLevel ||
-                    feedNotif.metadata.champion_level ||
-                    '1';
+                    feedNotif.metadata.to ??
+                    feedNotif.metadata.masteryLevel ??
+                    feedNotif.metadata.champion_level ??
+                    '0';
                 imageUrl = getMasteryImage(masteryLvl);
                 notifFilterType = 'mastery';
                 {
@@ -298,7 +309,6 @@ const Feed: React.FC = () => {
             feedNotif.rankedName &&
             !notificationTitle.toLowerCase().includes(feedNotif.rankedName.toLowerCase()) &&
             (feedNotif.action === NotificationAction.MASTERY_LEVEL_UP ||
-                feedNotif.action === NotificationAction.WIN ||
                 feedNotif.action === NotificationAction.LEVEL_UP ||
                 feedNotif.action === NotificationAction.HONOR_UP)
         ) {
