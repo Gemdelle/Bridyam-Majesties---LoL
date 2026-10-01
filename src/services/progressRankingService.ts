@@ -153,28 +153,6 @@ interface EssencerAgg {
     eloDivisionsGained: number;
 }
 
-/** Keep Periwinkle ~800 pts under Gemy so he stays close without passing. */
-const PERIWINKLE_GAP_BELOW_GEMY = 800;
-
-const placePeriwinkleBehindGemy = (ranking: RankingEntry[]): RankingEntry[] => {
-    const gemy = ranking.find((r) => r.rankedName.toLowerCase() === 'gemy');
-    const peri = ranking.find((r) => r.rankedName.toLowerCase() === 'periwinkle');
-    if (!gemy || !peri) return ranking;
-
-    const target = Math.max(0, gemy.totalProgressScore - PERIWINKLE_GAP_BELOW_GEMY);
-    const delta = target - peri.totalProgressScore;
-    peri.masteryScore = Math.max(0, peri.masteryScore + delta);
-    peri.totalProgressScore = target;
-
-    return ranking
-        .sort(
-            (a, b) =>
-                b.totalProgressScore - a.totalProgressScore ||
-                a.rankedName.localeCompare(b.rankedName)
-        )
-        .map((entry, index) => ({ ...entry, rank: index + 1 }));
-};
-
 const accumulateAccount = (
     agg: EssencerAgg,
     row: SheetAccountRow,
@@ -221,6 +199,9 @@ const buildEntry = (
     // Redeem = claimed account count (direct)
     const redeemCount = e.accountCount;
     const redeemScore = redeemCount * SCORING.redeem;
+    // Total must always equal the visible category scores
+    const totalProgressScore =
+        redeemScore + winsScore + masteryScore + levelScore + eloScore;
     const petType = getPetTypeFromSpecies(petRow?.pet);
     const petStage = petType ? getPetStageFromLevel(petRow?.level ?? 1) : null;
 
@@ -231,7 +212,7 @@ const buildEntry = (
         userId: `sheet-${e.name.toLowerCase()}`,
         petType,
         petStage,
-        totalProgressScore: winsScore + masteryScore + levelScore + eloScore + redeemScore,
+        totalProgressScore,
         levelGained: e.levelGained,
         honorGained: 0,
         winsGained: e.winsGained,
@@ -333,14 +314,12 @@ export const fetchGlobalRanking = async (limit: number = 100): Promise<ProgressR
             )
             .map((entry, index) => ({ ...entry, rank: index + 1 }));
 
-        const adjusted = placePeriwinkleBehindGemy(ranking);
-
-        const withMastery = adjusted.filter((r) => r.masteryLevelsGained > 0).length;
+        const withMastery = ranking.filter((r) => r.masteryLevelsGained > 0).length;
         console.log(
             `[ranking] ${ranking.length} players, ${withMastery} with mastery gains (INIT snapshot must be below current Sheet MASTERY)`
         );
 
-        return { ranking: adjusted.slice(0, limit), totalCount: adjusted.length };
+        return { ranking: ranking.slice(0, limit), totalCount: ranking.length };
     } catch (error) {
         console.error('Error calculating ranking from Google Sheets:', error);
         return { ranking: [], totalCount: 0 };
@@ -410,8 +389,7 @@ export const fetchRankingByBloodline = async (
             )
             .map((entry, index) => ({ ...entry, rank: index + 1 }));
 
-        const adjusted = placePeriwinkleBehindGemy(ranking);
-        return { ranking: adjusted.slice(0, limit), totalCount: adjusted.length };
+        return { ranking: ranking.slice(0, limit), totalCount: ranking.length };
     } catch (error) {
         console.error('Error fetching bloodline ranking:', error);
         return { ranking: [], totalCount: 0 };
