@@ -613,7 +613,7 @@ const Ranked: React.FC = () => {
                                 name="Wins"
                                 description="Win a ranked game (soloq/flex)"
                                 iconSrc="/images/ranking/diamond/diamond-win.png"
-                                value={rankingConfig?.wins || "+70 pts"}
+                                value={rankingConfig?.wins || "+100 pts"}
                                 eloBreakdown={[
                                     { elo: 'bronze', points: 3 },
                                     { elo: 'vesuvianite', points: 15 },

@@ -73,7 +73,7 @@ function createRanking() {
         .filter(e => e.totalWins > 0)
         .map(e => {
             // Split 1 2026: Only wins count (70 pts each)
-            const winsScore = e.totalWins * 70;
+            const winsScore = e.totalWins * 100;
             const totalScore = winsScore;
             
             return {
@@ -116,7 +116,7 @@ function createRanking() {
         split: "Split 1 2026",
         lastUpdated: new Date().toISOString(),
         scoring: {
-            wins: 70,
+            wins: 100,
             elo: 0,
             honor: 0,
             level: 0,

@@ -75,7 +75,7 @@ export interface UserProgressStats {
 
 // Scoring — Split 1 2026 (matches Ranked rules popup defaults)
 const SCORING = {
-    wins: 70,
+    wins: 100,
     elo: 25,
     honor: 0,
     level: 80,

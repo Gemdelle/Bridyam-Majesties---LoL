@@ -243,7 +243,7 @@ export const updateChangedRankedData = async (originalData: RankedData[], modifi
                         wins: String(item.wins.current),
                         previousWins: String(original.wins.current),
                     },
-                    points: 70,
+                    points: 100,
                 });
             }
             if (original && item.level > original.level) {
